@@ -7,7 +7,6 @@ import javax.swing.tree.MutableTreeNode;
 
 import ckCommonUtils.CKPosition;
 import ckEditor.CKActorEffectAddMenu;
-import ckEditor.CKCasterEffectAddMenu;
 import ckEditor.CKTravelEffectAddMenu;
 import ckEditor.treegui.CKActorEffect;
 import ckEditor.treegui.CKGUINode;

@@ -33,7 +33,7 @@ public class CKURL
 		if(base.compareTo("__BASE_DIR__")==0)
 		{
 			base = (new File(System.getProperty("user.dir"))).getParentFile().toURI().toURL().toString();
-			base+="CK_DATA/";
+			base+="CK_DATA/CK_DATA/";
 		}
 		else if (base.compareTo("__DEFAULT_RESOURCE__")==0)
 		{

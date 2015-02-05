@@ -3,34 +3,22 @@ package ckPythonInterpreter;
 import static ckCommonUtils.CKPropertyStrings.CH_EQUIP_SLOTS;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JToolBar;
-import javax.swing.text.EditorKit;
-
-import jsyntaxpane.DefaultSyntaxKit;
-
 import ckCommonUtils.DisabledPanel;
 import ckCommonUtils.EquipmentComparator;
 import ckDatabase.CKGraphicsAssetFactory;
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckEditor.CKAssetButton;
-import ckEditor.CKAssetLabel;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKChapter;
-import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
-import ckGameEngine.ActorController;
 import ckGameEngine.CKPage;
 
 public class CKCharacterConfigView extends JPanel

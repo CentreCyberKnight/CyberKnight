@@ -2,32 +2,12 @@ package ckEditor.treegui;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.BoxLayout;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.SpinnerNumberModel;
-
-import ckCommonUtils.CKEntitySelectedListener;
-import ckCommonUtils.CKXMLAsset;
-import ckDatabase.CKGraphicsAssetFactory;
-import ckDatabase.CKGraphicsAssetFactoryXML;
-import ckDatabase.CKXMLFactory;
-import ckEditor.DataPickers.CKFilteredAssetPicker;
-import ckEditor.DataPickers.CKXMLFilteredAssetPicker;
-import ckGraphicsEngine.CKGraphicsPreviewGenerator;
-import ckGraphicsEngine.assets.CKGraphicsAsset;
-import ckSound.CKSound;
-import ckSound.CKSoundFactory;
 
 public class CKNumberPickerNode  extends CKGUINode
 {

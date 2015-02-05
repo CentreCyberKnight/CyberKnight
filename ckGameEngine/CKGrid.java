@@ -10,12 +10,6 @@ import java.io.BufferedOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 import java.util.Stack;
 
 import javax.swing.ImageIcon;
@@ -28,7 +22,6 @@ import ckCommonUtils.CKPath;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKXMLAsset;
 import ckEditor.CKGridLayerEditor;
-import ckGameEngine.CKGrid.Pair;
 import ckGameEngine.CKGridActorOverLay.GridActorOverLayPersistenceDelegate;
 import ckGraphicsEngine.BadInstanceIDError;
 import ckGraphicsEngine.CK2dGraphicsEngine;
@@ -323,13 +316,13 @@ public class CKGrid implements CKXMLAsset<CKGrid> {
 		Arrays.sort(data);
 		int minCost = data[0];
 		if (stepCost == minCost) {
-			return new Pair(minCost, "step forward, ");
+			return new Pair<Integer, String>(minCost, "step forward, ");
 		}
 		else if (jumpUpCost == minCost) {
-			return new Pair(minCost, "jump up, ");
+			return new Pair<Integer, String>(minCost, "jump up, ");
 		}
 		else {
-			return new Pair(minCost, "jump down, ");
+			return new Pair<Integer, String>(minCost, "jump down, ");
 		}
 	}
 	
@@ -365,7 +358,7 @@ public class CKGrid implements CKXMLAsset<CKGrid> {
 		int curr = this.convertDirToInt(currDir);
 		int next = this.convertDirToInt(nextDir);
 		if (Math.abs(curr - next) == 2) {
-			return new Pair(2, "turn right, turn right, ");
+			return new Pair<Integer, String>(2, "turn right, turn right, ");
 		}
 		else {
 			if (curr > next) {
@@ -373,19 +366,19 @@ public class CKGrid implements CKXMLAsset<CKGrid> {
 					return new Pair<Integer, String>(1, "turn left, ");
 				}
 				else {
-					return new Pair(1, "turn right, ");
+					return new Pair<Integer, String>(1, "turn right, ");
 				}
 			}
 			else if (curr < next) {
 				if (curr - next == -1){
-					return new Pair(1, "turn right, ");
+					return new Pair<Integer, String>(1, "turn right, ");
 				}
 				else {
-					return new Pair(1, "turn left, ");
+					return new Pair<Integer, String>(1, "turn left, ");
 				}
 			}
 			else {
-				return new Pair(0, "no turn, ");
+				return new Pair<Integer, String>(0, "no turn, ");
 			}
 		}
 	}
