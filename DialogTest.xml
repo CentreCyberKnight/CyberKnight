@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns/graphml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns/graphml">
+<key id="endnode" for="node">
+<default>F</default>
+</key>
+<key id="startnode" for="node">
+<default>F</default>
+</key>
+<key id="treedata" for="node"/>
+<key id="idNum" for="node">
+<default>0</default>
+</key>
+<key id="randomnode" for="node">
+<default>F</default>
+</key>
+<key id="speaker" for="node">
+<default>nobody</default>
+</key>
+<key id="reply" for="node">
+<default>huh</default>
+</key>
+<key id="source" for="edge">
+<default>null</default>
+</key>
+<key id="dialogOption" for="edge">
+<default>well...</default>
+</key>
+<key id="destination" for="edge">
+<default>null</default>
+</key>
+<graph edgedefault="directed">
+<node id="momReady to begin?">
+<data key="endnode">F</data>
+<data key="startnode">F</data>
+<data key="treedata"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.7.0_21" class="java.beans.XMLDecoder">
+ <object class="ckEditor.treegui.CKSingleParent">
+  <void method="add">
+   <object class="ckGameEngine.actions.CKSequentialAction">
+    <void method="add">
+     <object class="ckGameEngine.actions.CKSimpleGUIAction">
+      <void property="mess">
+       <string>Yo, it&apos;s time to learn to walk!</string>
+      </void>
+      <void property="pc">
+       <string>mom</string>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="ckGameEngine.actions.CKSimpleGUIAction">
+      <void property="mess">
+       <string>To walk, you have to use the move() function, giving it a direction and a distance. Like move(&apos;forward&apos;,1)</string>
+      </void>
+      <void property="pc">
+       <string>mom</string>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="ckGameEngine.actions.CKSimpleGUIAction">
+      <void property="mess">
+       <string>Functions are case sensitive, Move() will not work.</string>
+      </void>
+      <void property="pc">
+       <string>mom</string>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="ckGameEngine.actions.CKSimpleGUIAction"/>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>
+]]></data>
+<data key="idNum">1</data>
+<data key="randomnode">F</data>
+<data key="speaker">mom</data>
+<data key="reply">Ready to begin?</data>
+</node>
+<node id="momSkip tutorial?">
+<data key="endnode">F</data>
+<data key="startnode">T</data>
+<data key="treedata"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.7.0_21" class="java.beans.XMLDecoder">
+ <object class="ckEditor.treegui.CKSingleParent">
+  <void method="add">
+   <object class="ckGameEngine.actions.CKNullAction"/>
+  </void>
+ </object>
+</java>
+]]></data>
+<data key="idNum">2</data>
+<data key="randomnode">F</data>
+<data key="speaker">mom</data>
+<data key="reply">Skip tutorial?</data>
+</node>
+<node id="mom">
+<data key="endnode">T</data>
+<data key="startnode">F</data>
+<data key="treedata"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.7.0_21" class="java.beans.XMLDecoder">
+ <object class="ckEditor.treegui.CKSingleParent">
+  <void method="add">
+   <object class="ckGameEngine.actions.CKSimpleGUIAction"/>
+  </void>
+ </object>
+</java>
+]]></data>
+<data key="idNum">3</data>
+<data key="randomnode">F</data>
+<data key="speaker">mom</data>
+<data key="reply"></data>
+</node>
+<edge source="momSkip tutorial?" target="momReady to begin?">
+<data key="source">2</data>
+<data key="dialogOption">No</data>
+<data key="destination">1</data>
+</edge>
+<edge source="momSkip tutorial?" target="mom">
+<data key="source">2</data>
+<data key="dialogOption">Yes</data>
+<data key="destination">3</data>
+</edge>
+<edge source="momReady to begin?" target="momReady to begin?">
+<data key="source">1</data>
+<data key="dialogOption">No</data>
+<data key="destination">1</data>
+</edge>
+<edge source="momReady to begin?" target="mom">
+<data key="source">1</data>
+<data key="dialogOption">Yes</data>
+<data key="destination">3</data>
+</edge>
+</graph>
+</graphml>
