@@ -279,6 +279,7 @@ import ckEditor.CKXMLAssetPropertiesEditor;
 			//if(clip.isRunning())
 			//{
 		
+			try{
 				FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 				
 				float min = gainControl.getMinimum();
@@ -288,7 +289,11 @@ import ckEditor.CKXMLAssetPropertiesEditor;
 				double logval = Math.log10((9*val)+1);
 				double intensity = min + (logval*range);
 				gainControl.setValue((float) intensity); 
-			
+			}
+			catch (IllegalArgumentException e)
+			{
+				System.out.println(e);
+			}
 			//}
 			
 			//else
