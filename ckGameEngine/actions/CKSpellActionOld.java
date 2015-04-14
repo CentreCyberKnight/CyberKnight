@@ -1,10 +1,10 @@
 package ckGameEngine.actions;
 
+import testing.CKGridItemSet;
 import ckCommonUtils.CKPosition;
 import ckGameEngine.CKAbstractGridItem;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
-import ckGameEngine.CKGridItemSet;
 import ckGameEngine.CKSpellCast;
 import ckGameEngine.Quest;
 import ckGraphicsEngine.BadInstanceIDError;

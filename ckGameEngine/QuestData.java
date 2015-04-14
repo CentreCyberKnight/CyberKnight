@@ -46,7 +46,6 @@ import ckEditor.treegui.BookList;
 import ckEditor.treegui.CKGUINode;
 import ckEditor.treegui.CKTeamNode;
 import ckEditor.treegui.CKTreeGui;
-
 import ckGameEngine.CKGameObjectsFacade;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.CKGraphicsScene;
@@ -73,6 +72,8 @@ public class QuestData extends CKGUINode implements CKXMLAsset<QuestData>
 	
 	//CKGrid grid;
 	PriorityQueue<Event> eQueue;
+	
+	
 	
 	String name;
 	String sceneID;
@@ -130,6 +131,8 @@ public class QuestData extends CKGUINode implements CKXMLAsset<QuestData>
 		addIT(new CKTriggerList("World Triggers"));
 
 	}
+	
+	
 	
 	
 	Vector<CKPositionSetter> pSetters= new Vector<CKPositionSetter>();
@@ -392,8 +395,9 @@ public class QuestData extends CKGUINode implements CKXMLAsset<QuestData>
 	/* (non-Javadoc)
 	 * @see javax.swing.tree.DefaultMutableTreeNode#clone()
 	 */
+	
 	@Override
-	public Object clone()
+	public Object clone() //Why does it have it's own clone?
 	{
 		QuestData node= (QuestData) super.clone();
 		//node.setGrid(new CKGrid(10,10));
@@ -406,9 +410,12 @@ public class QuestData extends CKGUINode implements CKXMLAsset<QuestData>
 /*		node.actors = (ActorList) node.children.get(0);
 		node.books = (BookList) node.children.get(1);
 		node.triggerLoop = (TriggerList) node.children.get(2);
-	*/	
+	//*/
+	
 		return node;
 	}
+	
+	
 	
 	/* (non-Javadoc)
 	 * @see ckGraphics.treegui.CKGUINode#GUIEdit()
@@ -783,8 +790,6 @@ public class QuestData extends CKGUINode implements CKXMLAsset<QuestData>
 		return new CKGUINodePropertiesEditor<QuestData>(this);
 	}
 
-	
-	
 	
 	
 	

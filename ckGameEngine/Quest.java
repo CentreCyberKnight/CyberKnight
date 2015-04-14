@@ -1,4 +1,4 @@
-/*package ckGameEngine;
+/*package ckGameEngine; //WHAT IS THIS!!!!! IS THIS POTENTIALLY IMPORTANT CODE, OR OLD JUNK?!?!
 
 
 import java.awt.Component;
@@ -950,9 +950,10 @@ import ckGraphicsEngine.LoadAssetError;
 import ckTrigger.TriggerResult;
 
 
-public class Quest  //implements CKGameActionListenerInterface 
+public class Quest //implements CKGameActionListenerInterface 
 {
 	QuestData qData;
+	
 	
 	int tId;
 	int startTime;
@@ -992,6 +993,11 @@ public class Quest  //implements CKGameActionListenerInterface
 	/**
 	 * @return the name
 	 */
+	
+
+
+	
+	
 	public String getName()
 	{
 		return qData.getName();
@@ -1206,8 +1212,9 @@ public class Quest  //implements CKGameActionListenerInterface
 	/**
 	 * @param args
 	 * @throws LoadAssetError 
+	 * @throws CloneNotSupportedException 
 	 */
-	public static void main(String[] args) throws LoadAssetError 
+	public static void main(String[] args) throws LoadAssetError, CloneNotSupportedException 
 	{
 		
 
@@ -1215,6 +1222,12 @@ public class Quest  //implements CKGameActionListenerInterface
 
 		//Quest quest = new Quest(creation(2));
 		Quest quest = new Quest(CKQuestFactory.getInstance().getAsset("level1-proto"));
+		
+		
+
+		
+		
+		
 		frame.add(CKGameObjectsFacade.getEngine());
 		frame.pack();
 		frame.setVisible(true);
@@ -1227,7 +1240,7 @@ public class Quest  //implements CKGameActionListenerInterface
 	
 	
 	
-/* old...
+/* old... //THEN WHY IS IT HERE!!!!!! DO WE STILL NEED IT!!!!
 	
 	//override to create different levels
 	public static QuestData creation(int scene)

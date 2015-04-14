@@ -5,6 +5,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.tree.MutableTreeNode;
 
+import testing.CKGridItemSet;
 import ckCommonUtils.CKPosition;
 import ckEditor.CKActorEffectAddMenu;
 import ckEditor.CKTravelEffectAddMenu;
@@ -17,7 +18,6 @@ import ckEditor.treegui.CKTreeGui;
 import ckGameEngine.CKAbstractGridItem;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
-import ckGameEngine.CKGridItemSet;
 import ckGameEngine.CKSpellCast;
 import ckGameEngine.Quest;
 import ckGraphicsEngine.BadInstanceIDError;
