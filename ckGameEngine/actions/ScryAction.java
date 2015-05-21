@@ -34,19 +34,20 @@ public class ScryAction extends CKGameAction
 
 	public void switchHandler(CKSpellCast cast)
 	{
+		String action ="scry:"+cast.getKey().toLowerCase();
 		switch (cast.getKey().toLowerCase())
 		{
 		case "height":
-			cast.setResult(Integer.toString(cast.getItemTarget().getTotalHeight()));
+			cast.addResult(cast.getItemTarget(),action,Integer.toString(cast.getItemTarget().getTotalHeight()));
 			break;
 		case "move":
-			cast.setResult(Integer.toString(cast.getItemTarget().getMoveCost()));	
+			cast.addResult(cast.getItemTarget(),action,Integer.toString(cast.getItemTarget().getMoveCost()));	
 			break;
 		case "slide":
-			cast.setResult(Integer.toString(cast.getItemTarget().getSlideCost()));
+			cast.addResult(cast.getItemTarget(),action,Integer.toString(cast.getItemTarget().getSlideCost()));
 			break;
 		case "name":
-			cast.setResult(cast.getItemTarget().getName());
+			cast.addResult(cast.getItemTarget(),action,cast.getItemTarget().getName());
 			break;
 		case "trap":
 			 if(cast.getActorTarget().getAbilities().hasPage("trait", "trap"))

@@ -10,67 +10,70 @@ public class CKSpellCast implements Cloneable
 	private CKAbstractGridItem target;
 	private CKAbstractGridItem source;
 	private String chapter;
-	private String result;
+	private CKSpellResult result=new CKSpellResult();
 
 	private String page;
 	private int cp;
 	private String key;
-	
-	private CKPosition redirect=null;
-	
-	
 
+	private CKPosition redirect = null;
 
 	/**
-	 * SpellCast is a message sent into the system to request that the target perform an action.
+	 * SpellCast is a message sent into the system to request that the target
+	 * perform an action.
 	 * 
-	 * @param target  - who/what is the target of the spell
-	 * @param source - who cast the spell
-	 * @param chap    
+	 * @param target
+	 *            - who/what is the target of the spell
+	 * @param source
+	 *            - who cast the spell
+	 * @param chap
 	 * @param page
 	 * @param cp
 	 * @param key
 	 */
-	public CKSpellCast(CKAbstractGridItem target,CKAbstractGridItem source,
-										String chap,String page,int cp,String key)
+	public CKSpellCast(CKAbstractGridItem target, CKAbstractGridItem source,
+			String chap, String page, int cp, String key)
 	{
 		this.target = target;
 		this.source = source;
 		this.chapter = chap;
 		this.page = page;
-		this.cp  = cp;
+		this.cp = cp;
 		this.key = key;
 	}
-	
-	
-	public CKSpellCast lateBindCopy(CKAbstractGridItem lateTarget, CKAbstractGridItem lateSource)
+
+	public CKSpellCast lateBindCopy(CKAbstractGridItem lateTarget,
+			CKAbstractGridItem lateSource)
 	{
-		
-		CKSpellCast copy = new CKSpellCast(target,source,chapter,page,cp,key);
-		if(target==null)
+
+		CKSpellCast copy = new CKSpellCast(target, source, chapter, page, cp,
+				key);
+		if (target == null)
 		{
-			copy.target=lateTarget;
+			copy.target = lateTarget;
 		}
-		if(source==null)
+		if (source == null)
 		{
-			copy.source=lateSource;
+			copy.source = lateSource;
 		}
 		return copy;
-		
+
 	}
-	
-	
-	
-	
-	public String getResult() {
+
+	public CKSpellResult getResult()
+	{
 		return result;
 	}
 
-
-	public void setResult(String result) {
+	public void setResult(CKSpellResult result)
+	{
 		this.result = result;
 	}
-
+	
+	public void addResult(CKAbstractGridItem t,String action,String result)
+	{
+		this.result.addResult(t, action, result);		
+	}
 
 	/**
 	 * @return the redirect
@@ -79,8 +82,6 @@ public class CKSpellCast implements Cloneable
 	{
 		return redirect;
 	}
-
-
 
 	/**
 	 * @param redirect the redirect to set

@@ -1,14 +1,9 @@
 package ckDatabase;
 
-import javax.swing.JOptionPane;
-
 import ckGameEngine.ActorArtifactController;
 import ckGameEngine.ActorController;
 import ckGameEngine.ActorNullController;
 import ckGameEngine.ActorTurnController;
-import ckGameEngine.CKGridActor;
-import ckGameEngine.CKGridActorOverLay;
-import ckGameEngine.CKGridItem;
 import ckGameEngine.OngoingEffectController;
 
 /*

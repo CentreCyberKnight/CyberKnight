@@ -275,11 +275,12 @@ public class CKEditorPCController
 	{
 		if (attemptSpell(CH_SCRY, CP, modifier))
 		{
-			CKSpellCast cast = new CKSpellCast(getItemAt(target),
+			CKAbstractGridItem item = getItemAt(target);
+			CKSpellCast cast = new CKSpellCast(item,
 					getCharacter(), CH_SCRY, modifier, CP, key);
 			cast.castSpell();
-			System.out.println(cast.getResult());
-			return cast.getResult();
+//			System.out.println(cast.getResult());
+			return cast.getResult().getResult(item, "scry:"+key);
 
 		}
 		return "";
@@ -290,11 +291,12 @@ public class CKEditorPCController
 	{
 		if (attemptSpell(CH_SCRY, CP, modifier))
 		{
-			CKSpellCast cast = new CKSpellCast(getItemAt(target),
+			CKAbstractGridItem item = getItemAt(target);
+			CKSpellCast cast = new CKSpellCast(item,
 					getCharacter(), CH_SCRY, modifier, CP, key);
 			cast.castSpell();
 			System.out.println(cast.getResult());
-			return Integer.parseInt(cast.getResult());
+			return Integer.parseInt(cast.getResult().getResult(item,"scry:"+key));
 
 		}
 		return 10000;
