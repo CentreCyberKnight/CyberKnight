@@ -2,13 +2,13 @@ package ckPythonInterpreter;
 
 import java.util.ArrayList;
 
-import testing.CKGridItemSet;
 import ckCommonUtils.CKAreaPositions;
 import ckCommonUtils.CKPosition;
 import ckGameEngine.CKAbstractGridItem;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKBook;
 import ckGameEngine.CKGridActor;
+import ckGameEngine.CKGridItemSet;
 import ckGameEngine.CKSpellCast;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGraphicsEngine.CKSelection;
@@ -270,17 +270,10 @@ public class CKEditorPCController
 		return wind(modifier, CP, target, "");
 	}
 
-	
-	
-	//What's the difference between all these Scry's???
-	
-	//Also, what's a modifier, and why is it passed to all these different functions?
-	
-	
 	public static String scryString(String modifier, int CP, CKPosition target,
 			String key)
 	{
-		if (attemptSpell(CH_SCRY, CP, modifier))//SImon: so, if you can cast the spell
+		if (attemptSpell(CH_SCRY, CP, modifier))
 		{
 			CKSpellCast cast = new CKSpellCast(getItemAt(target),
 					getCharacter(), CH_SCRY, modifier, CP, key);
