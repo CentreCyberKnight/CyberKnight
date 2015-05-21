@@ -310,6 +310,10 @@ public class CKGridActorOverLay extends CKGridActor
 	    }
 	}
 	
+	@Override
+	public CKAbstractGridItem makeCopy()
+	{
+		return makeCopy(new CKGridActorOverLay());		
+	}
 	
-
 }

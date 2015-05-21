@@ -1,10 +1,14 @@
 package ckGameEngine;
 
+
+///MAKE COPY IS CURRENTLY MAKING 
+
 import static ckCommonUtils.CKPropertyStrings.CH_EQUIP_SLOTS;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
+
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKPropertyStrings;
 import ckDatabase.CKActorControllerFactory;
@@ -20,6 +24,7 @@ import ckGraphicsEngine.assets.CKNullAsset;
 import ckGraphicsEngine.assets.CKSpriteAsset;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
 import ckPythonInterpreter.CKPlayerObjectsFacade;
+import ckTrigger.CKSharedTriggerList;
 
 public class CKGridActor extends CKGridItem
 {
@@ -616,9 +621,30 @@ public class CKGridActor extends CKGridItem
 	{
 		listeners.remove(l);
 	}
-
-
-
+	@Override 
+	protected CKAbstractGridItem makeCopy(CKAbstractGridItem item)
+	{
+		super.makeCopy(item);
+		CKGridActor I = (CKGridActor) item;
+		//I.setInstanceID(-1);
+	//	I.setControllerID(controllerID);
+		I.setCoreAbilities((CKBook) coreAbilities.clone());
+		I.setCPConsumedLastRound(cpConsumedLastRound);
+		I.setCyberPoints(cyberPoints);
+		I.setDirection(direction);
+		I.setQuestAbilities((CKBook)questAbilities.clone());
+		//I.setScriptController(null); Simon: Set Script Controller requires a string, but the TurnController turns it into a TurnController, which the method can't take. What should I do?
+		I.setTeam(team);
+		I.setTurnsTaken(turnsTaken);
+		
+		return I;
+		
+	}
+	@Override
+	public CKAbstractGridItem makeCopy()
+	{
+		return makeCopy(new CKGridActor());		
+	}
 	
 	
 	

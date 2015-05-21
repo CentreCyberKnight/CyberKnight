@@ -1,5 +1,6 @@
 package ckGameEngine;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 import ckCommonUtils.CKAreaPositions;
@@ -23,6 +24,16 @@ public class CKGridItemSet extends CKGridItem implements CKGameActionListenerInt
 	{
 		this.items=items;
 	}
+	
+	
+	
+	/*//Simon added this to simplfy making a new quest
+	public Object setQuest(Quest quest){
+	
+	qData = quest;
+	return null;
+	}*/
+	
 	public CKGridItemSet(CKAreaPositions pos,CKGrid grid,Quest quest)
 	{
 		this.setName("Area Affect");
@@ -88,8 +99,31 @@ public class CKGridItemSet extends CKGridItem implements CKGameActionListenerInt
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	protected CKAbstractGridItem makeCopy(CKAbstractGridItem item)
+	{
+		super.makeCopy(item);
+		
+		CKGridItemSet I = (CKGridItemSet) item;
+		Vector<CKAbstractGridItem> itemsCopy = new Vector<CKAbstractGridItem>();
 
-	
-	
+	    Iterator it = items.iterator();
+	    while(it.hasNext()){
+	    	itemsCopy.add(((CKGridItemSet) it.next()).makeCopy());
+	    }
+	    	
+		I.setItems(items);
+		//I.setQuest(qData);
+		
+		
+		
+		return I;
+		
+	}
+	@Override
+	public CKAbstractGridItem makeCopy()
+	{
+		return makeCopy(new CKGridActor());		
+	}
 
 }

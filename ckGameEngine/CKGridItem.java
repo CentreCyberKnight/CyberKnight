@@ -3,6 +3,7 @@ package ckGameEngine;
 import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
 import java.io.OutputStream;
+
 import javax.swing.JComponent;
 
 import ckCommonUtils.CKXMLAsset;
@@ -14,9 +15,12 @@ import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckTrigger.CKSharedTriggerList;
 import ckTrigger.CKTriggerList;
 
-public class CKGridItem extends CKAbstractGridItem implements CKXMLAsset<CKGridItem>
+public class CKGridItem extends CKAbstractGridItem implements CKXMLAsset<CKGridItem>, Cloneable //NOTE, CLONEABLE WAS IMPLEMENTED SO THE GRID ITEM COULD BE IMPLEMENTED~SIMON
 {
 
+	
+	
+	
 	int itemHeight=0;
 	
 	int itemWeight=0;
@@ -65,7 +69,7 @@ public class CKGridItem extends CKAbstractGridItem implements CKXMLAsset<CKGridI
 	}
 
 	
-
+	
 	/**
 	 * @return the itemHeight
 	 */
@@ -109,6 +113,12 @@ public class CKGridItem extends CKAbstractGridItem implements CKXMLAsset<CKGridI
 	/**
 	 * @param itemStrength the itemStrength to set
 	 */
+	
+	
+	
+	
+
+	
 	public void setItemStrength(int itemStrength)
 	{
 		this.itemStrength = itemStrength;
@@ -281,7 +291,7 @@ public class CKGridItem extends CKAbstractGridItem implements CKXMLAsset<CKGridI
 		I.setAID("");//should not have one for copy.
 		I.setName("Copy of"+name);
 		I.setDescription(description);
-		I.setSharedTriggers(sharedTriggers);
+		I.setSharedTriggers((CKSharedTriggerList) sharedTriggers.clone());
 		
 		return I;
 		
@@ -351,7 +361,35 @@ public class CKGridItem extends CKAbstractGridItem implements CKXMLAsset<CKGridI
 	}
 
 	
-	
+	public static void main(String[] args) throws CloneNotSupportedException{ //Why does it need a CloneNotSupported Exception?
+		
+		System.out.println("Hello World!");
+		
+		CKGridItem GridItem = new CKGridItem();
+		GridItem.setName("Bob");
+		CKGridItem GridClone = (CKGridItem) GridItem.clone();
+		System.out.println("Before clones have been distinguished");
+		System.out.println(GridItem.getName());
+		System.out.println(GridClone.getName());
+		System.out.println("\n");
+		GridItem.setName("Dole");
+		GridClone.setName("Generic");
+		System.out.println("After clones have been distinguished");
+		System.out.println(GridItem.getName());
+		System.out.println(GridClone.getName());
+		System.out.println("\n");	
+		if (GridItem.getSharedTriggers() != GridClone.getSharedTriggers()){
+			System.out.println("DeepClone");
+			System.out.println(GridItem);
+			System.out.println(GridClone);
+		
+		}
+		else{
+			System.out.println("shallowClone");
+			System.out.println(GridItem);
+			System.out.println(GridClone.getSharedTriggers());
+		}
+	}
 
 	
 	
