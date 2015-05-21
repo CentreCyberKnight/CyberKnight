@@ -38,9 +38,17 @@ public class CKTrigger extends CKTriggerNode implements CKXMLAsset<CKTrigger>
 	private TriggerResult result;
 	
 	public CKTrigger(Satisfies sat, CKGameAction action,TriggerResult result)
+	{
+		this(sat,action,new CKNullAction(),result);
+	}
+	
+	
+	public CKTrigger(Satisfies sat, CKGameAction action,CKGameAction failedAction,TriggerResult result)
+	
 	{//have to be careful with how we initialize.
 		add(sat);
 		add(action);
+		add(failedAction);
 		this.result = result;
 		setChildOrderLocked(true);
 	}
@@ -53,7 +61,7 @@ public class CKTrigger extends CKTriggerNode implements CKXMLAsset<CKTrigger>
 	public CKTrigger()
 	{
 		
-		this(new FalseSatisfies(),new CKNullAction(),TriggerResult.SATISFIED);
+		this(new FalseSatisfies(),new CKNullAction(),new CKNullAction(),TriggerResult.SATISFIED);
 	}
 	
 	
@@ -87,7 +95,7 @@ public class CKTrigger extends CKTriggerNode implements CKXMLAsset<CKTrigger>
 	 */
 	public void setSatisfy(Satisfies satisfy)
 	{
-		add(satisfy);
+		insert(satisfy,0);
 	}
 
 	/**
@@ -98,12 +106,27 @@ public class CKTrigger extends CKTriggerNode implements CKXMLAsset<CKTrigger>
 		return ( (CKGameAction) this.getChildAt(1));
 	}
 
+	
+	
+	
+	
+	@Override
+	public CKGameAction getFailedAction() 
+	{
+		return ( (CKGameAction) this.getChildAt(2));
+	}
+
 	/**
 	 * @param action the action to set
 	 */
 	public void setAction(CKGameAction action)
 	{
-		add(action);
+		insert(action,1);
+	}
+	
+	public void setFailedAction(CKGameAction failedaction)
+	{
+		insert(failedaction,2);
 	}
 
 	/**
@@ -135,15 +158,15 @@ public class CKTrigger extends CKTriggerNode implements CKXMLAsset<CKTrigger>
 		//will ignore childIndex
 		if(newChild instanceof Satisfies)
 		{
-			if( getChildCount() ==2)
+			if( getChildCount() ==3)
 			{	remove(0); }
 			super.insert(newChild,0);
 		}
 		else if(newChild instanceof CKGameAction )
 		{
-			if(getChildCount() ==2)
-				{remove(1);}
-			super.insert(newChild,1);
+			if(getChildCount() ==3)
+				{remove(childIndex);}
+			super.insert(newChild,childIndex);
 		}
 		
 	}

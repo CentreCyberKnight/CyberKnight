@@ -9,9 +9,11 @@ import javax.swing.JSeparator;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 
+
 import ckEditor.treegui.CKTreeGui;
 import ckGameEngine.QuestData;
 import ckTrigger.CKSharedTriggerList;
+import ckTrigger.CKTriggerList;
 
 public class CKGameActionAddMenu
 {
@@ -46,11 +48,18 @@ public class CKGameActionAddMenu
 			JMenuItem addNULL= new JMenuItem("Add NULL Action");
 			addNULL.addActionListener(new TreeAddActionListener("NULL_ACTION",tree,pos,replace));
 			addActionType.add(addNULL);
+
+
+			JMenuItem addTL = new JMenuItem("Add TriggerList");
+			addTL.addActionListener(new TreeAddActionListener("TRIGGERLIST",tree,pos,replace));
+			addActions.add(addTL);
+
 			
 			JMenuItem addSTL = new JMenuItem("Add Shared TriggerList");
 			addSTL.addActionListener(new TreeAddActionListener("SHAREDTRIGGER",tree,pos,replace));
 			addActions.add(addSTL);
-		
+
+			
 			addActions.add(new JSeparator());
 			
 			/*
@@ -225,6 +234,10 @@ class TreeAddActionListener implements ActionListener
 			else if(name.compareTo("SEQUENTIAL")==0)
 			{
 				action = new CKSequentialAction();
+			}
+			else if(name.compareTo("TRIGGERLIST")==0)
+			{
+				action = new CKTriggerList();
 			}
 			else if(name.compareTo("SHAREDTRIGGER")==0)
 			{

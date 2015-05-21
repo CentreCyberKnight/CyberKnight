@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTree;
+
 import ckSatisfies.*;
 import ckCommonUtils.CKEntitySelectedListener;
 import ckDatabase.CKTriggerFactory;
@@ -105,6 +106,11 @@ public class CKSharedTrigger extends CKTriggerNode implements ActionListener
 	public CKGameAction getAction()
 	{
 		return trigger.getAction();
+	}
+
+	@Override
+	public CKGameAction getFailedAction() {
+		return trigger.getFailedAction();
 	}
 
 	/**
