@@ -8,6 +8,12 @@ public class CKPropertyStrings
 	public final static String MAX_CP = "MAX CP";
 	public final static String RECHARGE_CP = "RECHARGE CP";
 	
+	
+	//ALL
+	public static final String CH_DEFENSE = "defense";
+	public static final String CH_ATTACK = "attack";
+	
+	
 	//Move
 	public static final String CH_MOVE = "MOVE";
 	public static final String P_FORWARD = "forward";

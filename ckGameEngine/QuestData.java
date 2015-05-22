@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.PriorityQueue;
+import java.util.Random;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
@@ -46,7 +47,6 @@ import ckEditor.treegui.BookList;
 import ckEditor.treegui.CKGUINode;
 import ckEditor.treegui.CKTeamNode;
 import ckEditor.treegui.CKTreeGui;
-
 import ckGameEngine.CKGameObjectsFacade;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.CKGraphicsScene;
@@ -781,6 +781,18 @@ public class QuestData extends CKGUINode implements CKXMLAsset<QuestData>
 	public CKXMLAssetPropertiesEditor<QuestData> getXMLPropertiesEditor()
 	{
 		return new CKGUINodePropertiesEditor<QuestData>(this);
+	}
+
+	
+	private Random randGenerator = null;
+	
+	public double getRandom()
+	{
+		if(randGenerator==null)
+		{
+			randGenerator = new Random();
+		}
+		return randGenerator.nextDouble();
 	}
 
 	

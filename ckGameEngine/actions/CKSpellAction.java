@@ -7,6 +7,7 @@ import javax.swing.tree.MutableTreeNode;
 
 import ckCommonUtils.CKPosition;
 import ckEditor.CKActorEffectAddMenu;
+import ckEditor.CKSatistfiesAddMenu;
 import ckEditor.CKTravelEffectAddMenu;
 import ckEditor.treegui.CKActorEffect;
 import ckEditor.treegui.CKGUINode;
@@ -26,6 +27,8 @@ import ckGraphicsEngine.CKGraphicsEngine.RelationalLinkType;
 import ckGraphicsEngine.CircularDependanceError;
 import ckGraphicsEngine.LoadAssetError;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
+import ckSatisfies.ContestedActionSatisfies;
+import ckSatisfies.Satisfies;
 
 public class CKSpellAction extends CKGameAction implements
 		CKGameActionListenerInterface
@@ -34,12 +37,17 @@ public class CKSpellAction extends CKGameAction implements
 	private static final int CASTER_EFFECT = 0;
 	private static final int FIRST_TRAVEL_EFFECT = 1;
 	private static final int SECOND_TRAVEL_EFFECT = 2;
-	private static final int SPELL_SUCCEEDS_EFFECT = 3;
-	private static final int SPELL_FAILS_EFFECT = 4;
-	private static final int SPELL_EFFECT = 6;
+	
+	private static final int SPELL_SATISFIES = 3;
+	private static final int SPELL_SUCCEEDS_EFFECT = 4;
+	private static final int SPELL_FAILS_EFFECT = 5;
+	
+	//private static final int SPELL_EFFECT_LABEL = 6;
+	private static final int SPELL_EFFECT = 7;
 
-	private static final int ALTER_CAST = 8;
-	private static final int SPELL_REDIRECT_EFFECT = 9;
+	//private static final int ALTER_CAST_LABEL = 8;
+	private static final int ALTER_CAST = 9;
+	private static final int SPELL_REDIRECT_EFFECT = 10;
 	// private static final int SPELL_FAILS_EFFECT=17;
 
 	/**
@@ -57,6 +65,8 @@ public class CKSpellAction extends CKGameAction implements
 		add(new CKActorEffect("Caster Effect"));
 		add(new CKTravelEffect("First Travel Effect"));
 		add(new CKTravelEffect("Second Travel Effect"));
+		
+		add(new ContestedActionSatisfies());
 		add(new CKActorEffect("Successful Effect Graphics"));
 		add(new CKActorEffect("unSuccessful Effect Graphics"));
 
@@ -85,6 +95,9 @@ public class CKSpellAction extends CKGameAction implements
 				FIRST_TRAVEL_EFFECT, true));
 		addEffect.add(CKTravelEffectAddMenu.getMenu(tree, "Second Travel Effect",
 				SECOND_TRAVEL_EFFECT, true));
+		addEffect.add(CKSatistfiesAddMenu.getMenu(tree, "Spell Satisfied",
+				SPELL_SATISFIES, true));
+		
 		addEffect.add(CKActorEffectAddMenu.getMenu(tree, "Successful Effect",
 				SPELL_SUCCEEDS_EFFECT, true));
 		addEffect.add(CKActorEffectAddMenu.getMenu(tree, "Unsuccessful Effect",
@@ -246,14 +259,22 @@ public class CKSpellAction extends CKGameAction implements
 		return getRedirectEffect().doActorEffect(cast, false,startTime);
 
 	}
-
-	public final int EFFECT_FAILS = 0;
-	public final int EFFECT_SUCCEEDS = 1;
-
-	protected int hitsTarget(CKSpellCast cast)
+	
+	public Satisfies getAffectsTarget()
 	{
+		return (Satisfies) getChildAt(SPELL_SATISFIES);
+	}
 
-		return EFFECT_SUCCEEDS;
+	public synchronized void setAffectsTarget(Satisfies effect)
+	{
+		remove(SPELL_SATISFIES);
+		super.insert(effect, SPELL_SATISFIES);
+	}
+	
+	
+	protected boolean hitsTarget(CKSpellCast cast)
+	{
+		return getAffectsTarget().isSatisfied(cast);
 	}
 
 	protected void doEffectGraphics(int success, CKSpellCast cast,
@@ -345,7 +366,7 @@ public class CKSpellAction extends CKGameAction implements
 			}
 		} else
 		{
-			if (hitsTarget(cast) == EFFECT_SUCCEEDS)
+			if (hitsTarget(cast))
 			{
 				doSpellSuccedsEffect(cast, presentTime);
 				doEffect(cast);
