@@ -157,6 +157,12 @@ public class CKGameActionAddMenu
 			alterCP.addActionListener(new TreeAddActionListener("Alter Cyber Points",tree,pos,replace));
 			addSpellFX.add(alterCP);
 			
+			JMenuItem contestedAlterCP= new JMenuItem("Contested Alter Cyber Points");
+			contestedAlterCP.addActionListener(new TreeAddActionListener("Contested Alter Cyber Points",tree,pos,replace));
+			addSpellFX.add(contestedAlterCP);
+			
+			
+			
 			JMenuItem alterSpellCP = new JMenuItem("Alter Spell Points");
 			alterSpellCP.addActionListener(new TreeAddActionListener("Alter Spell Points",tree,pos,replace));
 			addSpellFX.add(alterSpellCP);
@@ -302,6 +308,10 @@ class TreeAddActionListener implements ActionListener
 			else if(name.compareTo("Alter Cyber Points")==0)
 			{
 				action = new CKAlterCPCmd();
+			}
+			else if(name.compareTo("Contested Alter Cyber Points")==0)
+			{
+				action = new CKContestedAlterCP();
 			}
 			else if(name.compareTo("Alter Spell Points")==0)
 			{

@@ -661,7 +661,15 @@ public class CKGUINode extends DefaultMutableTreeNode implements CKGUIEditable
 		model[1] = new SpinnerNumberModel(0,-100,100,1);
 		return model;		
 	}
-	
+
+	protected SpinnerNumberModel[] generateDoubleNumberModels()
+	{
+		SpinnerNumberModel[] model = new SpinnerNumberModel[2];
+		model[0] = new SpinnerNumberModel(0,-100,100,.1);
+		model[1] = new SpinnerNumberModel(0,-100,100,.1);
+		return model;		
+	}
+
 	protected void initializePositionModels(SpinnerNumberModel[] spin,CKPosition pos)
 	{
 		spin[0].setValue(pos.getX());

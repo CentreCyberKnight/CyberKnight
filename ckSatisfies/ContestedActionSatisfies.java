@@ -49,7 +49,7 @@ public class ContestedActionSatisfies extends Satisfies
 
 	public ContestedActionSatisfies()
 	{
-		this( CH_DEFENSE,  CH_ATTACK, 70);
+		this( CH_EVADE,  CH_ACCURACY, 70);
 	}
 
 	/**
@@ -305,7 +305,7 @@ public class ContestedActionSatisfies extends Satisfies
 		JFrame frame = new JFrame("CyberKnight SAT Editor");
 		CKGuiRoot root = new CKGuiRoot();
 
-		root.add(new ContestedActionSatisfies("Fire", "bolt", 13));
+		root.add(new ContestedActionSatisfies());//"Fire", "bolt", 13));
 		frame.add(new CKTreeGui(root));
 		// frame.add(new CKGameActionBuilder());
 		frame.pack();

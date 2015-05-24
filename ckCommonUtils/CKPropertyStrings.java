@@ -10,9 +10,14 @@ public class CKPropertyStrings
 	
 	
 	//ALL
-	public static final String CH_DEFENSE = "defense";
-	public static final String CH_ATTACK = "attack";
+	public static final String CH_DEFENSE = "DEFENSE";
+	public static final String CH_ATTACK_BONUS = "ATTACK_BONUS";
+	public static final String CH_EVADE	= "EVADE";
+	public static final String CH_ACCURACY = "ACCURACY";
 	
+	//UNIQUE...
+	public static final String CH_DEFENSE_EFFECTIVENESS = "DEFENSE_EFFECTIVENESS";
+	public static final String MAX_DAMAGE = "MAX_DAMAGE";
 	
 	//Move
 	public static final String CH_MOVE = "MOVE";

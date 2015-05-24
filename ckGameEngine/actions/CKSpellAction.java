@@ -71,7 +71,7 @@ public class CKSpellAction extends CKGameAction implements
 		add(new CKActorEffect("unSuccessful Effect Graphics"));
 
 		add(new CKGUINodeLabel("Spell Effect"));
-		add(new CKAlterCPCmd());
+		add(new CKContestedAlterCP());
 		add(new CKGUINodeLabel("Alter Cast"));
 		add(new CKAlterSpellCPCmd());
 		add(new CKActorEffect("Spell Redirect Effects"));
