@@ -359,6 +359,8 @@ public class CKArtifactQuestRunner implements DocumentListener
 		chap.addPage(new CKPage(P_LEFT));
 		chap.addPage(new CKPage(P_RIGHT));
 		teamplay.addChapter(chap);
+		teamplay.addChapter(new CKChapter(MAX_CP,10));
+		teamplay.addChapter(new CKChapter(SPEED,5));
 		
 		CKTeam team = new CKTeam("heroes");
 		team.addToAbilties(teamplay);

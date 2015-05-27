@@ -347,6 +347,11 @@ public class CKWorkshopTest
 		
 		CKChapter chap5 = new CKChapter(CP_PER_ROUND,5);
 		teamplay.add(chap5);
+		
+		teamplay.addChapter(new CKChapter(SPEED,1));
+		teamplay.addChapter(new CKChapter(RECHARGE_CP,10));
+		teamplay.addChapter(new CKChapter(MAX_CP,100));
+		
 
 		
 		

@@ -33,8 +33,13 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 	//int mouseX=0;
 	//int mouseY=0;
 	
-	public static String rearHightlightID = "yellowRH";
-	public static String frontHightlightID = "yellowFH";
+	public static String rearHightlightID =  "asset4324539093293563502";
+	public static String frontHightlightID = "asset1611874609805567554";
+	
+	public static String rearPossibleID = "yellowRH";
+	public static String frontPossibleID = "yellowFH";
+	
+	
 	private static CKGraphicsAssetFactory afactory;
 	//private CKAssetInstance rear;
 	//private CKAssetInstance front;

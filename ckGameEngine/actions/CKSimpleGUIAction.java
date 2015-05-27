@@ -145,7 +145,7 @@ implements CKEntitySelectedListener<CKDialogChoice>, ItemListener
 		if(usePicture)
 		{
 			CKGraphicsAsset portrait;
-			if(useSpellTarget) //use target of spell
+			if(useSpellTarget && cast !=null) //use target of spell
 			{
 				portrait = factory.getPortrait(cast.getActorTarget().getAssetID());
 			}
