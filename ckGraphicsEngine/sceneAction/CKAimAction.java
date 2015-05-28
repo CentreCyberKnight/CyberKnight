@@ -5,6 +5,8 @@ import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.Vector;
 
+import org.python.modules.math;
+
 import ckCommonUtils.CKAreaPositions;
 import ckCommonUtils.CKPosition;
 import ckDatabase.CKGraphicsAssetFactory;
@@ -46,6 +48,9 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 	
 	private Vector<CKAssetInstance> rearTiles=new Vector<CKAssetInstance>();
 	private Vector<CKAssetInstance> frontTiles=new Vector<CKAssetInstance>();
+	
+	private Vector<CKAssetInstance> rearPossibleTiles=new Vector<CKAssetInstance>();
+	private Vector<CKAssetInstance> frontPossibleTiles=new Vector<CKAssetInstance>();
 	boolean visible = false;
 	CKGraphicsSceneInterface storedScene=null;
 	boolean closing = false;
@@ -58,9 +63,11 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 		super(0,1000 );
 		
 		init(originLocation,minDistance,maxDistance,callback,type);
+		generatePossibles();
 		
 		rearTiles.add(getRearHightLightInstance(origin));
 		frontTiles.add(getFrontHightLightInstance(origin));
+		
 	
 	}
 
@@ -73,6 +80,7 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 		super(0,1000 );
 		
 		init(originLocation,minDistance,maxDistance,callback,SelectAreaType.NONE);
+		generatePossibles();
 		this.offsets=offsets;
 		
 		for(CKPosition pos:offsets)
@@ -81,6 +89,7 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 			rearTiles.add(getRearHightLightInstance(newpos));
 			frontTiles.add(getFrontHightLightInstance(newpos));
 		}
+		
 	}
 
 
@@ -103,6 +112,24 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 		
 		if(afactory ==null)  { afactory = CKGraphicsAssetFactoryXML.getInstance(); }
 		
+	}
+	
+	private void generatePossibles()
+	{
+		int m = (int)Math.ceil(max);
+		for(int x = -m;x<=m;x++)
+			for (int y = -m;y<=m;y++)
+			{
+				double distance =Math.sqrt(x*x + y*y);
+				if(distance>=min && distance <=max)
+				{
+					CKPosition offset = new CKPosition(x,y);
+					CKPosition newpos= offset.add(origin);
+					rearPossibleTiles.add(getAssetInstance(newpos,rearPossibleID));
+					frontPossibleTiles.add(getAssetInstance(newpos,frontPossibleID));
+				}
+			}
+		
 		
 	}
 	
@@ -116,13 +143,20 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 		//System.out.println("entering the Action");
 		if(frame == getStartTime())
 		{
+			rearPossibleTiles.stream()
+			.forEach(asset->scene.addInstanceToLayer(asset,CKGraphicsLayer.REARHIGHLIGHT_LAYER));
+			frontPossibleTiles.stream()
+			.forEach(asset->scene.addInstanceToLayer(asset,CKGraphicsLayer.FRONTHIGHLIGHT_LAYER));
+			
+			
+			
 			for(CKAssetInstance rear:rearTiles)
 			{
 				scene.addInstanceToLayer(rear, CKGraphicsLayer.REARHIGHLIGHT_LAYER);
 			}
 			for(CKAssetInstance front:frontTiles)
 			{
-				scene.addInstanceToLayer(front, CKGraphicsLayer.FRONTHIGHTLIGHT_LAYER);
+				scene.addInstanceToLayer(front, CKGraphicsLayer.FRONTHIGHLIGHT_LAYER);
 			}
 			storedScene = scene;
 		}
@@ -136,15 +170,33 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 		this.endTime++; //keep it from closing
 		CKCoordinateTranslator trans = scene.getTrans();
 		Point p = trans.convertScreenToMap(mouseP);
-		if(presentPoint.x!=p.x || presentPoint.y!=p.y)
+		if(presentPoint.x!=p.x || presentPoint.y!=p.y||visible==false)
 		{
-			//set visibility
-			double distance =Math.sqrt((Math.pow(origin.getX()-p.x,2) + Math.pow(origin.getY()-p.y,2))); 
+			
+			for(CKAssetInstance asset:rearPossibleTiles)
+			{
+				CKPosition pos = asset.getPosition();
+				if(pos.getX()==p.x && pos.getY()==p.y)
+				{
+					setVisible(true);
+					visible=true;
+					moveFromTo(presentPoint,p);
+					presentPoint = p;
+					return;
+				}
+			}
+			setVisible(false);  
+			visible=false;
+		}
+/*			
+			//set visibility using math....
+			double distance =Math.sqrt((Math.pow(origin.getX()-p.x,2) + Math.pow(origin.getY()-p.y,2)));
+		//	System.out.println("draw?"+p+" "+distance+" "+p+" "+min+" "+max);
 			if(distance<min || distance > max)   
 				{ 
-				//System.out.println("don't draw"+p+" "+origin);
-					setVisible(false);  
-					visible=false;
+			//		System.out.println("don't draw"+p+" "+distance);
+				setVisible(false);  
+				visible=false;
 				}
 			else	                                                            
 			{  //need to draw stuff
@@ -155,6 +207,7 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 				presentPoint = p;		
 			}
 		}
+		*/
 	}
 	
 	protected void moveFromTo(Point from,Point to)

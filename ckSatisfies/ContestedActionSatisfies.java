@@ -21,6 +21,7 @@ import ckEditor.treegui.CKTreeGui;
 import ckGameEngine.CKBook;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellCast;
+import ckGameEngine.QuestData;
 import static ckCommonUtils.CKPropertyStrings.*;
 
 public class ContestedActionSatisfies extends Satisfies
@@ -128,7 +129,8 @@ public class ContestedActionSatisfies extends Satisfies
 		
 		double base2 = base + tval - sval;
 		
-		return getQuest().getRandom() <base2;
+		QuestData data = getQuest();
+		return data.getRandom() <base2;
 	
 	}
 

@@ -42,7 +42,7 @@ abstract public class CKGraphicsLayer
 	public static int REARHIGHLIGHT_LAYER = 4000;
 	public static int GROUNDCOVER_LAYER = 5000;
 	public static int SPRITE_LAYER = 6000;
-	public static int FRONTHIGHTLIGHT_LAYER = 7000;
+	public static int FRONTHIGHLIGHT_LAYER = 7000;
 	
 	public static int ENVIRNOMENT_BOUNDRY = 8000;
 	

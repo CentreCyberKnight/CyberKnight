@@ -83,7 +83,7 @@ public class CKActorEffect extends CKGUINode
 			{
 				int fgEffect = engine.createInstance(0, aid,
 					position,startTime, 
-					CKGraphicsLayer.FRONTHIGHTLIGHT_LAYER);
+					CKGraphicsLayer.FRONTHIGHLIGHT_LAYER);
 				engine.destroy(0, fgEffect, endTime);
 			}
 			//do the sounds

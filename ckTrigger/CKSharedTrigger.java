@@ -65,6 +65,8 @@ public class CKSharedTrigger extends CKTriggerNode implements ActionListener
 	{
 		this.triggerName = trigName;
 		trigger = CKTriggerFactory.getInstance().getAsset(trigName);
+		//FIXME this is a hot fix--I have no idea what will happen in larger systems....
+		trigger.setParent(this);//will swap children around
 	}
 
 

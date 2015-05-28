@@ -530,7 +530,7 @@ public class CKGraphicsScene implements CKGraphicsSceneInterface, ImageObserver
 	public void clearHighlights()
 	{
 		this.getLayerByDepth(CKGraphicsLayer.REARHIGHLIGHT_LAYER).removeAllInstances();
-		this.getLayerByDepth(CKGraphicsLayer.FRONTHIGHTLIGHT_LAYER).removeAllInstances();
+		this.getLayerByDepth(CKGraphicsLayer.FRONTHIGHLIGHT_LAYER).removeAllInstances();
 		
 	}
 

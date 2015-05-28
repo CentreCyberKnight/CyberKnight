@@ -25,7 +25,7 @@ public class CKTileHighlighter extends CKSceneMouseListener
 
 	public CKTileHighlighter(CKGraphicsSceneInterface s,CKAssetInstance front,CKAssetInstance back)
 	{
-		this(s,front,back,CKGraphicsLayer.FRONTHIGHTLIGHT_LAYER,CKGraphicsLayer.REARHIGHLIGHT_LAYER);
+		this(s,front,back,CKGraphicsLayer.FRONTHIGHLIGHT_LAYER,CKGraphicsLayer.REARHIGHLIGHT_LAYER);
 	}
 	
 	public CKTileHighlighter(CKGraphicsSceneInterface s,CKAssetInstance front,CKAssetInstance back,

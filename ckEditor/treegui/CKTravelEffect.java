@@ -75,7 +75,7 @@ public class CKTravelEffect extends CKGUINode
 			{
 				int travel1Effect = engine.createInstance(0, aid,
 						startingPos,startTime, 
-					CKGraphicsLayer.FRONTHIGHTLIGHT_LAYER);
+					CKGraphicsLayer.FRONTHIGHLIGHT_LAYER);
 			//do visuals
 			travelTime = engine.move(0,travel1Effect, startTime,//quest.getStartTime()+45,
 					startingPos, endingPos,getSpeed());

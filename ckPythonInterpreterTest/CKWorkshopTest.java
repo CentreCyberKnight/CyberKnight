@@ -351,6 +351,14 @@ public class CKWorkshopTest
 		teamplay.addChapter(new CKChapter(SPEED,1));
 		teamplay.addChapter(new CKChapter(RECHARGE_CP,10));
 		teamplay.addChapter(new CKChapter(MAX_CP,100));
+		teamplay.addChapter(new CKChapter(CH_EVADE,0));
+		teamplay.addChapter(new CKChapter(CH_ACCURACY,0));
+		teamplay.addChapter(new CKChapter(CH_DEFENSE,0));
+		teamplay.addChapter(new CKChapter(CH_DEFENSE_EFFECTIVENESS,70));
+		teamplay.addChapter(new CKChapter(MAX_DAMAGE,40));
+		teamplay.addChapter(new CKChapter(CH_ATTACK_BONUS,0));
+		
+		
 		
 
 		
@@ -498,7 +506,7 @@ public class CKWorkshopTest
 			a = new CKSimpleGUIAction( "Mom","Didn't Work!!" );
 		}
 		*/
-		a = new CKSimpleGUIAction( "Mom","Didn't Work!!" );
+		a = new CKSimpleGUIAction( "Mom","What did you want?" );
 		
 		
 		CKTriggerNode trig = new CKTrigger(s,a,TriggerResult.SATISFIED_END_LOOP);
