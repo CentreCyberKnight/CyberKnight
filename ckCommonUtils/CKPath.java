@@ -16,6 +16,15 @@ public class CKPath extends CKPosition{
 		this.action = action;
 	}
 	
+	public CKPath(CKPosition pos,CKPath parent,String action)
+	{
+		super(pos);
+		this.parent=parent;
+		this.action=action;
+				
+		
+	}
+	
 	
 	public CKPath(double x,double y,double z,int depth)
 	{

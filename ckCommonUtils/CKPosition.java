@@ -42,6 +42,11 @@ public class CKPosition implements Comparable<CKPosition>,Cloneable
 		this(x,y,z,0);
 	}
 
+	public CKPosition(CKPosition pos)
+	{
+		this(pos.x,pos.y,pos.z,pos.depth);
+	}
+
 	public static double planarDistance(CKPosition p1, CKPosition p2) {
 		double dx = p1.x-p2.x;
 		double dy = p1.y-p2.y;

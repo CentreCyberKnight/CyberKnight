@@ -65,9 +65,9 @@ public class TestAllPossiblePositionsGivenCP
                  
                 int maxCP = 1; // the max CP 
                 int expectedNumOfPositions = 4; // expected number of reachable positions
-                CKAreaPositions positions = grid.allPositionsReachable(actor1, maxCP);
-                assertEquals(positions.getArea().length, expectedNumOfPositions);
-                
+                //CKAreaPositions positions = grid.allPositionsReachable(actor1, maxCP);
+                //assertEquals(positions.getArea().length, expectedNumOfPositions);
+                fail("This has not been rewritten!!");
 //                grid.addToPosition(actor1,2,2);
 //                assertActorAt(actor1,2,2,0);
 //                maxCP = 2;

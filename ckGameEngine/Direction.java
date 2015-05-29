@@ -180,5 +180,4 @@ public enum Direction {
 		return getAheadPosition(ckPosition, grid.getWidth(),grid.getHeight());
 	}
 	
-	
 }
