@@ -8,7 +8,9 @@ import java.beans.DefaultPersistenceDelegate;
 import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Stack;
 
@@ -17,8 +19,10 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import ckCommonUtils.CKAreaPositions;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKXMLAsset;
+import ckDatabase.CKGridActorFactory;
 import ckEditor.CKGridLayerEditor;
 import ckGameEngine.CKGridActorOverLay.GridActorOverLayPersistenceDelegate;
 import ckGraphicsEngine.BadInstanceIDError;
@@ -27,6 +31,7 @@ import ckGraphicsEngine.CKCoordinateTranslator;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.UnknownAnimationError;
 import ckGraphicsEngine.layers.CKGridGraphicsLayer;
+import static ckCommonUtils.CKPropertyStrings.*;
 
 public class CKGrid implements CKXMLAsset<CKGrid>
 {
@@ -40,7 +45,7 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 	public static final int JUMP_OVER_COST = 2;
 
 	public static final int TURN_COST = 1;
-	public static final int NUM_OF_DIRECTIONS = 4;
+	public static final int NUM_OF_DIRECTIONS = Direction.values().length;
 
 	CKAbstractGridItem[][] positions;
 	int width;
@@ -137,7 +142,7 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 	{
 
 		// cost = JUMP_OVER_COST+MATH.pow(JUMP_OVER_COST,squares)
-		// inserse would be
+		// inverse would be
 		// MATH.floor(MATH.log(cost - JUMP_OVER_COST,JUMP_OVER_COST))
 		int max = (int) Math.floor((Math.log(CP - JUMP_OVER_COST) / Math
 				.log(JUMP_OVER_COST)));
@@ -387,13 +392,13 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 		int minCost = data[0];
 		if (stepCost == minCost)
 		{
-			return new Pair(minCost, "step forward, ");
+			return new Pair(minCost, P_FORWARD);
 		} else if (jumpUpCost == minCost)
 		{
-			return new Pair(minCost, "jump up, ");
+			return new Pair(minCost, P_JUMP_UP);
 		} else
 		{
-			return new Pair(minCost, "jump down, ");
+			return new Pair(minCost, P_JUMP_DOWN);
 		}
 	}
 
@@ -427,38 +432,24 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 	 */
 	public Pair costToTurn(Direction currDir, Direction nextDir)
 	{
-		// given 2 directions, return the cost to turn from one to the other
-		int curr = this.convertDirToInt(currDir);
-		int next = this.convertDirToInt(nextDir);
-		if (Math.abs(curr - next) == 2)
+		if(currDir.getOppositeDirection() == nextDir)
 		{
-			return new Pair(2, "turn right, turn right, ");
-		} else
+			return new Pair(2,P_LEFT);
+		}
+		else if(currDir.getLeftNeightbor()==nextDir)
 		{
-			if (curr > next)
-			{
-				if (curr - next == 1)
-				{
-					return new Pair(1, "turn left, ");
-				} else
-				{
-					return new Pair(1, "turn right, ");
-				}
-			} else if (curr < next)
-			{
-				if (curr - next == -1)
-				{
-					return new Pair(1, "turn right, ");
-				} else
-				{
-					return new Pair(1, "turn left, ");
-				}
-			} else
-			{
-				return new Pair(0, "no turn, ");
-			}
+			return new Pair(1,P_LEFT);
+		}
+		else if(currDir.getRightNeightbor()==nextDir)
+		{
+			return new Pair(1,P_RIGHT);
+		}
+		else
+		{
+			return new Pair(0,P_RIGHT);
 		}
 	}
+		
 
 	/**
 	 * updates the grid node information after moving to a position 
@@ -467,14 +458,16 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 	 * returns the grid node if values were updated.
 	 */
 	private GridNode updatePositionCost(GridNode[][][][] arrays, CKPosition pos,
-			int remainingCP, int turn, Direction dir, GridNode parentNode, String action)
+			int remainingCP, int turn, Direction dir, GridNode parentNode, String action, int actionCost)
 	{
 		
 		int x = (int) pos.getX();
 		int y = (int) pos.getY();
-		int z = this.convertDirToInt(dir);
+		int z = dir.ordinal();
 		GridNode n = arrays[x][y][z][turn];
 		if(n.isVisited()) { return null; }
+		if(remainingCP <0) {return null;}
+		//System.out.println(remainingCP);
 		
 		if(turn<n.getTurn() || (turn==n.getTurn() && remainingCP>n.getRemainingCP()))
 		{
@@ -484,6 +477,7 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 			n.setParentNode(parentNode);
 			n.setAction(action);
 			n.turn=turn;
+			n.actionCost=actionCost;
 			return n;
 		}
 		return null;
@@ -491,7 +485,7 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 	/*
 	 * convert direction to a digit value
 	 */
-	public int convertDirToInt(Direction dir)
+/*	public int convertDirToInt(Direction dir)
 	{
 		// figure out the index associated with this direction - dir
 		int dx = dir.dx;
@@ -511,15 +505,16 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 		}
 		return -1;
 	}
-
+*/
 	public static class GridNode
 	{
 		CKPosition pos=null;
 		int remainingCP=0;
-		boolean isVisited=false;
+		boolean visited=false;
 		Direction dir=null;
 		GridNode parentNode=null;
 		String action="None";
+		int actionCost = 0;
 		int turn=Integer.MAX_VALUE;
 
 		public GridNode() {}
@@ -529,9 +524,21 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 			
 		}
 	*/	
+		
+		
+		
 		public CKPosition getPos()
 		{
 			return pos;
+		}
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString()
+		{
+			return "GridNode [pos=" + pos + ", dir=" + dir + "]";
 		}
 
 		public void setPos(CKPosition pos)
@@ -551,12 +558,12 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 
 		public boolean isVisited()
 		{
-			return isVisited;
+			return visited;
 		}
 
 		public void setVisited(boolean isVisited)
 		{
-			this.isVisited = isVisited;
+			this.visited = isVisited;
 		}
 
 		public Direction getDir()
@@ -594,6 +601,11 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 			return turn;
 		}
 
+		public int getActionCost()
+		{
+			return actionCost;
+		}
+
 	}
 
 	/**
@@ -616,7 +628,7 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 				for (int k = 0; k < CKGrid.NUM_OF_DIRECTIONS; k++)
 				{
 					GridNode n = arrays[i][j][k];
-					if(n.getPos()==null || n.getDir()==null || n.isVisited)
+					if(n.getPos()==null || n.getDir()==null || n.visited)
 					{    //havn't started or already finished!
 						continue;
 					}
@@ -788,13 +800,13 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 	 **/
 	public GridNode[][][][] allPositionsReachable(CKGridActor actor,int maxCP,int turnMax)
 	{
-		GridNode[][][][] arrays = new GridNode[this.width][this.height][CKGrid.NUM_OF_DIRECTIONS][turnMax];
+		GridNode[][][][] arrays = new GridNode[this.width][this.height][Direction.values().length][turnMax];
 		if(turnMax<1){ turnMax = 1; }
 		//TODO limit the options based on player abilities.
 		//initialize all grid nodes
 		for (int i = 0; i < this.width; i++)
 			for (int j = 0; j < this.height; j++)
-				for (int k = 0; k < CKGrid.NUM_OF_DIRECTIONS; k++)
+				for (int k = 0; k < Direction.values().length; k++)
 					for (int t=0;t<turnMax;t++)
 						arrays[i][j][k][t] = new GridNode();
 
@@ -806,11 +818,11 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 		
 		int x = (int) startingPos.getX();
 		int y = (int) startingPos.getY();
-		int z = this.convertDirToInt(startingDir);
-		GridNode node = arrays[x][y][z][0];
+		GridNode node = arrays[x][y][startingDir.ordinal()][0];
 		node.setPos((CKPosition) startingPos.clone());
 		node.setRemainingCP(maxCP);
 		node.setDir(startingDir);
+		node.action=P_END_TURN;
 		node.turn = 0;
 
 		while (node != null)
@@ -821,13 +833,15 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 			Direction presDir = node.getDir();
 			node.setVisited(true);
 			
+			
+			
 			// now handle moving forward, either by stepping up or jumping
 			// up/down
 			CKPosition dest = presDir.getAheadPosition(presPos,width,
 					height);
 			Pair pair = this.lowestMoveCost(presPos, presDir);
 			frontier.add(this.updatePositionCost(arrays, dest, presCP
-					- pair.getCost(), node.getTurn(),presDir, node, pair.getMove()));
+					- pair.getCost(), node.getTurn(),presDir, node, pair.getMove(),pair.getCost()));
 
 			// reachable positions by jump over
 			int jumpOverDistance = this.calcJumpOverDistance(presPos,
@@ -838,14 +852,14 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 				CKPosition currPos = (CKPosition) presPos.clone();
 				while (jumpOverDistance != 0)
 				{
-					
+					System.out.println("jump over distance:"+jumpOverDistance);
 					currPos.setX((int) currPos.getX() + presDir.dx);
 					currPos.setY((int) currPos.getY() + presDir.dy);
 					int usedCP = this.calcCPForJumpDistance(presPos, presDir,
 							jumpOverDistance, presCP);
 					frontier.add(this.updatePositionCost(arrays, currPos,
-							presCP - usedCP,node.getTurn(), presDir, node,
-							"jump over"));
+								presCP - usedCP,node.getTurn(), presDir, node,
+								P_JUMP_OVER,usedCP));
 					jumpOverDistance--;
 				}
 			}
@@ -853,15 +867,13 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 			// now handle turning: right, left, or double-rights
 			for (Direction dir : Direction.values())
 			{
-				if (dir.name() != "NONE"
-						&& this.convertDirToInt(dir) != this
-								.convertDirToInt(presDir))
+				if (dir!= Direction.NONE && dir != presDir)
 				{
 					Pair pairTurn = this.costToTurn(presDir, dir);
 					//String action = this.costToTurn(presDir, dir).getMove();
 					frontier.add(this.updatePositionCost(arrays, presPos,
 							presCP - pairTurn.getCost(), node.getTurn(),
-							dir, node, pairTurn.getMove()));
+							dir, node, pairTurn.getMove(),pairTurn.getCost()));
 				}
 			}
 			//now handle future rounds/turns
@@ -870,26 +882,44 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 				for(int turn=node.getTurn()+1;turn<turnMax;turn++)
 				{
 					arrays[(int) presPos.getX()][(int) presPos.getY()]
-							[(int) presPos.getZ()][turn].isVisited=true;
+							[(int) presPos.getZ()][turn].visited=true;
 				}
 			}
 			else if(node.getTurn()+1<turnMax)
 			{
 				frontier.add(updatePositionCost(arrays, presPos,
-						maxCP, node.getTurn()+1,presDir, node, "End_Turn"));
+						maxCP, node.getTurn()+1,presDir, node, P_END_TURN,0));
 			}
 
 			// finding the next node
 			node = this.pickNextNode(frontier);//arrays);
+			
 			frontier.remove(node);
 			frontier.remove(null); //to help us exit the loop.
 		}
-
 		return arrays;
 	}
 
 
-	
+	public Collection<CKPosition> getReachablePositions(GridNode[][][][] data, int turns)
+	{
+		ArrayList<CKPosition> positions = new ArrayList<>();
+		
+		for (int i = 0; i < this.width; i++)
+			for (int j = 0; j < this.height; j++)
+				for (int k = 0; k < Direction.values().length; k++)
+					for (int t=0;t<turns;t++)
+					{
+						GridNode node = data[i][j][k][t];
+						
+						if(node.isVisited())
+						{
+							positions.add((CKPosition) node.getPos().clone());
+							//System.out.println("adding Positon"+node);
+						}
+					}
+		return positions;//new CKAreaPositions(origin,positions.toArray(new CKPosition[positions.size()]));
+	}
 	
 	/**
 	 * Assumes that it is OK to move. either from a step, jump, or drop
@@ -1190,8 +1220,14 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 		bigBlock.setMoveCost(1);
 		bigBlock.setItemHeight(2);
 		grid.addToPosition(bigBlock, 5, 5);
+		
+		
 
-		grid.writeToStream(System.out);
+		//grid.writeToStream(System.out);
+		CKGridActor baby = new CKGridActor("babySprite",Direction.NORTHWEST);
+		baby.setPos(new CKPosition(5,5));
+		
+		grid.allPositionsReachable(baby, 5, 1);
 	}
 
 }

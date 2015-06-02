@@ -297,4 +297,9 @@ public interface CKGraphicsEngine
 	
 	public CKGrid getGrid();
 
+	void selectAreaOffsets(CKPosition originLocation,
+			Collection<CKPosition> possibles,
+			CKSelectedPositionsListeners callback,
+			Collection<CKPosition> offsets);
+
 }

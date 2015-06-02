@@ -1,16 +1,20 @@
 package ckPythonInterpreter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import ckCommonUtils.CKAreaPositions;
 import ckCommonUtils.CKPosition;
 import ckGameEngine.CKAbstractGridItem;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKBook;
+import ckGameEngine.CKGrid;
+import ckGameEngine.CKGrid.GridNode;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKGridItemSet;
 import ckGameEngine.CKSpellCast;
 import ckGameEngine.CKGameObjectsFacade;
+import ckGameEngine.Direction;
 import ckGraphicsEngine.CKSelection;
 import static ckCommonUtils.CKPropertyStrings.*;
 
@@ -72,6 +76,7 @@ public class CKEditorPCController
 	{
 		CKBook limits = getAbilties();
 		System.out.println(limits.treeString());
+		System.out.println(modifier+"  "+val);
 
 		if (!limits.meetsRequirements(chapter, val, modifier))
 		{
@@ -207,6 +212,68 @@ public class CKEditorPCController
 		}
 		return false;
 
+	}
+	
+	public static boolean moveTo()
+	{
+		CKBook book = getAbilties();
+		int ap = 0;
+		if(book.hasChapter(CH_MOVE))
+		{
+			ap = book.getChapter(CH_MOVE).getValue();
+		}
+				
+				
+		if(attemptSpell(CH_MOVE,ap,P_MOVETO))
+		{
+			
+			int cp = (int) (ap *.75);
+			//get data
+			CKGrid grid = CKGameObjectsFacade.getQuest().getGrid();
+			GridNode[][][][] nodes= grid.allPositionsReachable(getCharacter(), cp, 1);	
+			//first aim at the areas
+			Collection<CKPosition> possibles = grid.getReachablePositions(nodes,1);
+			//ArrayList<>
+			ArrayList<CKPosition>offsets = new ArrayList<>(1);
+			offsets.add(new CKPosition(0,0));
+			CKSelection sel = new CKSelection();
+			CKPosition pos = sel.SelectTargetArea(getCharacter().getPos(),
+					possibles,offsets);
+			
+			//now move to that position
+			for(Direction d:Direction.values())
+			{
+				GridNode node = nodes[(int) pos.getX()][(int) pos.getY()][d.ordinal()][0];
+				if(node.isVisited())
+				{	
+					moveTo(node);
+					break;
+				}
+			}
+			return true;
+			
+		}
+		return false;
+		
+	}
+	
+	private static void moveTo(GridNode node)//,CKPosition destination)
+	{
+		//need to do the last thing first!
+		GridNode parent = node.getParentNode(); 
+		if(parent!=null) { moveTo(parent); }
+		//now do my action
+		String action = node.getAction();
+		int cp = node.getActionCost();
+		
+		if(action.equals("") || action.equals(P_END_TURN))
+		{
+			return; //we are done
+		}
+		System.err.println("MoveTO "+action+" "+cp);
+		CKSpellCast cast = new CKSpellCast(getCharacter(), getCharacter(),
+				CH_MOVE, action, cp, "");
+		cast.castSpell();
 	}
 
 	public static boolean earth(String modifier, int CP, CKPosition target,

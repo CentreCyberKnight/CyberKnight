@@ -539,17 +539,19 @@ public class CKWorkshopTest
 		dBook.addChapter(dChap);
 		dBook.addChapter(dChap2);
 		dBook.addChapter(dChap3);
+		dBook.addChapter(new CKChapter(CH_MOVE,5,P_MOVETO));
 		mom.addAbilities(dBook);
 		
 		
 		CKBook limitsballet = new CKBook();
-		String[] pagesb = {P_FORWARD,P_LEFT,P_RIGHT};
+		String[] pagesb = {P_FORWARD,P_LEFT,P_RIGHT,P_MOVETO};
 		limitsballet.addChapter(new CKChapter(CH_MOVE,3,pagesb ) );
 		
 		
 		//String[] pages = {P_FORWARD,P_LEFT,P_RIGHT};
 		CKBook ABS = new CKBook("shoe abilities",SPEED ,2);
-		limitsballet.addChapter(new CKChapter(CH_MOVE,3,pages ) );
+		limitsballet.addChapter(new CKChapter(CH_MOVE,5,pages ) );
+		ABS.add(new CKChapter(CH_MOVE,5,P_MOVETO));
 		CKBook []reqsballer = {new CKBook("Requirements", CH_EQUIP_SLOTS,0,P_SHOES) };
 		CKArtifact balletShoes = new CKArtifact("Ballet Shoes","Worn by all the premier dancers!!",
 				"balletShoes", ABS,limitsballet,reqsballer,2);
@@ -559,7 +561,8 @@ public class CKWorkshopTest
 		balletShoes.addSpell(spell);
 		spell = new CKSpell("LeftTurn","turns left", "move('left',1)","leftArrow");
 		balletShoes.addSpell(spell);
-		spell = new CKSpell("Right","turns right", "move('left',3)","rightArrow");
+		//spell = new CKSpell("Right","turns right", "move('left',3)","rightArrow");
+		spell = new CKSpell("right","Move To", "moveTo()","rightArrow");
 		balletShoes.addSpell(spell);
 		
 		//CKArtifact balletShoes = CKArtifactFactory.getInstance().readAssetFromXMLDirectory("balletShoes");

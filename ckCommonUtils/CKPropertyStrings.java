@@ -27,6 +27,8 @@ public class CKPropertyStrings
 	public static final String P_JUMP_UP = "jump up";
 	public static final String P_JUMP_OVER = "jump over";
 	public static final String P_JUMP_DOWN = "jump down";
+	public static final String P_MOVETO		="move to";
+	
 	
 	//Water/Ice
 	public static String CH_WATER = "WATER";

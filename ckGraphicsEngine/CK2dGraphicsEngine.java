@@ -805,7 +805,24 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 		
 	}
 
-
+	@Override
+	public void selectAreaOffsets(CKPosition originLocation, Collection<CKPosition> possibles,
+			CKSelectedPositionsListeners callback,
+			Collection<CKPosition> offsets)
+	{
+		//start new transaction
+		int t=this.startTransaction(true);
+		//create the action
+		CKAimAction a = new CKAimAction(originLocation,possibles,callback,offsets);
+		actions.add(a);
+		//add to listeners list
+		this.addMouseListener(a);
+		//end transaction
+		this.endTransaction(t,false);
+		
+		
+		
+	}
 
 	@Override
 	public void highlightArea(CKPosition originLocation, int startTime,

@@ -21,7 +21,13 @@ public class CKAreaPositions extends CKPosition
 	{
 		this(x,y,z,depth,null);
 	}
-
+	
+	public CKAreaPositions(CKPosition pos,CKPosition [] area)
+	{
+		super(pos);
+		this.area = area;		
+	}
+	
 
 	/**
 	 * @return the area

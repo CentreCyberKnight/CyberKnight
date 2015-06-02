@@ -61,6 +61,28 @@ public class CKSelection implements CKSelectedPositionsListeners
 		return positions;
 		
 	}
+	
+	
+	public synchronized CKPosition SelectTargetArea(CKPosition originLocation, 
+			Collection<CKPosition> possibles,Collection <CKPosition>offsets)
+	{
+		
+		while(! ready)
+		{
+			try { 	wait();  }
+			catch (InterruptedException e) { }		
+		}
+		ready = false;
+		positions=null;
+		CKGameObjectsFacade.getEngine().selectAreaOffsets(originLocation, possibles,
+				this,offsets );
+		try { 	wait(); }
+		catch (InterruptedException e) {}
+
+		ready = true;
+		return positions;
+		
+	}
 
 	
 	@Override

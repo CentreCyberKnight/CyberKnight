@@ -2,6 +2,7 @@ package ckGraphicsEngine.sceneAction;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Vector;
 
@@ -26,8 +27,8 @@ import ckGraphicsEngine.layers.CKGraphicsLayer;
 public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterface
 {
 	CKPosition origin;
-	float min;
-	float max;
+	//float min;
+	//float max;
 	CKSelectedPositionsListeners listener;
 	SelectAreaType type;
 	Point mouseP;
@@ -62,8 +63,8 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 	{
 		super(0,1000 );
 		
-		init(originLocation,minDistance,maxDistance,callback,type);
-		generatePossibles();
+		init(originLocation,callback,type);
+		generatePossibles(minDistance,maxDistance);
 		
 		rearTiles.add(getRearHightLightInstance(origin));
 		frontTiles.add(getFrontHightLightInstance(origin));
@@ -79,8 +80,8 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 	{
 		super(0,1000 );
 		
-		init(originLocation,minDistance,maxDistance,callback,SelectAreaType.NONE);
-		generatePossibles();
+		init(originLocation,callback,SelectAreaType.NONE);
+		generatePossibles(minDistance,maxDistance);
 		this.offsets=offsets;
 		
 		for(CKPosition pos:offsets)
@@ -91,15 +92,31 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 		}
 		
 	}
+	
+	public CKAimAction(CKPosition originLocation,Collection<CKPosition> possibles,
+			CKSelectedPositionsListeners callback,Collection<CKPosition> offsets)
+	{
+			super(0,1000);
+			
+			init(originLocation,callback,SelectAreaType.NONE);
+			generatePossibles(possibles);
+			this.offsets=offsets;
+			
+			for(CKPosition pos:offsets)
+			{
+				CKPosition newpos= pos.add(origin);
+				rearTiles.add(getRearHightLightInstance(newpos));
+				frontTiles.add(getFrontHightLightInstance(newpos));
+			}
+	}
+	
 
 
-	private void init(CKPosition originLocation, float minDistance,
-			float maxDistance, CKSelectedPositionsListeners callback,SelectAreaType type)
+	private void init(CKPosition originLocation,
+			CKSelectedPositionsListeners callback,SelectAreaType type)
 	{
 
 		origin = originLocation;//do not change this!
-		min    = minDistance;
-		max   = maxDistance;
 		listener = callback;
 		this.type = type;
 		mouseP = new Point((int) origin.getX(),(int)origin.getY());
@@ -114,8 +131,9 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 		
 	}
 	
-	private void generatePossibles()
+	private void generatePossibles(double min, double max)
 	{
+		ArrayList<CKPosition> list = new ArrayList<>();
 		int m = (int)Math.ceil(max);
 		for(int x = -m;x<=m;x++)
 			for (int y = -m;y<=m;y++)
@@ -125,12 +143,21 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 				{
 					CKPosition offset = new CKPosition(x,y);
 					CKPosition newpos= offset.add(origin);
-					rearPossibleTiles.add(getAssetInstance(newpos,rearPossibleID));
-					frontPossibleTiles.add(getAssetInstance(newpos,frontPossibleID));
+					list.add(newpos);
 				}
 			}
+		generatePossibles(list);
 		
-		
+	}
+	
+	
+	private void generatePossibles(Collection<CKPosition> possibles)
+	{
+		for(CKPosition pos:possibles)
+		{
+			rearPossibleTiles.add(getAssetInstance(pos,rearPossibleID));
+			frontPossibleTiles.add(getAssetInstance(pos,frontPossibleID));			
+		}
 	}
 	
 
