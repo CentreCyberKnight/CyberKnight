@@ -49,10 +49,10 @@ public class CKHiddenNode extends CKGUINode
 	            PropertyDescriptor[] pds = bi.getPropertyDescriptors();
 	            for (int i = 0; i < pds.length; i++) {
 	                PropertyDescriptor propertyDescriptor = pds[i];
-	                System.out.println(  propertyDescriptor.getName());
+	                //System.out.println(  propertyDescriptor.getName());
 	                if (propertyDescriptor.getName().equals("children"))
 	                {
-	                	System.out.println("setting the children transient");
+	                	//System.out.println("setting the children transient");
 	                    propertyDescriptor.setValue("transient", Boolean.TRUE);
 	                }
 	            }
