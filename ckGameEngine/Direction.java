@@ -1,5 +1,7 @@
 package ckGameEngine;
 
+import org.python.modules.math;
+
 import ckCommonUtils.CKPosition;
 
 public enum Direction {
@@ -56,6 +58,19 @@ public enum Direction {
 	{
 		final double dot = dx*dir.dx+dy*dir.dy;
 		return Math.acos(dot/(dist*dir.dist));		
+	}
+	
+	/**
+	 * returns the clockwise degree to find the stuff
+	 * @param dir
+	 * @return
+	 */
+	public double angleTo(Direction dir)
+	{
+		final double dot = this.dx*dir.dx+this.dy*dir.dy;
+		final double det = this.dx*dir.dy-this.dy*dir.dx;
+		return Math.atan2(det, dot);
+		//return angleTo(this,dir.dx,dir.dy,dir.dist);
 	}
 	
 	/**

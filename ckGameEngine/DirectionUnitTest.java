@@ -71,9 +71,19 @@ public class DirectionUnitTest
 		assertEquals(se,Direction.getDirectionTo(p0,p2));
 		assertEquals(nw , Direction.getDirectionTo(p0,p4));
 		assertEquals(ne , Direction.getDirectionTo(p0,p5));
-		
-		
-		
 	}
 
+	@Test
+	public void testAngleTo()
+	{
+		assertEquals(Direction.NORTHEAST.angleTo(Direction.SOUTHEAST),Math.PI/2.0,.001);
+		assertEquals(Direction.NORTHEAST.angleTo(Direction.SOUTHWEST),Math.PI,.001);
+		assertEquals(Direction.NORTHEAST.angleTo(Direction.NORTHWEST),-Math.PI/2.0,.001);
+		assertEquals(Direction.NORTHWEST.angleTo(Direction.NORTHEAST),Math.PI/2.0,.001);
+		assertEquals(Direction.SOUTHEAST.angleTo(Direction.SOUTHEAST),0,.001);
+		assertEquals(Direction.NORTHWEST.angleTo(Direction.SOUTHEAST),Math.PI,.001);
+		//assertEquals(Direction.NONE.angleTo(Direction.SOUTHEAST),Math.PI,.001);
+	}
+	
+	
 }

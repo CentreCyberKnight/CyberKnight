@@ -2,6 +2,8 @@ package ckCommonUtils;
 
 import java.awt.Point;
 
+import org.python.modules.math;
+
 /**
  * Provides a Position description with X,Y,Z and depth data.
  * Position data can be used to determine the order in which things are drawn to the screen.
@@ -233,6 +235,12 @@ public class CKPosition implements Comparable<CKPosition>,Cloneable
 
 	}
 	
-
+	public CKPosition rotate(double radians)
+	{
+		double xr = x*Math.cos(radians) - y*Math.sin(radians);
+		double yr = x*Math.sin(radians) - y*math.cos(radians);
+		
+		return new CKPosition(xr,yr,z,depth);
+	}
 
 }

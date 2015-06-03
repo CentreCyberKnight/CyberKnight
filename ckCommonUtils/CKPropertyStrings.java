@@ -68,7 +68,13 @@ public class CKPropertyStrings
 	//AIM
 	public static String CH_AIM="AIM";
 	public static String P_FRONT="front";
+	public static String P_SWIPE="swipe";
 	public static String P_TARGET="target";
+	public static String P_SHORT_TARGET="short target";
+	public static String P_MID_TARGET="mid target";
+	public static String P_FAR_TARGET="far target";
+	
+	
 	public static String P_STAR="star";
 	public static String P_SELF="self";
 	

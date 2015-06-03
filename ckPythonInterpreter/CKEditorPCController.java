@@ -233,7 +233,7 @@ public class CKEditorPCController
 			GridNode[][][][] nodes= grid.allPositionsReachable(getCharacter(), cp, 1);	
 			//first aim at the areas
 			Collection<CKPosition> possibles = grid.getReachablePositions(nodes,1);
-			//ArrayList<>
+			
 			ArrayList<CKPosition>offsets = new ArrayList<>(1);
 			offsets.add(new CKPosition(0,0));
 			CKSelection sel = new CKSelection();
