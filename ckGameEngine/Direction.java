@@ -1,5 +1,7 @@
 package ckGameEngine;
 
+import java.util.stream.Stream;
+
 import org.python.modules.math;
 
 import ckCommonUtils.CKPosition;
@@ -159,6 +161,11 @@ public enum Direction {
 			i++;
 		}
 		return names;
+	}
+	
+	public static Stream<Direction> stream()
+	{
+		return Stream.of(values());
 	}
 	
 	public CKPosition getAheadPosition(CKPosition pos,int maxWidth,int maxHeight)
