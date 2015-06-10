@@ -12,7 +12,9 @@ public class InterpolationTools
 	
 	public static double calcLinearIterpolation(double percent,double start, double end)
 	{
-		return (1-percent)*start + percent*end;
+		double a = (1-percent)*start;
+		double b = percent*end; 
+		return a+b; 
 		
 	}
 }

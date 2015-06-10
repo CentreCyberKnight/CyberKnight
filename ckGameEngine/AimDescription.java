@@ -117,8 +117,7 @@ public class AimDescription
 		
 		return ret;		
 	}
-
-
+	
 	public CKPosition[] getInverse(Direction d)
 	{
 		CKPosition[] off = getOffsets(d);
