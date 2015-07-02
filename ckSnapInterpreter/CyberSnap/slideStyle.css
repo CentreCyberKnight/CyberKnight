@@ -1,0 +1,9 @@
+#r {
+	-fx-color: lightblue;
+}
+
+.root {
+	-fx-background-color: lightyellow;
+	-fx-padding: 15;
+	-fx-spacing: 10;
+}
