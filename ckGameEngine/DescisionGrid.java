@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.InterpolationTools;
 import ckDatabase.AimDescriptionFactory;
+import ckGameEngine.CKGrid.GridNode;
 import ckGameEngine.DescisionGrid.CharacterActionDescription;
 import ckGameEngine.DescisionGrid.CharacterActionReport;
 import ckGameEngine.DescisionGrid.DecisionNode;
@@ -191,6 +192,7 @@ public class DescisionGrid
 		HashSet<CharacterActionDescription> actions = new HashSet<>();
 		HashMap<String, CharacterActionReport> reports = new HashMap<>();
 		HashMap<String, CharacterActionReport> sources = new HashMap<>();
+		public HashMap<Integer,CharacterActionReport> cmap;
 	
 		/**
 		 * @param position
@@ -250,6 +252,23 @@ public class DescisionGrid
 			return sources.values().stream();
 		}
 	
+		
+		public double generateNodeValue(int cp,boolean moved)
+		{
+			cmap = new HashMap<>();
+			streamSources().forEach(car->
+			{
+					
+				int catagory = car.descr.catagory;
+				cmap.merge(catagory, car, (oldItem,newItem) ->
+					oldItem.takeMax(newItem,cp,moved));
+			});
+			
+			utility = cmap.values().stream().mapToDouble(car->car.evaluate(cp,moved)).sum();
+			return utility;
+
+		}
+		
 		/*
 		 * public void forEachAction(BiConsumer<? super String, ? super Double>
 		 * action) { actions.forEach(action); }
@@ -303,7 +322,7 @@ public class DescisionGrid
 				.forEach(car->
 				{
 					AimDescription aim = factory.getAsset(car.descr.targetType);
-					int max = (int) (Math.floor(aim.getMaxDistance()) +1);
+					int max = (int) (Math.floor(aim.getMaxDistance()+.5));
 					int min = (int) (Math.ceil(aim.getMinDistance()));
 					
 					CKPosition pos = node.position;
@@ -343,29 +362,39 @@ public class DescisionGrid
 		
 		dirtySource.stream()
 			.filter(node->node.direction!=Direction.NONE)
-			.forEach(node->
+			.forEach(node->node.generateNodeValue(cp, moved));
+	}
+	
+	public void generateNodeValues(GridNode[][][][] motion,int maxCP)
+	{
+		dirtySource.stream()
+		.filter(node->node.direction!=Direction.NONE)
+		.filter(node->
+		{
+			GridNode m = motion[(int) node.position.getX()][(int) node.position.getY()]
+					[node.direction.ordinal()][0];
+			if(m.isVisited())
 			{
-				HashMap<Integer,CharacterActionReport> cmap = new HashMap<>();
-				node.streamSources().forEach(car->
-				{
-					int catagory = car.descr.catagory;
-					cmap.merge(catagory, car, (cat, rep) -> rep.takeMax(car,cp,moved));
-				});
-				
-				
-				//now add them all together
-	/*			if(node.reports.size()>0) //cmap.size()>0)
-				{
-					System.out.println("Found one");
-				}
-				else
-				{
-					System.out.println("Did not Found one");
-				}*/
-				
-				node.utility = cmap.values().stream().mapToDouble(car->car.evaluate(cp,moved)).sum();
-				//TODO store actions that could be taken here...
-			});
+				//check that there is a value in motion.  If not set utility to 0.
+				node.utility=0.0;
+			}
+			return m.isVisited();
+
+		})
+		.forEach(node->
+		{
+			GridNode m = motion[(int) node.position.getX()][(int) node.position.getY()]
+					[node.direction.ordinal()][0];
+
+			int cp = maxCP - m.remainingCP;
+			boolean moved = maxCP !=cp;
+			node.generateNodeValue(cp, moved);
+			//calculate cp and moved variables
+			//
+			
+			
+		});
+		
 		
 	}
 	

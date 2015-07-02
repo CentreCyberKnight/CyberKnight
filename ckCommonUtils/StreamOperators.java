@@ -22,18 +22,18 @@ public class StreamOperators
 	public static void forXY(int xMin, int xMax, int yMin, int yMax,
 			BiIntConsumer fcn)
 	{
-		IntStream.range(xMin, xMax).forEach(
-				x -> IntStream.range(yMin, yMax).forEach(y -> fcn.apply(x, y)));
+		IntStream.range(xMin, xMax+1).forEach(
+				x -> IntStream.range(yMin, yMax+1).forEach(y -> fcn.apply(x, y)));
 	}
 
 	public static void forXYFiltered(int xMin, int xMax, int yMin, int yMax,
 			IntPredicate xFilter, IntPredicate yFilter, BiIntConsumer fcn)
 	{
 		IntStream
-				.range(xMin, xMax)
+				.range(xMin, xMax+1)
 				.filter(xFilter)
 				.forEach(
-						x -> IntStream.range(yMin, yMax).filter(yFilter)
+						x -> IntStream.range(yMin, yMax+1).filter(yFilter)
 								.forEach(y -> fcn.apply(x, y)));
 	}
 
@@ -42,9 +42,9 @@ public class StreamOperators
 			BiIntConsumer fcn)
 	{
 		IntStream
-				.range(xMin, xMax)//.boxed()
+				.range(xMin, xMax+1)
 				.forEach(
-						x -> IntStream.range(yMin, yMax)//.boxed()
+						x -> IntStream.range(yMin, yMax+1)//.boxed()
 						.filter(y->xyFilter.test(x,y))
 						.forEach(y -> fcn.apply(x, y)));
 	}
@@ -55,8 +55,8 @@ public class StreamOperators
 			{
 				int myXMin = xMin>0?xMin:0;
 				int myYMin = yMin>0?yMin:0;
-				int myXMax = xMax<width?xMax:width;
-				int myYMax = yMax<width?yMax:height;
+				int myXMax = xMax<width?xMax:width-1;
+				int myYMax = yMax<height?yMax:height-1;
 				
 				forXY(myXMin,myXMax,myYMin,myYMax,fcn);		
 			}
@@ -68,8 +68,11 @@ public class StreamOperators
 			{
 				int myXMin = xMin>0?xMin:0;
 				int myYMin = yMin>0?yMin:0;
-				int myXMax = xMax<width?xMax:width;
-				int myYMax = yMax<width?yMax:height;
+				int myXMax = xMax<width?xMax:width-1;
+				int myYMax = yMax<height?yMax:height-1;
+				
+				//System.out.printf("Filtered x(%d %d) y(%d %d) dim(%d %d)\n",
+				//		myXMin,myXMax,myYMin,myYMax,width,height);
 				
 				forXYFiltered(myXMin,myXMax,myYMin,myYMax,xyFilter,fcn);		
 			}
@@ -108,7 +111,8 @@ public class StreamOperators
 	public static void forXYBoundedDonut(int x, int y, int min, int max,
 			int width,int height,BiIntConsumer fcn)
 			{
-				forXYFiltered(x-max,x+max,y-max,y+min,width,height,
+//			System.out.printf("x%d, Y%d (%d,%d)  ",x,y,min,max);
+				forXYFiltered(x-max,x+max,y-max,y+max,width,height,
 						DonutTest(x,y,min,max),fcn);		
 			}
 	
