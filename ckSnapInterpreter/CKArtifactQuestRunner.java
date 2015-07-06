@@ -1,8 +1,23 @@
-package ckPythonInterpreterTest;
+package ckSnapInterpreter;
 
 import static ckCommonUtils.CKPropertyStrings.*;
+import static ckCommonUtils.CKPropertyStrings.CH_FIRE;
+import static ckCommonUtils.CKPropertyStrings.CH_MOVE;
+import static ckCommonUtils.CKPropertyStrings.CH_EARTH;
+import static ckCommonUtils.CKPropertyStrings.P_ARMOR;
+import static ckCommonUtils.CKPropertyStrings.P_FORWARD;
+import static ckCommonUtils.CKPropertyStrings.P_IGNITE;
+import static ckCommonUtils.CKPropertyStrings.P_LEFT;
+import static ckCommonUtils.CKPropertyStrings.P_OFFHAND_WEAPON;
+import static ckCommonUtils.CKPropertyStrings.P_RIGHT;
+import static ckCommonUtils.CKPropertyStrings.P_SHOES;
+import static ckCommonUtils.CKPropertyStrings.P_SING;
+import static ckCommonUtils.CKPropertyStrings.P_SLASH;
+import static ckCommonUtils.CKPropertyStrings.P_SWORD;
+import static ckCommonUtils.CKPropertyStrings.P_TALK;
 
 import java.awt.BorderLayout;
+
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -12,15 +27,6 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Vector;
-
-import javafx.collections.ObservableList;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
-import javafx.stage.Stage;
 
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
@@ -36,7 +42,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.EditorKit;
 
-import netscape.javascript.JSObject;
 import jsyntaxpane.DefaultSyntaxKit;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKThreadCompletedListener;
@@ -64,7 +69,6 @@ import ckPythonInterpreter.CKTeamView;
 import ckSatisfies.PositionReachedSatisfies;
 import ckSatisfies.Satisfies;
 import ckSatisfies.TrueSatisfies;
-import ckSnapInterpreter.SwingFXWebView;
 import ckTrigger.CKTrigger;
 import ckTrigger.CKTriggerList;
 import ckTrigger.TriggerResult;
@@ -264,17 +268,49 @@ public class CKArtifactQuestRunner implements DocumentListener
 	 
 	 
 	 //FIXME this is no longer needed here....but removing breaks the program.
-	 private JFXPanel createEditorPane()
+	 private JPanel createEditorPane()
 	 {
-		 //taken from SwingFXWebView main
-		 //creates a frame in the gui 
-		 JFrame frame = new JFrame();           
-         frame.getContentPane().add(new SwingFXWebView());            
-         frame.setMinimumSize(new Dimension(500, 600));  
-         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
-         frame.setVisible(true);
-         //adds snaps to the frame
-		 return SwingFXWebView.main(); 		 
+		 JPanel pane=new JPanel();
+		 pane.setLayout(new BorderLayout());
+		 pane.setPreferredSize(new Dimension(500,600));
+
+		 //create unique editor
+		 editor = CKGameObjectsFacade.getUniqueEditor();
+		
+		 pane.add(editor.getScrollablePane());
+	           		    
+		 //TOOL BARS
+		 //toolbar is part of the editor kit--awesome!
+		 JToolBar jToolBar1 = new javax.swing.JToolBar();
+		 jToolBar1.setRollover(true);
+		 jToolBar1.setFocusable(false);
+		 	
+		 EditorKit kit = editor.getEditorKit();
+		 if (kit instanceof DefaultSyntaxKit) 
+		 {
+			 DefaultSyntaxKit defaultSyntaxKit = (DefaultSyntaxKit) kit;
+			 defaultSyntaxKit.addToolBarActions(editor, jToolBar1);
+		 }	
+		 jToolBar1.validate();
+		 pane.add(jToolBar1, BorderLayout.PAGE_START);
+		 
+		 editor.getDocument().addDocumentListener(this);
+		 CKTeam team = CKTeamFactory.getInstance().getAsset(quest.getTeam());
+		 editor.setText(team.getFunctions());
+	   // runButton = new JButton("Run Code");
+	    //CKGameObjectsFacade.setRunButton(runButton);
+	    
+	   // CKGameObjectsFacade.disableTextInput();	
+	    
+	  //  ButtonHandler handler = new ButtonHandler();
+	  //  runButton.addActionListener(handler);
+	  //  pane.add(runButton,BorderLayout.PAGE_END);
+	        
+		 
+		 
+	    return pane;
+	       
+		 
 	 }
 	 
 	 
