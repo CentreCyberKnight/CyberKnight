@@ -102,11 +102,11 @@ ArrowMorph, PushButtonMorph, contains, InputSlotMorph, ShadowMorph,
 ToggleButtonMorph, IDE_Morph, MenuMorph, copy, ToggleElementMorph,
 Morph, fontHeight, StageMorph, SyntaxElementMorph, SnapSerializer,
 CommentMorph, localize, CSlotMorph, SpeechBubbleMorph, MorphicPreferences,
-SymbolMorph, isNil, script*/
+SymbolMorph, isNil*/
 
 // Global stuff ////////////////////////////////////////////////////////
 
-modules.byob = '2015-January-21';
+modules.byob = '2015-May-23';
 
 // Declarations
 
@@ -394,7 +394,6 @@ CustomCommandBlockMorph.prototype.init = function (definition, isProto) {
     this.isPrototype = isProto || false; // optional
 
     CustomCommandBlockMorph.uber.init.call(this);
-
     this.category = definition.category;
     this.selector = 'evaluateCustomBlock';
     if (definition) { // needed for de-serializing
@@ -429,6 +428,7 @@ CustomCommandBlockMorph.prototype.refresh = function () {
 
     // find unnahmed upvars and label them
     // to their internal definition (default)
+    this.cachedInputs = null;
     this.inputs().forEach(function (inp, idx) {
         if (inp instanceof TemplateSlotMorph && inp.contents() === '\u2191') {
             inp.setContents(def.inputNames()[idx]);
@@ -443,6 +443,7 @@ CustomCommandBlockMorph.prototype.restoreInputs = function (oldInputs) {
         myself = this;
 
     if (this.isPrototype) {return; }
+    this.cachedInputs = null;
     this.inputs().forEach(function (inp) {
         old = oldInputs[i];
         if (old instanceof ReporterBlockMorph &&
@@ -460,6 +461,7 @@ CustomCommandBlockMorph.prototype.restoreInputs = function (oldInputs) {
         }
         i += 1;
     });
+    this.cachedInputs = null;
 };
 
 CustomCommandBlockMorph.prototype.refreshDefaults = function () {
@@ -472,6 +474,7 @@ CustomCommandBlockMorph.prototype.refreshDefaults = function () {
         }
         idx += 1;
     });
+    this.cachedInputs = null;
 };
 
 CustomCommandBlockMorph.prototype.refreshPrototype = function () {
@@ -757,8 +760,16 @@ CustomCommandBlockMorph.prototype.userMenu = function () {
 };
 
 CustomCommandBlockMorph.prototype.exportBlockDefinition = function () {
-    var xml = new SnapSerializer().serialize(this.definition);
-    javaTextField.setText('data:text/xml,' + encodeURIComponent(xml));
+    var xml = new SnapSerializer()
+    var str = this.definition.toXML(xml);
+    var app = xml.app;
+    console.log('data:text/xml,<blocks app="' 
+    	+ app
+    	+ '" version="'
+    	+ xml.version 
+    	+ '">' 
+    	+ str
+    	+ '</blocks>');
 };
 
 CustomCommandBlockMorph.prototype.deleteBlockDefinition = function () {
@@ -924,6 +935,9 @@ CustomReporterBlockMorph.prototype.refresh = function () {
     if (!this.isPrototype) {
         this.isPredicate = (this.definition.type === 'predicate');
     }
+    if (this.parent instanceof SyntaxElementMorph) {
+        this.parent.cachedInputs = null;
+    }
     this.drawNew();
 };
 
@@ -932,6 +946,19 @@ CustomReporterBlockMorph.prototype.mouseClickLeft = function () {
         return CustomReporterBlockMorph.uber.mouseClickLeft.call(this);
     }
     this.edit();
+};
+
+CustomReporterBlockMorph.prototype.exportBlockDefinition = function () {
+    var xml = new SnapSerializer()
+    var str = this.definition.toXML(xml);
+    var app = xml.app;
+    javaTextField.setText('data:text/xml,<blocks app="' 
+    	+ app
+    	+ '" version="'
+    	+ xml.version 
+    	+ '">' 
+    	+ str
+    	+ '</blocks>');
 };
 
 CustomReporterBlockMorph.prototype.placeHolder
@@ -1042,6 +1069,19 @@ JaggedBlockMorph.prototype.init = function (spec) {
         this.minWidth = 25;
         this.fixLayout();
     }
+};
+
+JaggedBlockMorph.prototype.exportBlockDefinition = function () {
+    var xml = new SnapSerializer()
+    var str = this.definition.toXML(xml);
+    var app = xml.app;
+    javaTextField.setText('data:text/xml,<blocks app="' 
+    	+ app
+    	+ '" version="'
+    	+ xml.version 
+    	+ '">' 
+    	+ str
+    	+ '</blocks>');
 };
 
 // JaggedBlockMorph drawing:
@@ -1865,6 +1905,9 @@ BlockEditorMorph.prototype.context = function (prototypeHat) {
     if (topBlock === null) {
         return null;
     }
+    topBlock.allChildren().forEach(function (c) {
+        if (c instanceof BlockMorph) {c.cachedInputs = null; }
+    });
     stackFrame = Process.prototype.reify.call(
         null,
         topBlock,
@@ -2039,7 +2082,13 @@ BlockLabelFragment.prototype.defTemplateSpecFragment = function () {
         )) {
         suff = ' \u03BB';
     } else if (this.defaultValue) {
-        suff = ' = ' + this.defaultValue.toString();
+        if (this.type === '%n') {
+            suff = ' # = ' + this.defaultValue.toString();
+        } else { // 'any' or 'text'
+            suff = ' = ' + this.defaultValue.toString();
+        }
+    } else if (this.type === '%n') {
+        suff = ' #';
     }
     return this.labelString + suff;
 };
@@ -2974,7 +3023,7 @@ InputSlotDialogMorph.prototype.editSlotOptions = function () {
     new DialogBoxMorph(
         myself,
         function (options) {
-            myself.fragment.options = options;
+            myself.fragment.options = options.trim();
         },
         myself
     ).promptCode(
@@ -3279,36 +3328,26 @@ BlockExportDialogMorph.prototype.selectNone = function () {
 };
 
 // BlockExportDialogMorph ops
-// changed it to alert eventually will change to save to a file
-BlockExportDialogMorph.prototype.writeTextFile = function (afile, output) {
-    var txtFile = new File(afile);
-    txtFile.writeln(output);
-    txtFile.close();
-    //window.alert('done');
-};
 
 BlockExportDialogMorph.prototype.exportBlocks = function () {
-    var str = this.serializer.serialize(this.blocks);
+    var str = encodeURIComponent(
+        this.serializer.serialize(this.blocks)
+    );
     if (this.blocks.length > 0) {
-        //var f = "sometextfile.txt";
-        //writeTextFile(f, 'helpMe');
-        //var txtFile = new File(f);
-        javaTextField.setText(encodeURI('data:text/xml,<blocks app="'
-                + this.serializer.app
-                + '" version="'
-                + this.serializer.version
-                + '">'
-                + str
-                + '</blocks>'))
-            
-        //txtFile.close();          
+        window.open('data:text/xml,<blocks app="'
+            + this.serializer.app
+            + '" version="'
+            + this.serializer.version
+            + '">'
+            + str
+            + '</blocks>');
     } else {
         new DialogBoxMorph().inform(
-            'byob.js',
+            'Export blocks',
             'no blocks were selected',
             this.world()
         );
-    } 
+    }
 };
 
 // BlockExportDialogMorph layout
