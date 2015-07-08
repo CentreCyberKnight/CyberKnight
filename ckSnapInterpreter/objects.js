@@ -3448,8 +3448,8 @@ Morph.prototype.setPosition = function (aPoint, justMe) {
 
 SpriteMorph.prototype.forward = function (steps) {
 	//link to move in java
-	jsDebug.print("in forward");
-	javaMove.move2("left", 1);
+	//jsDebug.print("in forward");
+	//javaMove.move2("left", 1);
 	/*
     var dest,
         dist = steps * this.parent.scale || 0;
@@ -4909,12 +4909,11 @@ StageMorph.prototype.processIdDispatch = function (event) {
 //second step: sister to processKeyEvent
 StageMorph.prototype.processIdEvent = function (event, action) {
 	var id = event.detail;
-	//jsDebug.print("processIdEvent");
 	action.call(this, id);
-	world.doOneCycle();
-	world.doOneCycle();
+	//world.doOneCycle();
+	//world.doOneCycle();
 
-	completionListener.snapCompletes();
+	//completionListener.snapCompletes();
 };
 
 //third step: sister to fireKeyEvent
@@ -4932,7 +4931,6 @@ StageMorph.prototype.IdEvent = function (ID) {
     hats.forEach(function (block) {
         procs.push(myself.threads.startProcess(block, myself.isThreadSafe));
     });
-    jsDebug.print("processIdEvent after hats");
     return procs;	
 };
 

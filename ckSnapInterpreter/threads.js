@@ -153,7 +153,7 @@ ThreadManager.prototype.startProcess = function (
     exportResult,
     callback
 ) {
-	jsDebug.print("in startProcess");
+	//jsDebug.print("in startProcess");
     var active = this.findProcess(block),
         top = block.topBlock(),
         newProc;
@@ -186,7 +186,7 @@ ThreadManager.prototype.startProcess = function (
     	+ '</blocks>'); 
 	*/
 
-    jsDebug.print("end of startProcess");
+    //jsDebug.print("end of startProcess");
     
     return newProc;
 };
@@ -485,7 +485,7 @@ Process.prototype.pauseStep = function () {
 
 Process.prototype.evaluateContext = function () {
     var exp = this.context.expression;
-    jsDebug.print("evaluateContext");
+    //jsDebug.print("evaluateContext");
     this.frameCount += 1;
     if (exp instanceof BlockMorph) {
         return this.evaluateBlock(exp, exp.inputs().length);
@@ -513,7 +513,7 @@ Process.prototype.evaluateContext = function () {
 
 Process.prototype.evaluateBlock = function (block, argCount) {
     // check for special forms
-	jsDebug.print("eval block");
+	//jsDebug.print("eval block");
     if (contains(['reportOr', 'reportAnd', 'doReport'], block.selector)) {
         return this[block.selector](block);
     }

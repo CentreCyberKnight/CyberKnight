@@ -216,12 +216,17 @@ IDE_Morph.prototype.init = function (isAutoFill) {
     //this.extra = new SpriteMorph(this.globalVariables);
     //var ex2 = new SpriteMorph(this.globalVariables);
     //however many sprites that are currently on the screen
+    /*
     var block = new HatBlockMorph();	//hat block 
 	block.setSelector('receiveID');
 	block.setSpec("Button");	//setting name
 	this.currentSprite.scripts.addChild(block);
     this.sprites = new List([this.currentSprite]); // this.currentSprite]);
     this.allSprites = new List([this.currentSprite]); //this.currentSprite]);
+    */
+    
+    this.sprites = new List([]); // this.currentSprite]);
+    this.allSprites = new List([]);
 
     
     //creating a list for checking to see what sprite goes with
@@ -1292,11 +1297,6 @@ IDE_Morph.prototype.hideBlock = function (book) {
 	
 };
 
-IDE_Morph.prototype.fireTEST = function() {
-	var event = new CustomEvent("CK", {detail : 'Button'});
-	jsDebug.print("fireTEST");
-	document.getElementById('world').dispatchEvent(event);
-}
 
 
 //executes scripts
@@ -1320,21 +1320,21 @@ IDE_Morph.prototype.fire = function(artifact, location) {
 
 //sets up the stage for an artifact
 //parameter: artifact name & List(artifact.png, all method pngs)
-IDE_Morph.prototype.domino = function(artifact, images){
+IDE_Morph.prototype.domino = function(){
 	var list = new List([]);
 	var acc = 0;
 	var num = 1;	//used when traversing the checkList
 	var sprite;		//place holder for sprites
 	var lcArtifact;	//used when traversing the checkList
-	var methods = images.length() - 1;	//number of methods
+	var methods = artifact.spells.elementCount();	//number of methods
 	//var arr = [];
 	
 	//setting the artifact icon
-	this.img = images.at(1);
-	this.setArtifact();
+	//this.img = images.at(1);
+	//this.setArtifact();
 	
 	//first check to see if we already have sprites for an artifact
-	if (this.checkList.contains(artifact)) {
+	if (this.checkList.contains(artifact.getName())) {
 		//find where our sprites are in the list
 		lcArtifact = this.checkList.at(num);
 		while (lcArtifact != artifact) {
@@ -1371,13 +1371,16 @@ IDE_Morph.prototype.domino = function(artifact, images){
 				num++;
 		}
 		//setting the picture for each sprite
+		/*
 		var picture;
 		for (var i = 1; i <= methods; i++) {
 			sprite = list.at(i);
-			picture = images.at(i+1);
-			sprite.setPic(picture);
+			
+			//picture = images.at(i+1);
+			//sprite.setPic(picture);
 		}
 	}
+	*/
 	
 	//updating what sprites are on the screen
 	this.sprites = list;
