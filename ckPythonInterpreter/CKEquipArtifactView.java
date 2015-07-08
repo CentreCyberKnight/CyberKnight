@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -128,7 +129,7 @@ public class CKEquipArtifactView extends JPanel implements CKStatsChangeListener
 		public void actionPerformed(ActionEvent e)
 		{
 			CKGridActor pc = (CKGridActor) CKGameObjectsFacade.getCurrentPlayer();
-			
+			System.out.println("YOU CLICKED A SPELL");
 			if(pc != null && character == pc)
 			{
 				String code = "from ckPythonInterpreter.CKEditorPCController import * \n\n"+

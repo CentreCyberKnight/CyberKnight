@@ -1,4 +1,4 @@
-package ckPythonInterpreter;
+package ckSnapInterpreter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,6 +16,7 @@ import ckGameEngine.CKSpellCast;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.Direction;
 import ckGraphicsEngine.CKSelection;
+import ckPythonInterpreter.CKPlayerObjectsFacade;
 import static ckCommonUtils.CKPropertyStrings.*;
 
 public class CKEditorPCController

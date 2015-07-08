@@ -212,9 +212,6 @@ IDE_Morph.prototype.init = function (isAutoFill) {
 
     this.globalVariables = new VariableFrame();
     this.currentSprite = new SpriteMorph(this.globalVariables);
-    //adding more sprites 
-    //this.extra = new SpriteMorph(this.globalVariables);
-    //var ex2 = new SpriteMorph(this.globalVariables);
     //however many sprites that are currently on the screen
     this.sprites = new List([]); // this.currentSprite]);
     this.allSprites = new List([]); //this.currentSprite]);
@@ -262,6 +259,9 @@ IDE_Morph.prototype.init = function (isAutoFill) {
     
     // override inherited properites:
     this.color = this.backgroundColor;
+    
+    //HARDCODE
+    this.domino("Boot",new List(['combatBoot.png', 'leftArrow.png', 'rightArrow.png']));
 };
 
 IDE_Morph.prototype.openIn = function (world) {

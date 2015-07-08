@@ -39,12 +39,12 @@ public class ActorArtifactController extends ActorController
 //		w.waitForInput();//this is satisfied by the completion of the python code running
 	
 		getConsole().waitForCompletion();
-		
+		//FIXME
+
 		
 		disableArtifactInput(); //just in case should already be disabled
 		w.endTransaction();
-		CKGameObjectsFacade.getEngine().blockTilActionsComplete();			
-		
+		CKGameObjectsFacade.getEngine().blockTilActionsComplete();	
 		getActor().setCPConsumedLastRound(CKPlayerObjectsFacade.getCPTurnMax() - CKPlayerObjectsFacade.getCPTurnRemaining());
 		
 		CKGameObjectsFacade.setCurrentPlayer(null);

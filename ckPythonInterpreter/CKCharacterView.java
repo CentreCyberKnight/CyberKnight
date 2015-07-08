@@ -23,7 +23,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.EditorKit;
 
 import jsyntaxpane.DefaultSyntaxKit;
-
 import ckCommonUtils.DisabledPanel;
 import ckCommonUtils.EquipmentComparator;
 import ckDatabase.CKGraphicsAssetFactory;
@@ -274,7 +273,7 @@ public class CKCharacterView extends JPanel implements CKStatsChangeListener
 	public void enableCharacter(boolean enable)
 	{
 		artDPanel.setEnabled(enable);
-		textDPanel.setEnabled(enable);
+		//textDPanel.setEnabled(enable);
 	}
 	
 	

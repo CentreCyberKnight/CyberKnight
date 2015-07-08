@@ -5,7 +5,7 @@ package ckSnapInterpreter;
 //used to load CyberSnap
 
 import com.sun.javafx.application.PlatformImpl;
-
+import ckGameEngine.CKGameObjectsFacade;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -111,11 +111,19 @@ public class SwingFXWebView extends JPanel {
                  
                 // Set up the embedded browser:
                 browser = new WebView();
-                webEngine = browser.getEngine();
+                CKGameObjectsFacade.setWebEngine(browser.getEngine());
                 //only changes below
                 //load snap and make it executable 
+                webEngine = CKGameObjectsFacade.getWebEngine();
                 webEngine.load(getClass().getResource("snap.html").toExternalForm());
         		JSObject jsobj = (JSObject) webEngine.executeScript("window");
+        		try {
+        			jsobj.setMember("javaMove", new CKSpellObject("move"));
+        			jsobj.setMember("jsDebug", new CKjsDebugger());
+        		}
+        		catch (Exception e) {
+        			System.out.println("wrong item");
+        		}
                 
                 ObservableList<Node> children = root.getChildren();
                 children.add(browser);                     

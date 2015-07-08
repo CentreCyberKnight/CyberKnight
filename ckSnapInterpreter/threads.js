@@ -153,6 +153,7 @@ ThreadManager.prototype.startProcess = function (
     exportResult,
     callback
 ) {
+	jsDebug.print("in startProcess");
     var active = this.findProcess(block),
         top = block.topBlock(),
         newProc;
@@ -169,10 +170,12 @@ ThreadManager.prototype.startProcess = function (
         top.addHighlight();
     }
     this.processes.push(newProc);
-
+    //this.processes.push(newProc);
+    /*
     var serializer = new SnapSerializer();
     var str = encodeURIComponent(block.toXML(serializer));
     var app = serializer.app;
+
     javaProcess.setText("process ~ threads.js line 168:"
     	+ 'data:text/xml,<blocks app="'
     	+ app 
@@ -181,8 +184,9 @@ ThreadManager.prototype.startProcess = function (
     	+ '">' 
     	+ str
     	+ '</blocks>'); 
+	*/
 
- 		
+    jsDebug.print("end of startProcess");
     
     return newProc;
 };
@@ -238,12 +242,13 @@ ThreadManager.prototype.resumeAll = function (stage) {
     }
 };
 
+
 ThreadManager.prototype.step = function () {
     // run each process until it gives up control, skipping processes
     // for sprites that are currently picked up, then filter out any
     // processes that have been terminated
 
-    this.processes.forEach(function (proc) {
+	this.processes.forEach(function (proc) {
         if (!proc.homeContext.receiver.isPickedUp() && !proc.isDead) {
             proc.runStep();
         }
@@ -254,6 +259,7 @@ ThreadManager.prototype.step = function () {
 ThreadManager.prototype.removeTerminatedProcesses = function () {
     // and un-highlight their scripts
     var remaining = [];
+    
     this.processes.forEach(function (proc) {
         if ((!proc.isRunning() && !proc.errorFlag) || proc.isDead) {
             if (proc.topBlock instanceof BlockMorph) {
@@ -290,6 +296,7 @@ ThreadManager.prototype.removeTerminatedProcesses = function () {
         }
     });
     this.processes = remaining;
+    //completionListener.snapCompletes();
 };
 
 ThreadManager.prototype.findProcess = function (block) {
@@ -478,7 +485,11 @@ Process.prototype.pauseStep = function () {
 
 Process.prototype.evaluateContext = function () {
     var exp = this.context.expression;
+    jsDebug.print("evaluateContext");
     this.frameCount += 1;
+    if (exp instanceof BlockMorph) {
+        return this.evaluateBlock(exp, exp.inputs().length);
+    }
     if (this.context.tag === 'exit') {
         this.expectReport();
     }
@@ -494,9 +505,6 @@ Process.prototype.evaluateContext = function () {
     if (exp instanceof ArgMorph || exp.bindingID) {
         return this.evaluateInput(exp);
     }
-    if (exp instanceof BlockMorph) {
-        return this.evaluateBlock(exp, exp.inputs().length);
-    }
     if (isString(exp)) {
         return this[exp]();
     }
@@ -505,6 +513,7 @@ Process.prototype.evaluateContext = function () {
 
 Process.prototype.evaluateBlock = function (block, argCount) {
     // check for special forms
+	jsDebug.print("eval block");
     if (contains(['reportOr', 'reportAnd', 'doReport'], block.selector)) {
         return this[block.selector](block);
     }

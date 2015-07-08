@@ -1,5 +1,7 @@
 package ckGameEngine;
 
+import javafx.scene.web.WebEngine;
+
 import javax.swing.JButton;
 
 import ckCommonUtils.CKThreadCompletedListener;
@@ -21,6 +23,7 @@ public class CKGameObjectsFacade
 	private static Quest quest;
 	private static CK2dGraphicsEngine engine;
 	private static CKTeamView artifactController;
+	private static WebEngine webEngine;
 	/**
 	 * @return the artifactController
 	 */
@@ -44,6 +47,20 @@ public class CKGameObjectsFacade
 		return spells;
 	}
 
+	public static void setWebEngine(WebEngine newWebEngine)
+	{
+		webEngine = newWebEngine;	
+	}
+	
+	public static WebEngine getWebEngine()
+	{
+		if (webEngine == null)
+		{
+			//webEngine = 
+		}
+		return webEngine;
+	}
+	
 	/**
 	 * @param spells
 	 *            the spells to set

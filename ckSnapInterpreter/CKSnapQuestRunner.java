@@ -1,4 +1,4 @@
-package ckPythonInterpreterTest;
+package ckSnapInterpreter;
 
 import static ckCommonUtils.CKPropertyStrings.*;
 
@@ -69,7 +69,7 @@ import ckTrigger.CKTrigger;
 import ckTrigger.CKTriggerList;
 import ckTrigger.TriggerResult;
 
-public class CKArtifactQuestRunner implements DocumentListener 
+public class CKSnapQuestRunner implements DocumentListener 
 { 
 	CKPythonEditorPane editor;	
 	CKPythonConsoleExtended console;
@@ -86,12 +86,12 @@ public class CKArtifactQuestRunner implements DocumentListener
 	/*public static void TEXT_EDITOR="text editor";
 	public static void TEXT_EDITOR="text editor";
 	*/
-	 public CKArtifactQuestRunner(Quest q) 
+	 public CKSnapQuestRunner(Quest q) 
 	 {
 		 this(q,true);
 	 }
 	
-	 public CKArtifactQuestRunner(Quest q,boolean newThread) 
+	 public CKSnapQuestRunner(Quest q,boolean newThread) 
 	 {
 		 quest = q;
 		 frame = new JFrame("CyberKnight Level 1");//CKSytaxPaneTest.class.getName());
@@ -479,7 +479,7 @@ public class CKArtifactQuestRunner implements DocumentListener
 	}
 	public static void main(String[] args)
 	{
-		new CKArtifactQuestRunner(createTestQuest());
+		new CKSnapQuestRunner(createTestQuest());
 		
 	}
 	
@@ -510,3 +510,4 @@ public class CKArtifactQuestRunner implements DocumentListener
 		
 	}
 }
+

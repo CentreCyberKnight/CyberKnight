@@ -216,8 +216,13 @@ IDE_Morph.prototype.init = function (isAutoFill) {
     //this.extra = new SpriteMorph(this.globalVariables);
     //var ex2 = new SpriteMorph(this.globalVariables);
     //however many sprites that are currently on the screen
-    this.sprites = new List([]); // this.currentSprite]);
-    this.allSprites = new List([]); //this.currentSprite]);
+    var block = new HatBlockMorph();	//hat block 
+	block.setSelector('receiveID');
+	block.setSpec("Button");	//setting name
+	this.currentSprite.scripts.addChild(block);
+    this.sprites = new List([this.currentSprite]); // this.currentSprite]);
+    this.allSprites = new List([this.currentSprite]); //this.currentSprite]);
+
     
     //creating a list for checking to see what sprite goes with
     // what artifact
@@ -262,6 +267,7 @@ IDE_Morph.prototype.init = function (isAutoFill) {
     
     // override inherited properites:
     this.color = this.backgroundColor;
+    
 };
 
 IDE_Morph.prototype.openIn = function (world) {
@@ -1286,6 +1292,11 @@ IDE_Morph.prototype.hideBlock = function (book) {
 	
 };
 
+IDE_Morph.prototype.fireTEST = function() {
+	var event = new CustomEvent("CK", {detail : 'Button'});
+	jsDebug.print("fireTEST");
+	document.getElementById('world').dispatchEvent(event);
+}
 
 
 //executes scripts
