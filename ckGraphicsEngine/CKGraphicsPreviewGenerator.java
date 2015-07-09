@@ -8,6 +8,9 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -83,9 +86,21 @@ public class CKGraphicsPreviewGenerator
 				null);
 				
 		return previewImg;
-		
 	}
 
+
+	public static Image convertToFXImage(BufferedImage b) {
+		Image image = SwingFXUtils.toFXImage(b, null);
+		return image;
+	}
+	
+	
+	public static Image createAssetPreviewFX(CKGraphicsAsset asset, int row,int frame,
+												int previewWidth,int previewHeight)
+	{
+		return convertToFXImage(createAssetPreview(asset, row, frame, previewWidth, previewHeight));
+	}
+	
 	
 	
 	public static BufferedImage createScenePreview(CKGraphicsSceneInterface scene,
