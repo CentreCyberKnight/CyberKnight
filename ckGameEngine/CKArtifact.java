@@ -138,6 +138,11 @@ public class CKArtifact implements CKXMLAsset<CKArtifact>
 		spells.remove(spell);
 	}
 	
+	public int spellCount()
+	{
+		return spells.size();
+	}
+	
 	public void addRequirements(CKBook req)
 	{
 		requirements.add(req);

@@ -2,7 +2,10 @@ package ckSnapInterpreter;
 
 
 import ckDatabase.CKArtifactFactory;
+import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckGameEngine.CKArtifact;
+import ckGameEngine.CKGameObjectsFacade;
+import ckGraphicsEngine.assets.CKGraphicsAsset;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -20,17 +23,7 @@ import netscape.javascript.JSObject;
 public class controlPanel extends Application // implements EventHandler<Action
 												// Event>
 {
-	static WebEngine webEngine;
-	
-	public static void setwebEngine(WebEngine eng)
-	{
-		webEngine = eng;
-	}
-	
-	public static WebEngine getwebEngine()
-	{
-		return webEngine;
-	}
+
 
 	public static void main(String[] args)
 	{
@@ -73,20 +66,21 @@ public class controlPanel extends Application // implements EventHandler<Action
 		TextField a6 = new TextField();
 
 		a1.setOnAction(e -> {CKArtifactModel.setArtifact(combatBoots);});
-		a2.setOnAction(e -> {CKArtifactModel.setArtifact(coolSpoon);});
+		a2.setOnAction(e -> {CKArtifactModel.setArtifact(coolSpoon);});	
 		
+		//CKGraphicsAsset asset = CKGraphicsAssetFactoryXML.readAssetFromXMLDirectory("boots");
+		//System.out.println(asset);
 		
 		
 		WebView browser = new WebView();
-
-		WebEngine webEngine = browser.getEngine();
-		//this.setwebEngine(browser.getEngine());
-		
+        CKGameObjectsFacade.setWebEngine(browser.getEngine());
+        WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
 		
 		// Display a local webpage
 		webEngine.load(getClass().getResource("snap.html").toExternalForm());
 		JSObject jsobj = (JSObject) webEngine.executeScript("window");
 		jsobj.setMember("javaProcess", a6);
+		jsobj.setMember("java", new CKjsDebugger());
 		/*
 		a1.setOnAction(e -> {webEngine.executeScript("ide.domino('Boot', new List(['combatBoot.png', 'leftArrow.png', 'rightArrow.png']))");});
 		a2.setOnAction(e -> {webEngine.executeScript("ide.domino('Wand', new List(['wandIcon.png', 'sparkles.png', 'vase_overTile.png', 'target.png']))");});

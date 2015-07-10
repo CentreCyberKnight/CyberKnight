@@ -215,7 +215,7 @@ public class CKGameObjectsFacade
 	{
 		if (console != null)
 		{
-			// System.out.println("Running this code:\n"+code);
+			//System.out.println("Running this code:\n"+code);
 			console.runNewCode(code, listen);
 		}
 	}

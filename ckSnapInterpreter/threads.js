@@ -153,7 +153,6 @@ ThreadManager.prototype.startProcess = function (
     exportResult,
     callback
 ) {
-	//jsDebug.print("in startProcess");
     var active = this.findProcess(block),
         top = block.topBlock(),
         newProc;
@@ -170,6 +169,7 @@ ThreadManager.prototype.startProcess = function (
         top.addHighlight();
     }
     this.processes.push(newProc);
+    
     //this.processes.push(newProc);
     /*
     var serializer = new SnapSerializer();
