@@ -250,6 +250,7 @@ public class CKUI extends Application
 						images.add(new CKFXImage(image, p.getName()));
 						Button b = new Button(p.getAssetID(), new ImageView(image));
 						b.setOnAction(e -> {
+							
 							data.setPlayer(p);
 							setArtifactNodes();
 						});
@@ -316,6 +317,7 @@ public class CKUI extends Application
 	    		Vector<CKArtifact> arts = team.getArtifacts(data.getPlayer().getName());
 	    		System.out.println(data.getPlayer().getName() + " is equipped with " + arts.size() + " artifacts");
 	    		int aIndex = 0;
+	    		ArtifactSelectionWindow.getChildren().clear();
 	    		for (CKArtifact a : arts) 
 	    			if(a != null) {
 	    				aIndex ++;

@@ -1,6 +1,7 @@
 package ckPythonInterpreterTest;
 
 import static ckCommonUtils.CKPropertyStrings.*;
+
 import static ckCommonUtils.CKPropertyStrings.CH_FIRE;
 import static ckCommonUtils.CKPropertyStrings.CH_MOVE;
 import static ckCommonUtils.CKPropertyStrings.CH_EARTH;
