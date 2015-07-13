@@ -42,6 +42,7 @@ public class CKGridActor extends CKGridItem
 	private CKBook questAbilities = new CKBook();
 	private CKTeam team = CKTeam.getNullTeam();
 	Image fximage;
+	Image fxportrait;
 	
 	
 	ActorController turnController;// = new ActorArtifactController(this,ActorController.BOTH_CONTROL);
@@ -66,6 +67,7 @@ public class CKGridActor extends CKGridItem
 		this.direction = direction;
 		setControllerID("BOTH");	
 		fximage = null;
+		fxportrait = null; 
 	}
 	
 	
@@ -476,7 +478,7 @@ public class CKGridActor extends CKGridItem
 	
 	public Image getFXImage() 
 	{
-		if(this.fximage == null) {	
+		if(this.fximage != null) {	
 			return fximage;
 		}
 		else {
@@ -493,6 +495,24 @@ public class CKGridActor extends CKGridItem
 		}
 	}
 	
+	public Image getFXPortrait() 
+	{
+		if(this.fxportrait != null) {	
+			return fxportrait;
+		}
+		else {
+			try {
+				System.out.println("The image for " + this.getAssetID() + " was not found. It is now being created.");	
+    			CKGraphicsAsset asset = CKGraphicsAssetFactoryXML.getInstance().getPortrait(this.getAssetID());
+    			Image image = CKGraphicsPreviewGenerator.createAssetPreviewFX(asset, 0, 0, 80, 90);
+    			this.fxportrait = image;
+			}
+			catch (NullPointerException n) {
+				System.out.println("The asset for " + this.getAssetID() + " was not found." );
+			}
+			return fxportrait;	
+		}
+	}
 	
 	
 	

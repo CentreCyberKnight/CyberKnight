@@ -244,7 +244,7 @@ public class CKArtifact implements CKXMLAsset<CKArtifact>
 	
 	public Image getFXImage() 
 	{
-		if(this.fximage == null) {	
+		if(this.fximage != null) {	
 			return fximage;
 		}
 		else {

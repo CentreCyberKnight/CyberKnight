@@ -180,7 +180,7 @@ public class CKSpell
 	
 	public Image getFXImage() 
 	{
-		if(this.fximage == null) {	
+		if(this.fximage != null) {	
 			return fximage;
 		}
 		else {
