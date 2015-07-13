@@ -20,6 +20,7 @@ import static ckCommonUtils.CKPropertyStrings.P_TALK;
 import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -80,7 +81,7 @@ public class CKUI extends Application
 	public static String rectColor = "rgb(0,20,28)";
 	public static Double rectOpacity = 0.2;
 	 
-	HBox ArtifactControls;
+	HBox ControlSpells;
 	HBox CharacterIcons;
 	Rectangle PlayerStatsWindow;
 	WebView BrowserWindow;
@@ -91,12 +92,11 @@ public class CKUI extends Application
 	QuestData q;
 	CKTeam team;
 	Vector<CKGridActor> actors;
-	CKFXImageGallery images = new CKFXImageGallery();
 	boolean found;
 	
 	
-	FadeTransition ftShowControls = new FadeTransition(Duration.seconds(0.3), ArtifactControls);
-	FadeTransition ftHideControls = new FadeTransition(Duration.seconds(0.3), ArtifactControls);
+	FadeTransition ftShowControls = new FadeTransition(Duration.seconds(0.3), ControlSpells);
+	FadeTransition ftHideControls = new FadeTransition(Duration.seconds(0.3), ControlSpells);
 	PauseTransition p = new PauseTransition(Duration.seconds(0.3));
 	SequentialTransition stControls = new SequentialTransition (p, ftShowControls);
 	
@@ -110,7 +110,7 @@ public class CKUI extends Application
     	menuPane.setPrefSize(200, 200);
     	populateModel();
 		//this adds all the CKDrawerTabs as the main pane's children
-		menuPane.getChildren().addAll(Icons(), Player(), Snap(), AllArtifacts(), Artifact(), ArtifactControls(), Stats());
+		menuPane.getChildren().addAll(Icons(), Player(), Snap(), AllArtifacts(), Artifact(), ControlSpells(), Stats());
 		
 	    Scene scene = new Scene(menuPane,1500,820);
 	    primaryStage.setTitle("Test Drawer Tabs");
@@ -244,13 +244,11 @@ public class CKUI extends Application
     			if(p != null) {
     				pIndex ++;
     				try {
-    					CKGraphicsAsset asset = CKGraphicsAssetFactoryXML.getInstance().getPortrait(p.getAssetID());
+    				//	CKGraphicsAsset asset = CKGraphicsAssetFactoryXML.getInstance().getPortrait(p.getAssetID());
 	    				System.out.println(pIndex + ": " + p.getName() + " with the assetId of " + p.getAssetID());
-						Image image = CKGraphicsPreviewGenerator.createAssetPreviewFX(asset, 0, 0, 80, 90);
-						images.add(new CKFXImage(image, p.getName()));
-						Button b = new Button(p.getAssetID(), new ImageView(image));
-						b.setOnAction(e -> {
-							
+						//Image image = CKGraphicsPreviewGenerator.createAssetPreviewFX(asset, 0, 0, 80, 90);
+						Button b = new Button(p.getAssetID(), new ImageView(p.getFXPortrait()));
+						b.setOnAction(e -> {	
 							data.setPlayer(p);
 							setArtifactNodes();
 						});
@@ -306,12 +304,7 @@ public class CKUI extends Application
     	}
     	
 
-    	
-    	//returns a vector of fx images of players, artifacts, and spells
-    	public CKFXImageGallery getFXImageGallery() {
-    		return images;
-    	}
-    		
+
     	public void setArtifactNodes() {
 			try {
 	    		Vector<CKArtifact> arts = team.getArtifacts(data.getPlayer().getName());
@@ -321,11 +314,14 @@ public class CKUI extends Application
 	    		for (CKArtifact a : arts) 
 	    			if(a != null) {
 	    				aIndex ++;
-	    				CKGraphicsAsset asset = CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset(a.getIconId());
+//	    				CKGraphicsAsset asset = CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset(a.getIconId());
 	    				System.out.println(aIndex + ": " + a.getIconId());
-						Image image = CKGraphicsPreviewGenerator.createAssetPreviewFX(asset, 0, 0, 80, 90);
-						images.add(new CKFXImage(image, a.getName()));
-						Button b = new Button(a.getAID(), new ImageView(image));
+//						Image image = CKGraphicsPreviewGenerator.createAssetPreviewFX(asset, 0, 0, 80, 90);
+						Button b = new Button(a.getAID(), new ImageView(a.getFXImage()));
+//						b.setOnAction(e -> {	
+//							data.setArtifact(a);
+//							setControlSpells();
+//						});
 	    				ArtifactSelectionWindow.getChildren().add(b);
 	    				ArtifactSelectionWindow.setAlignment(Pos.CENTER_LEFT);
 	    			}
@@ -349,13 +345,21 @@ public class CKUI extends Application
 	    	
 	    	CKDrawerTab allArtifacts = new CKDrawerTab(ArtifactSelectionWindow, DrawerSides.BOTTOM, 350.0, 720.0, 400.0, 100.0, "ckSnapInterpreter/sword.png");
 
+	    	
 	    	//hover enter effect
-	    	ArtifactSelectionWindow.setOnMouseEntered(e -> {
-	    		System.out.println("Mouse has entered this node");
-	    		ftShowControls.setFromValue(0.0);
-	    		ftShowControls.setToValue(0.5);
-	    		stControls.play();
-	    	});    	
+//	    	ArtifactSelectionWindow.setOnMouseEntered(e -> {
+//	    		System.out.println("Mouse has entered this node");
+//	    		ftShowControls.setFromValue(0.0);
+//	    		ftShowControls.setToValue(0.5);
+//	    		stControls.play();
+//	    	});    	
+//        	ArtifactSelectionWindow.setOnMouseExited(e -> {
+//    		
+//    		System.out.println("Mouse has exited");
+//    		ftHideControls.setFromValue(0.5);
+//    		ftHideControls.setToValue(0.0);
+//    		ftHideControls.play();
+//    	});
 	    	
 //	    	if (ArtifactControls.isHover()) 
 //	    	{
@@ -378,57 +382,45 @@ public class CKUI extends Application
     	}
     	
     	
-    	public HBox ArtifactControls() {
+    	public HBox ControlSpells() {
 	    	//Controls
-	    	ArtifactControls = new HBox();
-	    	ArtifactControls.setPrefSize(400, 150);
-	    	ArtifactControls.setPadding(new Insets(15, 12, 15, 12));
-	    	ArtifactControls.setSpacing(10);
-	    	ArtifactControls.setStyle("-fx-background-color: rgb(0, 20, 28)");
-	    	ArtifactControls.setOpacity(0.0);
-	    	ArtifactControls.setTranslateX(350);
-	    	ArtifactControls.setTranslateY(520);
-	    	return ArtifactControls;
+	    	ControlSpells = new HBox();
+	    	ControlSpells.setPrefSize(400, 150);
+	    	ControlSpells.setPadding(new Insets(15, 12, 15, 12));
+	    	ControlSpells.setSpacing(10);
+	    	ControlSpells.setStyle("-fx-background-color: rgb(0, 20, 28)");
+	    	//ControlSpells.setOpacity(0.0);
+	    	ControlSpells.setTranslateX(350);
+	    	ControlSpells.setTranslateY(520);
+	    	setControlSpells();
+	    	return ControlSpells;
     	}
     	
-//    	public void Transitions() {
-//	    	//transitions for artifacts and controls
-//	    	ftShowControls = new FadeTransition(Duration.seconds(0.3), ArtifactControls);
-//	    	ftHideControls = new FadeTransition(Duration.seconds(0.3), ArtifactControls);
-//	    	p = new PauseTransition(Duration.seconds(0.3));
-//			stControls = new SequentialTransition (p, ftShowControls);
-//	    	
-//	    	//hover enter effect
-//	    	ArtifactSelectionWindow.setOnMouseEntered(e -> {
-//	    		System.out.println("Mouse has entered this node");
-//	    		ftShowControls.setFromValue(0.0);
-//	    		ftShowControls.setToValue(0.5);
-//	    		stControls.play();
-//	    	});
-//	    	
-//	    	
-//	    	//if Artifact Controls are hovered, e-> asldjfslkd. else 
-//	    	{
-//	    	if (ArtifactControls.isHover()) 
-//	    	{
-//	    		System.out.println("Mouse has entered Artifact Controls");
-//	    		ftShowControls.setToValue(0.5);
-//	    		stControls.play();
-//	    	}
-//	    	
-//	    	
-//	    	else 
-//	        	{ArtifactSelectionWindow.setOnMouseExited(e -> {
-//	        		
-//	        		System.out.println("Mouse has exited");
-//	        		ftHideControls.setFromValue(0.5);
-//	        		ftHideControls.setToValue(0.0);
-//	        		ftHideControls.play();
-//	        	});}
-//	    	}
-//    	}
-//    	
-		//hover exit effect
+
+    	
+    	public void setControlSpells() {
+			try {
+				System.out.println(data.getArtifact().getName() + " is equipped with " + data.getArtifact().spellCount() + " spells");
+	    		int aIndex = 0;
+	    		ControlSpells.getChildren().clear();
+	    		for (Iterator<CKSpell> spells = data.getArtifact().getSpells(); spells.hasNext(); ) {
+	    			CKSpell s = spells.next();
+	    			if(s != null) {
+	    				aIndex ++;
+	    				//CKGraphicsAsset asset = CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset(s.getIconID());
+	    				System.out.println(aIndex + ": " + s.getIconID());
+						//Image image = CKGraphicsPreviewGenerator.createAssetPreviewFX(asset, 0, 0, 80, 90);
+						Button b = new Button(s.getIconID(), new ImageView(s.getFXImage()));
+	    				ControlSpells.getChildren().add(b);
+	    				ControlSpells.setAlignment(Pos.CENTER_LEFT);
+	    			}
+	    		}
+			}
+			catch (NullPointerException n) {
+				System.out.println("This graphics asset was not found");
+			}
+    	}
+
 
     	
 
