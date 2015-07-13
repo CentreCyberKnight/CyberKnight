@@ -9,14 +9,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javafx.scene.image.Image;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKPropertyStrings;
 import ckDatabase.CKActorControllerFactory;
+import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckEditor.CKGridActorPropertiesEditor;
 import ckEditor.CKXMLAssetPropertiesEditor;
 import ckEditor.treegui.ActorNode;
 import ckGraphicsEngine.BadInstanceIDError;
 import ckGraphicsEngine.CK2dGraphicsEngine;
+import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.LoadAssetError;
 import ckGraphicsEngine.UnknownAnimationError;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
@@ -38,6 +41,7 @@ public class CKGridActor extends CKGridItem
 	private CKBook coreAbilities = new CKBook();
 	private CKBook questAbilities = new CKBook();
 	private CKTeam team = CKTeam.getNullTeam();
+	Image fximage;
 	
 	
 	ActorController turnController;// = new ActorArtifactController(this,ActorController.BOTH_CONTROL);
@@ -60,7 +64,8 @@ public class CKGridActor extends CKGridItem
 	{
 		setAssetID(assetID); 
 		this.direction = direction;
-		setControllerID("BOTH");		
+		setControllerID("BOTH");	
+		fximage = null;
 	}
 	
 	
@@ -466,6 +471,29 @@ public class CKGridActor extends CKGridItem
 		this.turnsTaken = turnsTaken;
 	}
 
+	
+	
+	
+	public Image getFXImage() 
+	{
+		if(this.fximage == null) {	
+			return fximage;
+		}
+		else {
+			try {
+				System.out.println("The image for " + this.getAssetID() + " was not found. It is now being created.");	
+    			CKGraphicsAsset asset = CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset(this.getAssetID());
+    			Image image = CKGraphicsPreviewGenerator.createAssetPreviewFX(asset, 0, 0, 80, 90);
+    			this.fximage = image;
+			}
+			catch (NullPointerException n) {
+				System.out.println("The asset for " + this.getAssetID() + " was not found." );
+			}
+			return fximage;	
+		}
+	}
+	
+	
 	
 	
 	/*******artifact methods*****/

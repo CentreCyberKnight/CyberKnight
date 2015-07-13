@@ -9,16 +9,20 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
-
 import java.util.Vector;
+
+import javafx.scene.image.Image;
 
 import javax.swing.JComponent;
 
 import ckCommonUtils.CKXMLAsset;
+import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckEditor.ArtifactPropertiesEditor;
 import ckEditor.CKArtifactShortView;
 import ckEditor.CKXMLAssetPropertiesEditor;
 import ckEditor.treegui.BookList;
+import ckGraphicsEngine.CKGraphicsPreviewGenerator;
+import ckGraphicsEngine.assets.CKGraphicsAsset;
 import static ckCommonUtils.CKPropertyStrings.*;
 
 public class CKArtifact implements CKXMLAsset<CKArtifact> 
@@ -27,6 +31,7 @@ public class CKArtifact implements CKXMLAsset<CKArtifact>
 	String name;
 	String backstory;
 	String iconId;
+	Image fximage;
 	
 	Vector<CKSpell> spells;	
 	
@@ -48,6 +53,7 @@ public class CKArtifact implements CKXMLAsset<CKArtifact>
 		this.backstory=backstory;
 		this.iconId=icon;
 		this.spells=new Vector<CKSpell>();
+		this.fximage = null;
 		
 		this.abilties=abilities;
 		this.limits=limits;
@@ -232,6 +238,30 @@ public class CKArtifact implements CKXMLAsset<CKArtifact>
 	{
 		this.iconId = iconId;
 	}
+	
+	
+	
+	
+	public Image getFXImage() 
+	{
+		if(this.fximage == null) {	
+			return fximage;
+		}
+		else {
+			try {
+				System.out.println("The image for " + iconId + " was not found. It is now being created.");	
+    			CKGraphicsAsset asset = CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset(iconId);
+    			Image image = CKGraphicsPreviewGenerator.createAssetPreviewFX(asset, 0, 0, 80, 90);
+    			this.fximage = image;
+			}
+			catch (NullPointerException n) {
+				System.out.println("The asset for " + iconId + " was not found." );
+			}
+			return fximage;	
+		}
+	}
+	
+	
 
 
 	/**
