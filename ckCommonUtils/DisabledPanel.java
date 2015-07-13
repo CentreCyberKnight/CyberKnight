@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
+
 import javax.swing.*;
 
 
@@ -141,7 +142,6 @@ public class DisabledPanel extends JPanel
 	public void setEnabled(boolean enabled)
 	{
 		super.setEnabled(enabled);
-
 		if (enabled)
 		{
 			glassPane.setVisible(false);

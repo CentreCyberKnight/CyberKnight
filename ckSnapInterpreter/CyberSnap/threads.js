@@ -67,6 +67,10 @@ ArgLabelMorph, localize, XML_Element, hex_sha512*/
 
 /*global StageMorph, SpriteMorph, StagePrompterMorph, Note*/
 
+// globals from store.js
+
+/*glocal SnapSerializer*/
+
 // globals from morphic.js:
 
 /*global modules, isString, copy, isNil*/
@@ -83,7 +87,7 @@ ArgLabelMorph, localize, XML_Element, hex_sha512*/
 
 // Global stuff ////////////////////////////////////////////////////////
 
-modules.threads = '2015-January-12';
+modules.threads = '2015-May-01';
 
 var ThreadManager;
 var Process;
@@ -165,6 +169,21 @@ ThreadManager.prototype.startProcess = function (
         top.addHighlight();
     }
     this.processes.push(newProc);
+
+    var serializer = new SnapSerializer();
+    var str = encodeURIComponent(block.toXML(serializer));
+    var app = serializer.app;
+    javaProcess.setText("process ~ threads.js line 168:"
+    	+ 'data:text/xml,<blocks app="'
+    	+ app 
+    	+ '" version="'
+    	+ serializer.version 
+    	+ '">' 
+    	+ str
+    	+ '</blocks>'); 
+
+ 		
+    
     return newProc;
 };
 
@@ -1065,7 +1084,19 @@ Process.prototype.evaluateCustomBlock = function () {
         i,
         value,
         outer;
-
+        
+    //var str = context.exportBlockDefinition();
+    /*var app = serializer.app;
+    var serializer = new SnapSerializer();
+    javaProcess.setText("process ~ threads.js line 1088:"
+    	+ 'data:text/xml,<blocks app="'
+    	+ app 
+    	+ '" version="'
+    	+ serializer.version 
+    	+ '">' 
+    	+ str
+    	+ '</blocks>'); */
+    	
     if (!context) {return null; }
     this.procedureCount += 1;
     outer = new Context();
@@ -1153,13 +1184,16 @@ Process.prototype.doDeclareVariables = function (varNames) {
 Process.prototype.doSetVar = function (varName, value) {
     var varFrame = this.context.variables,
         name = varName;
-
     if (name instanceof Context) {
         if (name.expression.selector === 'reportGetVar') {
-            name = name.expression.blockSpec;
+            name.variables.setVar(
+                name.expression.blockSpec,
+                value
+            );
+            return;
         }
     }
-    varFrame.setVar(name, value);
+    varFrame.setVar(name, value, this.blockReceiver());
 };
 
 Process.prototype.doChangeVar = function (varName, value) {
@@ -1168,10 +1202,14 @@ Process.prototype.doChangeVar = function (varName, value) {
 
     if (name instanceof Context) {
         if (name.expression.selector === 'reportGetVar') {
-            name = name.expression.blockSpec;
+            name.variables.changeVar(
+                name.expression.blockSpec,
+                value
+            );
+            return;
         }
     }
-    varFrame.changeVar(name, value);
+    varFrame.changeVar(name, value, this.blockReceiver());
 };
 
 Process.prototype.reportGetVar = function () {
@@ -1323,6 +1361,8 @@ Process.prototype.doDeleteFromList = function (index, list) {
     }
     if (this.inputOption(index) === 'last') {
         idx = list.length();
+    } else if (isNaN(+this.inputOption(index))) {
+        return null;
     }
     list.remove(idx);
 };
@@ -1807,6 +1847,7 @@ Process.prototype.doAsk = function (data) {
         isStage = this.blockReceiver() instanceof StageMorph,
         activePrompter;
 
+    stage.keysPressed = {};
     if (!this.prompter) {
         activePrompter = detect(
             stage.children,
@@ -1926,7 +1967,7 @@ Process.prototype.reportTypeOf = function (thing) {
     if (thing === true || (thing === false)) {
         return 'Boolean';
     }
-    if (!isNaN(parseFloat(thing))) {
+    if (!isNaN(+thing)) {
         return 'number';
     }
     if (isString(thing)) {
@@ -2175,6 +2216,9 @@ Process.prototype.reportJoinWords = function (aList) {
 // Process string ops
 
 Process.prototype.reportLetter = function (idx, string) {
+    if (string instanceof List) { // catch a common user error
+        return '';
+    }
     var i = +(idx || 0),
         str = (string || '').toString();
     return str[i - 1] || '';

@@ -90,6 +90,9 @@ public class CKEditorPCController
 		System.out.println("points left?" + ap);
 		CKPlayerObjectsFacade.alterCPTurnRemaining(-val);
 		getCharacter().setCyberPoints(getCharacter().getCyberPoints() - val);
+		
+
+		
 		if (ap >= val)
 		{
 			return true;
@@ -98,6 +101,7 @@ public class CKEditorPCController
 			CPShortage("You don't have enough CP");
 			return false;
 		}
+
 
 	}
 
