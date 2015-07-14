@@ -320,26 +320,8 @@ public class CKPythonConsoleExtended extends JConsole
 		boolean error = false;
 		public void run()
 		{
-
-			//System.out.printf("Got to thread");
-			//console.runsource(source);
-			try
-			{
-				//trying to run CyberSnap
-				WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
-				JSObject jsobj = (JSObject) webEngine.executeScript("window");
-				jsobj.setMember("completionListener", this);
-				System.out.println("in thread");
-				webEngine.executeScript("setTimeout(ide.fireTEST(), 0)");
-				//console.exec(source);
-			}
-			catch(Exception e)
-			{ //should be interrupt by another thread
-				System.out.println("Not a PYException?");
-				closeRunner();
-				error=true;
-			}
-
+			SnapRunner runner = new SnapRunner(this);
+			Platform.runLater(runner);
 			waitForSnap();			
 		}
 		
@@ -351,7 +333,7 @@ public class CKPythonConsoleExtended extends JConsole
 				catch (InterruptedException e) {}
 			}
 			//now wrap it up.
-			System.out.printf("after thread");
+			System.out.print("after thread");
 			codeCompletes();
 			if(listener!=null)
 			{
@@ -364,6 +346,28 @@ public class CKPythonConsoleExtended extends JConsole
 			done=true;
 			notify();
 		}
+	}
+	
+	public class SnapRunner extends Thread
+	{
+		protected codeRunner runner;
+		
+		public SnapRunner(codeRunner run)
+		{
+			runner = run;
+		}
+		
+		public void run()
+		{
+
+				
+				WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
+				JSObject jsobj = (JSObject) webEngine.executeScript("window");
+				jsobj.setMember("completionListener", runner);				
+				System.out.println("in thread");
+				webEngine.executeScript("ide.fireTEST()");	
+		}
+		
 	}
 	
 	
@@ -457,8 +461,8 @@ public class CKPythonConsoleExtended extends JConsole
 		execThread=new codeRunner(console,source,listener);
 		execThread.setDaemon(true);
 		
-		//execThread.start();
-		Platform.runLater(execThread);
+		execThread.start();
+		//Platform.runLater(execThread);
 	}
 
 	

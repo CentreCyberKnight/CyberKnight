@@ -222,12 +222,12 @@ IDE_Morph.prototype.init = function (isAutoFill) {
 	block.setSpec("Button");	//setting name
 	this.currentSprite.scripts.addChild(block);
 	
-	/*
+	
 	var block2 = new HatBlockMorph();	//hat block 
 	block2.setSelector('receiveGo');
 	block2.setSpec("Button CK");
 	block2.isVisible = false;
-	this.currentSprite.scripts.addChild(block2);*/
+	this.currentSprite.scripts.addChild(block2);
 	
     this.sprites = new List([this.currentSprite]); // this.currentSprite]);
     this.allSprites = new List([this.currentSprite]); //this.currentSprite]);
@@ -1307,11 +1307,9 @@ IDE_Morph.prototype.hideBlock = function (book) {
 
 
 IDE_Morph.prototype.fireTEST = function() {
-	//var event = new CustomEvent("CK", {detail : 'Button'});
-	//window.setTimeout(jsDebug.print("fireTEST"), 0)
-	//completionListener.snapCompletes();
+	var event = new CustomEvent("CK", {detail : 'Button'});
 	jsDebug.print("fireTEST");
-	//document.getElementById('world').dispatchEvent(event);
+	document.getElementById('world').dispatchEvent(event);
 	//setInterval(loop, 1);
 };
 

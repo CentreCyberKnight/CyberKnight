@@ -24,7 +24,10 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 
 import ckCommonUtils.CKPosition;
 import ckDatabase.CKArtifactFactory;
@@ -34,6 +37,7 @@ import ckEditor.treegui.BookList;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKBook;
 import ckGameEngine.CKChapter;
+import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKPage;
 import ckGameEngine.CKSpell;
@@ -49,6 +53,7 @@ import ckPythonInterpreter.CKTeamView;
 import ckSatisfies.PositionReachedSatisfies;
 import ckSatisfies.Satisfies;
 import ckSatisfies.TrueSatisfies;
+import ckSnapInterpreter.CKArtifactQuestRunner.gameThread;
 import ckSnapInterpreter.CKDrawerTab;
 import ckTrigger.CKTrigger;
 import ckTrigger.TriggerResult;
@@ -58,6 +63,8 @@ import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.embed.swing.SwingNode;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -109,8 +116,10 @@ public class CKUI extends Application
     	Pane menuPane = new Pane();
     	menuPane.setPrefSize(200, 200);
     	populateModel();
+    	final SwingNode swingNode = new SwingNode();
+    	createSwingContent(swingNode);
 		//this adds all the CKDrawerTabs as the main pane's children
-		menuPane.getChildren().addAll(Icons(), Player(), Snap(), AllArtifacts(), Artifact(), ControlSpells(), Stats());
+		menuPane.getChildren().addAll(swingNode, Icons(), Player(), Snap(), AllArtifacts(), Artifact(), ControlSpells(), Stats());
 		
 	    Scene scene = new Scene(menuPane,1500,820);
 	    primaryStage.setTitle("Test Drawer Tabs");
@@ -118,7 +127,24 @@ public class CKUI extends Application
 	    primaryStage.show();
     }
     
-    public void populateModel() {	
+
+	private void createSwingContent(SwingNode swingNode) {
+		SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+            	Quest quest = CKGameObjectsFacade.getQuest();
+            	CKGameObjectsFacade.setQuest(quest);
+                JPanel panel = CKGameObjectsFacade.getEngine();
+                //panel.add(quest.gameLoop());
+                quest.gameLoop();
+                swingNode.setContent(panel);
+            }
+        });
+		
+	}
+
+
+	public void populateModel() {	
 
 		//make a team:)
 		CKBook teamplay = new CKBook();

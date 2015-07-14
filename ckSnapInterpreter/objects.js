@@ -4947,14 +4947,9 @@ StageMorph.prototype.processIdDispatch = function (event) {
 //second step: sister to processKeyEvent
 StageMorph.prototype.processIdEvent = function (event, action) {
 	var id = event.detail;
-	//var idSnapCompletes = id + " CK";
+	var idSnapCompletes = id + " CK";
 	action.call(this, id);
-	//jsDebug.print("called first event");
-	//action.call(this, idSnapCompletes);
-	//jsDebug.print("calling setInterval");
-	//world.doOneCycle();
-	//jsDebug.print("called setInterval");
-	
+	action.call(this, idSnapCompletes);
 	//completionListener.snapCompletes();
 };
 

@@ -272,7 +272,7 @@ public class CKCharacterView extends JPanel implements CKStatsChangeListener
 	
 	public void enableCharacter(boolean enable)
 	{
-		artDPanel.setEnabled(enable);
+		//artDPanel.setEnabled(enable);
 		//textDPanel.setEnabled(enable);
 	}
 	

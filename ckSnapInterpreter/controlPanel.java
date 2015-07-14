@@ -77,6 +77,7 @@ public class controlPanel extends Application // implements EventHandler<Action
         WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
 		
 		// Display a local webpage
+        
 		webEngine.load(getClass().getResource("snap.html").toExternalForm());
 		JSObject jsobj = (JSObject) webEngine.executeScript("window");
 		jsobj.setMember("javaProcess", a6);

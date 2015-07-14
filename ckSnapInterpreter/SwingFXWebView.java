@@ -5,12 +5,20 @@ package ckSnapInterpreter;
 //used to load CyberSnap
 
 import com.sun.javafx.application.PlatformImpl;
+
 import ckGameEngine.CKGameObjectsFacade;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Duration;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
@@ -117,18 +125,38 @@ public class SwingFXWebView extends JPanel {
                 webEngine = CKGameObjectsFacade.getWebEngine();
                 webEngine.load(getClass().getResource("snap.html").toExternalForm());
         		JSObject jsobj = (JSObject) webEngine.executeScript("window");
+        		/*
+        		class MyTimerTask extends TimerTask {
+        			
+        			@Override
+        			public void run() {
+        				webEngine.executeScript("loop()");
+        			}
+        		}
+        		
+        		TimerTask timerTask = new MyTimerTask();
+        		Timer timer = new Timer(true);
+        		timer.scheduleAtFixedRate(timerTask, 0, 10);
+        		*/
+        		
         		try {
         			jsobj.setMember("javaMove", new CKSpellObject("move"));
         			jsobj.setMember("jsDebug", new CKjsDebugger());
+        			//jsobj.setMember("timer", timer);
+        			//jsobj.setMember("timerTask", timerTask);
+        			
         		}
         		catch (Exception e) {
         			System.out.println("wrong item");
         		}
                 
+        		
                 ObservableList<Node> children = root.getChildren();
+                
                 children.add(browser);                     
                  
-                jfxPanel.setScene(scene);  
+                jfxPanel.setScene(scene);
+                
             }  
         });  
     }

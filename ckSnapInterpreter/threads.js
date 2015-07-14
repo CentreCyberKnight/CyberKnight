@@ -189,7 +189,9 @@ ThreadManager.prototype.startProcess = function (
     	+ '</blocks>'); 
 	*/
 
-    jsDebug.print("end of startProcess");
+    jsDebug.print("end of startProcess" + this.processes.length);
+    
+    
     
     return newProc;
 };
@@ -257,7 +259,7 @@ ThreadManager.prototype.step = function () {
             proc.runStep();
         }
     });
-	/*
+	
     if (this.processes.length > 0) {
     	jsDebug.print("in step where processes > 0");
         var block = this.processes[1];
@@ -269,7 +271,7 @@ ThreadManager.prototype.step = function () {
     }
     else {
         this.removeTerminatedProcesses();
-    }*/
+    }
 	jsDebug.print("after process");
     this.removeTerminatedProcesses();
     jsDebug.print("after terminated process");
