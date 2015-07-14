@@ -330,7 +330,7 @@ public class CKPythonConsoleExtended extends JConsole
 				JSObject jsobj = (JSObject) webEngine.executeScript("window");
 				jsobj.setMember("completionListener", this);
 				System.out.println("in thread");
-				webEngine.executeScript("ide.fireTEST()");
+				webEngine.executeScript("setTimeout(ide.fireTEST(), 0)");
 				//console.exec(source);
 			}
 			catch(Exception e)

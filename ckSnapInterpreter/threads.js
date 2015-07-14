@@ -163,12 +163,15 @@ ThreadManager.prototype.startProcess = function (
         active.stop();
         this.removeTerminatedProcesses();
     }
+    
+    
     newProc = new Process(block.topBlock(), callback);
     newProc.exportResult = exportResult;
     if (!newProc.homeContext.receiver.isClone) {
         top.addHighlight();
     }
     this.processes.push(newProc);
+    
     
     //this.processes.push(newProc);
     /*
@@ -186,7 +189,7 @@ ThreadManager.prototype.startProcess = function (
     	+ '</blocks>'); 
 	*/
 
-    //jsDebug.print("end of startProcess");
+    jsDebug.print("end of startProcess");
     
     return newProc;
 };
@@ -247,13 +250,29 @@ ThreadManager.prototype.step = function () {
     // run each process until it gives up control, skipping processes
     // for sprites that are currently picked up, then filter out any
     // processes that have been terminated
-
+	
+	jsDebug.print("step");
 	this.processes.forEach(function (proc) {
         if (!proc.homeContext.receiver.isPickedUp() && !proc.isDead) {
             proc.runStep();
         }
     });
+	/*
+    if (this.processes.length > 0) {
+    	jsDebug.print("in step where processes > 0");
+        var block = this.processes[1];
+        if (block.topBlock.selector === 'receiveGo') {
+        	jsDebug.print("got selector");
+            this.removeTerminatedProcesses();
+            completionListener.snapCompletes();
+        }
+    }
+    else {
+        this.removeTerminatedProcesses();
+    }*/
+	jsDebug.print("after process");
     this.removeTerminatedProcesses();
+    jsDebug.print("after terminated process");
 };
 
 ThreadManager.prototype.removeTerminatedProcesses = function () {

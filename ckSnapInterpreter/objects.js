@@ -4947,10 +4947,14 @@ StageMorph.prototype.processIdDispatch = function (event) {
 //second step: sister to processKeyEvent
 StageMorph.prototype.processIdEvent = function (event, action) {
 	var id = event.detail;
+	//var idSnapCompletes = id + " CK";
 	action.call(this, id);
+	//jsDebug.print("called first event");
+	//action.call(this, idSnapCompletes);
+	//jsDebug.print("calling setInterval");
 	//world.doOneCycle();
-	//world.doOneCycle();
-
+	//jsDebug.print("called setInterval");
+	
 	//completionListener.snapCompletes();
 };
 
@@ -4966,9 +4970,12 @@ StageMorph.prototype.IdEvent = function (ID) {
 		hats = hats.concat(morph.allHatBlocksForId(evt));
        }
     });
+	jsDebug.print("have hats");
     hats.forEach(function (block) {
         procs.push(myself.threads.startProcess(block, myself.isThreadSafe));
     });
+    jsDebug.print("pushed hats");
+    
     return procs;	
 };
 
@@ -4976,7 +4983,7 @@ StageMorph.prototype.IdEvent = function (ID) {
 SpriteMorph.prototype.allHatBlocksForId = function (ID) {
     return this.scripts.children.filter(function (morph) {
         if (morph.selector) {
-            if (morph.selector === 'receiveID') {
+            if (morph.selector === 'receiveID' || morph.selector === 'receiveGo') {
             	//this allows us to use a drop down menu
                 return morph.blockSpec === ID;
             }
