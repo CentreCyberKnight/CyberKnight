@@ -212,9 +212,30 @@ IDE_Morph.prototype.init = function (isAutoFill) {
 
     this.globalVariables = new VariableFrame();
     this.currentSprite = new SpriteMorph(this.globalVariables);
+    //adding more sprites 
+    //this.extra = new SpriteMorph(this.globalVariables);
+    //var ex2 = new SpriteMorph(this.globalVariables);
     //however many sprites that are currently on the screen
-    this.sprites = new List([]); // this.currentSprite]);
-    this.allSprites = new List([]); //this.currentSprite]);
+    this.sprites = new List([this.currentSprite]);
+    var block = new HatBlockMorph();	//hat block 
+	block.setSelector('receiveID');
+	block.setSpec("Button");	//setting name
+	this.currentSprite.scripts.addChild(block);
+	
+	
+	var block2 = new HatBlockMorph();	//hat block 
+	block2.setSelector('receiveGo');
+	block2.setSpec("Button CK");
+	block2.isVisible = false;
+	this.currentSprite.scripts.addChild(block2);
+	
+    this.sprites = new List([this.currentSprite]); // this.currentSprite]);
+    this.allSprites = new List([this.currentSprite]); //this.currentSprite]);
+    
+    
+    //this.sprites = new List([]); // this.currentSprite]);
+    //this.allSprites = new List([]);
+
     
     //creating a list for checking to see what sprite goes with
     // what artifact
@@ -260,8 +281,6 @@ IDE_Morph.prototype.init = function (isAutoFill) {
     // override inherited properites:
     this.color = this.backgroundColor;
     
-    //HARDCODE
-    this.domino("Boot",new List(['combatBoot.png', 'leftArrow.png', 'rightArrow.png']));
 };
 
 IDE_Morph.prototype.openIn = function (world) {
@@ -1287,6 +1306,13 @@ IDE_Morph.prototype.hideBlock = function (book) {
 };
 
 
+IDE_Morph.prototype.fireTEST = function() {
+	var event = new CustomEvent("CK", {detail : 'Button'});
+	jsDebug.print("fireTEST");
+	document.getElementById('world').dispatchEvent(event);
+	//setInterval(loop, 1);
+};
+
 
 //executes scripts
 //parameters are the artifact name & location of spell Vector
@@ -1309,24 +1335,26 @@ IDE_Morph.prototype.fire = function(artifact, location) {
 
 //sets up the stage for an artifact
 //parameter: artifact name & List(artifact.png, all method pngs)
-IDE_Morph.prototype.domino = function(artifact, images){
+IDE_Morph.prototype.setCyberSnap = function(){
 	var list = new List([]);
 	var acc = 0;
 	var num = 1;	//used when traversing the checkList
 	var sprite;		//place holder for sprites
 	var lcArtifact;	//used when traversing the checkList
-	var methods = images.length() - 1;	//number of methods
+	var name = artifact.getName();
+	var methods = artifact.spellCount();	//number of methods
 	//var arr = [];
 	
-	//setting the artifact icon
-	this.img = images.at(1);
-	this.setArtifact();
 	
+	//setting the artifact icon
+	//this.img = images.at(1);
+	//this.setArtifact();
+	javaProcess.setText(name);
 	//first check to see if we already have sprites for an artifact
-	if (this.checkList.contains(artifact)) {
+	if (this.checkList.contains(name)) {
 		//find where our sprites are in the list
 		lcArtifact = this.checkList.at(num);
-		while (lcArtifact != artifact) {
+		while (lcArtifact != name) {
 			num++;
 			lcArtifact = this.checkList.at(num);
 		}
@@ -1349,9 +1377,9 @@ IDE_Morph.prototype.domino = function(artifact, images){
 				//this.allSprites.add(this.currentSprite);
 				var block = new HatBlockMorph();	//hat block 
 				block.setSelector('receiveID');
-				block.setSpec(artifact + ": Button " + acc);	//setting name
+				block.setSpec(name + ": Button " + acc);	//setting name
 				this.currentSprite.scripts.addChild(block);
-				this.checkList.put(artifact, num);
+				this.checkList.put(name, num);
 				this.selectSprite(this.currentSprite);
 				num++;
 				acc++;
@@ -1360,13 +1388,17 @@ IDE_Morph.prototype.domino = function(artifact, images){
 				num++;
 		}
 		//setting the picture for each sprite
+		/*
 		var picture;
 		for (var i = 1; i <= methods; i++) {
 			sprite = list.at(i);
-			picture = images.at(i+1);
-			sprite.setPic(picture);
+			
+			//picture = images.at(i+1);
+			//sprite.setPic(picture);
 		}
+		*/
 	}
+	
 	
 	//updating what sprites are on the screen
 	this.sprites = list;

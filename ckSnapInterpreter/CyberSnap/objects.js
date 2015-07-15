@@ -165,7 +165,7 @@ SpriteMorph.prototype.categories =
         'wind',
         'voice',
         'earth',
-        'physical',
+        'variables',
         'lightning',
         'other',
     ];
@@ -178,9 +178,9 @@ SpriteMorph.prototype.blockColor = {
     control : new Color(128, 44, 39),
     lightning : new Color(255, 239, 0),
     voice : new Color(144, 39, 156),
-    physical : new Color(94, 110, 99),
+    variables : new Color(94, 110, 99),
     earth : new Color(13, 156, 51),
-    other: new Color(150, 150, 150)
+    other : new Color(243, 118, 29)
 };
 
 SpriteMorph.prototype.paletteColor = new Color(55, 55, 55);
@@ -1978,6 +1978,7 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         blocks.push('-');
         blocks.push(block('doReport'));
         blocks.push('-');
+        
     /*
     // old STOP variants, migrated to a newer version, now redundant
         blocks.push(block('doStopBlock'));
@@ -2006,6 +2007,40 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         blocks.push(block('removeClone'));
         blocks.push('-');
         blocks.push(block('doPauseAll'));
+        
+        blocks.push('=');
+        button = new PushButtonMorph(
+                null,
+                function () {
+                    var ide = myself.parentThatIsA(IDE_Morph),
+                        stage = myself.parentThatIsA(StageMorph);
+                    new BlockDialogMorph(
+                        null,
+                        function (definition) {
+                            if (definition.spec !== '') {
+                                if (definition.isGlobal) {
+                                    stage.globalBlocks.push(definition);
+                                } else {
+                                    myself.customBlocks.push(definition);
+                                }
+                                ide.flushPaletteCache();
+                                ide.refreshPalette();
+                                new BlockEditorMorph(definition, myself).popUp();
+                            }
+                        },
+                        myself
+                    ).prompt(
+                        'Make a block',
+                        null,
+                        myself.world()
+                    );
+                },
+                'Make a block'
+            );
+            button.userMenu = helpMenu;
+            button.selector = 'addCustomBlock';
+            button.showHelp = BlockMorph.prototype.showHelp;
+            blocks.push(button);
 
     } else if (cat === 'sensing') {
 
@@ -3445,8 +3480,15 @@ Morph.prototype.setPosition = function (aPoint, justMe) {
         this.moveBy(delta, justMe);
     }
 };
+SpriteMorph.prototype.snapCompletes = function() {
+	completionListener.snapCompletes();	
+};
 
 SpriteMorph.prototype.forward = function (steps) {
+	//link to move in java
+	jsDebug.print("in forward");
+	javaMove.move2("left", 1);
+	/*
     var dest,
         dist = steps * this.parent.scale || 0;
 
@@ -3460,6 +3502,7 @@ SpriteMorph.prototype.forward = function (steps) {
     }
     this.setPosition(dest);
     this.positionTalkBubble();
+    */
 
 };
 
@@ -4898,12 +4941,16 @@ StageMorph.prototype.processIdDispatch = function (event) {
 		event, 
 		this.IdEvent
 	);
+	//possible listener placement
 };
 
 //second step: sister to processKeyEvent
 StageMorph.prototype.processIdEvent = function (event, action) {
 	var id = event.detail;
+	var idSnapCompletes = id + " CK";
 	action.call(this, id);
+	action.call(this, idSnapCompletes);
+	//completionListener.snapCompletes();
 };
 
 //third step: sister to fireKeyEvent
@@ -4918,9 +4965,12 @@ StageMorph.prototype.IdEvent = function (ID) {
 		hats = hats.concat(morph.allHatBlocksForId(evt));
        }
     });
+	jsDebug.print("have hats");
     hats.forEach(function (block) {
         procs.push(myself.threads.startProcess(block, myself.isThreadSafe));
     });
+    jsDebug.print("pushed hats");
+    
     return procs;	
 };
 
@@ -4928,7 +4978,7 @@ StageMorph.prototype.IdEvent = function (ID) {
 SpriteMorph.prototype.allHatBlocksForId = function (ID) {
     return this.scripts.children.filter(function (morph) {
         if (morph.selector) {
-            if (morph.selector === 'receiveID') {
+            if (morph.selector === 'receiveID' || morph.selector === 'receiveGo') {
             	//this allows us to use a drop down menu
                 return morph.blockSpec === ID;
             }

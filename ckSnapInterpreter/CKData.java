@@ -183,10 +183,6 @@ public class CKData {
 			observer.update(artifact);
 		}
 		System.out.println("Notified all registers observers");
-		WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
-		JSObject jsobj = (JSObject) webEngine.executeScript("window");
-		jsobj.setMember("artifact", artifact);
-		webEngine.executeScript("ide.setCyberSnap()");
 	}
 	
 	
