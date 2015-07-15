@@ -253,13 +253,12 @@ ThreadManager.prototype.step = function () {
     // for sprites that are currently picked up, then filter out any
     // processes that have been terminated
 	
-	jsDebug.print("step");
 	this.processes.forEach(function (proc) {
         if (!proc.homeContext.receiver.isPickedUp() && !proc.isDead) {
             proc.runStep();
         }
     });
-	
+	/*
     if (this.processes.length > 0) {
     	jsDebug.print("in step where processes > 0");
         var block = this.processes[1];
@@ -272,9 +271,8 @@ ThreadManager.prototype.step = function () {
     else {
         this.removeTerminatedProcesses();
     }
-	jsDebug.print("after process");
+    */
     this.removeTerminatedProcesses();
-    jsDebug.print("after terminated process");
 };
 
 ThreadManager.prototype.removeTerminatedProcesses = function () {
@@ -292,6 +290,12 @@ ThreadManager.prototype.removeTerminatedProcesses = function () {
                     proc.homeContext.receiver.stopTalking();
                 }
             }
+            
+            /*
+            if (proc.topBlock.selector === 'receiveGo') {
+                completionListener.snapCompletes();
+            }
+            */
 
             if (proc.topBlock instanceof ReporterBlockMorph) {
                 if (proc.onComplete instanceof Function) {
@@ -317,7 +321,6 @@ ThreadManager.prototype.removeTerminatedProcesses = function () {
         }
     });
     this.processes = remaining;
-    //completionListener.snapCompletes();
 };
 
 ThreadManager.prototype.findProcess = function (block) {
@@ -534,7 +537,7 @@ Process.prototype.evaluateContext = function () {
 
 Process.prototype.evaluateBlock = function (block, argCount) {
     // check for special forms
-	//jsDebug.print("eval block");
+	jsDebug.print("eval block");
     if (contains(['reportOr', 'reportAnd', 'doReport'], block.selector)) {
         return this[block.selector](block);
     }
