@@ -27,7 +27,10 @@ import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+<<<<<<< HEAD
 import javax.swing.JFrame;
+=======
+>>>>>>> 737b62428fda91248c56550ff47f01580ab831c8
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
@@ -59,6 +62,7 @@ import ckPythonInterpreterTest.CKArtifactQuestRunner;
 import ckSatisfies.PositionReachedSatisfies;
 import ckSatisfies.Satisfies;
 import ckSatisfies.TrueSatisfies;
+import ckSnapInterpreter.CKArtifactQuestRunner.gameThread;
 import ckSnapInterpreter.CKDrawerTab;
 import ckTrigger.CKTrigger;
 import ckTrigger.CKTriggerList;
@@ -69,8 +73,13 @@ import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+<<<<<<< HEAD
 import javafx.embed.swing.SwingNode;
 import javafx.geometry.HPos;
+=======
+import javafx.application.Platform;
+import javafx.embed.swing.SwingNode;
+>>>>>>> 737b62428fda91248c56550ff47f01580ab831c8
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -145,9 +154,15 @@ public class CKUI extends Application
 //		 T.start();
     	
     	populateModel();
+    	final SwingNode swingNode = new SwingNode();
+    	createSwingContent(swingNode);
 		//this adds all the CKDrawerTabs as the main pane's children
+<<<<<<< HEAD
     	//menuPane.getChildren().add(pane);
 		menuPane.getChildren().addAll(Icons(), Player(), Artifact(), AllArtifacts(), ControlSpells(), Stats(), Snap());
+=======
+		menuPane.getChildren().addAll(swingNode, Icons(), Player(), Snap(), AllArtifacts(), Artifact(), ControlSpells(), Stats());
+>>>>>>> 737b62428fda91248c56550ff47f01580ab831c8
 		
 	    Scene scene = new Scene(menuPane,1500,820);
 	    primaryStage.setTitle("Test Drawer Tabs");
@@ -155,7 +170,24 @@ public class CKUI extends Application
 	    primaryStage.show();
     }
     
-    public void populateModel() {	
+
+	private void createSwingContent(SwingNode swingNode) {
+		SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+            	Quest quest = CKGameObjectsFacade.getQuest();
+            	CKGameObjectsFacade.setQuest(quest);
+                JPanel panel = CKGameObjectsFacade.getEngine();
+                //panel.add(quest.gameLoop());
+                quest.gameLoop();
+                swingNode.setContent(panel);
+            }
+        });
+		
+	}
+
+
+	public void populateModel() {	
 
     	
     	
