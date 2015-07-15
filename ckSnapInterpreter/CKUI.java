@@ -17,23 +17,31 @@ import static ckCommonUtils.CKPropertyStrings.P_SLASH;
 import static ckCommonUtils.CKPropertyStrings.P_SWORD;
 import static ckCommonUtils.CKPropertyStrings.P_TALK;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 
 import ckCommonUtils.CKPosition;
 import ckDatabase.CKArtifactFactory;
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckEditor.CKAssetButton;
+import ckEditor.treegui.ActorNode;
 import ckEditor.treegui.BookList;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKBook;
 import ckGameEngine.CKChapter;
+import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKPage;
 import ckGameEngine.CKSpell;
@@ -43,14 +51,17 @@ import ckGameEngine.Quest;
 import ckGameEngine.QuestData;
 import ckGameEngine.actions.CKSimpleGUIAction;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
+import ckGraphicsEngine.assets.CKAssetViewer;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckPythonInterpreter.CKCharacterView;
 import ckPythonInterpreter.CKTeamView;
+import ckPythonInterpreterTest.CKArtifactQuestRunner;
 import ckSatisfies.PositionReachedSatisfies;
 import ckSatisfies.Satisfies;
 import ckSatisfies.TrueSatisfies;
 import ckSnapInterpreter.CKDrawerTab;
 import ckTrigger.CKTrigger;
+import ckTrigger.CKTriggerList;
 import ckTrigger.TriggerResult;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
@@ -58,18 +69,27 @@ import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.embed.swing.SwingNode;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -83,16 +103,20 @@ public class CKUI extends Application
 	 
 	HBox ControlSpells;
 	HBox CharacterIcons;
-	Rectangle PlayerStatsWindow;
+	GridPane PlayerStatsWindow;
 	WebView BrowserWindow;
-	Rectangle PlayerDescriptionWindow;
-	Rectangle ArtifactDescriptionWindow;
+	GridPane PlayerDescriptionWindow;
+	GridPane ArtifactDescriptionWindow;
 	HBox ArtifactSelectionWindow;
 	CKData data;
 	QuestData q;
 	CKTeam team;
 	Vector<CKGridActor> actors;
-	boolean found;
+	//boolean found;
+	Pane pane;
+	Quest quest;
+	
+	
 	
 	
 	FadeTransition ftShowControls = new FadeTransition(Duration.seconds(0.3), ControlSpells);
@@ -108,9 +132,22 @@ public class CKUI extends Application
     	//The main pane that all DrawerTab nodes are added onto
     	Pane menuPane = new Pane();
     	menuPane.setPrefSize(200, 200);
+    	
+    	//quest = createTestQuest();
+//    	CKGameObjectsFacade.setQuest(quest);
+//    	
+//        final SwingNode swingNode = new SwingNode();
+//        createAndSetSwingContent(swingNode);
+//        pane = new Pane();
+//        pane.setPrefSize(4000, 4000);
+//        pane.getChildren().add(swingNode);  
+//		 Thread T = new gameThread();
+//		 T.start();
+    	
     	populateModel();
 		//this adds all the CKDrawerTabs as the main pane's children
-		menuPane.getChildren().addAll(Icons(), Player(), Snap(), AllArtifacts(), Artifact(), ControlSpells(), Stats());
+    	//menuPane.getChildren().add(pane);
+		menuPane.getChildren().addAll(Icons(), Player(), Artifact(), AllArtifacts(), ControlSpells(), Stats(), Snap());
 		
 	    Scene scene = new Scene(menuPane,1500,820);
 	    primaryStage.setTitle("Test Drawer Tabs");
@@ -120,6 +157,8 @@ public class CKUI extends Application
     
     public void populateModel() {	
 
+    	
+    	
 		//make a team:)
 		CKBook teamplay = new CKBook();
 		CKChapter chap = new CKChapter(CH_MOVE, 1);
@@ -201,8 +240,6 @@ public class CKUI extends Application
 
 		baby.addAbilities(new CKBook("abil",CH_EQUIP_SLOTS,0,P_SHOES));
 		
-		//add them
-		
 		//team.addCharacter(mom);
 		//team.addCharacter(baby);
 		//already did team.addCharacter(dad);
@@ -221,13 +258,111 @@ public class CKUI extends Application
 	    //mom.equipArtifact(P_SHOES, combatBoots);
 	    mom.equipArtifact(combatBoots);
 	    
+		//add to quest
+		ActorNode babyActor =	new ActorNode("ArtifactTestBaby",Direction.NORTHWEST, 
+				new CKPosition(9,0,0,0),new CKTriggerList());
+		babyActor.setControllerID("NULL");
+		ActorNode momActor =	new ActorNode("ArtifactTestMom",Direction.NORTHEAST, 
+				new CKPosition(9,7,0,0),new CKTriggerList());
+		momActor.setControllerID("NULL");
+		ActorNode dadActor =	new ActorNode("ArtifactTestDad",Direction.NORTHEAST, 
+				new CKPosition(5,9,0,0),new CKTriggerList());
+		dadActor.setControllerID("NULL");
+		
+	    
+	    
+//		q2.addActor(babyActor,"ArtifactTest");
+//		q2.addActor(momActor,"ArtifactTest");
+//		q2.addActor(dadActor,"ArtifactTest");
+//		q2.setTeam("ArtifactTest");
+	    
 	    data = new CKData(mom, combatBoots, spell);
 	    data.setTeam(team);
 	   // data.setPlayer(mom);
-//	    data.setArtifact(combatBoots);
+	    data.setArtifact(combatBoots);
 //	    data.setSpell(spell);
+	   // CKGameObjectsFacade.getEngine();
+	    
+ 
+    }
+    
+    
+//private void createAndSetSwingContent(final SwingNode swingNode) {
+//    SwingUtilities.invokeLater(new Runnable() {
+//        @Override
+//        public void run() {
+//            swingNode.setContent(new JButton("Click me!"));
+//        }
+//    });
+//}
+
+    
+	class gameThread extends Thread
+	 {
+		 public void run()
+		 {
+			 quest.gameLoop();
+		 }
+}
+    private void createAndSetSwingContent(final SwingNode swingNode) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+//            	JPanel j = CKGameObjectsFacade.getEngine();
+//            	j.setPreferredSize(new Dimension(600,600));
+        		CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("hero");	
+        		CKAssetViewer view=new CKAssetViewer(1,A1,null,true);
+        		view.setPreferredSize(new Dimension(600,600));
+            	JPanel j2 = new JPanel();
+            	j2.setPreferredSize(new Dimension(600,600));
+            	j2.setLayout(new BorderLayout());
+            	j2.add(view, BorderLayout.CENTER);
+            	j2.add(new JButton("hi my name is tony"), BorderLayout.NORTH);
+            	swingNode.setContent(j2);
+            	//j2.setMinimumSize(new Dimension(500, 500));
+            	//j.setPreferredSize(new Dimension(4000,4000));
+            	//quest.gameLoop();
+            }
+        });
+    
+    }
+    
+    
+
+
+	public Quest createTestQuest()
+	{
+		//CKGrid grid = new CKGrid(10,10);
+		QuestData q = new QuestData(5);
+		q.setSceneID("Kitchen");
+				
+		Satisfies winSatisfies1 = new PositionReachedSatisfies("Baby", new CKPosition(0, 0));
+		Satisfies winSatisfies2 = new PositionReachedSatisfies("Mom", new CKPosition(0,0));
+		Satisfies winSatisfies3 = new PositionReachedSatisfies("Dad", new CKPosition(0, 0));
 		
+		//start action
+/*		CKSequentialAction start = new CKSequentialAction();
+		start.add()
+	*/
+	/*	q.addTrigger(new CKTrigger(new TrueSatisfies(), 
+				new CKSimpleGUIAction("Dad","Lets race to get to the fridge"),
+				TriggerResult.INIT_ONLY));
+		*/
+		//Win actions
+		q.addTrigger(new CKTrigger(winSatisfies1,
+				new CKSimpleGUIAction("Baby","GAGA!!"),TriggerResult.SATISFIED_END_QUEST));	
+		q.addTrigger(new CKTrigger(winSatisfies2,
+				new CKSimpleGUIAction("Mom","Looks like I won.  Who wants brownies?"),TriggerResult.SATISFIED_END_QUEST));	
+		q.addTrigger(new CKTrigger(winSatisfies3,
+				new CKSimpleGUIAction("Dad","SPOOON!!"),TriggerResult.SATISFIED_END_QUEST));	
+	
+	//populateModel(q);
+	return new Quest(q);
 	}
+
+    
+    
+    
     	
     	//Icons of all the Characters available that the user can select
 	public CKDrawerTab Icons() {
@@ -245,12 +380,17 @@ public class CKUI extends Application
     				pIndex ++;
     				try {
     				//	CKGraphicsAsset asset = CKGraphicsAssetFactoryXML.getInstance().getPortrait(p.getAssetID());
-	    				System.out.println(pIndex + ": " + p.getName() + " with the assetId of " + p.getAssetID());
+	    				System.out.println(pIndex + ": " + p.getName() + " with the assetId: " + p.getAssetID());
 						//Image image = CKGraphicsPreviewGenerator.createAssetPreviewFX(asset, 0, 0, 80, 90);
 						Button b = new Button(p.getAssetID(), new ImageView(p.getFXPortrait()));
 						b.setOnAction(e -> {	
 							data.setPlayer(p);
+							setAllArtifactsNodes();
+							ControlSpells.getChildren().clear();
+						//	setControlSpells();
+							setPlayerNodes();
 							setArtifactNodes();
+						
 						});
 	    				CharacterIcons.getChildren().add(b);
 	    				CharacterIcons.setAlignment(Pos.CENTER);
@@ -266,29 +406,82 @@ public class CKUI extends Application
     	
     	//Description and Points of the current player
     public CKDrawerTab Player() {	
-		PlayerDescriptionWindow = new Rectangle(350, 300);
-    	PlayerDescriptionWindow.setFill(Color.web(rectColor));
-    	PlayerDescriptionWindow.setOpacity(0.2);
+		PlayerDescriptionWindow = new GridPane();
+		PlayerDescriptionWindow.setPadding(new Insets(5));
+		PlayerDescriptionWindow.setHgap(2);
+		PlayerDescriptionWindow.setVgap(2);
+		PlayerDescriptionWindow.setAlignment(Pos.CENTER);
+		PlayerDescriptionWindow.setPrefSize(350, 300);
+    	PlayerDescriptionWindow.setStyle("-fx-background-color: rgb(217, 210, 240)");
+		PlayerDescriptionWindow.setOpacity(0.5);
+    	setPlayerNodes();
     	CKDrawerTab player = new CKDrawerTab(PlayerDescriptionWindow, DrawerSides.LEFT, 0.0, 170.0, 350.0, 300.0, "ckSnapInterpreter/silhouette.png");
     	player.setOpenSize(40.0, 100.0);
     	return player;
     }
+    
+    public void setPlayerNodes() {
+    	Rectangle imageRect = new Rectangle(180, 250);
+    	imageRect.setFill(new ImagePattern(data.getPlayer().getFXImage()));
+    	PlayerDescriptionWindow.getChildren().clear();
+    	PlayerDescriptionWindow.add(imageRect, 0, 0, 2, 5);
+     	//PlayerDescriptionWindow.setValignment(imageRect, VPos.CENTER);
+     	Label playername = new Label(data.getPlayer().getName());
+     	playername.setTextFill(Color.BLACK);
+     	playername.setFont(new Font("Comic Sans MS", 30));
+     	PlayerDescriptionWindow.add(playername, 2, 3, 2, 1);
+     	int cyberpts = data.getPlayer().getCyberPoints();
+     	Label cp = new Label("CyberPoints: " + Integer.toString(cyberpts));
+     	cp.setTextFill(Color.BLACK);
+     	cp.setFont(new Font("Courier New", 20));
+     	PlayerDescriptionWindow.add(cp, 2, 4, 3, 1);
+    }
     	
     	//Player Statistics
     	public CKDrawerTab Stats() {
-	    	PlayerStatsWindow = new Rectangle(350, 350);
-	    	PlayerStatsWindow.setFill(Color.web(rectColor));
-	    	PlayerStatsWindow.setOpacity(0.2);
-	    	CKDrawerTab stats = new CKDrawerTab(PlayerStatsWindow, DrawerSides.LEFT, 0.0, 470.0, 350.0, 350.0, "ckSnapInterpreter/text.png");
+    		PlayerStatsWindow = new GridPane();
+    		PlayerStatsWindow.setPrefSize(400, 300);
+    		PlayerStatsWindow.setPadding(new Insets(5));
+    		PlayerStatsWindow.setHgap(2);
+    		PlayerStatsWindow.setVgap(2);
+    		PlayerStatsWindow.setAlignment(Pos.CENTER);
+    		PlayerStatsWindow.setPrefSize(350, 350);
+    		PlayerStatsWindow.setStyle("-fx-background-color: rgb(217, 210, 240)");
+    		PlayerStatsWindow.setOpacity(0.5);
+	    	setStats();
+    		CKDrawerTab stats = new CKDrawerTab(PlayerStatsWindow, DrawerSides.LEFT, 0.0, 470.0, 350.0, 350.0, "ckSnapInterpreter/text.png");
 	    	return stats;
     	}
+    	
+    	
+        public void setStats() {
+        	PlayerStatsWindow.getChildren().clear();
+        	Label title = new Label(data.getPlayer().getName() + "'s Stats");
+         	title.setTextFill(Color.BLACK);
+         	title.setFont(new Font("Comic Sans MS", 30));
+         	title.setAlignment(Pos.TOP_CENTER);
+        	PlayerStatsWindow.add(title, 0, 0, 5, 1);
+        	PlayerStatsWindow.setAlignment(Pos.TOP_CENTER);
+        	VBox skills = new VBox();
+        	int aIndex= 0;
+    		for (Iterator<CKChapter> abilities = data.getPlayer().getAbilities().getChapters(); abilities.hasNext();) {
+    			CKChapter c = abilities.next();
+    			if( c != null) {
+    				aIndex ++;
+					Label l = new Label(c.getName());
+					System.out.println("stat: " + c.getName() + " has been printed");
+					skills.getChildren().add(l);
+    			}
+    		}
+         	PlayerStatsWindow.add(skills, 0, 1, 2, 1);
+        }
     	
     	//Snap!
     	public CKDrawerTab Snap() {
 			BrowserWindow = new WebView();
 			WebEngine webEngine = BrowserWindow.getEngine();
 			BrowserWindow.setPrefSize(690, 820);
-			webEngine.load(getClass().getResource("CyberSnap/snap.html").toExternalForm());
+			webEngine.load(getClass().getResource("snap.html").toExternalForm());
 	    	CKDrawerTab snap = new CKDrawerTab(BrowserWindow, DrawerSides.RIGHT, 750.0, 0.0, 690.0, 820.0, "ckSnapInterpreter/text.png");
 	    	return snap;
     	}
@@ -296,17 +489,51 @@ public class CKUI extends Application
 	    	
     	//The selected artifact's enlarged image and description
     	public CKDrawerTab Artifact() {
-	    	ArtifactDescriptionWindow = new Rectangle(400,300);
-	    	ArtifactDescriptionWindow.setFill(Color.web(rectColor));
-	    	ArtifactDescriptionWindow.setOpacity(0.2);
+	    	ArtifactDescriptionWindow = new GridPane();
+	    	ArtifactDescriptionWindow.setPrefSize(400, 300);
+	    	ArtifactDescriptionWindow.setPadding(new Insets(5));
+	    	ArtifactDescriptionWindow.setHgap(2);
+	    	ArtifactDescriptionWindow.setVgap(2);
+	    	ArtifactDescriptionWindow.setAlignment(Pos.CENTER);
+	    	ArtifactDescriptionWindow.setPrefSize(350, 300);
+	    	ArtifactDescriptionWindow.setStyle("-fx-background-color: rgb(217, 210, 240)");
+	    	ArtifactDescriptionWindow.setOpacity(0.5);
+	    	setArtifactNodes();
 	    	CKDrawerTab artifact = new CKDrawerTab(ArtifactDescriptionWindow, DrawerSides.TOP, 350.0, 0.0, 400.0, 300.0, "ckSnapInterpreter/arrow.png");
 	    	return artifact;
     	}
     	
 
-
     	public void setArtifactNodes() {
+    		ArtifactDescriptionWindow.getChildren().clear();
+        	Label title = new Label(data.getArtifact().getName());
+         	title.setTextFill(Color.BLACK);
+         	title.setFont(new Font("Comic Sans MS", 30));
+         	title.setAlignment(Pos.TOP_CENTER);
+         	ArtifactDescriptionWindow.add(title, 0, 0, 5, 1);
+        	HBox hnodes = new HBox();
+        	Rectangle imageRect = new Rectangle(160, 160);
+        	imageRect.setFill(new ImagePattern(data.getArtifact().getFXImage()));
+        	String story = data.getArtifact().getBackstory();
+        	StringBuilder sb = new StringBuilder(story);
+        	int i = 0;
+        	while ((i = sb.indexOf(" ", i + 8)) != -1) {
+        	    sb.replace(i, i + 1, "\n");
+        	}
+			Label l = new Label(sb.toString());
+			l.setFont(new Font("Courier New", 18));
+			l.setPadding(new Insets(10));
+			System.out.println("Artifact: " + data.getArtifact().getName() + "'s details have been created");
+			hnodes.getChildren().addAll(imageRect, l);
+			hnodes.setAlignment(Pos.CENTER);
+    		ArtifactDescriptionWindow.add(hnodes, 0, 1, 2, 1);
+    		ArtifactDescriptionWindow.setAlignment(Pos.CENTER);
+    	}
+    	
+
+    	public void setAllArtifactsNodes() {
 			try {
+				data.setArtifact(null);
 	    		Vector<CKArtifact> arts = team.getArtifacts(data.getPlayer().getName());
 	    		System.out.println(data.getPlayer().getName() + " is equipped with " + arts.size() + " artifacts");
 	    		int aIndex = 0;
@@ -314,14 +541,33 @@ public class CKUI extends Application
 	    		for (CKArtifact a : arts) 
 	    			if(a != null) {
 	    				aIndex ++;
-//	    				CKGraphicsAsset asset = CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset(a.getIconId());
 	    				System.out.println(aIndex + ": " + a.getIconId());
-//						Image image = CKGraphicsPreviewGenerator.createAssetPreviewFX(asset, 0, 0, 80, 90);
 						Button b = new Button(a.getAID(), new ImageView(a.getFXImage()));
-//						b.setOnAction(e -> {	
+//						b.setOnAction(ae -> {
 //							data.setArtifact(a);
-//							setControlSpells();
+//							setArtifactNodes();
+//							
 //						});
+						b.setOnMouseEntered(e -> {	
+							setControlSpells();
+							data.setArtifact(a);
+							setArtifactNodes();
+							ControlSpells.setOpacity(1);
+				    		//ftShowControls.setToValue(1);
+				    		//stControls.play();
+				    		System.out.println("Mouse has entered this artifact node");
+							ControlSpells.setOnMouseEntered(o -> {
+								ControlSpells.setOpacity(1);
+								System.out.println("Mouse has entered the Control Spells node");
+							});
+							ControlSpells.setOnMouseExited(m -> {	
+								ControlSpells.setOpacity(0.0);
+							});
+						});
+						b.setOnMouseExited(e -> {
+							//ControlSpells.getChildren().clear();
+							ControlSpells.setOpacity(0.0);
+						});
 	    				ArtifactSelectionWindow.getChildren().add(b);
 	    				ArtifactSelectionWindow.setAlignment(Pos.CENTER_LEFT);
 	    			}
@@ -343,10 +589,8 @@ public class CKUI extends Application
 //	    	ArtifactSelectionWindow.setStyle("-fx-background-color: rgb(0, 20, 28)");
 //	    	ArtifactSelectionWindow.setOpacity(0.2);
 	    	
-	    	CKDrawerTab allArtifacts = new CKDrawerTab(ArtifactSelectionWindow, DrawerSides.BOTTOM, 350.0, 720.0, 400.0, 100.0, "ckSnapInterpreter/sword.png");
+	    	CKDrawerTab allArtifacts = new CKDrawerTab(ArtifactSelectionWindow, DrawerSides.BOTTOM, 350.0, 720.0, 400.0, 100.0, "ckSnapInterpreter/sword.png");    	
 
-	    	
-	    	//hover enter effect
 //	    	ArtifactSelectionWindow.setOnMouseEntered(e -> {
 //	    		System.out.println("Mouse has entered this node");
 //	    		ftShowControls.setFromValue(0.0);
@@ -360,24 +604,8 @@ public class CKUI extends Application
 //    		ftHideControls.setToValue(0.0);
 //    		ftHideControls.play();
 //    	});
-	    	
-//	    	if (ArtifactControls.isHover()) 
-//	    	{
-//	    		System.out.println("Mouse has entered Artifact Controls");
-//	    		ftShowControls.setToValue(0.5);
-//	    		stControls.play();
-//	    	}
-//	    	else 
-//	        	ArtifactSelectionWindow.setOnMouseExited(e -> {
-//	        		
-//	        		System.out.println("Mouse has exited");
-//	        		ftHideControls.setFromValue(0.5);
-//	        		ftHideControls.setToValue(0.0);
-//	        		ftHideControls.play();
-//	        	});
 
-    	//hover to make the controls stay
-	    	setArtifactNodes();
+	    	setAllArtifactsNodes();
 	    	return allArtifacts;
     	}
     	
@@ -388,10 +616,10 @@ public class CKUI extends Application
 	    	ControlSpells.setPrefSize(400, 150);
 	    	ControlSpells.setPadding(new Insets(15, 12, 15, 12));
 	    	ControlSpells.setSpacing(10);
-	    	ControlSpells.setStyle("-fx-background-color: rgb(0, 20, 28)");
-	    	//ControlSpells.setOpacity(0.0);
+	    	//ControlSpells.setStyle("-fx-background-color: rgb(0, 20, 28)");
+	    	ControlSpells.setOpacity(0.0);
 	    	ControlSpells.setTranslateX(350);
-	    	ControlSpells.setTranslateY(520);
+	    	ControlSpells.setTranslateY(570);
 	    	setControlSpells();
 	    	return ControlSpells;
     	}
@@ -407,9 +635,7 @@ public class CKUI extends Application
 	    			CKSpell s = spells.next();
 	    			if(s != null) {
 	    				aIndex ++;
-	    				//CKGraphicsAsset asset = CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset(s.getIconID());
 	    				System.out.println(aIndex + ": " + s.getIconID());
-						//Image image = CKGraphicsPreviewGenerator.createAssetPreviewFX(asset, 0, 0, 80, 90);
 						Button b = new Button(s.getIconID(), new ImageView(s.getFXImage()));
 	    				ControlSpells.getChildren().add(b);
 	    				ControlSpells.setAlignment(Pos.CENTER_LEFT);

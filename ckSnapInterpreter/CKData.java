@@ -180,6 +180,8 @@ public class CKData {
 			observer.update(artifact);
 		}
 		System.out.println("Notified all registers observers");
+		
+		
 	}
 	
 	

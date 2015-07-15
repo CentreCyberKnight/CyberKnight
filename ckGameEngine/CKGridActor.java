@@ -65,7 +65,7 @@ public class CKGridActor extends CKGridItem
 	{
 		setAssetID(assetID); 
 		this.direction = direction;
-		setControllerID("BOTH");	
+		setControllerID("BOTH");
 		fximage = null;
 		fxportrait = null; 
 	}

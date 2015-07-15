@@ -120,7 +120,7 @@ public class CKDrawerTab extends Pane
 		//onFinishedProperty?
 	
 		open.setOnMouseClicked(e -> {	
-			System.out.println("I Clicked");
+			System.out.println("I Clicked Open");
 			slideOut.setByX(xMove);
 			slideOut.setByY(yMove);
 			closeSlideOut.setByX(xMove);
@@ -138,6 +138,7 @@ public class CKDrawerTab extends Pane
 			});
 		
 		close.setOnMouseClicked(o -> {
+			System.out.println("I Clicked Close");
 			slideIn.setByX(-xMove);
 			slideIn.setByY(-yMove);
 			closeSlideIn.setByX(-xMove);
