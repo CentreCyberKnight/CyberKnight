@@ -27,14 +27,12 @@ import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-<<<<<<< HEAD
 import javax.swing.JFrame;
-=======
->>>>>>> 737b62428fda91248c56550ff47f01580ab831c8
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
+import netscape.javascript.JSObject;
 import ckCommonUtils.CKPosition;
 import ckDatabase.CKArtifactFactory;
 import ckDatabase.CKGraphicsAssetFactoryXML;
@@ -73,13 +71,10 @@ import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
-<<<<<<< HEAD
 import javafx.embed.swing.SwingNode;
 import javafx.geometry.HPos;
-=======
 import javafx.application.Platform;
 import javafx.embed.swing.SwingNode;
->>>>>>> 737b62428fda91248c56550ff47f01580ab831c8
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -154,15 +149,15 @@ public class CKUI extends Application
 //		 T.start();
     	
     	populateModel();
-    	final SwingNode swingNode = new SwingNode();
-    	createSwingContent(swingNode);
+//    	final SwingNode swingNode = new SwingNode();
+//    	createSwingContent(swingNode);
 		//this adds all the CKDrawerTabs as the main pane's children
-<<<<<<< HEAD
+
     	//menuPane.getChildren().add(pane);
 		menuPane.getChildren().addAll(Icons(), Player(), Artifact(), AllArtifacts(), ControlSpells(), Stats(), Snap());
-=======
-		menuPane.getChildren().addAll(swingNode, Icons(), Player(), Snap(), AllArtifacts(), Artifact(), ControlSpells(), Stats());
->>>>>>> 737b62428fda91248c56550ff47f01580ab831c8
+
+		//menuPane.getChildren().addAll(swingNode, Icons(), Player(), Snap(), AllArtifacts(), Artifact(), ControlSpells(), Stats());
+
 		
 	    Scene scene = new Scene(menuPane,1500,820);
 	    primaryStage.setTitle("Test Drawer Tabs");
@@ -171,20 +166,6 @@ public class CKUI extends Application
     }
     
 
-	private void createSwingContent(SwingNode swingNode) {
-		SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-            	Quest quest = CKGameObjectsFacade.getQuest();
-            	CKGameObjectsFacade.setQuest(quest);
-                JPanel panel = CKGameObjectsFacade.getEngine();
-                //panel.add(quest.gameLoop());
-                quest.gameLoop();
-                swingNode.setContent(panel);
-            }
-        });
-		
-	}
 
 
 	public void populateModel() {	
@@ -511,9 +492,14 @@ public class CKUI extends Application
     	//Snap!
     	public CKDrawerTab Snap() {
 			BrowserWindow = new WebView();
-			WebEngine webEngine = BrowserWindow.getEngine();
+			
+			CKGameObjectsFacade.setWebEngine(BrowserWindow.getEngine());
+			WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
 			BrowserWindow.setPrefSize(690, 820);
-			webEngine.load(getClass().getResource("snap.html").toExternalForm());
+			webEngine.load(getClass().getResource("CyberSnap/snap.html").toExternalForm());
+			JSObject jsobj = (JSObject) webEngine.executeScript("window");
+			jsobj.setMember("javaMove", new CKSpellObject("move"));
+			jsobj.setMember("jsDebug", new CKjsDebugger());
 	    	CKDrawerTab snap = new CKDrawerTab(BrowserWindow, DrawerSides.RIGHT, 750.0, 0.0, 690.0, 820.0, "ckSnapInterpreter/text.png");
 	    	return snap;
     	}
