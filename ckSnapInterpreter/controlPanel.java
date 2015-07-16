@@ -78,7 +78,7 @@ public class controlPanel extends Application // implements EventHandler<Action
 		
 		// Display a local webpage
         
-		webEngine.load(getClass().getResource("snap.html").toExternalForm());
+		webEngine.load(getClass().getResource("CyberSnap/snap.html").toExternalForm());
 		JSObject jsobj = (JSObject) webEngine.executeScript("window");
 		jsobj.setMember("javaProcess", a6);
 		jsobj.setMember("java", new CKjsDebugger());

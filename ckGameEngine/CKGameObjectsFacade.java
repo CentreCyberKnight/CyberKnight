@@ -1,6 +1,7 @@
 package ckGameEngine;
 
 import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 
 import javax.swing.JButton;
 
@@ -56,7 +57,8 @@ public class CKGameObjectsFacade
 	{
 		if (webEngine == null)
 		{
-			//webEngine = 
+			WebView browser = new WebView();
+			webEngine = browser.getEngine();
 		}
 		return webEngine;
 	}

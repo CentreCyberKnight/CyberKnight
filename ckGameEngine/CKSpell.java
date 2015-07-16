@@ -1,10 +1,17 @@
 package ckGameEngine;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Vector;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
+
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckEditor.CKSpellListener;
@@ -19,6 +26,7 @@ public class CKSpell
 	String functionCall;
 	String iconID;
 	Image fximage;
+	String snapImage;
 	
 	
 	int timeTilRecharge;
@@ -194,6 +202,34 @@ public class CKSpell
 				System.out.println("The asset for " + iconID + " was not found." );
 			}
 			return fximage;	
+		}
+	}
+	
+	//returns a base64 string of the artifact image
+	public String getSnapImage()
+		{
+		if(this.snapImage != null && this.fximage != null) {	
+			return this.snapImage;
+		}
+		else {
+			try {
+				//needed a smaller image for the artifacts
+				CKGraphicsAsset asset = CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset(iconID);
+    			Image image = CKGraphicsPreviewGenerator.createAssetPreviewFX(asset, 0, 0, 35, 40);
+    			BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
+    			ByteArrayOutputStream s = new ByteArrayOutputStream();
+    			try {
+					ImageIO.write(bImage, "png", s);
+					} 
+    			catch (IOException e) {
+					e.printStackTrace();
+					}
+    			this.snapImage  = Base64.encode(s.toByteArray());
+			}
+			catch (NullPointerException n) {
+				System.out.println("The asset for " + iconID + " was not found." );
+			}
+			return this.snapImage;	
 		}
 	}
 }

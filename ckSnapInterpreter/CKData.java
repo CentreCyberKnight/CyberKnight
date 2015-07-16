@@ -32,6 +32,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import ckCommonUtils.CKPosition;
 import ckDatabase.CKArtifactFactory;
@@ -182,7 +183,6 @@ public class CKData {
 		for(Observer<CKArtifact> observer : artifactObservers) {
 			observer.update(artifact);
 		}
-		System.out.println("Notified all registers observers");
 	}
 	
 	

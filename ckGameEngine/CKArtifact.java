@@ -1,5 +1,6 @@
 package ckGameEngine;
 
+import java.awt.image.BufferedImage;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.XMLDecoder;
@@ -7,13 +8,19 @@ import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Vector;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
+
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 import ckCommonUtils.CKXMLAsset;
 import ckDatabase.CKGraphicsAssetFactoryXML;
@@ -32,6 +39,7 @@ public class CKArtifact implements CKXMLAsset<CKArtifact>
 	String backstory;
 	String iconId;
 	Image fximage;
+	String snapImage;
 	
 	Vector<CKSpell> spells;	
 	
@@ -261,9 +269,44 @@ public class CKArtifact implements CKXMLAsset<CKArtifact>
 		}
 	}
 	
+	//returns a base64 string of the artifact image
+	public String getSnapImage()
+		{
+		if(this.snapImage != null && this.fximage != null) {	
+			return this.snapImage;
+		}
+		else {
+			try {
+				getFXImage();
+    			BufferedImage bImage = SwingFXUtils.fromFXImage(this.fximage, null);
+    			ByteArrayOutputStream s = new ByteArrayOutputStream();
+    			try {
+					ImageIO.write(bImage, "png", s);
+					} 
+    			catch (IOException e) {
+					e.printStackTrace();
+					}
+    			this.snapImage  = Base64.encode(s.toByteArray());
+			}
+			catch (NullPointerException n) {
+				System.out.println("The asset for " + iconId + " was not found." );
+			}
+			return this.snapImage;	
+		}
+	}
 	
+	//returns an array of images converted to base64
+	//the images are for the spells
+	public String[] getSpellImageArray()
+	{
+		 String[] spellImages = new String[spells.size()];
+		 for (int i = 0; i < spells.size(); i++) {
+			 spellImages[i] = spells.get(i).getSnapImage();
+		 }
+		 return spellImages;
+	}
 
-
+	
 	/**
 	 * @return the abilties
 	 */
