@@ -11,8 +11,9 @@ import javax.swing.JFrame;
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckGraphicsEngine.CKGamePanelTimer;
 import ckGraphicsEngine.CKGraphicsConstants;
+import ckGraphicsEngine.FXGamePanelTimer;
 
-public class CKAssetViewer extends CKGamePanelTimer
+public class FXAssetViewer extends FXGamePanelTimer
 {
 
 	/**
@@ -24,7 +25,7 @@ public class CKAssetViewer extends CKGamePanelTimer
 	int presentFrame;
 	boolean extendedFormat;
 	
-	  public CKAssetViewer(double targetfps,CKGraphicsAsset a,
+	  public FXAssetViewer(double targetfps,CKGraphicsAsset a,
 			  Dimension D)
 	  {
 		  this(targetfps,a,D,true);
@@ -32,15 +33,17 @@ public class CKAssetViewer extends CKGamePanelTimer
 
 
 		
-	  public CKAssetViewer(double targetfps,CKGraphicsAsset a,
+	  public FXAssetViewer(double targetfps,CKGraphicsAsset a,
 			  Dimension D, boolean extended)
 	  {
 		  super(targetfps,5);
 		  asset=a;
 		
-		  if(extended)
+		  if(extended && D!=null)
 		  {
-			  setPreferredSize(D);
+			  //setPreferredSize(D);
+			  setWidth(D.getWidth());
+			  setHeight(D.getHeight());
 		  }
 		  else
 		  {
@@ -49,12 +52,13 @@ public class CKAssetViewer extends CKGamePanelTimer
 			  asset.getDrawBounds(0, 0, offset, bound);
 			  
 			  //System.out.println("offset is "+offset.y+" bound is"+bound.y);
-			  setPreferredSize(new Dimension(200,
+			  setWidth(200);
+//			  setPrefSize(200,
 					  /*Math.max(asset.getHeight(0)+50+CKGraphicsConstants.BASE_HEIGHT,
 					  125)));
 					  */
-					  	Math.max(bound.y-offset.y+50 +CKGraphicsConstants.BASE_HEIGHT,
-							  125)));
+			  setHeight(Math.max(bound.y-offset.y+50 +CKGraphicsConstants.BASE_HEIGHT,
+							  125));
 		  }
 		  presentRow=0;
 		  presentFrame=0;
@@ -82,12 +86,11 @@ public class CKAssetViewer extends CKGamePanelTimer
 	}
 
 	@Override
-	public void drawOffScreenBuffer(Graphics g,int screenWidth,int screenHeight)
+	public void drawOffScreenBuffer(Graphics g,double screenWidth,double screenHeight)
 	{
 		//could draw the stats up..
 		int leftMargin = 25;
 		int topMargin = 25;
-		System.out.println("Drawing!!");
 		//g.setColor(Color.WHITE);
 		//g.draw3DRect(leftMargin, topMargin, asset.getWidth(presentRow)*2,
 		//		asset.getHeight(presentRow)*2,true);
@@ -96,7 +99,9 @@ public class CKAssetViewer extends CKGamePanelTimer
 		Point bounds = new Point();
 		asset.getDrawBounds(presentFrame, presentRow, offset, bounds);
 		
-		asset.drawToGraphics(g,leftMargin -offset.x, topMargin-offset.y +CKGraphicsConstants.BASE_HEIGHT/2, presentFrame,presentRow, this);
+		asset.drawToGraphics(g,leftMargin -offset.x, 
+				topMargin-offset.y +CKGraphicsConstants.BASE_HEIGHT/2,
+				presentFrame,presentRow, null);//this);
 		int width = Math.max(asset.getWidth(presentRow),CKGraphicsConstants.BASE_WIDTH);
 		int height = asset.getHeight(presentRow)+CKGraphicsConstants.BASE_HEIGHT/2;
 		//int width = Math.max(asset.getWidth(presentRow),CKGraphicsConstants.BASE_WIDTH);
@@ -119,7 +124,7 @@ public class CKAssetViewer extends CKGamePanelTimer
 		if(extendedFormat)
 		{
 
-			asset.drawPreviewToGraphics(g,width+50,Math.max(125,height*3),this);
+			asset.drawPreviewToGraphics(g,width+50,Math.max(125,height*3),null);//this);
 		}
 		
 	}
@@ -189,14 +194,14 @@ public class CKAssetViewer extends CKGamePanelTimer
 	 */
 	public static void main(String[] args)
 	{
-		JFrame frame = new JFrame();
+/*		JFrame frame = new JFrame();
 		CKGraphicsAsset water=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("heroSprite");		
-		CKAssetViewer view=new CKAssetViewer(1,water,null,true);
+		FXAssetViewer view=new FXAssetViewer(1,water,null,true);
 		frame.add(view);
 		frame.pack();
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+*/
 	}
 
 }

@@ -26,6 +26,7 @@ public abstract  class ActorController implements CKXMLAsset<ActorController>
 	final public static String TEXT_CONTROL = "Text Control"; 
 	final public static String ARTIFACT_CONTROL = "Artifact Control";
 	final public static String BOTH_CONTROL = "Both Control";
+	final public static String SNAP_CONTROL = "Snap! Control";
 	
 	protected String permissions = NO_CONTROL;
 	private CKGridActor actor;

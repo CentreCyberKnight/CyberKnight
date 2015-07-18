@@ -54,6 +54,7 @@ import ckGameEngine.actions.CKSimpleGUIAction;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.assets.CKAssetViewer;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
+import ckGraphicsEngine.assets.FXAssetViewer;
 import ckPythonInterpreter.CKCharacterView;
 import ckPythonInterpreter.CKTeamView;
 import ckPythonInterpreterTest.CKArtifactQuestRunner;
@@ -149,17 +150,27 @@ public class CKUI extends Application
 //		 T.start();
     	
     	populateModel();
-//    	final SwingNode swingNode = new SwingNode();
-//    	createSwingContent(swingNode);
+    	//final SwingNode swingNode = new SwingNode();
+    	//swingNode.maxWidth(Double.MAX_VALUE);
+    	//swingNode.maxHeight(Double.MAX_VALUE);
+    	//swingNode.s
+    	//swingNode.setStyle("-fx-border-color:red; -fx-background-color: blue;");
+
+    	//createAndSetSwingContent(swingNode);
 		//this adds all the CKDrawerTabs as the main pane's children
 
-    	//menuPane.getChildren().add(pane);
+
+    	CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("hero");	
+		FXAssetViewer view=new FXAssetViewer(1,A1,new Dimension(700,800),true);
+		view.maxWidth(Double.MAX_VALUE);
+    	view.maxHeight(Double.MAX_VALUE);
+    	menuPane.getChildren().add(view);
 		menuPane.getChildren().addAll(Icons(), Player(), Artifact(), AllArtifacts(), ControlSpells(), Stats(), Snap());
 
 		//menuPane.getChildren().addAll(swingNode, Icons(), Player(), Snap(), AllArtifacts(), Artifact(), ControlSpells(), Stats());
 
 		
-	    Scene scene = new Scene(menuPane,1500,820);
+	    Scene scene = new Scene(menuPane,700,720);
 	    primaryStage.setTitle("Test Drawer Tabs");
 	    primaryStage.setScene(scene);
 	    primaryStage.show();
@@ -326,12 +337,14 @@ public class CKUI extends Application
         		CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("hero");	
         		CKAssetViewer view=new CKAssetViewer(1,A1,null,true);
         		view.setPreferredSize(new Dimension(600,600));
-            	JPanel j2 = new JPanel();
+            	/*JPanel j2 = new JPanel();
             	j2.setPreferredSize(new Dimension(600,600));
             	j2.setLayout(new BorderLayout());
             	j2.add(view, BorderLayout.CENTER);
-            	j2.add(new JButton("hi my name is tony"), BorderLayout.NORTH);
-            	swingNode.setContent(j2);
+            	j2.add(new JButton("hi my name is tony"), BorderLayout.NORTH);*/
+            	swingNode.setContent(view);
+            	
+            	
             	//j2.setMinimumSize(new Dimension(500, 500));
             	//j.setPreferredSize(new Dimension(4000,4000));
             	//quest.gameLoop();
