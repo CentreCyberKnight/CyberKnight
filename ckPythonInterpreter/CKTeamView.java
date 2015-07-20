@@ -168,7 +168,7 @@ public class CKTeamView extends JPanel
 		spell = new CKSpell("UTurn","turns around", "move('left',2)","uTurn");
 		combatBoots.addSpell(spell);
 		
-		dad.equipArtifact(P_SHOES,combatBoots);
+		//dad.equipArtifact(P_SHOES,combatBoots);
 		
 		//sword of awesome
 		CKBook L2 = new CKBook("Limits",CH_EARTH,5,P_SLASH);
@@ -222,6 +222,8 @@ public class CKTeamView extends JPanel
 	    mom.setTeam(team);
 	    actors.add(baby);
 	    baby.setTeam(team);
+	    
+	    mom.equipArtifact(P_SHOES,combatBoots);
 	    
 	    CKTeamView view = new CKTeamView(actors);
 	    view.enableCharacter("Dad",true);
