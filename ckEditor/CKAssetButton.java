@@ -2,6 +2,8 @@ package ckEditor;
 
 import java.awt.Dimension;
 
+import javafx.scene.control.Button;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
@@ -41,7 +43,7 @@ public class CKAssetButton extends JButton
 			Dimension d = getPreferredSize();
 			int min = Math.min(d.height, d.width)-5;
 			super.setIcon( new ImageIcon(CKGraphicsPreviewGenerator.createAssetPreview(
-					asset, 0,0,min,min) ) );
+					asset, 0,0,min,min)) );
 		}
 	}
 

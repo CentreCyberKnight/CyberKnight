@@ -9,3 +9,14 @@
 /MultiSplitPane$DividerPainter.class
 /MultiSplitPane$InputHandler.class
 /MultiSplitPane.class
+/MultiSplitLayout$Divider.class
+/MultiSplitLayout$InvalidLayoutException.class
+/MultiSplitLayout$Leaf.class
+/MultiSplitLayout$Node.class
+/MultiSplitLayout$Split.class
+/MultiSplitLayout.class
+/MultiSplitPane$AccessibleMultiSplitPane.class
+/MultiSplitPane$DefaultDividerPainter.class
+/MultiSplitPane$DividerPainter.class
+/MultiSplitPane$InputHandler.class
+/MultiSplitPane.class

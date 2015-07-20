@@ -9,10 +9,20 @@ import java.io.Reader;
 //import java.lang.Math;
 
 
+
+
+
+
+import javafx.application.Platform;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import jconsole.JConsole;
 import ckCommonUtils.CKThreadCompletedListener;
+import ckGameEngine.CKGameObjectsFacade;
 import ckPythonInterpreter.CKUniqueEditor;
 import ckPythonInterpreter.CKPythonDebuggerInterface;
+import netscape.javascript.JSObject;
+
 import org.python.core.PyException;
 import org.python.util.InteractiveConsole;
 import org.python.core.PySystemState;
@@ -271,7 +281,7 @@ public class CKPythonConsoleExtended extends JConsole
 
 
 	
-	class codeRunner extends Thread
+	public class codeRunner extends Thread
 	{
 		protected String source;
 		protected InteractiveConsole console;
@@ -307,38 +317,55 @@ public class CKPythonConsoleExtended extends JConsole
 			//not sure if this will do it.
 		}
 		
-		
+		boolean error = false;
 		public void run()
 		{
-			boolean error = false;
-			//System.out.printf("Got to thread");
-			//console.runsource(source);
-			try
-			{
-				console.exec(source);
+			SnapRunner runner = new SnapRunner(this);
+			Platform.runLater(runner);
+			waitForSnap();			
+		}
+		
+		volatile boolean done = false;
+		public synchronized void waitForSnap()
+		{
+			while(!done) //need this in case snap completes before we can wait for it.
+			{	try {wait();}
+				catch (InterruptedException e) {}
 			}
-			catch(PyException  e )
-			{//problem with the python code
-				System.out.println("I throw a PYException? yes?"+e);
-				//MKB here is where I should run the code...
-				//new CKExceptionFrame(e);
-				
-				e.printStackTrace();
-				error=true;
-			}
-			catch(Exception e)
-			{ //should be interrupt by another thread
-				System.out.println("Not a PYException?");
-				closeRunner();
-				error=true;
-			}
-			appendText("\n"+prompt);
-			System.out.printf("after thread");
+			//now wrap it up.
+			System.out.print("after thread");
 			codeCompletes();
 			if(listener!=null)
 			{
 				listener.threadFinishes(error);
-			}			
+			}		
+		}
+		
+		public synchronized void snapCompletes()
+		{
+			done=true;
+			notify();
+		}
+	}
+	
+	public class SnapRunner extends Thread
+	{
+		protected codeRunner runner;
+		
+		public SnapRunner(codeRunner run)
+		{
+			runner = run;
+		}
+		
+		public void run()
+		{
+
+				
+				WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
+				JSObject jsobj = (JSObject) webEngine.executeScript("window");
+				jsobj.setMember("completionListener", runner);				
+				System.out.println("in thread");
+				webEngine.executeScript("ide.fireTEST()");	
 		}
 		
 		
@@ -347,6 +374,7 @@ public class CKPythonConsoleExtended extends JConsole
 		
 		
 	}
+	
 	
 	public static String wrapCode(String s)
 	{
@@ -439,6 +467,7 @@ public class CKPythonConsoleExtended extends JConsole
 		execThread.setDaemon(true);
 		
 		execThread.start();
+		//Platform.runLater(execThread);
 	}
 
 	

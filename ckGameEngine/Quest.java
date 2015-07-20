@@ -1189,6 +1189,9 @@ public class Quest  //implements CKGameActionListenerInterface
 			
 			if(currentEvent instanceof EndEvent) { return; }
 			
+			if(currentEvent == null) {
+				return;
+			}
 			doEvent(currentEvent);
 			
 			if( doTriggers(false)) { return; }	
