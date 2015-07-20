@@ -48,6 +48,7 @@ public class CKGameObjectsFacade
 		return spells;
 	}
 
+
 	public static void setWebEngine(WebEngine newWebEngine)
 	{
 		webEngine = newWebEngine;	
@@ -199,7 +200,7 @@ public class CKGameObjectsFacade
 
 	public static void disableArtifactInput()
 	{
-		// TODO Auto-generated method stub
+		
 		String name = getCurrentPlayer().getName();
 		artifactController.enableCharacter(name, false);
 	}

@@ -368,6 +368,11 @@ public class CKPythonConsoleExtended extends JConsole
 				webEngine.executeScript("ide.fireTEST()");	
 		}
 		
+		
+		
+		
+		
+		
 	}
 	
 	
