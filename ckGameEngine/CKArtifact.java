@@ -305,6 +305,16 @@ public class CKArtifact implements CKXMLAsset<CKArtifact>
 		 }
 		 return spellImages;
 	}
+	
+	//returns an array of spell names
+	public String[] getSpellNamesArray()
+	{
+		 String[] spellNames = new String[spells.size()];
+		 for (int i = 0; i < spells.size(); i++) {
+			 spellNames[i] = spells.get(i).getName();
+		 }
+		 return spellNames;
+	}
 
 	
 	/**

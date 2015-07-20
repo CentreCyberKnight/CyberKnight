@@ -150,6 +150,16 @@ public class CKUI extends Application
 //		 T.start();
     	
     	populateModel();
+    	/*
+    	data.registerArtifactObserver((artifact) -> 
+    	{    	
+    	WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
+		JSObject jsobj = (JSObject) webEngine.executeScript("window");
+		jsobj.setMember("artifact", artifact);
+		webEngine.executeScript("ide.setCyberSnap()");
+    	});
+		
+		*/
     	//final SwingNode swingNode = new SwingNode();
     	//swingNode.maxWidth(Double.MAX_VALUE);
     	//swingNode.maxHeight(Double.MAX_VALUE);
