@@ -140,6 +140,25 @@ public class CKUI extends Application
     	menuPane.setPrefSize(200, 200);
   
     	populateModel();
+
+    	/*
+    	data.registerArtifactObserver((artifact) -> 
+    	{    	
+    	WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
+		JSObject jsobj = (JSObject) webEngine.executeScript("window");
+		jsobj.setMember("artifact", artifact);
+		webEngine.executeScript("ide.setCyberSnap()");
+    	});
+		
+		*/
+    	//final SwingNode swingNode = new SwingNode();
+    	//swingNode.maxWidth(Double.MAX_VALUE);
+    	//swingNode.maxHeight(Double.MAX_VALUE);
+    	//swingNode.s
+    	//swingNode.setStyle("-fx-border-color:red; -fx-background-color: blue;");
+
+    	//createAndSetSwingContent(swingNode);
+
 		//this adds all the CKDrawerTabs as the main pane's children
 
 

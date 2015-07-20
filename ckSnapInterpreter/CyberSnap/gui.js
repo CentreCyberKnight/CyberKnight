@@ -213,11 +213,7 @@ IDE_Morph.prototype.init = function (isAutoFill) {
     this.globalVariables = new VariableFrame();
     this.currentSprite = new SpriteMorph(this.globalVariables);
     //however many sprites that are currently on the screen
-    this.sprites = new List([this.currentSprite]);
-    var block = new HatBlockMorph();	//hat block 
-	block.setSelector('receiveID');
-	block.setSpec("Button");	//setting name
-	this.currentSprite.scripts.addChild(block);
+   // this.sprites = new List([this.currentSprite]);
 	
 	//used to indicate if it is time to call snapCompletes()
 	this.end = false;
@@ -502,7 +498,7 @@ IDE_Morph.prototype.buildPanes = function () {
     this.createCorralBar();
     this.createCorral();
     //added this in to create the artifact icon in the spriteBar
-    this.setArtifact();
+    //this.setArtifact();
 };
 
 IDE_Morph.prototype.createLogo = function () {
@@ -1334,12 +1330,11 @@ IDE_Morph.prototype.setCyberSnap = function(){
 	var lcArtifact;	//used when traversing the checkList
 	var name = artifact.getName();
 	var methods = artifact.spellCount();	//number of methods
-	//var arr = [];
 	
 	
 	//setting the artifact icon
 	this.img = 'data:image/png;base64,'+ artifact.getSnapImage();
-	this.setArtifact();
+	//this.setArtifact();
 	//first check to see if we already have sprites for an artifact
 	if (this.checkList.contains(name)) {
 		//find where our sprites are in the list
@@ -1363,7 +1358,6 @@ IDE_Morph.prototype.setCyberSnap = function(){
 			if (this.checkList.at(num) === true) {
 				this.addNewSprite();
 				list.add(this.currentSprite);
-				//this.allSprites.add(this.currentSprite);
 				var block = new HatBlockMorph();	//hat block 
 				block.setSelector('receiveID');
 				block.setSpec(name + ": Button " + acc);	//setting name
@@ -1376,22 +1370,23 @@ IDE_Morph.prototype.setCyberSnap = function(){
 			else
 				num++;
 		}
+	}
 		
-		//setting the picture for each sprite
+		//setting the picture and name for each sprite
 		var picture;
 		var spellArray = artifact.getSpellImageArray();
+		var spellNames = artifact.getSpellNamesArray();
 		for (var i = 1; i <= spellArray.length; i++) {
 			sprite = list.at(i);
-			picture = spellArray[i]
+			picture = spellArray[i-1]
 			sprite.setPic('data:image/png;base64,' + picture);
+			sprite.name = spellNames[i-1];
 		}
 		
-	}
 	
 	
 	//updating what sprites are on the screen
 	this.sprites = list;
-	//this.stage.children = arr;
 	//updating current sprite to the first on the screen
 	this.currentSprite = this.sprites.at(1);
 	
@@ -1407,7 +1402,6 @@ IDE_Morph.prototype.setCyberSnap = function(){
 IDE_Morph.prototype.setArtifact = function() {
 	//added parts of IDE_Morph.prototype.createLogo
     //trying to add a picture to the corner
-
 	var thumbnail;
 	var myself = this;
 	
@@ -1465,6 +1459,7 @@ IDE_Morph.prototype.buildCKPanes = function () {
     this.createCorral();
     //added this in to create the artifact icon in the spriteBar
     this.setArtifact();
+    java.print("buildCKPanes");
 };
 
 IDE_Morph.prototype.createSpriteBar = function () {
@@ -2071,7 +2066,7 @@ IDE_Morph.prototype.fixLayout = function (situation) {
     Morph.prototype.trackChanges = false;
     
     //ensures that the artifact is always present
-    this.setArtifact();
+    //this.setArtifact();
 
     if (situation !== 'refreshPalette') {
         // controlBar
