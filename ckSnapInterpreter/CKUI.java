@@ -32,6 +32,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
+import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
 import ckCommonUtils.CKPosition;
 import ckDatabase.CKArtifactFactory;
@@ -141,16 +142,8 @@ public class CKUI extends Application
   
     	populateModel();
 
-    	/*
-    	data.registerArtifactObserver((artifact) -> 
-    	{    	
-    	WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
-		JSObject jsobj = (JSObject) webEngine.executeScript("window");
-		jsobj.setMember("artifact", artifact);
-		webEngine.executeScript("ide.setCyberSnap()");
-    	});
+
 		
-		*/
     	//final SwingNode swingNode = new SwingNode();
     	//swingNode.maxWidth(Double.MAX_VALUE);
     	//swingNode.maxHeight(Double.MAX_VALUE);
@@ -551,8 +544,22 @@ public class CKUI extends Application
 			JSObject jsobj = (JSObject) webEngine.executeScript("window");
 			jsobj.setMember("javaMove", new CKSpellObject("move"));
 			jsobj.setMember("jsDebug", new CKjsDebugger());
+
 	    //	CKDrawerTab snap = new CKDrawerTab(BrowserWindow, DrawerSides.RIGHT, 750.0, 0.0, 690.0, 820.0, "ckSnapInterpreter/text.png");
+	    	
+	    	data.registerArtifactObserver((artifact) -> 
+	    	{ 
+	    	try {
+			jsobj.setMember("artifact", artifact);
+			webEngine.executeScript("ide.setCyberSnap()");
+	    	}
+	    	catch (JSException e) {
+	    		System.out.println(e.getMessage());
+	    	}
+	    	});
+	    	
 	    	return BrowserWindow;
+
     	}
 	    	
 	    	
@@ -575,6 +582,10 @@ public class CKUI extends Application
     	
     	public void setArtifactNodes() {
     		ArtifactDescriptionWindow.getChildren().clear();
+    		//guardian if statement to ensure no null pointer exception
+    		if (data.getArtifact() == null) {
+    			return;
+    		}
         	Label title = new Label(data.getArtifact().getName());
          	title.setTextFill(Color.BLACK);
          	title.setFont(new Font("Comic Sans MS", 30));
