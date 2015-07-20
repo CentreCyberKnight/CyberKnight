@@ -1,5 +1,8 @@
 package ckGameEngine;
 
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+
 import javax.swing.JButton;
 
 import ckCommonUtils.CKThreadCompletedListener;
@@ -21,6 +24,7 @@ public class CKGameObjectsFacade
 	private static Quest quest;
 	private static CK2dGraphicsEngine engine;
 	private static CKTeamView artifactController;
+	private static WebEngine webEngine;
 	/**
 	 * @return the artifactController
 	 */
@@ -44,6 +48,22 @@ public class CKGameObjectsFacade
 		return spells;
 	}
 
+
+	public static void setWebEngine(WebEngine newWebEngine)
+	{
+		webEngine = newWebEngine;	
+	}
+	
+	public static WebEngine getWebEngine()
+	{
+		if (webEngine == null)
+		{
+			WebView browser = new WebView();
+			webEngine = browser.getEngine();
+		}
+		return webEngine;
+	}
+	
 	/**
 	 * @param spells
 	 *            the spells to set
@@ -180,7 +200,7 @@ public class CKGameObjectsFacade
 
 	public static void disableArtifactInput()
 	{
-		// TODO Auto-generated method stub
+		
 		String name = getCurrentPlayer().getName();
 		artifactController.enableCharacter(name, false);
 	}
@@ -198,7 +218,7 @@ public class CKGameObjectsFacade
 	{
 		if (console != null)
 		{
-			// System.out.println("Running this code:\n"+code);
+			//System.out.println("Running this code:\n"+code);
 			console.runNewCode(code, listen);
 		}
 	}
