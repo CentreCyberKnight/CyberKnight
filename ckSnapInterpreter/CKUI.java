@@ -158,7 +158,7 @@ public class CKUI extends Application
 		//this adds all the CKDrawerTabs as the main pane's children
 
 
-    	//CKGameObjectsFacade.setQuest(quest);
+  // CKGameObjectsFacade.setQuest(quest);
   		 //	swingNode.setContent(CKGameObjectsFacade.getEngine());
     	CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("hero");	
 	//	FXAssetViewer view=new FXAssetViewer(1,A1,new Dimension(700,800),true);
@@ -167,8 +167,6 @@ public class CKUI extends Application
     	view.maxHeight(Double.MAX_VALUE);
     	menuPane.getChildren().add(view);
 		menuPane.getChildren().addAll(Icons(), Player(), Artifact(), AddedAbilities(), Snap(), AllArtifacts(), ControlSpells(), Stats());
-
-		//menuPane.getChildren().addAll(swingNode, Icons(), Player(), Snap(), AllArtifacts(), Artifact(), ControlSpells(), Stats());
 
 		//menuPane.getChildren().addAll(Icons(), Player(), Artifact(), AddedAbilities(), AllArtifacts(), ControlSpells(), Stats(), Snap());
 	  //  Scene scene = new Scene(menuPane,700,720);
@@ -492,50 +490,45 @@ public class CKUI extends Application
          	title.setTextFill(Color.BLACK);
          	title.setFont(new Font("Comic Sans MS", 30));
          	title.setAlignment(Pos.TOP_CENTER);
-        	PlayerStatsWindow.add(title, 0, 0, 5, 1);
-        	PlayerStatsWindow.setAlignment(Pos.TOP_CENTER);
-        	VBox skills = new VBox();
-        	int aIndex= 0;
-    		for (Iterator<CKChapter> abilities = data.getPlayer().getAbilities().getChapters(); abilities.hasNext();) {
-    			CKChapter c = abilities.next();
-    			if( c != null) {
-    				aIndex ++;
-					Label l = new Label(c.getName());
-					System.out.println("stat: " + c.getName() + " has been printed");
-					skills.getChildren().add(l);
-    			}
-    		}
-         	PlayerStatsWindow.add(skills, 0, 1, 2, 1);
-        }
+//        	PlayerStatsWindow.add(title, 0, 0, 5, 1);
+//        	PlayerStatsWindow.setAlignment(Pos.TOP_CENTER);
+//        	VBox skills = new VBox();
+//        	int aIndex= 0;
+//    		for (Iterator<CKChapter> abilities = data.getPlayer().getAbilities().getChapters(); abilities.hasNext();) {
+//    			CKChapter c = abilities.next();
+//    			if( c != null) {
+//    				aIndex ++;
+//					Label l = new Label(c.getName());
+//					System.out.println("stat: " + c.getName() + " has been printed");
+//					skills.getChildren().add(l);
+//    			}
+//    		}
+//         	PlayerStatsWindow.add(skills, 0, 1, 2, 1);
+//        }
         
-//      public void setStats() {
-//    	PlayerStatsWindow.getChildren().clear();
-//    	Label title = new Label(data.getPlayer().getName() + "'s Stats");
-//     	title.setTextFill(Color.BLACK);
-//     	title.setFont(new Font("Comic Sans MS", 30));
-//     	title.setAlignment(Pos.TOP_CENTER);
-//    	PlayerStatsWindow.add(title, 0, 0, 5, 1);
-//    	PlayerStatsWindow.setAlignment(Pos.TOP_CENTER);
-//    	VBox skills = new VBox();  
-//    	VBox skillsPts = new VBox();
-//    	int aIndex= 0;
-//		for (Iterator<CKChapter> abilities = data.getPlayer().getAbilities().getChapters(); abilities.hasNext();) {
-//			CKChapter c = abilities.next();
-//			if( c != null) {
-//				aIndex ++;
-//				Label l = new Label(c.getName());
-//				l.setFont(new Font("Comic Sans MS", 15));
-//				Label value = new Label(Integer.toString((c.getValue())));
-//				value.setFont(new Font("Comic Sans MS", 15));
-//				System.out.println("stat: " + c.getName() + " has been printed");
-//				skills.getChildren().add(l);
-//				skillsPts.getChildren().add(value);
-//			}
-//		}
-//		
-//     	PlayerStatsWindow.add(skills, 0, 1, 2, 1);
-//     	PlayerStatsWindow.add(skillsPts, 2, 1, 2, 1);
-//    }
+
+    	PlayerStatsWindow.add(title, 0, 0, 5, 1);
+    	PlayerStatsWindow.setAlignment(Pos.TOP_CENTER);
+    	VBox skills = new VBox();  
+    	VBox skillsPts = new VBox();
+    	int aIndex= 0;
+		for (Iterator<CKChapter> abilities = data.getPlayer().getAbilities().getChapters(); abilities.hasNext();) {
+			CKChapter c = abilities.next();
+			if( c != null) {
+				aIndex ++;
+				Label l = new Label(c.getName());
+				l.setFont(new Font("Comic Sans MS", 15));
+				Label value = new Label(Integer.toString((c.getValue())));
+				value.setFont(new Font("Comic Sans MS", 15));
+				System.out.println("stat: " + c.getName() + " has been printed");
+				skills.getChildren().add(l);
+				skillsPts.getChildren().add(value);
+			}
+		}
+		
+     	PlayerStatsWindow.add(skills, 0, 1, 2, 1);
+     	PlayerStatsWindow.add(skillsPts, 2, 1, 2, 1);
+    }
     	
     	//Snap!
     	public CKDrawerTab Snap() {
