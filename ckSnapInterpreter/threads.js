@@ -136,7 +136,6 @@ function snapEquals(a, b) {
 
 function ThreadManager() {
     this.processes = [];
-    //this.boolean = false;
 }
 
 ThreadManager.prototype.toggleProcess = function (block) {
@@ -174,6 +173,7 @@ ThreadManager.prototype.startProcess = function (
     this.processes.push(newProc);
     
     
+    //this.processes.push(newProc);
     /*
     var serializer = new SnapSerializer();
     var str = encodeURIComponent(block.toXML(serializer));
@@ -188,7 +188,11 @@ ThreadManager.prototype.startProcess = function (
     	+ str
     	+ '</blocks>'); 
 	*/
- 
+
+    jsDebug.print("end of startProcess" + this.processes.length);
+    
+    
+    
     return newProc;
 };
 
@@ -248,20 +252,33 @@ ThreadManager.prototype.step = function () {
     // run each process until it gives up control, skipping processes
     // for sprites that are currently picked up, then filter out any
     // processes that have been terminated
-
+	
 	this.processes.forEach(function (proc) {
         if (!proc.homeContext.receiver.isPickedUp() && !proc.isDead) {
             proc.runStep();
         }
     });
-
+	/*
+    if (this.processes.length > 0) {
+    	jsDebug.print("in step where processes > 0");
+        var block = this.processes[1];
+        if (block.topBlock.selector === 'receiveGo') {
+        	jsDebug.print("got selector");
+            this.removeTerminatedProcesses();
+            completionListener.snapCompletes();
+        }
+    }
+    else {
+        this.removeTerminatedProcesses();
+    }
+    */
     this.removeTerminatedProcesses();
 };
 
-//where we call back to java 
 ThreadManager.prototype.removeTerminatedProcesses = function () {
     // and un-highlight their scripts
     var remaining = [];
+    
     this.processes.forEach(function (proc) {
         if ((!proc.isRunning() && !proc.errorFlag) || proc.isDead) {
             if (proc.topBlock instanceof BlockMorph) {
@@ -274,13 +291,12 @@ ThreadManager.prototype.removeTerminatedProcesses = function () {
                 }
             }
             
-            //catches invisible hat block
-            if (proc.topBlock.selector === 'receiveID') {
-            	//sets an indicator that we will call snapCompletes()
-            	ide.end = true;
+            /*
+            if (proc.topBlock.selector === 'receiveGo') {
+                completionListener.snapCompletes();
             }
-            
-            
+            */
+
             if (proc.topBlock instanceof ReporterBlockMorph) {
                 if (proc.onComplete instanceof Function) {
                     proc.onComplete(proc.homeContext.inputs[0]);
@@ -304,14 +320,6 @@ ThreadManager.prototype.removeTerminatedProcesses = function () {
             remaining.push(proc);
         }
     });
-    
-    //'snapCompletes()' was received and the queue is now empty
-    //resets for next time through & actually calls listener
-    if (ide.end === true && this.processes.length === 0) {
-    	ide.end = false;
-    	completionListener.snapCompletes();	
-    }
-
     this.processes = remaining;
 };
 
@@ -529,7 +537,7 @@ Process.prototype.evaluateContext = function () {
 
 Process.prototype.evaluateBlock = function (block, argCount) {
     // check for special forms
-	//jsDebug.print("eval block");
+	jsDebug.print("eval block");
     if (contains(['reportOr', 'reportAnd', 'doReport'], block.selector)) {
         return this[block.selector](block);
     }

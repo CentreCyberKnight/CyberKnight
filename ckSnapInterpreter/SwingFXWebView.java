@@ -123,33 +123,12 @@ public class SwingFXWebView extends JPanel {
                 //only changes below
                 //load snap and make it executable 
                 webEngine = CKGameObjectsFacade.getWebEngine();
-                webEngine.load(getClass().getResource("snap.html").toExternalForm());
+                webEngine.load(getClass().getResource("CyberSnap/snap.html").toExternalForm());
         		JSObject jsobj = (JSObject) webEngine.executeScript("window");
-        		/*
-        		class MyTimerTask extends TimerTask {
-        			
-        			@Override
-        			public void run() {
-        				webEngine.executeScript("loop()");
-        			}
-        		}
-        		
-        		TimerTask timerTask = new MyTimerTask();
-        		Timer timer = new Timer(true);
-        		timer.scheduleAtFixedRate(timerTask, 0, 10);
-        		*/
-        		
-        		try {
-        			jsobj.setMember("javaMove", new CKSpellObject("move"));
-        			jsobj.setMember("jsDebug", new CKjsDebugger());
-        			//jsobj.setMember("timer", timer);
-        			//jsobj.setMember("timerTask", timerTask);
-        			
-        		}
-        		catch (Exception e) {
-        			System.out.println("wrong item");
-        		}
-                
+    			jsobj.setMember("javaMove", new CKSpellObject("move"));
+    			jsobj.setMember("jsDebug", new CKjsDebugger());
+ 
+
         		
                 ObservableList<Node> children = root.getChildren();
                 

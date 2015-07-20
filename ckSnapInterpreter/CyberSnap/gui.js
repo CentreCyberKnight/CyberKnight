@@ -212,9 +212,6 @@ IDE_Morph.prototype.init = function (isAutoFill) {
 
     this.globalVariables = new VariableFrame();
     this.currentSprite = new SpriteMorph(this.globalVariables);
-    //adding more sprites 
-    //this.extra = new SpriteMorph(this.globalVariables);
-    //var ex2 = new SpriteMorph(this.globalVariables);
     //however many sprites that are currently on the screen
     this.sprites = new List([this.currentSprite]);
     var block = new HatBlockMorph();	//hat block 
@@ -222,19 +219,15 @@ IDE_Morph.prototype.init = function (isAutoFill) {
 	block.setSpec("Button");	//setting name
 	this.currentSprite.scripts.addChild(block);
 	
+	//used to indicate if it is time to call snapCompletes()
+	this.end = false;
 	
-	var block2 = new HatBlockMorph();	//hat block 
-	block2.setSelector('receiveGo');
-	block2.setSpec("Button CK");
-	block2.isVisible = false;
-	this.currentSprite.scripts.addChild(block2);
-	
-    this.sprites = new List([this.currentSprite]); // this.currentSprite]);
-    this.allSprites = new List([this.currentSprite]); //this.currentSprite]);
+    //this.sprites = new List([this.currentSprite]); // this.currentSprite]);
+   // this.allSprites = new List([this.currentSprite]); //this.currentSprite]);
     
     
-    //this.sprites = new List([]); // this.currentSprite]);
-    //this.allSprites = new List([]);
+    this.sprites = new List([]); // this.currentSprite]);
+    this.allSprites = new List([]);
 
     
     //creating a list for checking to see what sprite goes with
@@ -1308,9 +1301,7 @@ IDE_Morph.prototype.hideBlock = function (book) {
 
 IDE_Morph.prototype.fireTEST = function() {
 	var event = new CustomEvent("CK", {detail : 'Button'});
-	jsDebug.print("fireTEST");
 	document.getElementById('world').dispatchEvent(event);
-	//setInterval(loop, 1);
 };
 
 
@@ -1347,9 +1338,8 @@ IDE_Morph.prototype.setCyberSnap = function(){
 	
 	
 	//setting the artifact icon
-	//this.img = images.at(1);
-	//this.setArtifact();
-	javaProcess.setText(name);
+	this.img = 'data:image/png;base64,'+ artifact.getSnapImage();
+	this.setArtifact();
 	//first check to see if we already have sprites for an artifact
 	if (this.checkList.contains(name)) {
 		//find where our sprites are in the list
@@ -1373,7 +1363,6 @@ IDE_Morph.prototype.setCyberSnap = function(){
 			if (this.checkList.at(num) === true) {
 				this.addNewSprite();
 				list.add(this.currentSprite);
-				//arr.push(this.currentSprite);
 				//this.allSprites.add(this.currentSprite);
 				var block = new HatBlockMorph();	//hat block 
 				block.setSelector('receiveID');
@@ -1387,16 +1376,16 @@ IDE_Morph.prototype.setCyberSnap = function(){
 			else
 				num++;
 		}
+		
 		//setting the picture for each sprite
-		/*
 		var picture;
-		for (var i = 1; i <= methods; i++) {
+		var spellArray = artifact.getSpellImageArray();
+		for (var i = 1; i <= spellArray.length; i++) {
 			sprite = list.at(i);
-			
-			//picture = images.at(i+1);
-			//sprite.setPic(picture);
+			picture = spellArray[i]
+			sprite.setPic('data:image/png;base64,' + picture);
 		}
-		*/
+		
 	}
 	
 	
@@ -1423,7 +1412,7 @@ IDE_Morph.prototype.setArtifact = function() {
 	var myself = this;
 	
     thumbnail = new Morph();
-    thumbnail.texture = this.img;
+    thumbnail.texture = this.img; 
     thumbnail.drawNew = function () {
         this.image = newCanvas(this.extent());
         var context = this.image.getContext('2d'), 

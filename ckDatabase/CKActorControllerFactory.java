@@ -3,6 +3,7 @@ package ckDatabase;
 import ckGameEngine.ActorArtifactController;
 import ckGameEngine.ActorController;
 import ckGameEngine.ActorNullController;
+import ckGameEngine.ActorSnapController;
 import ckGameEngine.ActorTurnController;
 import ckGameEngine.OngoingEffectController;
 
@@ -53,6 +54,8 @@ public class CKActorControllerFactory extends CKXMLFactory<ActorController>
 		art.setName("Text Controller");
 		art.setAID("TEXT");
 		factory.writeAssetToXMLDirectory(art);
+		
+		
 				
 		art = new ActorArtifactController();
 		art.setPermissions(ActorController.ARTIFACT_CONTROL);
@@ -66,11 +69,11 @@ public class CKActorControllerFactory extends CKXMLFactory<ActorController>
 		art.setAID("BOTH");
 		factory.writeAssetToXMLDirectory(art);
 		
-		ActorNullController n = new ActorNullController();
-		n.setPermissions(ActorController.NO_CONTROL);
-		n.setName("Null Controller");
-		n.setAID("NULL");
-		factory.writeAssetToXMLDirectory(n);
+		ActorSnapController sn = new ActorSnapController();
+		sn.setPermissions(ActorController.SNAP_CONTROL);
+		sn.setName("Snap Controller");
+		sn.setAID("SNAP");
+		factory.writeAssetToXMLDirectory(sn);
 		
 		OngoingEffectController ongoing = new OngoingEffectController();
 		ongoing.setPermissions(ActorController.NO_CONTROL);

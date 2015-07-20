@@ -271,6 +271,31 @@ SpriteMorph.prototype.initBlocks = function () {
         //Lightning
 
         // Motion
+        CKforward: {
+            only: SpriteMorph,
+            type: 'command',
+            category: 'motion',
+            spec: 'CK Forward'
+        },
+        CKleft: {
+            only: SpriteMorph,
+            type: 'command',
+            category: 'motion',
+            spec: 'CK Left'
+        },
+        CKjump: {
+            only: SpriteMorph,
+            type: 'command',
+            category: 'motion',
+            spec: 'CK Jump'
+        },
+        snapCompletes: {
+        	only: SpriteMorph,
+        	type: 'command',
+        	category: 'motion',
+        	spec: 'Snap Completes'
+    	},
+        
         forward: {
             only: SpriteMorph,
             type: 'command',
@@ -282,8 +307,7 @@ SpriteMorph.prototype.initBlocks = function () {
             only: SpriteMorph,
             type: 'command',
             category: 'motion',
-            spec: 'turn %clockwise %n degrees',
-            defaults: [15]
+            spec: 'turn %clockwise %n degrees'
         },
         turnLeft: {
             only: SpriteMorph,
@@ -642,12 +666,12 @@ SpriteMorph.prototype.initBlocks = function () {
         receiveGo: {
             type: 'hat',
             category: 'control',
-            spec: 'when %greenflag clicked'
+            spec: 'Button CK'
         },
         receiveKey: {
             type: 'hat',
             category: 'control',
-            spec: 'when %keyHat key pressed'
+            spec: 'Button CK'
         },
 //testing out how to create a hat block that is associated with an artifact 
 //rather than with a category
@@ -658,10 +682,10 @@ SpriteMorph.prototype.initBlocks = function () {
 			spec: 'Button %keyHat'
 		},
 		
-		leftArrow: {
+		buttonCK: {
 			type: 'hat',
 			category: 'control',
-			spec: 'leftArrow'
+			spec: 'null'
 		},
 		
     /* migrated to a newer block version:
@@ -1350,7 +1374,7 @@ SpriteMorph.prototype.blockAlternatives = {
     setSize: ['changeSize'],
 
     // control:
-    leftArrow: ['receiveID'], 
+    //leftArrow: ['receiveID'], 
     doBroadcast: ['doBroadcastAndWait'],
     doBroadcastAndWait: ['doBroadcast'],
     doIf: ['doIfElse', 'doUntil'],
@@ -1826,7 +1850,11 @@ SpriteMorph.prototype.blockTemplates = function (category) {
     }
     
     else if (cat === 'motion') {
-
+    	
+    	blocks.push(block('CKleft'));
+    	blocks.push(block('CKforward'));
+    	blocks.push(block('CKjump'));
+    	blocks.push(block('snapCompletes'));
         blocks.push(block('forward'));
         blocks.push(block('turn'));
         blocks.push(block('turnLeft'));
@@ -1957,7 +1985,7 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         blocks.push(block('receiveInteraction'));
         blocks.push(block('receiveMessage'));
         blocks.push(block('receiveID'));
-        blocks.push(block('leftArrow'));
+        blocks.push(block('buttonCK'));
         blocks.push('-');
         blocks.push(block('doBroadcast'));
         blocks.push(block('doBroadcastAndWait'));
@@ -3480,9 +3508,24 @@ Morph.prototype.setPosition = function (aPoint, justMe) {
         this.moveBy(delta, justMe);
     }
 };
+
 SpriteMorph.prototype.snapCompletes = function() {
 	completionListener.snapCompletes();	
-};
+}
+
+SpriteMorph.prototype.CKleft = function () {
+	javaMove.move2("left", 1);
+}
+
+SpriteMorph.prototype.CKforward = function () {
+	javaMove.move2("forward", 1);
+}
+
+SpriteMorph.prototype.CKjump = function () {
+	javaMove.move2("jump up", 2);
+}
+
+
 
 SpriteMorph.prototype.forward = function (steps) {
 	//link to move in java
@@ -3509,7 +3552,8 @@ SpriteMorph.prototype.forward = function (steps) {
 
 
 SpriteMorph.prototype.setHeading = function (degrees) {
-    var x = this.xPosition(),
+    //javaMove.move2("jump up", 2);
+	var x = this.xPosition(),
         y = this.yPosition(),
         dir = (+degrees || 0),
         turn = dir - this.heading;
@@ -3529,6 +3573,7 @@ SpriteMorph.prototype.setHeading = function (degrees) {
         }
         part.gotoXY(trg.x, trg.y);
     });
+    
 };
 
 SpriteMorph.prototype.faceToXY = function (x, y) {
@@ -3543,7 +3588,8 @@ SpriteMorph.prototype.faceToXY = function (x, y) {
 };
 
 SpriteMorph.prototype.turn = function (degrees) {
-    this.setHeading(this.heading + (+degrees || 0));
+	//javaMove.move2("forward", 2);
+	this.setHeading(this.heading + (+degrees || 0));
 };
 
 SpriteMorph.prototype.turnLeft = function (degrees) {
@@ -4941,12 +4987,16 @@ StageMorph.prototype.processIdDispatch = function (event) {
 		event, 
 		this.IdEvent
 	);
+	//possible listener placement
 };
 
 //second step: sister to processKeyEvent
 StageMorph.prototype.processIdEvent = function (event, action) {
 	var id = event.detail;
+	var idSnapCompletes = id + " CK";
 	action.call(this, id);
+	action.call(this, idSnapCompletes);
+	//completionListener.snapCompletes();
 };
 
 //third step: sister to fireKeyEvent
@@ -4961,9 +5011,11 @@ StageMorph.prototype.IdEvent = function (ID) {
 		hats = hats.concat(morph.allHatBlocksForId(evt));
        }
     });
+	jsDebug.print("have hats");
     hats.forEach(function (block) {
         procs.push(myself.threads.startProcess(block, myself.isThreadSafe));
     });
+    jsDebug.print("pushed hats");
     
     return procs;	
 };
@@ -4972,7 +5024,7 @@ StageMorph.prototype.IdEvent = function (ID) {
 SpriteMorph.prototype.allHatBlocksForId = function (ID) {
     return this.scripts.children.filter(function (morph) {
         if (morph.selector) {
-            if (morph.selector === 'receiveID') {
+            if (morph.selector === 'receiveID' || morph.selector === 'receiveGo') {
             	//this allows us to use a drop down menu
                 return morph.blockSpec === ID;
             }
@@ -5308,7 +5360,7 @@ StageMorph.prototype.blockTemplates = function (category) {
         blocks.push(block('receiveInteraction'));
         blocks.push(block('receiveMessage'));
         blocks.push(block('receiveID'));
-        blocks.push(block('leftArrow'));
+        blocks.push(block('buttonCK'));
         blocks.push('-');
         blocks.push(block('doBroadcast'));
         blocks.push(block('doBroadcastAndWait'));
