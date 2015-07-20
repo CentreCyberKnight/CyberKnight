@@ -111,6 +111,7 @@ public class CKUI extends Application
 	WebView BrowserWindow;
 	GridPane PlayerDescriptionWindow;
 	GridPane ArtifactDescriptionWindow;
+	VBox AddedAbilitiesWindow;
 	HBox ArtifactSelectionWindow;
 	CKData data;
 	QuestData q;
@@ -154,9 +155,7 @@ public class CKUI extends Application
 		//this adds all the CKDrawerTabs as the main pane's children
 
     	//menuPane.getChildren().add(pane);
-		menuPane.getChildren().addAll(Icons(), Player(), Artifact(), AllArtifacts(), ControlSpells(), Stats(), Snap());
-
-		//menuPane.getChildren().addAll(swingNode, Icons(), Player(), Snap(), AllArtifacts(), Artifact(), ControlSpells(), Stats());
+		menuPane.getChildren().addAll(Icons(), Player(), Artifact(), AddedAbilities(), AllArtifacts(), ControlSpells(), Stats(), Snap());
 
 		
 	    Scene scene = new Scene(menuPane,1500,820);
@@ -402,6 +401,7 @@ public class CKUI extends Application
 							ControlSpells.getChildren().clear();
 						//	setControlSpells();
 							setPlayerNodes();
+							setStats();
 							setArtifactNodes();
 						
 						});
@@ -461,6 +461,7 @@ public class CKUI extends Application
     		PlayerStatsWindow.setPrefSize(350, 350);
     		PlayerStatsWindow.setStyle("-fx-background-color: rgb(217, 210, 240)");
     		PlayerStatsWindow.setOpacity(0.5);
+    		PlayerStatsWindow.setPadding(new Insets(5));
 	    	setStats();
     		CKDrawerTab stats = new CKDrawerTab(PlayerStatsWindow, DrawerSides.LEFT, 0.0, 470.0, 350.0, 350.0, "ckSnapInterpreter/text.png");
 	    	return stats;
@@ -475,24 +476,30 @@ public class CKUI extends Application
          	title.setAlignment(Pos.TOP_CENTER);
         	PlayerStatsWindow.add(title, 0, 0, 5, 1);
         	PlayerStatsWindow.setAlignment(Pos.TOP_CENTER);
-        	VBox skills = new VBox();
+        	VBox skills = new VBox();  
+        	VBox skillsPts = new VBox();
         	int aIndex= 0;
     		for (Iterator<CKChapter> abilities = data.getPlayer().getAbilities().getChapters(); abilities.hasNext();) {
     			CKChapter c = abilities.next();
     			if( c != null) {
     				aIndex ++;
 					Label l = new Label(c.getName());
+					l.setFont(new Font("Comic Sans MS", 15));
+					Label value = new Label(Integer.toString((c.getValue())));
+					value.setFont(new Font("Comic Sans MS", 15));
 					System.out.println("stat: " + c.getName() + " has been printed");
 					skills.getChildren().add(l);
+					skillsPts.getChildren().add(value);
     			}
     		}
+    		
          	PlayerStatsWindow.add(skills, 0, 1, 2, 1);
+         	PlayerStatsWindow.add(skillsPts, 2, 1, 2, 1);
         }
     	
     	//Snap!
     	public CKDrawerTab Snap() {
 			BrowserWindow = new WebView();
-			
 			CKGameObjectsFacade.setWebEngine(BrowserWindow.getEngine());
 			WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
 			BrowserWindow.setPrefSize(690, 820);
@@ -513,11 +520,11 @@ public class CKUI extends Application
 	    	ArtifactDescriptionWindow.setHgap(2);
 	    	ArtifactDescriptionWindow.setVgap(2);
 	    	ArtifactDescriptionWindow.setAlignment(Pos.CENTER);
-	    	ArtifactDescriptionWindow.setPrefSize(350, 300);
 	    	ArtifactDescriptionWindow.setStyle("-fx-background-color: rgb(217, 210, 240)");
-	    	ArtifactDescriptionWindow.setOpacity(0.5);
+	    	ArtifactDescriptionWindow.setOpacity(1);
 	    	setArtifactNodes();
 	    	CKDrawerTab artifact = new CKDrawerTab(ArtifactDescriptionWindow, DrawerSides.TOP, 350.0, 0.0, 400.0, 300.0, "ckSnapInterpreter/arrow.png");
+
 	    	return artifact;
     	}
     	
@@ -549,6 +556,67 @@ public class CKUI extends Application
     	}
     	
 
+    	
+    	
+    	
+    	
+    	
+    	//The selected artifact's enlarged image and description
+    	public CKDrawerTab AddedAbilities() {
+	    	AddedAbilitiesWindow = new VBox();
+	    	AddedAbilitiesWindow.setPrefSize(400, 295);
+	    	AddedAbilitiesWindow.setPadding(new Insets(5));
+	    	AddedAbilitiesWindow.setPadding(new Insets(15, 12, 15, 12));
+	    	AddedAbilitiesWindow.setSpacing(10);
+	    	AddedAbilitiesWindow.setStyle("-fx-background-color: rgb(217, 210, 240)");
+	    	AddedAbilitiesWindow.setOpacity(.7);
+//	    	AddedAbilitiesWindow.setTranslateX(350);
+//	    	AddedAbilitiesWindow.setTranslateY(300);
+	    	setAddedAbilityNodes();
+	    	CKDrawerTab abilities = new CKDrawerTab(AddedAbilitiesWindow, DrawerSides.RIGHT, 350.0, 300.0, 400.0, 295.0, "ckSnapInterpreter/arrow.png");
+
+			return abilities;
+    	}
+    	
+    	//export blocks here
+    	public void setAddedAbilityNodes() {
+    		AddedAbilitiesWindow.getChildren().clear();
+        	Label title = new Label("Added Abilities");
+         	title.setTextFill(Color.BLACK);
+         	title.setFont(new Font("Comic Sans MS", 30));
+         	title.setAlignment(Pos.TOP_CENTER);
+         	AddedAbilitiesWindow.getChildren().add(title);
+        	HBox hnodes = new HBox();
+        	Rectangle imageRect = new Rectangle(160, 160);
+        	imageRect.setFill(new ImagePattern(data.getArtifact().getFXImage()));
+			System.out.println("Artifact: " + data.getArtifact().getName() + "'s details have been created");
+			hnodes.getChildren().addAll(imageRect);
+			hnodes.setAlignment(Pos.CENTER);
+        	VBox addedAbs = new VBox();
+        	int aIndex= 0;
+    		for (Iterator<CKChapter> abilities = data.getPlayer().getAbilities().getChapters(); abilities.hasNext();) {
+    			CKChapter c = abilities.next();
+    			if( c != null) {
+    				aIndex ++;
+					Label l = new Label(c.getName());
+					l.setFont(new Font("Comic Sans MS", 15));
+					Label value = new Label(Integer.toString((c.getValue())));
+					value.setFont(new Font("Comic Sans MS", 15));
+					System.out.println("stat: " + c.getName() + " has been printed");
+					addedAbs.getChildren().add(l);
+    			}
+    		}
+			
+			AddedAbilitiesWindow.getChildren().addAll(addedAbs);
+			AddedAbilitiesWindow.setAlignment(Pos.CENTER);
+    	}
+    	
+    	
+    	
+    	
+    	
+    	
+    	
     	public void setAllArtifactsNodes() {
 			try {
 				data.setArtifact(null);
