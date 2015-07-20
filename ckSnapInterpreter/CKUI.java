@@ -141,15 +141,7 @@ public class CKUI extends Application
     	menuPane.setPrefSize(200, 200);
   
     	populateModel();
-
-
-		
-    	//final SwingNode swingNode = new SwingNode();
-    	//swingNode.maxWidth(Double.MAX_VALUE);
-    	//swingNode.maxHeight(Double.MAX_VALUE);
-    	//swingNode.s
-    	//swingNode.setStyle("-fx-border-color:red; -fx-background-color: blue;");
-
+    	
     	//createAndSetSwingContent(swingNode);
 
 		//this adds all the CKDrawerTabs as the main pane's children
@@ -165,8 +157,6 @@ public class CKUI extends Application
     	menuPane.getChildren().add(view);
 		//menuPane.getChildren().addAll(Icons(), Player(), Artifact(), AddedAbilities(), AllArtifacts(), ControlSpells(), Stats());
 		
-
-		//menuPane.getChildren().addAll(Icons(), Player(), Artifact(), AddedAbilities(), AllArtifacts(), ControlSpells(), Stats(), Snap());
 	  //  Scene scene = new Scene(menuPane,700,720);
 	    //Scene scene = new Scene(menuPane,1500,820);
 		
