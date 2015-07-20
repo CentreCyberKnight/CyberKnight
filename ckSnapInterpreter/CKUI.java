@@ -79,6 +79,7 @@ import javafx.embed.swing.SwingNode;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -133,28 +134,12 @@ public class CKUI extends Application
     public void start(Stage primaryStage) {
 
     	//The main pane that all DrawerTab nodes are added onto
+    	BorderPane border = new BorderPane();
+    	border.setPrefSize(200,200);
     	Pane menuPane = new Pane();
     	menuPane.setPrefSize(200, 200);
-    	
-    	//quest = createTestQuest();
-//    	CKGameObjectsFacade.setQuest(quest);
-//    	
-//        final SwingNode swingNode = new SwingNode();
-//        createAndSetSwingContent(swingNode);
-//        pane = new Pane();
-//        pane.setPrefSize(4000, 4000);
-//        pane.getChildren().add(swingNode);  
-//		 Thread T = new gameThread();
-//		 T.start();
-    	
+  
     	populateModel();
-    	//final SwingNode swingNode = new SwingNode();
-    	//swingNode.maxWidth(Double.MAX_VALUE);
-    	//swingNode.maxHeight(Double.MAX_VALUE);
-    	//swingNode.s
-    	//swingNode.setStyle("-fx-border-color:red; -fx-background-color: blue;");
-
-    	//createAndSetSwingContent(swingNode);
 		//this adds all the CKDrawerTabs as the main pane's children
 
 
@@ -166,11 +151,18 @@ public class CKUI extends Application
 		view.maxWidth(Double.MAX_VALUE);
     	view.maxHeight(Double.MAX_VALUE);
     	menuPane.getChildren().add(view);
-		menuPane.getChildren().addAll(Icons(), Player(), Artifact(), AddedAbilities(), Snap(), AllArtifacts(), ControlSpells(), Stats());
+		//menuPane.getChildren().addAll(Icons(), Player(), Artifact(), AddedAbilities(), AllArtifacts(), ControlSpells(), Stats());
+		
 
 		//menuPane.getChildren().addAll(Icons(), Player(), Artifact(), AddedAbilities(), AllArtifacts(), ControlSpells(), Stats(), Snap());
 	  //  Scene scene = new Scene(menuPane,700,720);
-	    Scene scene = new Scene(menuPane,1500,820);
+	    //Scene scene = new Scene(menuPane,1500,820);
+		
+		border.setCenter(menuPane);
+		border.setRight(Snap());
+		
+		Scene scene = new Scene(border,1500,820);
+		
 	    primaryStage.setTitle("Test Drawer Tabs");
 	    primaryStage.setScene(scene);
 	    primaryStage.show();
@@ -531,7 +523,7 @@ public class CKUI extends Application
     }
     	
     	//Snap!
-    	public CKDrawerTab Snap() {
+    	public Node Snap() {
 			BrowserWindow = new WebView();
 			CKGameObjectsFacade.setWebEngine(BrowserWindow.getEngine());
 			WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
@@ -540,8 +532,8 @@ public class CKUI extends Application
 			JSObject jsobj = (JSObject) webEngine.executeScript("window");
 			jsobj.setMember("javaMove", new CKSpellObject("move"));
 			jsobj.setMember("jsDebug", new CKjsDebugger());
-	    	CKDrawerTab snap = new CKDrawerTab(BrowserWindow, DrawerSides.RIGHT, 750.0, 0.0, 690.0, 820.0, "ckSnapInterpreter/text.png");
-	    	return snap;
+	    //	CKDrawerTab snap = new CKDrawerTab(BrowserWindow, DrawerSides.RIGHT, 750.0, 0.0, 690.0, 820.0, "ckSnapInterpreter/text.png");
+	    	return BrowserWindow;
     	}
 	    	
 	    	
