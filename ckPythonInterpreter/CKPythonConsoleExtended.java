@@ -341,6 +341,11 @@ public class CKPythonConsoleExtended extends JConsole
 			}			
 		}
 		
+		
+		
+		
+		
+		
 	}
 	
 	public static String wrapCode(String s)

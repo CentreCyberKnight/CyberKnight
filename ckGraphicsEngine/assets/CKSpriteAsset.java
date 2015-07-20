@@ -47,7 +47,7 @@ public class CKSpriteAsset extends CKCompositeAsset
 		public void setAssetID(String assetID)
 		{
 			this.assetID = assetID;
-			asset = this.asset = CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset(assetID);
+			asset =CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset(assetID);
 		}
 
 		/**

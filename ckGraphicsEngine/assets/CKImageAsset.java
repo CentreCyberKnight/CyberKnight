@@ -343,7 +343,7 @@ public class CKImageAsset extends CKGraphicsAsset
 	public static void main(String[] args)
 	{
 		//CKImageAsset A1 = //new CKImageAsset( "person","a1",6,4,TileType.SPRITE,  "images/big_person.png");
-		CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("fridge");	
+		CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("hero");	
 	
 		JFrame frame = new JFrame();
 
