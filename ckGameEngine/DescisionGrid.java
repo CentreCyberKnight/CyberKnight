@@ -1,5 +1,6 @@
 package ckGameEngine;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -71,6 +72,20 @@ public class DescisionGrid
 		public int[] getCosts()
 		{
 			return costs;
+		}
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString()
+		{
+			return "CAD [action=" + action
+					+ ", targetType=" + targetType + ", costs="
+					+ Arrays.toString(costs) + ", combo=" + combo
+					+ ", interpolate=" + interpolate + ", aggregate="
+					+ aggregate + ", catagory=" + catagory
+					+  "]";
 		}
 	
 	}
@@ -179,6 +194,18 @@ public class DescisionGrid
 				}
 			}
 		}
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString()
+		{
+			return "CAR ["+ descr + ", values="
+					+ Arrays.toString(values) + "]";
+		}
+		
+		
 
 	}
 
@@ -314,6 +341,9 @@ public class DescisionGrid
 		dirtySource.clear();
 		
 		createTargetReachability(targets,actions);
+		
+		//dirtyOrigins.forEach(o->{System.out.println("Origin"+o.)
+		
 		dirtyOrigin.forEach(o->o.evalActions());
 		
 		//now create sources for all of these...
@@ -333,7 +363,10 @@ public class DescisionGrid
 							(xp,yp)->createSourceNode(xp,yp,node.direction,car));					
 				}));
 		//now collapse the None direction
-		dirtySource.stream()
+		//must create a shallow copy since I';ll be adding things to dirtysource 
+		HashSet<DecisionNode> tempset= new HashSet<>(dirtySource);
+		
+		tempset.stream()
 			.filter(node->node.direction==Direction.NONE)
 			.forEach(node->node.streamSources()
 					.forEach(car->
@@ -350,8 +383,7 @@ public class DescisionGrid
 					);
 					
 		//All "real directions" are ready for evaluation.		
-					
-					
+	
 					
 		
 	}
@@ -365,6 +397,11 @@ public class DescisionGrid
 			.forEach(node->node.generateNodeValue(cp, moved));
 	}
 	
+	/**
+	 * This is the one that will combine everything!!
+	 * @param motion
+	 * @param maxCP
+	 */
 	public void generateNodeValues(GridNode[][][][] motion,int maxCP)
 	{
 		dirtySource.stream()
@@ -373,6 +410,12 @@ public class DescisionGrid
 		{
 			GridNode m = motion[(int) node.position.getX()][(int) node.position.getY()]
 					[node.direction.ordinal()][0];
+		
+			
+			
+			
+			
+			
 			if(m.isVisited())
 			{
 				//check that there is a value in motion.  If not set utility to 0.
@@ -385,9 +428,20 @@ public class DescisionGrid
 		{
 			GridNode m = motion[(int) node.position.getX()][(int) node.position.getY()]
 					[node.direction.ordinal()][0];
-
-			int cp = maxCP - m.remainingCP;
+			
+			
+			
+			int cp = m.remainingCP;
 			boolean moved = maxCP !=cp;
+			
+			int x = (int) node.position.getX();
+			int y = (int) node.position.getY();
+			if( (x==5 && y==5) || (x==5 && y==7) || (x==5 && y==4))
+			{	
+				System.out.println("Hi there!!"+m+" "+m.remainingCP+" "+cp+" "+moved);
+				
+			}
+			
 			node.generateNodeValue(cp, moved);
 			//calculate cp and moved variables
 			//
@@ -395,6 +449,31 @@ public class DescisionGrid
 			
 		});
 		
+		
+	}
+
+	
+	public void PrettyPrintNodeSummary(Direction dir)
+	{
+		for (int y = 0; y < grid.height; y++)
+		{
+			for (int x = 0; x < grid.width; x++)
+			{
+					double utility =nodes[x][y][dir.ordinal()].utility;
+					if(utility>0)
+					{
+						System.out.print(x);
+					System.out.print(',');
+					System.out.print(y);
+					System.out.print("->");
+					System.out.print(utility);
+					System.out.print('\n');
+					System.out.println(nodes[x][y][dir.ordinal()].cmap.get(0).toString());
+					}
+					
+			}
+//			System.out.print('\n');
+		}
 		
 	}
 	
@@ -405,7 +484,13 @@ public class DescisionGrid
 			for (int x = 0; x < grid.width; x++)
 			{
 					double utility =nodes[x][y][dir.ordinal()].utility;
-					System.out.printf("%6.1f",utility);
+					if(utility>0)
+					{	System.out.printf("%8.1f",utility);}
+					else
+					{
+						System.out.printf("%8s","---");
+					}
+					
 					/*System.out.print(x);
 					System.out.print(',');
 					System.out.print(y);
@@ -419,6 +504,34 @@ public class DescisionGrid
 		
 	}
 	
+	
+	
+	public void PrettyPrintNodeActions(Direction dir)
+	{
+		for (int y = 0; y < grid.height; y++)
+		{
+			for (int x = 0; x < grid.width; x++)
+			{
+					double utility =nodes[x][y][dir.ordinal()].utility;
+					if(utility>0)
+					{	System.out.printf("%8s",nodes[x][y][dir.ordinal()].cmap.get(0).descr.action);}
+					else
+					{
+						System.out.printf("%8s","---");
+					}
+					
+					/*System.out.print(x);
+					System.out.print(',');
+					System.out.print(y);
+					System.out.print("->");
+					System.out.print(utility);
+					System.out.print('\n');*/
+					
+			}
+			System.out.print('\n');
+		}
+		
+	}
 	
 	
 	
@@ -462,11 +575,13 @@ public class DescisionGrid
 				CKPosition[] inverse = aim.getInverse(Direction.NONE);
 				markTargets(targets, inverse, Direction.NONE, cad);
 			}
-			Direction.stream().filter(d -> d != Direction.NONE)
+			else 
+			{Direction.stream().filter(d -> d != Direction.NONE)
 					.forEach(dir -> {
 						CKPosition[] inverse = aim.getInverse(dir);
 						markTargets(targets, inverse, dir, cad);
 					});
+			}
 		}
 
 	}

@@ -852,7 +852,7 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 				CKPosition currPos = (CKPosition) presPos.clone();
 				while (jumpOverDistance != 0)
 				{
-					System.out.println("jump over distance:"+jumpOverDistance);
+					//System.out.println("jump over distance:"+jumpOverDistance);
 					currPos.setX((int) currPos.getX() + presDir.dx);
 					currPos.setY((int) currPos.getY() + presDir.dy);
 					int usedCP = this.calcCPForJumpDistance(presPos, presDir,
