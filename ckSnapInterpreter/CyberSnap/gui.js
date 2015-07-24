@@ -498,7 +498,7 @@ IDE_Morph.prototype.buildPanes = function () {
     this.createCorralBar();
     this.createCorral();
     //added this in to create the artifact icon in the spriteBar
-    //this.setArtifact();
+    this.setArtifact();
 };
 
 IDE_Morph.prototype.createLogo = function () {
@@ -1459,7 +1459,7 @@ IDE_Morph.prototype.buildCKPanes = function () {
     this.createCorral();
     //added this in to create the artifact icon in the spriteBar
     this.setArtifact();
-    java.print("buildCKPanes");
+    //java.print("buildCKPanes");
 };
 
 IDE_Morph.prototype.createSpriteBar = function () {
