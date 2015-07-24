@@ -155,11 +155,8 @@ public class CKUI extends Application
 		view.maxWidth(Double.MAX_VALUE);
     	view.maxHeight(Double.MAX_VALUE);
     	menuPane.getChildren().add(view);
-<<<<<<< HEAD
-		menuPane.getChildren().addAll(Icons(), Player(), Artifact()/*, AddedAbilities()*/, AllArtifacts(), ControlSpells(), Stats());
-=======
+
 		menuPane.getChildren().addAll(Icons(), Player(), Artifact(), AddedAbilities(), AllArtifacts(), ControlSpells(), Stats());
->>>>>>> branch 'master' of git@github.com:CentreCyberKnight/CyberKnight.git
 		
 
 	  //  Scene scene = new Scene(menuPane,700,720);
