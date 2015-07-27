@@ -2,25 +2,35 @@ package ckGameEngine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
 
 import ckCommonUtils.CKPosition;
 
 public class CKSpellResult
 {
+	
+	
+	public final static String DAMAGE="damage"; 
+	
 	private class Tuple
 	{
 		public CKAbstractGridItem target;
 		public String action;
-		public String result;
+		public String resultType;
+		public double result;
 		
-		public Tuple(CKAbstractGridItem target, String action, String result)
+		public Tuple(CKAbstractGridItem target, String action, String resultType,double result)
 		{
 			this.target = target;
 			this.action = action;
+			this.resultType = resultType;
 			this.result = result;
 		}
 		
@@ -60,15 +70,33 @@ public class CKSpellResult
 		/**
 		 * @return the result
 		 */
-		public String getResult()
+		public String getResultType()
 		{
-			return result;
+			return resultType;
 		}
 
 		/**
 		 * @param result the result to set
 		 */
-		public void setResult(String result)
+		public void setResultType(String resultType)
+		{
+			this.resultType = resultType;
+		}
+
+
+		/**
+		 * @return the result
+		 */
+		public double getResult()
+		{
+			return result;
+		}
+
+
+		/**
+		 * @param result the result to set
+		 */
+		public void setResult(double result)
 		{
 			this.result = result;
 		}
@@ -82,11 +110,84 @@ public class CKSpellResult
 		
 	public CKSpellResult() {}
 	
-	public void addResult(CKAbstractGridItem target, String action, String result)
+	public void addResult(CKAbstractGridItem target, String action, String resultType,double result)
 	{
-			results.add(new Tuple(target,action,result));
+			results.add(new Tuple(target,action,resultType,result));
+	}
+
+	
+	public Stream<Tuple> actorStream()
+	{
+		return results.stream()
+				.filter(t-> t.target instanceof CKGridActor);
+	}
+
+	public Stream<Tuple> actorStream(String name)
+	{
+		return actorStream().filter(t->t.getTarget().getName().equals(name));		
 	}
 	
+	public Stream<Tuple> actorStream(CKAbstractGridItem item)
+	{
+		return results.stream().filter(t->t.getTarget()==item);		
+	}
+	
+
+	/**
+	 * Creates an actor stream of the members of a team
+	 * @param team
+	 * @return
+	 */
+	public Stream<Tuple> actorStream(CKTeam team)
+	{
+		return actorStream().filter(t->((CKGridActor)t.getTarget()).getTeam() == team);
+	}
+	
+	
+	
+	
+	public DoubleStream resultsStream(String resultType)
+	{
+		return results.stream()
+				.filter(r->r.resultType.equalsIgnoreCase(resultType))
+				.mapToDouble(Tuple::getResult);
+	}
+	
+	
+	
+	public double sumResults(String resultType)
+	{
+		return resultsStream(resultType).sum();	
+	}
+	
+	public double avgResults(String resultType)
+	{
+		return resultsStream(resultType).average().getAsDouble();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//Action, Results, for a target
+	@Deprecated
 	public Map<String, List<String>> getResult(CKAbstractGridItem target)
 	{
 		
@@ -105,9 +206,10 @@ public class CKSpellResult
 		return results.stream()
 			.filter(t->t.target==target)
 			.collect(Collectors.groupingBy(Tuple::getAction,
-					Collectors.mapping(Tuple::getResult,Collectors.toList())));
+					Collectors.mapping(Tuple::getResultType,Collectors.toList())));
 	}
 	
+	@Deprecated
 	public String getResult(CKAbstractGridItem target,String action)
 	{
 		String ret ="";
@@ -119,6 +221,11 @@ public class CKSpellResult
 			}
 		}
 		return ret;
+	}
+	
+	public Set<String> allResultTypes()
+	{
+		return results.stream().collect(Collectors.mapping(Tuple::getResultType,Collectors.toSet()));
 	}
 
 	

@@ -2,6 +2,7 @@ package ckGameEngine.actions;
 
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellCast;
+import ckGameEngine.CKSpellResult;
 
 final public class CKAlterCPCmd extends CKGameAction
 {
@@ -31,6 +32,11 @@ final public class CKAlterCPCmd extends CKGameAction
 		if(actor != null)
 		{
 			actor.setCyberPoints(actor.getCyberPoints() + cast.getCp());
+			cast.addResult(actor, cast.getPage(), CKSpellResult.DAMAGE, cast.getCp());
+		}
+		else
+		{
+			cast.addResult(cast.getItemTarget(), cast.getPage(), CKSpellResult.DAMAGE, 0);
 		}
 		
 		L.actionCompleted(this);
