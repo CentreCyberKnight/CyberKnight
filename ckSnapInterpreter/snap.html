@@ -23,12 +23,13 @@
 		<script type="text/javascript">
 			var world;
 			var ide;
+
 			window.onload = function () {
 				world = new WorldMorph(document.getElementById('world'));
                 world.worldCanvas.focus();
 				ide = new IDE_Morph();
 			    ide.openIn(world);
-				setInterval(loop, 1);
+				setInterval(loop, 100);
 			};
 
 			function loop() {

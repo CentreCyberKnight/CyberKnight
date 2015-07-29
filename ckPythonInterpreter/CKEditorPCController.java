@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import ckCommonUtils.CKAreaPositions;
 import ckCommonUtils.CKPosition;
+import ckCommonUtils.Command;
 import ckGameEngine.CKAbstractGridItem;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKBook;
@@ -14,6 +15,7 @@ import ckGameEngine.CKGridActor;
 import ckGameEngine.CKGridItemSet;
 import ckGameEngine.CKSpellCast;
 import ckGameEngine.CKGameObjectsFacade;
+import ckGameEngine.CKSpellResult;
 import ckGameEngine.Direction;
 import ckGraphicsEngine.CKSelection;
 import static ckCommonUtils.CKPropertyStrings.*;
@@ -384,6 +386,17 @@ public class CKEditorPCController
 			return scryString(modifier, CP, target, key);
 		}
 		return null;
+	}
+	
+	public static CKSpellResult predictCasting(Command cmd,int iterations)
+	{
+		CKGameObjectsFacade.startPrediction();
+		for(int i=0;i<iterations;i++)
+		{
+			CKGameObjectsFacade.iteratePrediction();
+			cmd.call();
+		}
+		return CKGameObjectsFacade.endPrediction();
 	}
 
 }

@@ -22,6 +22,7 @@ import ckEditor.treegui.CKTreeGui;
 import ckGameEngine.CKBook;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellCast;
+import ckGameEngine.CKSpellResult;
 import ckSatisfies.ContestedActionSatisfies;
 import static ckCommonUtils.CKPropertyStrings.*;
 
@@ -220,11 +221,12 @@ public class CKContestedAlterCP extends CKGameAction
 		if(actor != null)
 		{
 			actor.setCyberPoints(actor.getCyberPoints() +damage);
+			cast.addResult(actor, cast.getPage(), CKSpellResult.DAMAGE, cast.getCp());
 		}
-		
-		
-		
-		
+		else
+		{
+			cast.addResult(cast.getItemTarget(), cast.getPage(), CKSpellResult.DAMAGE, 0);
+		}
 		
 		notifyListener();
 	}

@@ -8,3 +8,13 @@
 /CKTriggerListNode.class
 /CKTriggerNode.class
 /TriggerResult.class
+/CKSharedTrigger$PickerListener.class
+/CKSharedTrigger.class
+/CKSharedTriggerList.class
+/CKTrigger.class
+/CKTriggerList.class
+/CKTriggerListNode$TreeAddSharedTriggerListener.class
+/CKTriggerListNode$TreeAddTriggerListener.class
+/CKTriggerListNode.class
+/CKTriggerNode.class
+/TriggerResult.class

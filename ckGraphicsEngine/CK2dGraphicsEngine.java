@@ -850,7 +850,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 		return scene.getGrid();
 	}
 
-	public CKGraphicsSceneInterface getScene()
+	public CKGraphicsSceneInterface getCKScene()
 	{
 		return scene;
 	}

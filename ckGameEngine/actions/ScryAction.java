@@ -34,27 +34,27 @@ public class ScryAction extends CKGameAction
 
 	public void switchHandler(CKSpellCast cast)
 	{
-		String action ="scry:"+cast.getKey().toLowerCase();
-		switch (cast.getKey().toLowerCase())
+		String action ="scry";//+cast.getKey().toLowerCase();
+		String resultType = cast.getKey().toLowerCase();  
+		switch (resultType)
 		{
 		case "height":
-			cast.addResult(cast.getItemTarget(),action,Integer.toString(cast.getItemTarget().getTotalHeight()));
+			cast.addResult(cast.getItemTarget(),action,resultType,
+					cast.getItemTarget().getTotalHeight());
 			break;
 		case "move":
-			cast.addResult(cast.getItemTarget(),action,Integer.toString(cast.getItemTarget().getMoveCost()));	
+			cast.addResult(cast.getItemTarget(),action,resultType,cast.getItemTarget().getMoveCost());	
 			break;
 		case "slide":
-			cast.addResult(cast.getItemTarget(),action,Integer.toString(cast.getItemTarget().getSlideCost()));
+			cast.addResult(cast.getItemTarget(),action,resultType,cast.getItemTarget().getSlideCost());
 			break;
 		case "name":
-			cast.addResult(cast.getItemTarget(),action,cast.getItemTarget().getName());
+			cast.addResult(cast.getItemTarget(),action+":name",cast.getItemTarget().getName(),1);
 			break;
 		case "trap":
-			 if(cast.getActorTarget().getAbilities().hasPage("trait", "trap"))
-			  {
-			  		//CKSpellCast cry = voice("talk", 0, cast.getPCSource().getPos(), "It's a trap!");
-			  }
-			 break;
+			cast.addResult(cast.getItemTarget(),action,resultType,
+			cast.getActorTarget().getAbilities().hasPage("trait", "trap"));
+			 			 break;
 
 			
 		}
@@ -65,7 +65,7 @@ public class ScryAction extends CKGameAction
 	{
 		replaceListener(L);
 		switchHandler(cast);
-		cast.getResult();
+		//cast.getResult();  FIXME don't think this does anything...
 		notifyListener();
 		
 	}

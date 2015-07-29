@@ -8,3 +8,13 @@
 /CKSoundLoopAction.class
 /CKSoundPlayAction.class
 /CKSoundStopAction.class
+/CKSound$SliderListener.class
+/CKSound$SoundControls$PlaySound.class
+/CKSound$SoundControls$SliderListener.class
+/CKSound$SoundControls$StopSound.class
+/CKSound$SoundControls.class
+/CKSound.class
+/CKSoundFactory.class
+/CKSoundLoopAction.class
+/CKSoundPlayAction.class
+/CKSoundStopAction.class

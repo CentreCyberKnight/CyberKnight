@@ -213,8 +213,18 @@ IDE_Morph.prototype.init = function (isAutoFill) {
     this.globalVariables = new VariableFrame();
     this.currentSprite = new SpriteMorph(this.globalVariables);
     //however many sprites that are currently on the screen
+   // this.sprites = new List([this.currentSprite]);
+	
+	//used to indicate if it is time to call snapCompletes()
+	this.end = false;
+	
+    //this.sprites = new List([this.currentSprite]); // this.currentSprite]);
+   // this.allSprites = new List([this.currentSprite]); //this.currentSprite]);
+    
+    
     this.sprites = new List([]); // this.currentSprite]);
-    this.allSprites = new List([]); //this.currentSprite]);
+    this.allSprites = new List([]);
+
     
     //creating a list for checking to see what sprite goes with
     // what artifact
@@ -260,8 +270,6 @@ IDE_Morph.prototype.init = function (isAutoFill) {
     // override inherited properites:
     this.color = this.backgroundColor;
     
-    //HARDCODE
-    this.domino("Boot",new List(['combatBoot.png', 'leftArrow.png', 'rightArrow.png']));
 };
 
 IDE_Morph.prototype.openIn = function (world) {
@@ -1287,6 +1295,11 @@ IDE_Morph.prototype.hideBlock = function (book) {
 };
 
 
+IDE_Morph.prototype.fireTEST = function() {
+	var event = new CustomEvent("CK", {detail : 'Button'});
+	document.getElementById('world').dispatchEvent(event);
+};
+
 
 //executes scripts
 //parameters are the artifact name & location of spell Vector
@@ -1309,24 +1322,24 @@ IDE_Morph.prototype.fire = function(artifact, location) {
 
 //sets up the stage for an artifact
 //parameter: artifact name & List(artifact.png, all method pngs)
-IDE_Morph.prototype.domino = function(artifact, images){
+IDE_Morph.prototype.setCyberSnap = function(){
 	var list = new List([]);
 	var acc = 0;
 	var num = 1;	//used when traversing the checkList
 	var sprite;		//place holder for sprites
 	var lcArtifact;	//used when traversing the checkList
-	var methods = images.length() - 1;	//number of methods
-	//var arr = [];
+	var name = artifact.getName();
+	var methods = artifact.spellCount();	//number of methods
+	
 	
 	//setting the artifact icon
-	this.img = images.at(1);
-	this.setArtifact();
-	
+	this.img = 'data:image/png;base64,'+ artifact.getSnapImage();
+	//this.setArtifact();
 	//first check to see if we already have sprites for an artifact
-	if (this.checkList.contains(artifact)) {
+	if (this.checkList.contains(name)) {
 		//find where our sprites are in the list
 		lcArtifact = this.checkList.at(num);
-		while (lcArtifact != artifact) {
+		while (lcArtifact != name) {
 			num++;
 			lcArtifact = this.checkList.at(num);
 		}
@@ -1345,13 +1358,11 @@ IDE_Morph.prototype.domino = function(artifact, images){
 			if (this.checkList.at(num) === true) {
 				this.addNewSprite();
 				list.add(this.currentSprite);
-				//arr.push(this.currentSprite);
-				//this.allSprites.add(this.currentSprite);
 				var block = new HatBlockMorph();	//hat block 
 				block.setSelector('receiveID');
-				block.setSpec(artifact + ": Button " + acc);	//setting name
+				block.setSpec(name + ": Button " + acc);	//setting name
 				this.currentSprite.scripts.addChild(block);
-				this.checkList.put(artifact, num);
+				this.checkList.put(name, num);
 				this.selectSprite(this.currentSprite);
 				num++;
 				acc++;
@@ -1359,18 +1370,23 @@ IDE_Morph.prototype.domino = function(artifact, images){
 			else
 				num++;
 		}
-		//setting the picture for each sprite
-		var picture;
-		for (var i = 1; i <= methods; i++) {
-			sprite = list.at(i);
-			picture = images.at(i+1);
-			sprite.setPic(picture);
-		}
 	}
+		
+		//setting the picture and name for each sprite
+		var picture;
+		var spellArray = artifact.getSpellImageArray();
+		var spellNames = artifact.getSpellNamesArray();
+		for (var i = 1; i <= spellArray.length; i++) {
+			sprite = list.at(i);
+			picture = spellArray[i-1]
+			sprite.setPic('data:image/png;base64,' + picture);
+			sprite.name = spellNames[i-1];
+		}
+		
+	
 	
 	//updating what sprites are on the screen
 	this.sprites = list;
-	//this.stage.children = arr;
 	//updating current sprite to the first on the screen
 	this.currentSprite = this.sprites.at(1);
 	
@@ -1386,12 +1402,11 @@ IDE_Morph.prototype.domino = function(artifact, images){
 IDE_Morph.prototype.setArtifact = function() {
 	//added parts of IDE_Morph.prototype.createLogo
     //trying to add a picture to the corner
-
 	var thumbnail;
 	var myself = this;
 	
     thumbnail = new Morph();
-    thumbnail.texture = this.img;
+    thumbnail.texture = this.img; 
     thumbnail.drawNew = function () {
         this.image = newCanvas(this.extent());
         var context = this.image.getContext('2d'), 
@@ -1444,6 +1459,7 @@ IDE_Morph.prototype.buildCKPanes = function () {
     this.createCorral();
     //added this in to create the artifact icon in the spriteBar
     this.setArtifact();
+    //java.print("buildCKPanes");
 };
 
 IDE_Morph.prototype.createSpriteBar = function () {
@@ -2050,7 +2066,7 @@ IDE_Morph.prototype.fixLayout = function (situation) {
     Morph.prototype.trackChanges = false;
     
     //ensures that the artifact is always present
-    this.setArtifact();
+    //this.setArtifact();
 
     if (situation !== 'refreshPalette') {
         // controlBar

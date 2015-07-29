@@ -87,7 +87,7 @@ public class CKAssetViewer extends CKGamePanelTimer
 		//could draw the stats up..
 		int leftMargin = 25;
 		int topMargin = 25;
-		
+		System.out.println("Drawing!!");
 		//g.setColor(Color.WHITE);
 		//g.draw3DRect(leftMargin, topMargin, asset.getWidth(presentRow)*2,
 		//		asset.getHeight(presentRow)*2,true);

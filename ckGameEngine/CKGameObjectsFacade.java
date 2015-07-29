@@ -1,6 +1,10 @@
 package ckGameEngine;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 
 import javax.swing.JButton;
 
@@ -47,6 +51,7 @@ public class CKGameObjectsFacade
 		return spells;
 	}
 
+
 	public static void setWebEngine(WebEngine newWebEngine)
 	{
 		webEngine = newWebEngine;	
@@ -56,7 +61,8 @@ public class CKGameObjectsFacade
 	{
 		if (webEngine == null)
 		{
-			//webEngine = 
+			WebView browser = new WebView();
+			webEngine = browser.getEngine();
 		}
 		return webEngine;
 	}
@@ -197,7 +203,7 @@ public class CKGameObjectsFacade
 
 	public static void disableArtifactInput()
 	{
-		// TODO Auto-generated method stub
+		
 		String name = getCurrentPlayer().getName();
 		artifactController.enableCharacter(name, false);
 	}
@@ -215,9 +221,58 @@ public class CKGameObjectsFacade
 	{
 		if (console != null)
 		{
-			// System.out.println("Running this code:\n"+code);
+			//System.out.println("Running this code:\n"+code);
 			console.runNewCode(code, listen);
 		}
 	}
 
+	
+	private static boolean predictionMode = false;
+	private static CKSpellResult predictionResult = null;
+	private static HashMap<CKAbstractGridItem,CKAbstractGridItem> items = new HashMap<>();
+	
+	public static void startPrediction()
+	{
+		predictionMode=true;
+		predictionResult=new CKSpellResult();
+		iteratePrediction();
+		//note that cyberpoints need to be stored somewhere as well....
+	}
+
+	public static void iteratePrediction()
+	{
+		items.clear();
+	}
+	
+	public static CKSpellResult endPrediction()
+	{
+		predictionMode=false;
+		items.clear();
+		CKSpellResult res = predictionResult;
+		predictionResult=null;
+		return res;
+	}
+	
+	
+	public static boolean isPrediction()
+	{
+		return predictionMode;
+	}
+
+
+	public static CKSpellResult getPredictionResult()
+	{
+		return predictionResult;
+	}
+
+
+	public static CKAbstractGridItem replaceTargets(CKAbstractGridItem target)
+	{
+		if(!items.containsKey(target))
+		{
+			items.put(target, target.makeCopy());
+		}
+		return items.get(target);
+	}
+	
 }

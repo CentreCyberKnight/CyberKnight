@@ -188,6 +188,9 @@ public class CKAddActorCmd extends CKQuestAction implements ActionListener
 		
 		//add to eventLoop
 		CKGameObjectsFacade.getQuest().enqueueAddedActor(actor);
+		
+		cast.addResult(cast.getItemTarget(), cast.getPage(),
+						"Add Actor",true);
 
 	}
 

@@ -153,7 +153,6 @@ ThreadManager.prototype.startProcess = function (
     exportResult,
     callback
 ) {
-	jsDebug.print("in startProcess");
     var active = this.findProcess(block),
         top = block.topBlock(),
         newProc;
@@ -164,12 +163,16 @@ ThreadManager.prototype.startProcess = function (
         active.stop();
         this.removeTerminatedProcesses();
     }
+    
+    
     newProc = new Process(block.topBlock(), callback);
     newProc.exportResult = exportResult;
     if (!newProc.homeContext.receiver.isClone) {
         top.addHighlight();
     }
     this.processes.push(newProc);
+    
+    
     //this.processes.push(newProc);
     /*
     var serializer = new SnapSerializer();
@@ -186,7 +189,9 @@ ThreadManager.prototype.startProcess = function (
     	+ '</blocks>'); 
 	*/
 
-    jsDebug.print("end of startProcess");
+    jsDebug.print("end of startProcess" + this.processes.length);
+    
+    
     
     return newProc;
 };
@@ -247,12 +252,26 @@ ThreadManager.prototype.step = function () {
     // run each process until it gives up control, skipping processes
     // for sprites that are currently picked up, then filter out any
     // processes that have been terminated
-
+	
 	this.processes.forEach(function (proc) {
         if (!proc.homeContext.receiver.isPickedUp() && !proc.isDead) {
             proc.runStep();
         }
     });
+	/*
+    if (this.processes.length > 0) {
+    	jsDebug.print("in step where processes > 0");
+        var block = this.processes[1];
+        if (block.topBlock.selector === 'receiveGo') {
+        	jsDebug.print("got selector");
+            this.removeTerminatedProcesses();
+            completionListener.snapCompletes();
+        }
+    }
+    else {
+        this.removeTerminatedProcesses();
+    }
+    */
     this.removeTerminatedProcesses();
 };
 
@@ -271,6 +290,12 @@ ThreadManager.prototype.removeTerminatedProcesses = function () {
                     proc.homeContext.receiver.stopTalking();
                 }
             }
+            
+            /*
+            if (proc.topBlock.selector === 'receiveGo') {
+                completionListener.snapCompletes();
+            }
+            */
 
             if (proc.topBlock instanceof ReporterBlockMorph) {
                 if (proc.onComplete instanceof Function) {
@@ -296,7 +321,6 @@ ThreadManager.prototype.removeTerminatedProcesses = function () {
         }
     });
     this.processes = remaining;
-    //completionListener.snapCompletes();
 };
 
 ThreadManager.prototype.findProcess = function (block) {
@@ -485,7 +509,7 @@ Process.prototype.pauseStep = function () {
 
 Process.prototype.evaluateContext = function () {
     var exp = this.context.expression;
-    jsDebug.print("evaluateContext");
+    //jsDebug.print("evaluateContext");
     this.frameCount += 1;
     if (exp instanceof BlockMorph) {
         return this.evaluateBlock(exp, exp.inputs().length);

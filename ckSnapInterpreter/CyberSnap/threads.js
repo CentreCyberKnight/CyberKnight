@@ -136,6 +136,7 @@ function snapEquals(a, b) {
 
 function ThreadManager() {
     this.processes = [];
+    //this.boolean = false;
 }
 
 ThreadManager.prototype.toggleProcess = function (block) {
@@ -163,16 +164,21 @@ ThreadManager.prototype.startProcess = function (
         active.stop();
         this.removeTerminatedProcesses();
     }
+    
+    
     newProc = new Process(block.topBlock(), callback);
     newProc.exportResult = exportResult;
     if (!newProc.homeContext.receiver.isClone) {
         top.addHighlight();
     }
     this.processes.push(newProc);
-
+    
+    
+    /*
     var serializer = new SnapSerializer();
     var str = encodeURIComponent(block.toXML(serializer));
     var app = serializer.app;
+
     javaProcess.setText("process ~ threads.js line 168:"
     	+ 'data:text/xml,<blocks app="'
     	+ app 
@@ -181,9 +187,8 @@ ThreadManager.prototype.startProcess = function (
     	+ '">' 
     	+ str
     	+ '</blocks>'); 
-
- 		
-    
+	*/
+ 
     return newProc;
 };
 
@@ -238,19 +243,22 @@ ThreadManager.prototype.resumeAll = function (stage) {
     }
 };
 
+
 ThreadManager.prototype.step = function () {
     // run each process until it gives up control, skipping processes
     // for sprites that are currently picked up, then filter out any
     // processes that have been terminated
 
-    this.processes.forEach(function (proc) {
+	this.processes.forEach(function (proc) {
         if (!proc.homeContext.receiver.isPickedUp() && !proc.isDead) {
             proc.runStep();
         }
     });
+
     this.removeTerminatedProcesses();
 };
 
+//where we call back to java 
 ThreadManager.prototype.removeTerminatedProcesses = function () {
     // and un-highlight their scripts
     var remaining = [];
@@ -265,7 +273,14 @@ ThreadManager.prototype.removeTerminatedProcesses = function () {
                     proc.homeContext.receiver.stopTalking();
                 }
             }
-
+            
+            //catches invisible hat block
+            if (proc.topBlock.selector === 'receiveID') {
+            	//sets an indicator that we will call snapCompletes()
+            	ide.end = true;
+            }
+            
+            
             if (proc.topBlock instanceof ReporterBlockMorph) {
                 if (proc.onComplete instanceof Function) {
                     proc.onComplete(proc.homeContext.inputs[0]);
@@ -289,6 +304,14 @@ ThreadManager.prototype.removeTerminatedProcesses = function () {
             remaining.push(proc);
         }
     });
+    
+    //'snapCompletes()' was received and the queue is now empty
+    //resets for next time through & actually calls listener
+    if (ide.end === true && this.processes.length === 0) {
+    	ide.end = false;
+    	completionListener.snapCompletes();	
+    }
+
     this.processes = remaining;
 };
 
@@ -478,7 +501,11 @@ Process.prototype.pauseStep = function () {
 
 Process.prototype.evaluateContext = function () {
     var exp = this.context.expression;
+    //jsDebug.print("evaluateContext");
     this.frameCount += 1;
+    if (exp instanceof BlockMorph) {
+        return this.evaluateBlock(exp, exp.inputs().length);
+    }
     if (this.context.tag === 'exit') {
         this.expectReport();
     }
@@ -494,9 +521,6 @@ Process.prototype.evaluateContext = function () {
     if (exp instanceof ArgMorph || exp.bindingID) {
         return this.evaluateInput(exp);
     }
-    if (exp instanceof BlockMorph) {
-        return this.evaluateBlock(exp, exp.inputs().length);
-    }
     if (isString(exp)) {
         return this[exp]();
     }
@@ -505,6 +529,7 @@ Process.prototype.evaluateContext = function () {
 
 Process.prototype.evaluateBlock = function (block, argCount) {
     // check for special forms
+	//jsDebug.print("eval block");
     if (contains(['reportOr', 'reportAnd', 'doReport'], block.selector)) {
         return this[block.selector](block);
     }

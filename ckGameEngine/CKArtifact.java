@@ -1,5 +1,6 @@
 package ckGameEngine;
 
+import java.awt.image.BufferedImage;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.XMLDecoder;
@@ -7,18 +8,28 @@ import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Iterator;
-
+import java.util.Objects;
 import java.util.Vector;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+
 import ckCommonUtils.CKXMLAsset;
+import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckEditor.ArtifactPropertiesEditor;
 import ckEditor.CKArtifactShortView;
 import ckEditor.CKXMLAssetPropertiesEditor;
 import ckEditor.treegui.BookList;
+import ckGraphicsEngine.CKGraphicsPreviewGenerator;
+import ckGraphicsEngine.assets.CKGraphicsAsset;
 import static ckCommonUtils.CKPropertyStrings.*;
 
 public class CKArtifact implements CKXMLAsset<CKArtifact> 
@@ -27,6 +38,8 @@ public class CKArtifact implements CKXMLAsset<CKArtifact>
 	String name;
 	String backstory;
 	String iconId;
+	Image fximage;
+	String snapImage;
 	
 	Vector<CKSpell> spells;	
 	
@@ -48,6 +61,7 @@ public class CKArtifact implements CKXMLAsset<CKArtifact>
 		this.backstory=backstory;
 		this.iconId=icon;
 		this.spells=new Vector<CKSpell>();
+		this.fximage = null;
 		
 		this.abilties=abilities;
 		this.limits=limits;
@@ -136,6 +150,11 @@ public class CKArtifact implements CKXMLAsset<CKArtifact>
 	public void removeSpell(CKSpell spell)
 	{
 		spells.remove(spell);
+	}
+	
+	public int spellCount()
+	{
+		return spells.size();
 	}
 	
 	public void addRequirements(CKBook req)
@@ -227,8 +246,77 @@ public class CKArtifact implements CKXMLAsset<CKArtifact>
 	{
 		this.iconId = iconId;
 	}
+	
+	
+	
+	
+	public Image getFXImage() 
+	{
+		if(this.fximage != null) {	
+			return fximage;
+		}
+		else {
+			try {
+				System.out.println("The image for " + iconId + " was not found. It is now being created.");	
+    			CKGraphicsAsset asset = CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset(iconId);
+    			Image image = CKGraphicsPreviewGenerator.createAssetPreviewFX(asset, 0, 0, 80, 90);
+    			this.fximage = image;
+			}
+			catch (NullPointerException n) {
+				System.out.println("The asset for " + iconId + " was not found." );
+			}
+			return fximage;	
+		}
+	}
+	
+	//returns a base64 string of the artifact image
+	public String getSnapImage()
+		{
+		if(this.snapImage != null && this.fximage != null) {	
+			return this.snapImage;
+		}
+		else {
+			try {
+				getFXImage();
+    			BufferedImage bImage = SwingFXUtils.fromFXImage(this.fximage, null);
+    			ByteArrayOutputStream s = new ByteArrayOutputStream();
+    			try {
+					ImageIO.write(bImage, "png", s);
+					} 
+    			catch (IOException e) {
+					e.printStackTrace();
+					}
+    			this.snapImage  = Base64.encode(s.toByteArray());
+			}
+			catch (NullPointerException n) {
+				System.out.println("The asset for " + iconId + " was not found." );
+			}
+			return this.snapImage;	
+		}
+	}
+	
+	//returns an array of images converted to base64
+	//the images are for the spells
+	public String[] getSpellImageArray()
+	{
+		 String[] spellImages = new String[spells.size()];
+		 for (int i = 0; i < spells.size(); i++) {
+			 spellImages[i] = spells.get(i).getSnapImage();
+		 }
+		 return spellImages;
+	}
+	
+	//returns an array of spell names
+	public String[] getSpellNamesArray()
+	{
+		 String[] spellNames = new String[spells.size()];
+		 for (int i = 0; i < spells.size(); i++) {
+			 spellNames[i] = spells.get(i).getName();
+		 }
+		 return spellNames;
+	}
 
-
+	
 	/**
 	 * @return the abilties
 	 */

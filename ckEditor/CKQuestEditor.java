@@ -77,7 +77,7 @@ public class CKQuestEditor extends CKXMLAssetPropertiesEditor<QuestData> impleme
 		CKGameObjectsFacade.killEngine();
 		sceneViewer = CKGameObjectsFacade.getEngine();
 		sceneViewer.loadScene(quest.getSceneID());
-		scene = sceneViewer.getScene();
+		scene = sceneViewer.getCKScene();
 		sceneViewer.setPreferredSize(new Dimension(640,700));
 		
 		CKGameObjectsFacade.getQuest().startTransaction();
