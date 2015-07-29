@@ -1,7 +1,14 @@
 /*Author: Chadwick Carter
- * Designed for use with CKPipelineGraphics to pass in a information about the actions in a spritesheet 
- * All info about a spritesheet to be put into CKPipelineGraphics
- * Character name, and a list of action names and their respective lengths
+ *Holds information about a future spritesheet and
+ *performs actions with this information to create CKGraphicsAssets
+ *Has functions to:
+ *1. Generate a spritesheet
+ *		generateSpritesheet()
+ *2. Move the spritesheet into CK_DATA
+ *		moveSpritesheet()
+ *3. Create a CKSpriteAsset with the spritesheet and information about actions
+ *		createAsset()
+ *All 3 of these are done with the function pipeline().
  * Will take information from text file from DAZ portion 
  */
 package ckGraphicsEngine.assets;
@@ -31,6 +38,7 @@ public class CKSpritesheetAsset {
 	int frameRate;
 	String basePath;
 	//Need full path to text file
+	//Constructor used with a text file from DAZ script/java
 	public CKSpritesheetAsset(String txtFileName) throws FileNotFoundException{ 
 		this.actionList = new ArrayList<CKSpritesheetActionNode>();
 		FileReader fin = new FileReader(txtFileName);
@@ -186,6 +194,7 @@ public class CKSpritesheetAsset {
 			this.numRows = (int)Math.floor(base);
 			}
 	}
+	//Uses class information and ImageMagick montage command to combine a series of images into a spritesheet
 	public void generateSpritesheet(){
 		File dir = new File(this.basePath);
 		String[] imgFileList = dir.list(new FilenameFilter(){
@@ -216,6 +225,7 @@ public class CKSpritesheetAsset {
 			catch(IOException e1){System.out.println(e1.getMessage());} 
 			catch (InterruptedException e) {e.printStackTrace();}
 	}
+	//Moves the spritesheet to the ASSET_IMAGES directory in CK_DATA
 	public void moveSpritesheet(){
 		String curString = this.basePath+"/"+this.sheetFileName;
 		Path currentPath = FileSystems.getDefault().getPath(curString);
@@ -225,6 +235,8 @@ public class CKSpritesheetAsset {
 			Files.copy(currentPath,targetPath,StandardCopyOption.REPLACE_EXISTING);} 
 		catch (IOException e) {e.printStackTrace();}
 	}
+	//Executes the decorator pattern ImageAsset --> RegulatedAsset --> SelectAsset --> SpriteAsset
+	//to make a spritesheet's actions usable by CyberKnight
 	public CKGraphicsAsset createAsset(){
 		System.out.println(this.basePath+"/"+this.sheetFileName);
 		//Currently must upload images to CK_DATA before using with wrapper
@@ -253,9 +265,9 @@ public class CKSpritesheetAsset {
 			
 		}
 		CKGraphicsAssetFactoryXML.writeAssetToXMLDirectory(characterSprite);
-		//return characterSprite;
 		return characterSprite;
 	}
+	//Runs all 3 major programs in correct sequence for simplified use
 	public CKGraphicsAsset pipeline(){
 		this.generateSpritesheet();
 		this.moveSpritesheet();
@@ -321,41 +333,12 @@ public class CKSpritesheetAsset {
 	}
 
 	public static void main(String[] args) {
-		/*CKSpritesheetAsset actionTest = new CKSpritesheetAsset("Swordsman2.0","spritesheet12.png",83,12,7,128,128,12);
-		actionTest.addAction("Mostly resting",20);
-		actionTest.addAction("Gearing up", 20);
-		actionTest.addAction("Sword swipe",18);
-		actionTest.addAction("A dance of swords", 25);
-		System.out.println(actionTest);
-		CKSpritesheetAsset actionTest2 = new CKSpritesheetAsset("SwordsmanZZ","spritesheet3.png",34,128,128,12);
-		actionTest2.addAction("Fly",13);
-		actionTest2.addAction("Cry",17);
-		actionTest2.addAction("Die", 4);
-		System.out.println(actionTest2);*/
-		/*System.out.println(actionTest.indexIs("Gearing up"));
-		System.out.println(actionTest.removeAction("Gearing up"));
-		System.out.println(actionTest.removeAction("wah"));
-		for (int i=0;i<3000;i++){
-			if (actionTest2.calculateTiles(i)==false){
-				System.out.println("ERROR ERROR ERROR");
-			}	
-		}*/
 		try{
 			CKSpritesheetAsset test_ = new CKSpritesheetAsset("C:/Users/Chadwick/Desktop/CK_Pipeline/Images/elf/elf.txt");
 			System.out.println(test_);
 			CKGraphicsAsset newAsset = test_.pipeline();
-			/*test_.generateSpritesheet();
-			String curString = test_.getBasePath()+"/"+test_.getSheetFileName();
-			Path currentPath = FileSystems.getDefault().getPath(curString);
-			String tarString = "C:/Users/Chadwick/Documents/GitHub/Graphics_Asset/CK_DATA/CK_DATA/"+XMLDirectories.GRAPHIC_ASSET_IMAGE_DIR+test_.getSheetFileName();
-			Path targetPath = FileSystems.getDefault().getPath(tarString);
-			//null pointer exception here
-			Files.copy(currentPath,targetPath,StandardCopyOption.REPLACE_EXISTING);
-			CKGraphicsAsset newAsset = test_.createAsset();*/
 			CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset(newAsset.getAID());	
-			
 			JFrame frame = new JFrame();
-
 			CKAssetViewer view=new CKAssetViewer(1,A1,null,true);
 			frame.add(view);
 			frame.pack();
