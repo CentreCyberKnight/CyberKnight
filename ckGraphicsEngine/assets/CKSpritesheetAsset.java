@@ -2,11 +2,11 @@
  *Holds information about a future spritesheet and
  *performs actions with this information to create CKGraphicsAssets
  *Has functions to:
- *1. Generate a spritesheet
+ * 1. Generate a spritesheet
  *		generateSpritesheet()
- *2. Move the spritesheet into CK_DATA
+ * 2. Move the spritesheet into CK_DATA
  *		moveSpritesheet()
- *3. Create a CKSpriteAsset with the spritesheet and information about actions
+ * 3. Create a CKSpriteAsset with the spritesheet and information about actions
  *		createAsset()
  *All 3 of these are done with the function pipeline().
  * Will take information from text file from DAZ portion 
