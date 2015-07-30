@@ -196,7 +196,7 @@ public class CKSpritesheetAsset {
 	}
 	//Uses class information and ImageMagick montage command to combine a series of images into a spritesheet
 	public void generateSpritesheet(){
-		File dir = new File(this.basePath);
+		File dir = new File(this.basePath+"/"+this.characterName);
 		String[] imgFileList = dir.list(new FilenameFilter(){
 			public boolean accept(File directory,String fileName){
 				return fileName.endsWith(IMG_EXTENSION);}});
@@ -218,7 +218,7 @@ public class CKSpritesheetAsset {
 		commandList.add(this.characterName+IMG_EXTENSION);
 		try{
 			ProcessBuilder pb = new ProcessBuilder(commandList);
-			pb.directory(new File(basePath));
+			pb.directory(new File(this.basePath+"/"+this.characterName));
 			Process p = pb.start();
 			p.waitFor();
 			}
@@ -227,10 +227,12 @@ public class CKSpritesheetAsset {
 	}
 	//Moves the spritesheet to the ASSET_IMAGES directory in CK_DATA
 	public void moveSpritesheet(){
-		String curString = this.basePath+"/"+this.sheetFileName;
+		String curString = this.basePath+"/"+this.characterName+"/"+this.sheetFileName;
 		Path currentPath = FileSystems.getDefault().getPath(curString);
-		String tarString = "C:/Users/Chadwick/Documents/GitHub/Graphics_Asset/CK_DATA/CK_DATA/"+XMLDirectories.GRAPHIC_ASSET_IMAGE_DIR+this.sheetFileName;
+		//System.out.println(Files.exists(currentPath));
+		String tarString = "C:/Users/Test/git/CK_DATA/CK_DATA/"+XMLDirectories.GRAPHIC_ASSET_IMAGE_DIR+this.sheetFileName;
 		Path targetPath = FileSystems.getDefault().getPath(tarString);
+		//System.out.println(Files.exists(targetPath));
 		try {
 			Files.copy(currentPath,targetPath,StandardCopyOption.REPLACE_EXISTING);} 
 		catch (IOException e) {e.printStackTrace();}
@@ -238,7 +240,7 @@ public class CKSpritesheetAsset {
 	//Executes the decorator pattern ImageAsset --> RegulatedAsset --> SelectAsset --> SpriteAsset
 	//to make a spritesheet's actions usable by CyberKnight
 	public CKGraphicsAsset createAsset(){
-		System.out.println(this.basePath+"/"+this.sheetFileName);
+		//System.out.println(this.basePath+"/"+this.sheetFileName);
 		//Currently must upload images to CK_DATA before using with wrapper
 		CKImageAsset imgAst = new CKImageAsset(this.characterName+"_Image",this.characterName+"_spritesheet_"+this.totalFrames,this.imgWidth,this.imgHeight,this.numColumns,this.numRows,TileType.SPRITE,XMLDirectories.GRAPHIC_ASSET_IMAGE_DIR+this.sheetFileName);
 		CKGraphicsAssetFactoryXML.writeAssetToXMLDirectory(imgAst);
@@ -257,11 +259,11 @@ public class CKSpritesheetAsset {
 			startFrame = startFrame + num_Frames;
 			
 			}
-		if (startFrame==this.totalFrames){
+		if ((startFrame+1)==this.totalFrames){
 			System.out.println("Frames aligned: "+this.totalFrames+" frames");
 		}
 		else{
-			System.out.println("Frames don't match: "+startFrame+ "--"+this.totalFrames);
+			System.out.println("Frames don't match: "+(startFrame+1)+ "--"+this.totalFrames);
 			
 		}
 		CKGraphicsAssetFactoryXML.writeAssetToXMLDirectory(characterSprite);
