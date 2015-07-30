@@ -248,7 +248,8 @@ public class CKSpritesheetAsset {
 		CKRegulatedAsset regAst = new CKRegulatedAsset(regAssetID,this.characterName+"_Regulated_"+this.frameRate+"fps",imgAst,this.frameRate);
 		CKGraphicsAssetFactoryXML.writeAssetToXMLDirectory(regAst);
 		int startFrame = 0;
-		CKSpriteAsset characterSprite = new CKSpriteAsset(characterName+"_Sprite",characterName);
+		String spriteAssetID = this.characterName+"_Sprite";
+		CKSpriteAsset characterSprite = new CKSpriteAsset(spriteAssetID,this.characterName);
 		for(int i=0;i<this.size();i++){
 			CKSpritesheetActionNode action = this.actionList.get(i);
 			String actionName = action.getActionName();
@@ -267,6 +268,7 @@ public class CKSpritesheetAsset {
 			
 		}
 		CKGraphicsAssetFactoryXML.writeAssetToXMLDirectory(characterSprite);
+		((CKGraphicsAssetFactoryXML) CKGraphicsAssetFactoryXML.getInstance()).assignUsageTypeToAsset(spriteAssetID,"sprite");
 		return characterSprite;
 	}
 	//Runs all 3 major programs in correct sequence for simplified use
@@ -335,7 +337,7 @@ public class CKSpritesheetAsset {
 	}
 
 	public static void main(String[] args) {
-		try{
+		/*try{
 			CKSpritesheetAsset test_ = new CKSpritesheetAsset("C:/Users/Chadwick/Desktop/CK_Pipeline/Images/elf/elf.txt");
 			System.out.println(test_);
 			CKGraphicsAsset newAsset = test_.pipeline();
@@ -347,6 +349,6 @@ public class CKSpritesheetAsset {
 			frame.setVisible(true);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		}
-		catch(FileNotFoundException e){System.out.println(e.getMessage());}
+		catch(FileNotFoundException e){System.out.println(e.getMessage());}*/
 	}
 }

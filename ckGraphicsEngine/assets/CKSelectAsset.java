@@ -20,7 +20,6 @@ public class CKSelectAsset extends CKGraphicsAsset {
 	int framesPerRow;//get from superclass
 	int numFramesAction;
 	int initialFrame;
-//create class for 
 	public CKSelectAsset(){
 		super("","");
 	}
