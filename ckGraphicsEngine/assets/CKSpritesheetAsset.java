@@ -261,11 +261,11 @@ public class CKSpritesheetAsset {
 			startFrame = startFrame + num_Frames;
 			
 			}
-		if ((startFrame+1)==this.totalFrames){
+		if ((startFrame)==this.totalFrames){
 			System.out.println("Frames aligned: "+this.totalFrames+" frames");
 		}
 		else{
-			System.out.println("Frames don't match: "+(startFrame+1)+ "--"+this.totalFrames);
+			System.out.println("Frames don't match: "+(startFrame)+ "--"+this.totalFrames);
 			
 		}
 		CKGraphicsAssetFactoryXML.writeAssetToXMLDirectory(characterSprite);
