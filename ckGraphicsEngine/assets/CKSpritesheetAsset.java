@@ -13,7 +13,7 @@
  */
 package ckGraphicsEngine.assets;
 
-import javax.swing.JFrame;
+
 import java.nio.file.StandardCopyOption;
 import java.nio.file.Files;
 import java.nio.file.*;
@@ -23,6 +23,7 @@ import java.util.*;
 import java.lang.System;
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckDatabase.XMLDirectories;
+//import javax.swing.JFrame;
 
 
 public class CKSpritesheetAsset {
