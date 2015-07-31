@@ -28,18 +28,22 @@ import ckDatabase.XMLDirectories;
 
 public class CKSpritesheetAsset {
 	public static final String IMG_EXTENSION=".png";
+	//Change PATH_TO_CK_DATA depending on the computer 
+	//Make sure to go into both CK_DATA folders
+	public static final String PATH_TO_CK_DATA = "C:/Users/Test/git/CK_DATA/CK_DATA/";
 	ArrayList<CKSpritesheetActionNode> actionList;
-	String characterName;
-	String sheetFileName;
-	int totalFrames;
-	int numColumns;
-	int imgWidth;
-	int imgHeight;
-	int numRows;
-	int frameRate;
-	String basePath;
+	String characterName; //Name of character
+	String sheetFileName; //Name of spritesheet image
+	int totalFrames; //Total number of frames in spritesheet
+	int imgWidth; //Pixel width of one image
+	int imgHeight; //Pixel height of one image
+	int frameRate; //Frames/second of action/spritesheet
+	String basePath; //Path to Output folder
+	int numColumns; //Calculated in constructor, number of columns in spritesheet
+	int numRows; //Calculated in constructor, number of rows in spritesheet
+	
+	//Constructor parses a text file from DAZ script/java
 	//Need full path to text file
-	//Constructor used with a text file from DAZ script/java
 	public CKSpritesheetAsset(String txtFileName) throws FileNotFoundException{ 
 		this.actionList = new ArrayList<CKSpritesheetActionNode>();
 		FileReader fin = new FileReader(txtFileName);
@@ -64,7 +68,7 @@ public class CKSpritesheetAsset {
 			addAction(action[0],nFrm);
 		}
 	}
-	
+	//Previous constructor used in testing
 	public CKSpritesheetAsset(String charName,String filename,int numFrames, int width,int height,int framerate){ 
 		this.actionList = new ArrayList<CKSpritesheetActionNode>();
 		this.characterName = charName;	
@@ -75,8 +79,9 @@ public class CKSpritesheetAsset {
 		this.frameRate = framerate;
 		this.basePath = "";
 		calculateTiles();
+		this.sheetFileName = charName+IMG_EXTENSION;
 	}
-	
+	//Previous constructor used in testing
 	public CKSpritesheetAsset(String charName,String filename,int numFrames,int frames_Row,int num_Rows, int width,int height,int framerate){ 
 		this.actionList = new ArrayList<CKSpritesheetActionNode>();
 		this.characterName = charName;	
@@ -88,7 +93,11 @@ public class CKSpritesheetAsset {
 		this.numRows = num_Rows;
 		this.numColumns = frames_Row;
 		this.basePath = "";
+		calculateTiles();
+		this.sheetFileName = charName+IMG_EXTENSION;
 	}
+	
+	//Getters and setters block
 	public ArrayList<CKSpritesheetActionNode> getActionList() {
 		return actionList;
 	}
@@ -172,7 +181,8 @@ public class CKSpritesheetAsset {
 	public void setFrameRate(int frameRate) {
 		this.frameRate = frameRate;
 	}
-	
+	//Creates a new CKSpritesheetActionNode from parameters and adds it to actionList
+	//Parameters: name of action, number of frames in action
 	public void addAction(String name,int frames){
 		/* name = name of action
 		 * frames = number of frames in the action
@@ -231,7 +241,7 @@ public class CKSpritesheetAsset {
 		String curString = this.basePath+"/"+this.characterName+"/"+this.sheetFileName;
 		Path currentPath = FileSystems.getDefault().getPath(curString);
 		//System.out.println(Files.exists(currentPath));
-		String tarString = "C:/Users/Test/git/CK_DATA/CK_DATA/"+XMLDirectories.GRAPHIC_ASSET_IMAGE_DIR+this.sheetFileName;
+		String tarString = PATH_TO_CK_DATA+XMLDirectories.GRAPHIC_ASSET_IMAGE_DIR+this.sheetFileName;
 		Path targetPath = FileSystems.getDefault().getPath(tarString);
 		//System.out.println(Files.exists(targetPath));
 		try {
@@ -278,6 +288,7 @@ public class CKSpritesheetAsset {
 		this.moveSpritesheet();
 		return this.createAsset();
 	}
+	//Returns String of all information about spritesheet
 	public String toString(){
 		String toReturn = "***"+this.characterName+"***\n"+this.sheetFileName+"\n"
 				+this.basePath+"\n"
@@ -291,6 +302,7 @@ public class CKSpritesheetAsset {
 		}
 		return toReturn;
 	}
+	//Returns the number of actions in the spritesheet
 	public int size(){
 		return actionList.size();
 	}
@@ -311,7 +323,7 @@ public class CKSpritesheetAsset {
 			return false;
 		}
 	}
-
+	//Simple node class for holding information about actions
 	protected class CKSpritesheetActionNode{
 		String actionName;
 		int actionFrames;
