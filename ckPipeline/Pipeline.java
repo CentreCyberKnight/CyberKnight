@@ -24,8 +24,9 @@ public class Pipeline {
 		    System.err.println(x);
 		}
 		for(int z=0;z<chars.size();z++){
-			Write makeScript=new Write(bass);
+			WriteScript makeScript=new WriteScript(chars.get(z),bass);
 		}
+		
 		for(int zz=0;zz<chars.size();zz++){
 			String ch=chars.get(zz).substring(0,chars.get(zz).length()-4)+".dsa";
 			File ab=new File(bass,"Scripts/"+ch);
@@ -41,6 +42,7 @@ public class Pipeline {
 			}
 			catch(IOException r){
 				System.err.println(r);
+				//System.out.println("DAZ");
 			}
 		}
 		Write w=new Write(bass);
@@ -48,6 +50,7 @@ public class Pipeline {
 		for(TxtFile fi:files){
 			//System.out.println(f.getFolder());
 			File fil=new File(fi.getFolder().toFile(),"done.txt");
+			//File filen=new File(fi.getFolder().toFile(),"mobster.txt");
 			if(!fil.exists()){
 				try{
 					CKSpritesheetAsset t=new CKSpritesheetAsset(fi.getName());

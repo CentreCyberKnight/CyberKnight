@@ -17,7 +17,7 @@ public class Write {
 		
 	}
 	public void getFolders(){
-		Path dir = Paths.get(base);
+		Path dir = Paths.get(base+"\\Output");
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
 		    for (Path file: stream) {
 		    	if(file.toFile().isDirectory()){

@@ -59,9 +59,10 @@ public class TxtFile {
 		Path bass=p.getParent().getParent();
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(bass)) {
 		    for (Path file: stream) {
-		    	if(file.toFile().isDirectory()||file.getFileName().toString().equals("Texts")){
+		    	if(file.toFile().isDirectory()&&file.getFileName().toString().equals("Texts")){
 		    		txts=file;
-		    		//System.out.println(file.getFileName().toString());
+		    		//System.out.println("YES");
+		    		//System.out.println(file.toString());
 		    	}}
 		} catch (IOException | DirectoryIteratorException x) {
 		    // IOException can never be thrown by the iteration.

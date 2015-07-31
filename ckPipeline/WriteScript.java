@@ -52,7 +52,7 @@ public class WriteScript {
 		}
 		catch(FileNotFoundException e){
 			file=false;
-			System.out.println("FILENOTFOUND");
+			//System.out.println("FILENOTFOUND");
 		}
 		if (file){
 			//This adds the defaults
@@ -93,7 +93,7 @@ public class WriteScript {
 		}
 		catch(FileNotFoundException e){
 			file=false;
-			System.out.println("FILENOTFOUND");
+			//System.out.println("FILENOTFOUND");
 		}
 		if (file){
 			//If there is a file, this adds the already set defaults into the menu correctly
@@ -154,7 +154,7 @@ public class WriteScript {
 			bw.write(output);
 			bw.close();
  
-			System.out.println("Done");
+			//System.out.println("Done");
  
 		} 
 		catch (IOException e) {
