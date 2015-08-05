@@ -299,8 +299,8 @@ public class CKSpellCast implements Cloneable
 			CKGameObjectsFacade.getQuest().applyWorldFilters(boss,this);
 		}
 		*/
-		
-		System.err.println("Casting:"+toString());
+		if(! CKGameObjectsFacade.isPrediction())
+		{ System.err.println("Casting:"+toString()); }
 
 		CKAbstractGridItem item = getItemTarget();
 		
@@ -333,7 +333,7 @@ public class CKSpellCast implements Cloneable
 	@Override
 	public String toString()
 	{
-		return source.getName()+" casts "+ chapter+":"+page+" at "+target.getName()+" for "+cp;
+		return source.getName()+" casts "+ chapter+":"+page+" at "+target.getName()+" for "+cp+" at "+target.getPos();
 		
 	}
 

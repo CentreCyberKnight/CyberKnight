@@ -1,17 +1,19 @@
 package ckDatabase;
 
+import ckCommonUtils.AIBasicCommand;
+import ckCommonUtils.CKPropertyStrings;
+import ckGameEngine.ActorAIController;
 import ckGameEngine.ActorArtifactController;
 import ckGameEngine.ActorController;
 import ckGameEngine.ActorNullController;
 import ckGameEngine.ActorSnapController;
 import ckGameEngine.ActorTurnController;
 import ckGameEngine.OngoingEffectController;
+import ckGameEngine.ActorAIController.FireCommand;
+import ckGameEngine.ActorAIController.SwingCommand;
+import ckGameEngine.DescisionGrid.CharacterActionDescription;
 
-/*
- * Even though this is a factory for CKgridActors, it will return CGridActors
- * 
- * 
- */
+
 public class CKActorControllerFactory extends CKXMLFactory<ActorController>
 {
 	
@@ -88,10 +90,52 @@ public class CKActorControllerFactory extends CKXMLFactory<ActorController>
 		factory.writeAssetToXMLDirectory(turn);
 		
 		
+		AITestController ai = new AITestController();
+		ai.setPermissions(ActorController.NO_CONTROL);
+		ai.setName("AI TEST Controller");
+		ai.setAID("AITEST");
+		factory.writeAssetToXMLDirectory(ai);
+		
+		
 		
 		
 		
 	}
+	
+	
+	public static class AITestController extends ActorAIController
+	{
+		
+		
+		public AITestController()
+		{
+			super(null);
+			
+			AIBasicCommand Swing = new AIBasicCommand(new SwingCommand());
+			int [] costs = {3,20};
+			CharacterActionDescription swing = 
+					new CharacterActionDescription("Swing", CKPropertyStrings.P_SWIPE,
+					costs, true, true, false, 0,(cad,node)->{return Swing.doPrediction(cad, node);}, 
+					Swing);			
+			
+			AIBasicCommand Far = new AIBasicCommand(new FireCommand());
+			int [] fcosts = {5,10};
+			CharacterActionDescription far = 
+					new CharacterActionDescription("FAR", CKPropertyStrings.P_SHORT_TARGET,	
+					fcosts, true, true, false, 0, (cad,node)->{return Far.doPrediction(cad,node);},Far);			
+			
+			add(swing);
+			add(far);		
+		}
+		
+		
+		
+		
+		
+		
+	}
+	
+	
 	
 	
 	public static void main(String [] args)

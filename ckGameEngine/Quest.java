@@ -935,13 +935,16 @@ package ckGameEngine;
 
 
 import java.awt.Dimension;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Vector;
 
 import javax.swing.JFrame;
 
+import ckCommonUtils.CKPosition;
 import ckDatabase.CKQuestFactory;
 import ckGameEngine.actions.CKGameActionListenerInterface;
 import ckGameEngine.CKGameObjectsFacade;
@@ -1022,6 +1025,11 @@ public class Quest  //implements CKGameActionListenerInterface
 	{
 		return qData.getActorsFromTeam(teamID);
 	}
+	
+	public List<CKGridActor> getActors()
+	{
+		return qData.getActors().getActors();
+	}	
 	
 	/**
 	 * @param tId the tId to set
@@ -1363,7 +1371,9 @@ public class Quest  //implements CKGameActionListenerInterface
 			bgSounds.put(soundAID, SID);
 		}
 		return bgSounds.get(soundAID);
-	}	
+	}
+
+	
 
 	
 	

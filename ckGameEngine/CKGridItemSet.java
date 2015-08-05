@@ -47,7 +47,11 @@ public class CKGridItemSet extends CKGridItem implements CKGameActionListenerInt
 			}
 			else
 			{
-				items.add(CKGameObjectsFacade.getQuest().getGrid().getTopPosition(p));
+				CKGrid g = CKGameObjectsFacade.getQuest().getGrid();
+				if(g.legalPosition(p))
+				{
+					items.add(g.getTopPosition(p));
+				}
 			}
 		}
 	}
@@ -107,9 +111,9 @@ public class CKGridItemSet extends CKGridItem implements CKGameActionListenerInt
 		CKGridItemSet I = (CKGridItemSet) item;
 		Vector<CKAbstractGridItem> itemsCopy = new Vector<CKAbstractGridItem>();
 
-	    Iterator it = items.iterator();
+	    Iterator<CKAbstractGridItem> it = items.iterator();
 	    while(it.hasNext()){
-	    	itemsCopy.add(((CKGridItemSet) it.next()).makeCopy());
+	    	itemsCopy.add(it.next().makeCopy());
 	    }
 	    	
 		I.setItems(items);
@@ -123,7 +127,7 @@ public class CKGridItemSet extends CKGridItem implements CKGameActionListenerInt
 	@Override
 	public CKAbstractGridItem makeCopy()
 	{
-		return makeCopy(new CKGridActor());		
+		return makeCopy(new CKGridItemSet());		
 	}
 
 }

@@ -29,6 +29,7 @@ import javax.swing.tree.TreeNode;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKXMLAsset;
 import ckDatabase.CKBookFactory;
+import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.QuestData;
 
 /**
@@ -269,7 +270,9 @@ public class CKGUINode extends DefaultMutableTreeNode implements CKGUIEditable
 		{
 			return (QuestData)this;
 		}
-		if(parent ==null) { return null; }
+		if(parent ==null) { 
+				return CKGameObjectsFacade.getQuest().getQuestData(); 
+			}
 		
 		return  ((CKGUINode) parent).getQuest();
 	}

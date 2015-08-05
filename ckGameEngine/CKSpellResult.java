@@ -25,13 +25,16 @@ public class CKSpellResult
 		public String action;
 		public String resultType;
 		public double result;
+		public String resultDescription;
 		
-		public Tuple(CKAbstractGridItem target, String action, String resultType,double result)
+		public Tuple(CKAbstractGridItem target, String action, String resultType,
+				double result,String resultDescription)
 		{
 			this.target = target;
 			this.action = action;
 			this.resultType = resultType;
 			this.result = result;
+			this.resultDescription=resultDescription;
 		}
 		
 		
@@ -112,7 +115,12 @@ public class CKSpellResult
 	
 	public void addResult(CKAbstractGridItem target, String action, String resultType,double result)
 	{
-			results.add(new Tuple(target,action,resultType,result));
+			results.add(new Tuple(target,action,resultType,result,""));
+	}
+	
+	public void addResult(CKAbstractGridItem target, String action, String resultType,double result,String resultString)
+	{
+			results.add(new Tuple(target,action,resultType,result,resultString));
 	}
 
 	
@@ -138,10 +146,24 @@ public class CKSpellResult
 	 * @param team
 	 * @return
 	 */
+	public Stream<Tuple> actorStream(CKTeam team,boolean onTeam)
+	{
+		return actorStream().filter(t->onTeam == (((CKGridActor)t.getTarget()).getTeam() == team));
+	}
+	
+	
+	
+
+	/**
+	 * Creates an actor stream of the members of a team
+	 * @param team
+	 * @return
+	 */
 	public Stream<Tuple> actorStream(CKTeam team)
 	{
-		return actorStream().filter(t->((CKGridActor)t.getTarget()).getTeam() == team);
+		return actorStream(team,true);
 	}
+	
 	
 	
 	
@@ -153,12 +175,37 @@ public class CKSpellResult
 				.mapToDouble(Tuple::getResult);
 	}
 	
+	public DoubleStream resultsStream(String resultType,CKTeam team)
+	{
+		return actorStream(team)
+				.filter(r->r.resultType.equalsIgnoreCase(resultType))
+				.mapToDouble(Tuple::getResult);
+	}
+	
 	
 	
 	public double sumResults(String resultType)
 	{
 		return resultsStream(resultType).sum();	
 	}
+	
+	
+	public double avgResults(String string, int depth)
+	{
+		return sumResults(string)/depth;
+	}
+
+	public double sumResults(String resultType,CKTeam team)
+	{
+		return resultsStream(resultType,team).sum();	
+	}
+	
+	
+	public double avgResults(String string, CKTeam team, int depth)
+	{
+		return sumResults(string,team)/depth;
+	}
+
 	
 	public double avgResults(String resultType)
 	{

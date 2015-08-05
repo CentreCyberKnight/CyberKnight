@@ -70,6 +70,11 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 		 * j=0;j<y;j++) { positions[i][j] = new CKGridItem(); }
 		 */
 	}
+	
+	public boolean legalPosition(CKPosition pos)
+	{
+		return pos.getX()>=0 && pos.getX()<width && pos.getY()>=0 && pos.getY()<height;
+	}
 
 	public void setPosition(CKAbstractGridItem item, int x, int y)
 	{

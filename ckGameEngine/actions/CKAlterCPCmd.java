@@ -1,5 +1,6 @@
 package ckGameEngine.actions;
 
+import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellCast;
 import ckGameEngine.CKSpellResult;
@@ -27,7 +28,9 @@ final public class CKAlterCPCmd extends CKGameAction
 	@Override
 	public void doAction(CKGameActionListenerInterface L,CKSpellCast cast)
 	{
-		System.err.println("         altering "+cast.getItemTarget().getName()+" CP by:"+cast.getCp());
+		if(!CKGameObjectsFacade.isPrediction())
+			{System.err.println("         altering "+cast.getItemTarget().getName()+" CP by:"+cast.getCp());}
+		
 		CKGridActor actor = cast.getActorTarget();
 		if(actor != null)
 		{

@@ -77,8 +77,15 @@ public class CKEditorPCController
 	public static boolean attemptSpell(String chapter, int val, String modifier)
 	{
 		CKBook limits = getAbilties();
-		System.out.println(limits.treeString());
-		System.out.println(modifier+"  "+val);
+		//System.out.println(limits.treeString());
+		if(CKGameObjectsFacade.isPrediction())
+		{
+			//System.out.println("Prediciton:"+modifier+"  "+val);
+		}
+		else
+		{
+			System.out.println(modifier+"  "+val);
+		}
 
 		if (!limits.meetsRequirements(chapter, val, modifier))
 		{
@@ -88,21 +95,24 @@ public class CKEditorPCController
 		}
 
 		// now test for enough CP - spell fizzle
-		int ap = CKPlayerObjectsFacade.getCPTurnRemaining();
-		System.out.println("points left?" + ap);
-		CKPlayerObjectsFacade.alterCPTurnRemaining(-val);
-		getCharacter().setCyberPoints(getCharacter().getCyberPoints() - val);
-		
+		if(! CKGameObjectsFacade.isPrediction())
+		{
+			int ap = CKPlayerObjectsFacade.getCPTurnRemaining();
+			// System.out.println("points left?" + ap);
+			CKPlayerObjectsFacade.alterCPTurnRemaining(-val);
+			getCharacter()
+					.setCyberPoints(getCharacter().getCyberPoints() - val);
 
-		
-		if (ap >= val)
-		{
-			return true;
-		} else
-		{
-			CPShortage("You don't have enough CP");
-			return false;
+			if (ap >= val)
+			{
+				return true;
+			} else
+			{
+				CPShortage("You don't have enough CP");
+				return false;
+			}
 		}
+		return true;
 
 
 	}
@@ -112,13 +122,11 @@ public class CKEditorPCController
 	{
 		if (attemptSpell(CH_VOICE, CP, modifier))
 		{
-			if (modifier.equalsIgnoreCase(P_TALK))
-			{
-				// TODO remove PC pc = (PC)target;
+			
 				CKSpellCast cast = new CKSpellCast(getItemAt(target),
 						getCharacter(), CH_VOICE, modifier, CP, key);
 				cast.castSpell();
-			}
+			
 
 			return true;
 
@@ -126,11 +134,15 @@ public class CKEditorPCController
 		return false;
 	}
 
+	
+	
+	
 	public static boolean voice(String modifier, int CP, CKPosition target)
 	{
 		return voice(modifier, CP, target, "");
 	}
 
+	
 	public static boolean fire(String modifier, int CP, CKPosition target,
 			String key)
 	{
@@ -263,7 +275,7 @@ public class CKEditorPCController
 		
 	}
 	
-	private static void moveTo(GridNode node)//,CKPosition destination)
+	public static void moveTo(GridNode node)//,CKPosition destination)
 	{
 		//need to do the last thing first!
 		GridNode parent = node.getParentNode(); 
@@ -390,6 +402,7 @@ public class CKEditorPCController
 	
 	public static CKSpellResult predictCasting(Command cmd,int iterations)
 	{
+		
 		CKGameObjectsFacade.startPrediction();
 		for(int i=0;i<iterations;i++)
 		{

@@ -20,6 +20,7 @@ import javax.swing.SpinnerNumberModel;
 import ckEditor.treegui.CKGuiRoot;
 import ckEditor.treegui.CKTreeGui;
 import ckGameEngine.CKBook;
+import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellCast;
 import ckGameEngine.CKSpellResult;
@@ -187,14 +188,17 @@ public class CKContestedAlterCP extends CKGameAction
 		double portion = 1.0;
 		int attack=0;
 		
-		CKBook tBook = cast.getActorTarget().getAbilities();
-		if(tBook != null)
-		{
+		
+		try
+		{ 
+			CKBook tBook = ((CKGridActor) cast.getItemTarget()).getAbilities();
 			def = tBook.getChapter(this.defense).getValue();
 			portion = tBook.getChapter(this.defense_Effectiveness).getValue()/100.0;
 			max = (double) tBook.getChapter(this.maxDamage).getValue();
 		}
-			
+		catch (ClassCastException e ) { }
+		
+		
 		try
 		{ 
 			CKBook sBook = ((CKGridActor) cast.getSource()).getAbilities();
@@ -215,13 +219,13 @@ public class CKContestedAlterCP extends CKGameAction
 		//TODO graphical printout of this effect...
 		
 			
-		
-		System.err.println("         altering "+cast.getItemTarget().getName()+" CP by:"+damage);
+		if(! CKGameObjectsFacade.isPrediction())
+			System.err.println("         altering "+cast.getItemTarget().getName()+" CP by:"+damage);
 		CKGridActor actor = cast.getActorTarget();
 		if(actor != null)
 		{
 			actor.setCyberPoints(actor.getCyberPoints() +damage);
-			cast.addResult(actor, cast.getPage(), CKSpellResult.DAMAGE, cast.getCp());
+			cast.addResult(actor, cast.getPage(), CKSpellResult.DAMAGE, damage);
 		}
 		else
 		{

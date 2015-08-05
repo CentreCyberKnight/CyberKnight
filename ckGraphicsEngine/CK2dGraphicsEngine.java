@@ -484,7 +484,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 	public void playSound(int stime, int SIID)
 	{
 		CKSound soundAsset = sounds.get(SIID);
-		System.out.println("Playing sound at "+soundAsset.getPreferredVolume());
+		//System.out.println("Playing sound at "+soundAsset.getPreferredVolume());
 		playSound(stime,SIID,soundAsset.getPreferredVolume());
 	}
 	

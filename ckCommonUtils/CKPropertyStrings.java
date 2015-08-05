@@ -48,6 +48,7 @@ public class CKPropertyStrings
 	public static String CH_FIRE = "FIRE";
 	public static String P_IGNITE = "ignite";
 	public static String P_ILLUMINATE = "illuminate";
+	public static String P_BOLT = "bolt";
 	
 	//Equip Slots
 	public static String CH_EQUIP_SLOTS = "Equipable Slots";
@@ -82,6 +83,7 @@ public class CKPropertyStrings
 	//Voice
 	public static String CH_VOICE = "VOICE";
 	public static String P_TALK = "talk";
+	public static String P_TALK_CLICK="talk/click";
 	public static String P_SING = "sing";
 	public static String P_HACK = "hack";
 	public static String P_ACTIVATE = "activate";
