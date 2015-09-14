@@ -1303,7 +1303,7 @@ IDE_Morph.prototype.fireTEST = function() {
 
 //executes scripts
 //parameters are the artifact name & location of spell Vector
-IDE_Morph.prototype.fire = function(artifact, location) {
+IDE_Morph.prototype.executeScript = function(artifact, location) {
 	var lcArtifact;
 	var num = 1;
 	var morph;
@@ -1321,7 +1321,6 @@ IDE_Morph.prototype.fire = function(artifact, location) {
 };
 
 //sets up the stage for an artifact
-//parameter: artifact name & List(artifact.png, all method pngs)
 IDE_Morph.prototype.setCyberSnap = function(){
 	var list = new List([]);
 	var acc = 0;

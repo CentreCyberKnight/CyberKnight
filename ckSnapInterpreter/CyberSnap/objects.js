@@ -204,8 +204,6 @@ SpriteMorph.prototype.bubbleMaxTextWidth = 130;
 
 SpriteMorph.prototype.initBlocks = function () {
     SpriteMorph.prototype.blocks = {
-    		
-            
         //fire
         inferno: {
             only: SpriteMorph,
