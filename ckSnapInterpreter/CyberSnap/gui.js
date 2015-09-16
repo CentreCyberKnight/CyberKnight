@@ -4619,31 +4619,31 @@ IDE_Morph.prototype.exportProjectMedia = function (name) {
         this.setProjectName(name);
         if (Process.prototype.isCatchingErrors) {
             try {
-                menu = this.showMessage('Exporting');
+                //menu = this.showMessage('Exporting');
                 encodeURIComponent(
                     this.serializer.serialize(this.stage)
                 );
                 media = encodeURIComponent(
                     this.serializer.mediaXML(name)
                 );
-                window.open('data:text/xml,' + media);
-                menu.destroy();
+                javaProcess.setText('data:text/xml,' + media);
+                //menu.destroy();
                 this.showMessage('Exported!', 1);
             } catch (err) {
                 this.serializer.isCollectingMedia = false;
-                this.showMessage('Export failed: ' + err);
+                //this.showMessage('Export failed: ' + err);
             }
         } else {
-            menu = this.showMessage('Exporting');
+            //menu = this.showMessage('Exporting');
             encodeURIComponent(
                 this.serializer.serialize(this.stage)
             );
             media = encodeURIComponent(
                 this.serializer.mediaXML()
             );
-            javaTextField.setText('data:text/xml,' + media);
-            menu.destroy();
-            this.showMessage('Exported!', 1);
+            javaProcess.setText('data:text/xml,' + media);
+            //menu.destroy();
+            //this.showMessage('Exported!', 1);
         }
     }
     this.serializer.isCollectingMedia = false;
@@ -4683,14 +4683,14 @@ IDE_Morph.prototype.exportProjectNoMedia = function (name) {
     this.serializer.flushMedia();
 };
 
-IDE_Morph.prototype.exportProjectAsCloudData = function (name) {
+IDE_Morph.prototype.ckXML = function (name) {
     var menu, str, media, dta;
     this.serializer.isCollectingMedia = true;
     if (name) {
         this.setProjectName(name);
         if (Process.prototype.isCatchingErrors) {
             try {
-                menu = this.showMessage('Exporting');
+                //menu = this.showMessage('Exporting');
                 str = encodeURIComponent(
                     this.serializer.serialize(this.stage)
                 );
@@ -4701,15 +4701,15 @@ IDE_Morph.prototype.exportProjectAsCloudData = function (name) {
                     + str
                     + media
                     + encodeURIComponent('</snapdata>');
-                window.open('data:text/xml,' + dta);
-                menu.destroy();
-                this.showMessage('Exported!', 1);
+                javaProcess.setText('data:text/xml,' + dta);
+                //menu.destroy();
+                //this.showMessage('Exported!', 1);
             } catch (err) {
                 this.serializer.isCollectingMedia = false;
                 this.showMessage('Export failed: ' + err);
             }
         } else {
-            menu = this.showMessage('Exporting');
+            //menu = this.showMessage('Exporting');
             str = encodeURIComponent(
                 this.serializer.serialize(this.stage)
             );
@@ -4720,9 +4720,9 @@ IDE_Morph.prototype.exportProjectAsCloudData = function (name) {
                 + str
                 + media
                 + encodeURIComponent('</snapdata>');
-            window.open('data:text/xml,' + dta);
-            menu.destroy();
-            this.showMessage('Exported!', 1);
+            javaProcess.setText('data:text/xml,' + dta);
+            //menu.destroy();
+            //this.showMessage('Exported!', 1);
         }
     }
     this.serializer.isCollectingMedia = false;

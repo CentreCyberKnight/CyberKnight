@@ -35,6 +35,13 @@ public class CKArtifactModel {
 		jsobj.setMember("artifact", artifact);
 		webEngine.executeScript("ide.setCyberSnap()");
 	}
+	
+	public static void generateXML()
+	{
+		WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
+		JSObject jsobj = (JSObject) webEngine.executeScript("window");
+		webEngine.executeScript("ide.ckXML('helloWorld')");
+	}
 
 	/**
 	 * @return the spell
