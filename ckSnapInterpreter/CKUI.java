@@ -17,27 +17,16 @@ import static ckCommonUtils.CKPropertyStrings.P_SLASH;
 import static ckCommonUtils.CKPropertyStrings.P_SWORD;
 import static ckCommonUtils.CKPropertyStrings.P_TALK;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
 import ckCommonUtils.CKPosition;
-import ckDatabase.CKArtifactFactory;
 import ckDatabase.CKGraphicsAssetFactoryXML;
-import ckEditor.CKAssetButton;
 import ckEditor.treegui.ActorNode;
 import ckEditor.treegui.BookList;
 import ckGameEngine.CKArtifact;
@@ -52,46 +41,32 @@ import ckGameEngine.Direction;
 import ckGameEngine.Quest;
 import ckGameEngine.QuestData;
 import ckGameEngine.actions.CKSimpleGUIAction;
-import ckGraphicsEngine.CKGraphicsPreviewGenerator;
+import ckGraphicsEngine.CK2dGraphicsEngine;
 import ckGraphicsEngine.assets.CKAssetViewer;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.assets.FXAssetViewer;
-import ckPythonInterpreter.CKCharacterView;
-import ckPythonInterpreter.CKTeamView;
-import ckPythonInterpreterTest.CKArtifactQuestRunner;
 import ckSatisfies.PositionReachedSatisfies;
 import ckSatisfies.Satisfies;
-import ckSatisfies.TrueSatisfies;
-import ckSnapInterpreter.CKArtifactQuestRunner.gameThread;
 import ckSnapInterpreter.CKDrawerTab;
 import ckTrigger.CKTrigger;
 import ckTrigger.CKTriggerList;
 import ckTrigger.TriggerResult;
 import javafx.animation.FadeTransition;
-import javafx.animation.Interpolator;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
-import javafx.animation.TranslateTransition;
 import javafx.application.Application;
-import javafx.embed.swing.SwingNode;
-import javafx.geometry.HPos;
-import javafx.application.Platform;
 import javafx.embed.swing.SwingNode;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.SplitPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -116,7 +91,7 @@ public class CKUI extends Application
 	GridPane ArtifactDescriptionWindow;
 	HBox ArtifactSelectionWindow;
 	VBox AddedAbilitiesWindow;
-	CKData data;
+	public CKData data;
 	QuestData q;
 	CKTeam team;
 	Vector<CKGridActor> actors;
@@ -141,29 +116,50 @@ public class CKUI extends Application
     	menuPane.setPrefSize(200, 200);
   
     	populateModel();
-    	
-    	//createAndSetSwingContent(swingNode);
 
-		//this adds all the CKDrawerTabs as the main pane's children
-
-
-  // CKGameObjectsFacade.setQuest(quest);
+   //CKGameObjectsFacade.setQuest(quest);
   		 //	swingNode.setContent(CKGameObjectsFacade.getEngine());
-    	CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("hero");	
+    	CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("hero");
+    	CK2dGraphicsEngine engine = new CK2dGraphicsEngine();
 	//	FXAssetViewer view=new FXAssetViewer(1,A1,new Dimension(700,800),true);
 		FXAssetViewer view=new FXAssetViewer(1,A1,new Dimension(1500,820),true);
-		view.maxWidth(Double.MAX_VALUE);
-    	view.maxHeight(Double.MAX_VALUE);
+//		view.maxWidth(Double.MAX_VALUE);
+//    	view.maxHeight(Double.MAX_VALUE);
     	menuPane.getChildren().add(view);
-		//menuPane.getChildren().addAll(Icons(), Player(), Artifact(), AddedAbilities(), AllArtifacts(), ControlSpells(), Stats());
+    	
+    	
+    	CKPlayerPane player = new CKPlayerPane(data);
+    	CKDrawerTab playerTab = new CKDrawerTab(player, DrawerSides.LEFT, 0.0, 170.0, 350.0, 300.0, "ckSnapInterpreter/silhouette.png");
+    	playerTab.setOpenSize(40.0, 100.0);
+    	
+    	CKPlayerIconPane icons = new CKPlayerIconPane(data);
+    	CKDrawerTab iconsTab = new CKDrawerTab(icons, DrawerSides.LEFT, 0.0, 0.0, 350.0, 170.0, "ckSnapInterpreter/headshot.png");
+    	
+    	CKArtifactPane artifact = new CKArtifactPane(data);
+    	CKDrawerTab artifactTab = new CKDrawerTab(artifact, DrawerSides.TOP, 350.0, 0.0, 400.0, 300.0, "ckSnapInterpreter/arrow.png");
+    	
+    	CKSnapPane snap = new CKSnapPane(data);
+    	CKDrawerTab snapTab = new CKDrawerTab(snap, DrawerSides.RIGHT, 750.0, 0.0, 690.0, 820.0, "ckSnapInterpreter/text.png");
+    	
+    	CKControlSpellsPane controls = new CKControlSpellsPane(data);
+    	CKAllArtifactsPane allArtifacts = new CKAllArtifactsPane(data, controls);
+    	CKDrawerTab allArtifactsTab = new CKDrawerTab(allArtifacts, DrawerSides.BOTTOM, 350.0, 720.0, 400.0, 100.0, "ckSnapInterpreter/sword.png"); 
+    	
+    	CKAddedAbilitiesPane abilities = new CKAddedAbilitiesPane(data);
+    	CKDrawerTab abilitiesTab = new CKDrawerTab(abilities, DrawerSides.RIGHT, 350.0, 300.0, 400.0, 295.0, "ckSnapInterpreter/arrow.png");
+    	
+    	CKPlayerStatsPane stats = new CKPlayerStatsPane(data);
+    	CKDrawerTab statsTab = new CKDrawerTab(stats, DrawerSides.LEFT, 0.0, 470.0, 350.0, 350.0, "ckSnapInterpreter/text.png");
+
+		menuPane.getChildren().addAll(iconsTab, playerTab, artifactTab, abilitiesTab, snap, allArtifactsTab, statsTab);
 		
 	  //  Scene scene = new Scene(menuPane,700,720);
 	    //Scene scene = new Scene(menuPane,1500,820);
 		
-		border.setCenter(menuPane);
-		border.setRight(Snap());
+//		border.setCenter(menuPane);
+//		border.setRight(Snap());
 		
-		Scene scene = new Scene(border,1500,820);
+		Scene scene = new Scene(menuPane,1500,820);
 		
 	    primaryStage.setTitle("Test Drawer Tabs");
 	    primaryStage.setScene(scene);
@@ -408,13 +404,14 @@ public class CKUI extends Application
 						Button b = new Button(p.getAssetID(), new ImageView(p.getFXPortrait()));
 						b.setOnAction(e -> {	
 							data.setPlayer(p);
-							setAllArtifactsNodes();
-							ControlSpells.getChildren().clear();
-						//	setControlSpells();
-							setPlayerNodes();
-							setStats();
-							setArtifactNodes();
-						
+							
+//							setAllArtifactsNodes();
+//							ControlSpells.getChildren().clear();
+//						//	setControlSpells();
+//							setPlayerNodes();
+//							setStats();
+//							setArtifactNodes();
+						//take these out when observers are added
 						});
 	    				CharacterIcons.getChildren().add(b);
 	    				CharacterIcons.setAlignment(Pos.CENTER);
@@ -458,6 +455,15 @@ public class CKUI extends Application
      	Label cp = new Label("CyberPoints: " + Integer.toString(cyberpts));
      	cp.setTextFill(Color.BLACK);
      	cp.setFont(new Font("Courier New", 20));
+//    	data.registerArtifactObserver((artifact) -> 
+//    	{ 
+//    	try {
+//    		
+//    	}
+//    	catch (JSException e) {
+//    		System.out.println(e.getMessage());
+//    	}
+//    	});
      	PlayerDescriptionWindow.add(cp, 2, 4, 3, 1);
     }
     	
@@ -484,23 +490,6 @@ public class CKUI extends Application
          	title.setTextFill(Color.BLACK);
          	title.setFont(new Font("Comic Sans MS", 30));
          	title.setAlignment(Pos.TOP_CENTER);
-//        	PlayerStatsWindow.add(title, 0, 0, 5, 1);
-//        	PlayerStatsWindow.setAlignment(Pos.TOP_CENTER);
-//        	VBox skills = new VBox();
-//        	int aIndex= 0;
-//    		for (Iterator<CKChapter> abilities = data.getPlayer().getAbilities().getChapters(); abilities.hasNext();) {
-//    			CKChapter c = abilities.next();
-//    			if( c != null) {
-//    				aIndex ++;
-//					Label l = new Label(c.getName());
-//					System.out.println("stat: " + c.getName() + " has been printed");
-//					skills.getChildren().add(l);
-//    			}
-//    		}
-//         	PlayerStatsWindow.add(skills, 0, 1, 2, 1);
-//        }
-        
-
     	PlayerStatsWindow.add(title, 0, 0, 5, 1);
     	PlayerStatsWindow.setAlignment(Pos.TOP_CENTER);
     	VBox skills = new VBox();  
@@ -519,7 +508,16 @@ public class CKUI extends Application
 				skillsPts.getChildren().add(value);
 			}
 		}
-		
+//    	data.registerArtifactObserver((artifact) -> 
+//    	{ 
+//    	try {
+//    		
+//    	}
+//    	catch (JSException e) {
+//    		System.out.println(e.getMessage());
+//    	}
+//    	});
+    	
      	PlayerStatsWindow.add(skills, 0, 1, 2, 1);
      	PlayerStatsWindow.add(skillsPts, 2, 1, 2, 1);
     }
@@ -535,7 +533,7 @@ public class CKUI extends Application
 			jsobj.setMember("javaMove", new CKSpellObject("move"));
 			jsobj.setMember("jsDebug", new CKjsDebugger());
 
-	    //	CKDrawerTab snap = new CKDrawerTab(BrowserWindow, DrawerSides.RIGHT, 750.0, 0.0, 690.0, 820.0, "ckSnapInterpreter/text.png");
+	    	//CKDrawerTab snap = new CKDrawerTab(BrowserWindow, DrawerSides.RIGHT, 750.0, 0.0, 690.0, 820.0, "ckSnapInterpreter/text.png");
 	    	
 	    	data.registerArtifactObserver((artifact) -> 
 	    	{ 
@@ -549,7 +547,7 @@ public class CKUI extends Application
 	    	});
 	    	
 	    	return BrowserWindow;
-
+	    	//return snap;
     	}
 	    	
 	    	
@@ -596,6 +594,8 @@ public class CKUI extends Application
 			System.out.println("Artifact: " + data.getArtifact().getName() + "'s details have been created");
 			hnodes.getChildren().addAll(imageRect, l);
 			hnodes.setAlignment(Pos.CENTER);
+			
+			
     		ArtifactDescriptionWindow.add(hnodes, 0, 1, 2, 1);
     		ArtifactDescriptionWindow.setAlignment(Pos.CENTER);
     	}
@@ -648,6 +648,7 @@ public class CKUI extends Application
 					addedAbs.getChildren().add(l);
     			}
     		}
+    		
 			
 			AddedAbilitiesWindow.getChildren().addAll(addedAbs);
 			AddedAbilitiesWindow.setAlignment(Pos.CENTER);
@@ -667,18 +668,12 @@ public class CKUI extends Application
 	    				aIndex ++;
 	    				System.out.println(aIndex + ": " + a.getIconId());
 						Button b = new Button(a.getAID(), new ImageView(a.getFXImage()));
-//						b.setOnAction(ae -> {
-//							data.setArtifact(a);
-//							setArtifactNodes();
-//							
-//						});
 						b.setOnMouseEntered(e -> {	
 							setControlSpells();
 							data.setArtifact(a);
 							setArtifactNodes();
 							ControlSpells.setOpacity(1);
-				    		//ftShowControls.setToValue(1);
-				    		//stControls.play();
+	
 				    		System.out.println("Mouse has entered this artifact node");
 							ControlSpells.setOnMouseEntered(o -> {
 								ControlSpells.setOpacity(1);
@@ -692,6 +687,7 @@ public class CKUI extends Application
 							//ControlSpells.getChildren().clear();
 							ControlSpells.setOpacity(0.0);
 						});
+						
 	    				ArtifactSelectionWindow.getChildren().add(b);
 	    				ArtifactSelectionWindow.setAlignment(Pos.CENTER_LEFT);
 	    			}
@@ -715,20 +711,6 @@ public class CKUI extends Application
 	    	
 	    	CKDrawerTab allArtifacts = new CKDrawerTab(ArtifactSelectionWindow, DrawerSides.BOTTOM, 350.0, 720.0, 400.0, 100.0, "ckSnapInterpreter/sword.png");    	
 
-//	    	ArtifactSelectionWindow.setOnMouseEntered(e -> {
-//	    		System.out.println("Mouse has entered this node");
-//	    		ftShowControls.setFromValue(0.0);
-//	    		ftShowControls.setToValue(0.5);
-//	    		stControls.play();
-//	    	});    	
-//        	ArtifactSelectionWindow.setOnMouseExited(e -> {
-//    		
-//    		System.out.println("Mouse has exited");
-//    		ftHideControls.setFromValue(0.5);
-//    		ftHideControls.setToValue(0.0);
-//    		ftHideControls.play();
-//    	});
-
 	    	setAllArtifactsNodes();
 	    	return allArtifacts;
     	}
@@ -748,13 +730,16 @@ public class CKUI extends Application
 	    	return ControlSpells;
     	}
     	
-
     	
     	public void setControlSpells() {
 			try {
 				System.out.println(data.getArtifact().getName() + " is equipped with " + data.getArtifact().spellCount() + " spells");
 	    		int aIndex = 0;
 	    		ControlSpells.getChildren().clear();
+//	        	data.registerArtifactObserver((artifact) -> {
+//	        		
+//	        	}
+
 	    		for (Iterator<CKSpell> spells = data.getArtifact().getSpells(); spells.hasNext(); ) {
 	    			CKSpell s = spells.next();
 	    			if(s != null) {
