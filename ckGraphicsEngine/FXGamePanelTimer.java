@@ -42,14 +42,14 @@ public abstract class FXGamePanelTimer extends Canvas
 		@Override
 		public void handle(long arg0)
 		{
-			if (! skip)
+			if (arg0%5 == 0)
 			{
 			calcState();
 			prepGraphics(false);
 			drawOffScreenBuffer(graphics,getWidth(),getHeight());
 			bufferToScreen();
 			}
-			skip=!skip;
+//			skip=!skip;
 			
 		}
 		};

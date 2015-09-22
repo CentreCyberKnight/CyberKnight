@@ -73,6 +73,16 @@ public class CKTeamList extends CKGUINode
 		return list;		
 	}
 	
+	public List<CKGridActor> getActors()
+	{
+		ArrayList<CKGridActor> list = new ArrayList<>();
+		for (int i=0;i<getChildCount();i++)
+		{
+			CKTeamNode team = (CKTeamNode) getChildAt(i);
+			list.addAll(team.getGridActorList());
+		}
+		return list;		
+	}
 	
 
 

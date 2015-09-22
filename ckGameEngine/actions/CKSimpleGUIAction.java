@@ -45,6 +45,7 @@ implements CKEntitySelectedListener<CKDialogChoice>, ItemListener
 	private String mess;
 	private boolean useSpellTarget;
 	private boolean usePicture;
+	private boolean useKeyMessage;
 	
 	public CKSimpleGUIAction()
 	{
@@ -59,7 +60,7 @@ implements CKEntitySelectedListener<CKDialogChoice>, ItemListener
 		super();
 		this.pc=pc;
 		this.mess=mess;
-		
+		useKeyMessage=false;
 		if(pc!=null && pc.length()>0)
 		{
 			useSpellTarget = true;
@@ -85,6 +86,24 @@ implements CKEntitySelectedListener<CKDialogChoice>, ItemListener
 	public void setPc(String pc)
 	{
 		this.pc = pc;
+	}
+
+
+	/**
+	 * @return the useKeyMessage
+	 */
+	public boolean isUseKeyMessage()
+	{
+		return useKeyMessage;
+	}
+
+
+	/**
+	 * @param useKeyMessage the useKeyMessage to set
+	 */
+	public void setUseKeyMessage(boolean useKeyMessage)
+	{
+		this.useKeyMessage = useKeyMessage;
 	}
 
 
@@ -134,6 +153,11 @@ implements CKEntitySelectedListener<CKDialogChoice>, ItemListener
 	@Override
 	public void doAction(CKGameActionListenerInterface L,CKSpellCast cast)
 	{
+		if(CKGameObjectsFacade.isPrediction()) 
+		{
+			L.actionCompleted(this);
+			return; 
+		}
 		replaceListener(L);
 		CKDialogMessage message;
 
@@ -141,43 +165,33 @@ implements CKEntitySelectedListener<CKDialogChoice>, ItemListener
 		
 		
 		CKGraphicsAssetFactory factory = CKGraphicsAssetFactoryXML.getInstance();
+		String mText = mess;
+		if(useKeyMessage)
+		{
+			mText = cast.getKey();
+		}
 		
 		if(usePicture)
 		{
 			CKGraphicsAsset portrait;
 			if(useSpellTarget && cast !=null) //use target of spell
 			{
-				portrait = factory.getPortrait(cast.getActorTarget().getAssetID());
+					portrait = factory.getPortrait(cast.getItemTarget().getAssetID());
 			}
 			else //use stored value
 			{
 				portrait = factory.getPortrait(getQuest().getActor(pc).getAssetID());
 			}
-			message = new CKDialogMessage(mess, portrait);
+			message = new CKDialogMessage(mText, portrait);
 		}
 		else //no picture
 		{
-			message = new CKDialogMessage(mess);			
+			message = new CKDialogMessage(mText);			
 		}
 		message.replaceEventListener(this);
 		CKGameObjectsFacade.getEngine().loadDialogMessage(message);
 
-	/* old code erase if you come across it.	
-		
-		if(getQuest()!=null && (picture==true) && (target==false))
-		{//use drop down for talker
-			CKGraphicsAsset portrait = factory.getPortrait(getQuest().getActor(pc).getAssetID());
-			message = new CKDialogMessage(mess,portrait);
-
-		}
-		//else if(getQuest()!=null && (picture==true) && (target==true))
-		else if(getQuest()!=null && (picture==true) && (target==true))
-		{//use target
-			CKGraphicsAsset portrait = factory.getPortrait(cast.getActorTarget().getAssetID());
-			message = new CKDialogMessage(mess, portrait);
-
-		}
-*/
+	
 		
 		
 		
@@ -236,6 +250,7 @@ implements CKEntitySelectedListener<CKDialogChoice>, ItemListener
 	static JTextArea []messBox;
 	static JCheckBox []isTarget;
 	static JCheckBox []isPic;
+	static JCheckBox []isKeyMessage;
 	
 	static private void initPanel(boolean force)
 	{
@@ -264,6 +279,13 @@ implements CKEntitySelectedListener<CKDialogChoice>, ItemListener
 			isPic[1] = new JCheckBox("Display Portrait?");
 			top[0].add(isPic[0]);
 			top[1].add(isPic[1]);
+			
+			isKeyMessage = new JCheckBox[2];
+			isKeyMessage[0] = new JCheckBox("Use Key for Message");
+			isKeyMessage[1] = new JCheckBox("Use Key for Message");
+			top[0].add(isKeyMessage[0]);
+			top[1].add(isKeyMessage[1]);
+
 			
 			
 			JPanel []bot = new JPanel[2]; 
@@ -305,6 +327,7 @@ implements CKEntitySelectedListener<CKDialogChoice>, ItemListener
 		
 		isTarget[index].setSelected(useSpellTarget);
 		isPic[index].setSelected(usePicture);
+		isKeyMessage[index].setSelected(useKeyMessage);
 
 		if(getQuest()!=null)
 		{
@@ -319,7 +342,9 @@ implements CKEntitySelectedListener<CKDialogChoice>, ItemListener
 			nameBox[index].setEnabled(true);
 		}
 		isPic[index].setSelected(usePicture);
-		messBox[index].setText(mess);		
+		messBox[index].setText(mess);
+		messBox[index].setEnabled(!useKeyMessage);
+
 	}
 	
 	
@@ -334,11 +359,12 @@ implements CKEntitySelectedListener<CKDialogChoice>, ItemListener
 	{
 		isTarget[EDIT].removeItemListener(guiListener);
 		isPic[EDIT].removeItemListener(guiListener);
+		isKeyMessage[EDIT].removeItemListener(guiListener);
 		guiListener = this;		
 		setPanelValues(EDIT);
 		isTarget[EDIT].addItemListener(guiListener);
 		isPic[EDIT].addItemListener(guiListener);
-		
+		isKeyMessage[EDIT].addItemListener(guiListener);
 		
 		return panel[EDIT];	
 	}
@@ -352,7 +378,7 @@ implements CKEntitySelectedListener<CKDialogChoice>, ItemListener
 		mess = messBox[EDIT].getText();
 		useSpellTarget = (boolean) isTarget[EDIT].isSelected();
 		usePicture = (boolean) isPic[EDIT].isSelected();
-		
+		useKeyMessage = (boolean) isKeyMessage[EDIT].isSelected();
 		
 		if(!useSpellTarget)
 		{

@@ -15,6 +15,7 @@ public class CKSpellCast implements Cloneable
 	private String page;
 	private int cp;
 	private String key;
+	private boolean graphics=true;
 
 	private CKPosition redirect = null;
 
@@ -70,11 +71,20 @@ public class CKSpellCast implements Cloneable
 		this.result = result;
 	}
 	
-	public void addResult(CKAbstractGridItem t,String action,String result)
+	public void addResult(CKAbstractGridItem t,String action,String resultType, double result)
 	{
-		this.result.addResult(t, action, result);		
+		this.result.addResult(t, action, resultType, result);		
 	}
 
+
+	public void addResult(CKAbstractGridItem itemTarget, String action,
+			String resultType, boolean happened)
+	{
+		addResult(itemTarget,action,resultType,happened?1:0);
+	}
+
+	
+	
 	/**
 	 * @return the redirect
 	 */
@@ -112,6 +122,22 @@ public class CKSpellCast implements Cloneable
 
 
 
+
+	/**
+	 * @return the graphics
+	 */
+	public boolean isGraphics()
+	{
+		return graphics;
+	}
+
+	/**
+	 * @param graphics the graphics to set
+	 */
+	public void setGraphics(boolean graphics)
+	{
+		this.graphics = graphics;
+	}
 
 	/**
 	 * @return the target
@@ -252,25 +278,29 @@ public class CKSpellCast implements Cloneable
 	public void castSpell()
 	{
 		CKGameActionListener listener = new CKGameActionListener();
-		castSpell(listener, key);
+		castSpell(listener);//, key);
 	}
 	
-	public void castSpell(CKGameActionListenerInterface boss, String key)
+	public void castSpell(CKGameActionListenerInterface boss)//, String key)
 	{
-		//FIXME will need to handle world filters 
+		
+		if(CKGameObjectsFacade.isPrediction())
+		{
+			graphics=false;
+			result = CKGameObjectsFacade.getPredictionResult();
+			target = CKGameObjectsFacade.replaceTargets(target);
+		}		
+		
+		
+		
+		//FIXME will need to handle world filters--could just add to actors... 
 	/*	if(redirect ==null)
 		{
 			CKGameObjectsFacade.getQuest().applyWorldFilters(boss,this);
 		}
 		*/
-		/*
-		 * This is now handled be CKGridItemSet...without the need for intervention...
-		 * if(target instanceof CKAreaPositions)
-		{
-			CKGameObjectsFacade.targetSpell(boss,this);
-			return;
-		}*/
-		System.err.println("Casting:"+toString());
+		if(! CKGameObjectsFacade.isPrediction())
+		{ System.err.println("Casting:"+toString()); }
 
 		CKAbstractGridItem item = getItemTarget();
 		
@@ -303,7 +333,7 @@ public class CKSpellCast implements Cloneable
 	@Override
 	public String toString()
 	{
-		return source.getName()+" casts "+ chapter+":"+page+" at "+target.getName()+" for "+cp;
+		return source.getName()+" casts "+ chapter+":"+page+" at "+target.getName()+" for "+cp+" at "+target.getPos();
 		
 	}
 

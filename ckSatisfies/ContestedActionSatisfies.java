@@ -113,11 +113,23 @@ public class ContestedActionSatisfies extends Satisfies
 		int tval = 0;
 		int sval = 0;
 		
+/*		if(cast.getActorTarget()==null)
+		{
+			
+		}
 		CKBook tBook = cast.getActorTarget().getAbilities();
 		if(tBook != null)
 		{
-			tval = tBook.getChapter(targetChapter).getValue();
+
 		}
+	*/	try
+		{
+			CKBook tBook = ((CKGridActor)cast.getItemTarget()).getAbilities();
+			tval = tBook.getChapter(targetChapter).getValue();			
+			
+		}
+		catch (ClassCastException e ) { }
+		
 			
 		try
 		{ 

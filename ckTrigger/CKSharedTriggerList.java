@@ -54,6 +54,7 @@ public class CKSharedTriggerList extends CKTriggerListNode
 	{
 		TLid = tLid;
 		list = CKTriggerListFactory.getInstance().getAsset(TLid);
+		list.setParent(this);
 	}
 	
 			

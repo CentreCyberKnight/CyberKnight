@@ -90,7 +90,18 @@ public class AimDescription
 
 
 
-
+	public static CKPosition[] calculateTarget(CKPosition origin,CKPosition[] offsets)
+	{
+		
+		CKPosition [] ret = new CKPosition[offsets.length];
+		for(int i =0;i<offsets.length;i++)
+		{
+			ret[i] = origin.add(offsets[i]);
+		}
+		return ret;
+		
+		
+	}
 
 	/**
 	 * @return the offsets
@@ -117,6 +128,7 @@ public class AimDescription
 		
 		return ret;		
 	}
+	
 	
 	public CKPosition[] getInverse(Direction d)
 	{

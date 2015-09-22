@@ -362,7 +362,7 @@ public class CKSpellAction extends CKGameAction implements
 						cast.getChapter(), cast.getPage(), cast.getCp(),
 						cast.getKey());
 				c2.setRedirect(set.getPos());
-				c2.castSpell(this, "");
+				c2.castSpell(this);
 			}
 		} else
 		{

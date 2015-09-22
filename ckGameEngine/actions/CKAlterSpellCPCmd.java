@@ -65,7 +65,7 @@ final public class CKAlterSpellCPCmd extends CKGameAction implements ItemListene
 	@Override
 	public void doAction(CKGameActionListenerInterface L,CKSpellCast cast)
 	{
-		System.out.println("Before: " +cast.getCp());
+		//System.out.println("Before: " +cast.getCp());
 		if(useFixed==true)
 		{
 			cast.setCp(cast.getCp()+cp);
@@ -74,7 +74,7 @@ final public class CKAlterSpellCPCmd extends CKGameAction implements ItemListene
 		{
 			cast.setCp(cast.getCp()*(100-cp)/100);
 		}
-		System.out.println("After: " +cast.getCp());
+//		System.out.println("After: " +cast.getCp());
 		L.actionCompleted(this);
 	}
 	

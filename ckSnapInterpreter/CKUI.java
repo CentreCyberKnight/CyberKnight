@@ -126,6 +126,7 @@ public class CKUI extends Application
 //		view.maxWidth(Double.MAX_VALUE);
 //    	view.maxHeight(Double.MAX_VALUE);
     	menuPane.getChildren().add(view);
+
     	
     	
     	CKPlayerPane player = new CKPlayerPane(data);
@@ -153,6 +154,7 @@ public class CKUI extends Application
 
 		menuPane.getChildren().addAll(iconsTab, playerTab, artifactTab, abilitiesTab, snap, allArtifactsTab, statsTab);
 		
+
 	  //  Scene scene = new Scene(menuPane,700,720);
 	    //Scene scene = new Scene(menuPane,1500,820);
 		

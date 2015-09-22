@@ -120,7 +120,11 @@ public void setT(NumericalCostType t)
 			aBook = getQuest().getActor(actorName).getAbilities();
 		}
 		else
-		{
+		{	
+			if(cast.getActorTarget()==null)
+			{
+				return false;
+			}	
 			aBook = cast.getActorTarget().getAbilities();
 		}
 		
