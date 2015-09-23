@@ -4683,7 +4683,7 @@ IDE_Morph.prototype.exportProjectNoMedia = function (name) {
     this.serializer.flushMedia();
 };
 
-IDE_Morph.prototype.ckXML = function (name) {
+IDE_Morph.prototype.ckExportXML = function (name) {
     var menu, str, media, dta;
     this.serializer.isCollectingMedia = true;
     if (name) {
@@ -4729,6 +4729,38 @@ IDE_Morph.prototype.ckXML = function (name) {
     this.serializer.flushMedia();
     // this.hasChangedMedia = false;
 };
+
+IDE_Morph.prototype.ckLoadXML = function () {
+	str = javaProcess.getText();	
+    var model;
+    StageMorph.prototype.hiddenPrimitives = {};
+    StageMorph.prototype.codeMappings = {};
+    StageMorph.prototype.codeHeaders = {};
+    StageMorph.prototype.enableCodeMapping = false;
+    if (Process.prototype.isCatchingErrors) {
+        try {
+            //model = this.serializer.parse(str);
+        	//model = javaProcess.getText();
+            //this.serializer.loadMediaModel(model.childNamed('media'));
+            this.serializer.load(str, this);
+        } catch (err) {
+            this.showMessage('Load failed: ' + err);
+        }
+    } else {
+        model = this.serializer.parse(str);
+        this.serializer.loadMediaModel(model.childNamed('media'));
+        this.serializer.openProject(
+            this.serializer.loadProjectModel(
+                model.childNamed('project'),
+                this
+            ),
+            this
+        );
+    }
+    this.stopFastTracking();
+};
+
+
 
 IDE_Morph.prototype.cloudAcknowledge = function () {
     var myself = this;

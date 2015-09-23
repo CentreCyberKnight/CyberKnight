@@ -56,6 +56,9 @@ public class controlPanel extends Application // implements EventHandler<Action
 		Button a3 = new Button();
 		a3.setText("Save");
 		
+		Button a4 = new Button();
+		a4.setText("Load");
+		
 		/*
 		 * 
 		 * 
@@ -71,9 +74,11 @@ public class controlPanel extends Application // implements EventHandler<Action
 		
 		TextField a6 = new TextField();
 
+		
 		a1.setOnAction(e -> {CKArtifactModel.setArtifact(combatBoots);});
 		a2.setOnAction(e -> {CKArtifactModel.setArtifact(coolSpoon);});	
 		a3.setOnAction(e -> {CKArtifactModel.generateXML();});
+		a4.setOnAction(e -> {CKArtifactModel.loadXML();});
 		
 		//CKGraphicsAsset asset = CKGraphicsAssetFactoryXML.readAssetFromXMLDirectory("boots");
 		//System.out.println(asset);
@@ -100,6 +105,7 @@ public class controlPanel extends Application // implements EventHandler<Action
 		grid.add(a1, 0, 0);
 		grid.add(a2, 0, 1);
 		grid.add(a3, 0, 2);
+		grid.add(a4, 0, 3);
 		/*
 		grid.add(a5, 0, 3);
 		*/
