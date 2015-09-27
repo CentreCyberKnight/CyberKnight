@@ -42,6 +42,7 @@ import ckGameEngine.Quest;
 import ckGameEngine.QuestData;
 import ckGameEngine.actions.CKSimpleGUIAction;
 import ckGraphicsEngine.CK2dGraphicsEngine;
+import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.assets.CKAssetViewer;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.assets.FXAssetViewer;
@@ -120,11 +121,13 @@ public class CKUI extends Application
    //CKGameObjectsFacade.setQuest(quest);
   		 //	swingNode.setContent(CKGameObjectsFacade.getEngine());
     	CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("hero");
-    	CK2dGraphicsEngine engine = new CK2dGraphicsEngine();
+    	// need to slip this in.  FX2dGraphicsEngine engine = new FX2dGraphicsEngine();
 	//	FXAssetViewer view=new FXAssetViewer(1,A1,new Dimension(700,800),true);
 		FXAssetViewer view=new FXAssetViewer(1,A1,new Dimension(1500,820),true);
 //		view.maxWidth(Double.MAX_VALUE);
 //    	view.maxHeight(Double.MAX_VALUE);
+		view.widthProperty().bind(menuPane.widthProperty());
+		view.heightProperty().bind(menuPane.heightProperty());
     	menuPane.getChildren().add(view);
 
     	
@@ -152,7 +155,8 @@ public class CKUI extends Application
     	CKPlayerStatsPane stats = new CKPlayerStatsPane(data);
     	CKDrawerTab statsTab = new CKDrawerTab(stats, DrawerSides.LEFT, 0.0, 470.0, 350.0, 350.0, "ckSnapInterpreter/text.png");
 
-		menuPane.getChildren().addAll(iconsTab, playerTab, artifactTab, abilitiesTab, snap, allArtifactsTab, statsTab);
+		menuPane.getChildren().addAll(iconsTab, playerTab, 
+				artifactTab, abilitiesTab, snap, allArtifactsTab, statsTab);
 		
 
 	  //  Scene scene = new Scene(menuPane,700,720);

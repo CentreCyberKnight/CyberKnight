@@ -1,7 +1,6 @@
 package ckGraphicsEngine;
 
 import java.awt.Dimension;
-
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
@@ -733,21 +732,56 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 		
 		//move person across the screen
 		 
-		stage.setTitle("Here");
-		HBox root = new HBox();
-		Scene scene = new Scene(root,600,600);
-		stage.setScene(scene);
-		//root.getChildren().addAll(engine);
-	   	CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("hero");	
+			stage.setTitle("Here");
+			HBox root = new HBox();
+			Scene scene = new Scene(root,600,600);
+			stage.setScene(scene);
+			//engine.setWidth(1500);
+			//engine.setHeight(820);
+		engine.maxWidth(Double.MAX_VALUE);
+    	engine.maxHeight(Double.MAX_VALUE);
+    	engine.widthProperty().bind(root.widthProperty());
+    	engine.heightProperty().bind(root.heightProperty());
+		root.getChildren().addAll(engine);
+		
+	   	
+			/*CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("hero");	
 		//	FXAssetViewer view=new FXAssetViewer(1,A1,new Dimension(700,800),true);
 			FXAssetViewer view=new FXAssetViewer(1,A1,new Dimension(1500,820),true);
 			view.maxWidth(Double.MAX_VALUE);
 	    	view.maxHeight(Double.MAX_VALUE);
 	    	root.getChildren().add(view);
+	    	*/
 		stage.show();
 		
 		
 	}
+
+	}	
+		public static class TestEngineSimple extends Application
+		{
+
+			@Override
+			public void start(Stage stage) throws Exception
+			{
+				 
+				stage.setTitle("Here");
+				HBox root = new HBox();
+				Scene scene = new Scene(root,600,600);
+				stage.setScene(scene);
+				
+		   	CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("hero");	
+		   	FXAssetViewer view=new FXAssetViewer(1,A1,new Dimension(1500,820),true);
+				
+					// TODO Auto-generated method stub
+//				view.maxWidth(Double.MAX_VALUE);
+	//	    	view.maxHeight(Double.MAX_VALUE);
+		   	root.getChildren().add(view);
+		    		
+			stage.show();
+			}
+			
+		}
 
 		
 		
@@ -756,7 +790,6 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 		
 		
 	
-	}
 
 
 
