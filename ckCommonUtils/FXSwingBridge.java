@@ -1,5 +1,7 @@
 package ckCommonUtils;
 
+import javax.swing.JLabel;
+
 //import javafx.scene.input.MouseEvent;
 
 public class FXSwingBridge
@@ -20,7 +22,7 @@ public class FXSwingBridge
  
 		//TODO Does not look at modifiers
 		
-		return new java.awt.event.MouseEvent(null,
+		return new java.awt.event.MouseEvent(new JLabel("dummy Source"),
 				//type,long when, int modifiers, int x, int y, int clickCount, boolean popupTrigger, int button
 				mouseType,1, 0, (int) e.getX(),(int)e.getY(),
 				e.getClickCount(),e.isPopupTrigger());

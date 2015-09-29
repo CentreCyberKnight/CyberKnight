@@ -92,7 +92,7 @@ public class FXAssetViewer extends FXGamePanelTimer
 		int leftMargin = 25;
 		int topMargin = 25;
 		//g.setColor(Color.WHITE);
-		//g.draw3DRect(leftMargin, topMargin, asset.getWidth(presentRow)*2,
+		//g.draw3DRect(leftMargin, topMargin, asset.getWidth(presentRow)*20
 		//		asset.getHeight(presentRow)*2,true);
 
 		Point offset = new Point();
