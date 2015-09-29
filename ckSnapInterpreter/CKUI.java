@@ -125,7 +125,7 @@ public class CKUI extends Application
 		FXAssetViewer view=new FXAssetViewer(1,A1,new Dimension(1500,820),true);
 //		view.maxWidth(Double.MAX_VALUE);
 //    	view.maxHeight(Double.MAX_VALUE);
-    	menuPane.getChildren().add(view);
+    	//menuPane.getChildren().add(view);
 
     	
     	
@@ -139,7 +139,7 @@ public class CKUI extends Application
     	CKArtifactPane artifact = new CKArtifactPane(data);
     	CKDrawerTab artifactTab = new CKDrawerTab(artifact, DrawerSides.TOP, 350.0, 0.0, 400.0, 300.0, "ckSnapInterpreter/arrow.png");
     	
-    	CKSnapPane snap = new CKSnapPane(data);
+    	CKSnapPane snap = new CKSnapPane(data); //Snap Pane
     	CKDrawerTab snapTab = new CKDrawerTab(snap, DrawerSides.RIGHT, 750.0, 0.0, 690.0, 820.0, "ckSnapInterpreter/text.png");
     	
     	CKControlSpellsPane controls = new CKControlSpellsPane(data);
@@ -152,7 +152,7 @@ public class CKUI extends Application
     	CKPlayerStatsPane stats = new CKPlayerStatsPane(data);
     	CKDrawerTab statsTab = new CKDrawerTab(stats, DrawerSides.LEFT, 0.0, 470.0, 350.0, 350.0, "ckSnapInterpreter/text.png");
 
-		menuPane.getChildren().addAll(iconsTab, playerTab, artifactTab, abilitiesTab, snap, allArtifactsTab, statsTab);
+		menuPane.getChildren().addAll(iconsTab, playerTab, artifactTab, abilitiesTab, snapTab, allArtifactsTab, statsTab);
 		
 
 	  //  Scene scene = new Scene(menuPane,700,720);
