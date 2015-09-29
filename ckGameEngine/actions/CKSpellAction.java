@@ -25,6 +25,7 @@ import ckGraphicsEngine.BadInstanceIDError;
 import ckGraphicsEngine.CK2dGraphicsEngine;
 import ckGraphicsEngine.CKGraphicsEngine.RelationalLinkType;
 import ckGraphicsEngine.CircularDependanceError;
+import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.LoadAssetError;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
 import ckSatisfies.ContestedActionSatisfies;
@@ -307,7 +308,7 @@ public class CKSpellAction extends CKGameAction implements
 	}
 
 	Quest quest;
-	CK2dGraphicsEngine engine;
+	FX2dGraphicsEngine engine;
 
 	@Override
 	public void doAction(CKGameActionListenerInterface L, CKSpellCast cast)

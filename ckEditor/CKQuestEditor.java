@@ -44,7 +44,8 @@ public class CKQuestEditor extends CKXMLAssetPropertiesEditor<QuestData> impleme
 	
 	
 
-	CK2dGraphicsEngine sceneViewer;//center
+	FX2dGraphicsEngine sceneViewer;//center
+	JPanel sceneViewerPanel;
 	JPanel header;	
 	CKXMLAssetPropertiesEditor<QuestData> E=null;
 	//CKXMLAssetUsagePicker<QuestData,CKQuestFactory> usages;
@@ -78,7 +79,8 @@ public class CKQuestEditor extends CKXMLAssetPropertiesEditor<QuestData> impleme
 		sceneViewer = CKGameObjectsFacade.getEngine();
 		sceneViewer.loadScene(quest.getSceneID());
 		scene = sceneViewer.getCKScene();
-		sceneViewer.setPreferredSize(new Dimension(640,700));
+		sceneViewer.prefWidth(640);
+		sceneViewer.prefHeight(700);
 		
 		CKGameObjectsFacade.getQuest().startTransaction();
 		for(CKGridActor a:quest.getActors().getGridActors())
@@ -89,6 +91,7 @@ public class CKQuestEditor extends CKXMLAssetPropertiesEditor<QuestData> impleme
 		CKGameObjectsFacade.getQuest().endTransaction();
 		
 		addLayerInteractionInterfaces();
+		sceneViewerPanel =CKGameObjectsFacade.getJPanelEngine();
 	}
 	
 	
@@ -146,7 +149,9 @@ public class CKQuestEditor extends CKXMLAssetPropertiesEditor<QuestData> impleme
 		
 		
 
-		plane.add(sceneViewer,"gridV");
+		//plane.add(sceneviewer,"gridV");
+
+		plane.add(sceneViewerPanel,"gridV");
 	
 		plane.add(E,"editor");
 		//plane.add(usages,"usages");
@@ -579,9 +584,9 @@ public class CKQuestEditor extends CKXMLAssetPropertiesEditor<QuestData> impleme
 	@Override
 	public void graphicsChanged()
 	{
-		plane.remove(sceneViewer);
+		plane.remove(sceneViewerPanel);
 		this.initGraphicsEngine();
-		plane.add(sceneViewer,"gridV");
+		plane.add(sceneViewerPanel,"gridV");
 		plane.revalidate();
 	}
 	

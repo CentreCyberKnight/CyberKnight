@@ -3,16 +3,21 @@ package ckGameEngine;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 import javax.swing.JButton;
+import javax.swing.JPanel;
 
 import ckCommonUtils.CKThreadCompletedListener;
 import ckEditor.CKTeamArtifactEditor;
 import ckGameEngine.Quest;
 import ckGameEngine.actions.CKGameActionListenerInterface;
-import ckGraphicsEngine.CK2dGraphicsEngine;
+import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckPythonInterpreter.CKPythonConsoleExtended;
 import ckPythonInterpreter.CKPythonEditorPane;
 import ckPythonInterpreter.CKTeamView;
@@ -25,7 +30,7 @@ public class CKGameObjectsFacade
 	// charactrs
 	// for now just store the PC that we want the editor to grab
 	private static Quest quest;
-	private static CK2dGraphicsEngine engine;
+	private static FX2dGraphicsEngine engine;
 	private static CKTeamView artifactController;
 	private static WebEngine webEngine;
 	/**
@@ -134,17 +139,53 @@ public class CKGameObjectsFacade
 		artifactController = cont;
 	}
 
-	public static CK2dGraphicsEngine getEngine()
+	public static FX2dGraphicsEngine getEngine()
 	{
 
 		// FIXME uncomment
 		if (engine == null)
 		{
-			engine = new CK2dGraphicsEngine(30, 5);
+			engine = new FX2dGraphicsEngine(30, 5);
 		}
 		return engine;
 	}
 
+	
+	public static JPanel getJPanelEngine()
+	{
+		final JFXPanel panel = new JFXPanel();
+		
+		JPanel jpanel = new JPanel();
+		jpanel.add(panel);
+		 
+		Platform.runLater(new Runnable()
+		{
+			/* (non-Javadoc)
+			 * @see java.lang.Runnable#run()
+			 */
+			@Override
+			public void run()
+			{
+				HBox root = new HBox();
+				//root.setMaxHeight(Double.MAX_VALUE);
+				//root.setMaxWidth(Double.MAX_VALUE);
+				FX2dGraphicsEngine e = CKGameObjectsFacade.getEngine();
+				e.maxHeight(Double.MAX_VALUE);
+				e.maxWidth(Double.MAX_VALUE);
+				e.prefHeight(600);
+				e.prefWidth(600);
+				e.widthProperty().bind(root.widthProperty());
+				e.heightProperty().bind(root.heightProperty());
+				root.getChildren().add(e);
+				Scene scene = new Scene(root,600,600);
+				panel.setScene(scene);
+			}
+		});
+		 
+		return jpanel;
+		
+	}
+	
 	public static void killEngine()
 	{
 		engine = null;
@@ -212,9 +253,11 @@ public class CKGameObjectsFacade
 	{
 		// TODO Auto-generated method stub
 		String name = getCurrentPlayer().getName();
-		System.out.println("I want to have a cookie:" + name);
+
+		///* FIXME MKB link to Michelle's code!!
 		artifactController.gotoTab(name);
 		artifactController.enableCharacter(name, true);
+		//*/
 	}
 
 	public static void runSpell(String code, CKThreadCompletedListener listen)

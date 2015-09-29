@@ -6,10 +6,12 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
 import javax.swing.JFrame;
+
 import ckCommonUtils.CKPosition;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGraphicsEngine.BadInstanceIDError;
 import ckGraphicsEngine.CK2dGraphicsEngine;
+import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.LoadAssetError;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
 
@@ -63,7 +65,7 @@ public class CKTravelEffect extends CKGUINode
 	
 	public int doTravelEffect(CKPosition startingPos, CKPosition endingPos,int startTime)
 	{
-		CK2dGraphicsEngine engine=CKGameObjectsFacade.getEngine();
+		FX2dGraphicsEngine engine=CKGameObjectsFacade.getEngine();
 		//Quest quest = CKGameObjectsFacade.getQuest();		
 		
 		int travelTime=startTime;

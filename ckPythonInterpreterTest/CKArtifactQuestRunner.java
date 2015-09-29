@@ -2,22 +2,6 @@ package ckPythonInterpreterTest;
 
 import static ckCommonUtils.CKPropertyStrings.*;
 
-import static ckCommonUtils.CKPropertyStrings.CH_FIRE;
-import static ckCommonUtils.CKPropertyStrings.CH_MOVE;
-import static ckCommonUtils.CKPropertyStrings.CH_EARTH;
-import static ckCommonUtils.CKPropertyStrings.P_ARMOR;
-import static ckCommonUtils.CKPropertyStrings.P_FORWARD;
-import static ckCommonUtils.CKPropertyStrings.P_IGNITE;
-import static ckCommonUtils.CKPropertyStrings.P_LEFT;
-import static ckCommonUtils.CKPropertyStrings.P_OFFHAND_WEAPON;
-import static ckCommonUtils.CKPropertyStrings.P_RIGHT;
-import static ckCommonUtils.CKPropertyStrings.P_SHOES;
-import static ckCommonUtils.CKPropertyStrings.P_SING;
-import static ckCommonUtils.CKPropertyStrings.P_SLASH;
-import static ckCommonUtils.CKPropertyStrings.P_SWORD;
-import static ckCommonUtils.CKPropertyStrings.P_TALK;
-
-
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Container;
@@ -34,6 +18,7 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -191,14 +176,19 @@ public class CKArtifactQuestRunner implements DocumentListener
 	 
 	 
 	
-	 private JPanel getScenePanel(int sceneId)
+	 private JComponent getScenePanel(int sceneId)
 	 {
 		 //DOn't need to call since quest is already initialized
 		 //return new CKSceneViewer(scene,sceneId);
 		 //quest = CKGameObjectsFacade.getQuest();
 		 //quest.creation(sceneId, frame);
 		 CKGameObjectsFacade.setQuest(quest);
-		 return CKGameObjectsFacade.getEngine();
+		 JFXPanel panel = new JFXPanel();
+		 HBox root = new HBox();
+		 root.getChildren().add(CKGameObjectsFacade.getEngine());
+		 Scene scene = new Scene(root);
+		 panel.setScene(scene);
+		 return panel;
 	 }
 
 	 

@@ -20,6 +20,7 @@ import ckEditor.treegui.ActorNode;
 import ckGraphicsEngine.BadInstanceIDError;
 import ckGraphicsEngine.CK2dGraphicsEngine;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
+import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.LoadAssetError;
 import ckGraphicsEngine.UnknownAnimationError;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
@@ -117,7 +118,7 @@ public class CKGridActor extends CKGridItem
 	public void onAdd()
 	{
 		if(CKGameObjectsFacade.unitTest) {return; } //not in game, running tests
-		CK2dGraphicsEngine engine = CKGameObjectsFacade.getEngine();
+		FX2dGraphicsEngine engine = CKGameObjectsFacade.getEngine();
 		if(engine==null) {return; }
 		try
 		{
@@ -163,7 +164,7 @@ public class CKGridActor extends CKGridItem
 		next=null;
 		
 		if(CKGameObjectsFacade.unitTest) {return; } //not in game, running tests
-		CK2dGraphicsEngine engine = CKGameObjectsFacade.getEngine();
+		FX2dGraphicsEngine engine = CKGameObjectsFacade.getEngine();
 		if(engine==null) {return; }
 		try
 		{
@@ -204,7 +205,7 @@ public class CKGridActor extends CKGridItem
 	public int  drawMove(CKPosition start,CKPosition end,int time) 
 	{
 
-		CK2dGraphicsEngine engine = CKGameObjectsFacade.getEngine();
+		FX2dGraphicsEngine engine = CKGameObjectsFacade.getEngine();
 		int endTime = time;
 		try
 		{

@@ -942,6 +942,10 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Vector;
 
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
+
 import javax.swing.JFrame;
 
 import ckCommonUtils.CKPosition;
@@ -949,6 +953,7 @@ import ckDatabase.CKQuestFactory;
 import ckGameEngine.actions.CKGameActionListenerInterface;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGraphicsEngine.CK2dGraphicsEngine;
+import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.LoadAssetError;
 import ckTrigger.TriggerResult;
 
@@ -1173,7 +1178,10 @@ public class Quest  //implements CKGameActionListenerInterface
 	
 	public void setupScene()
 	{
-		CKGameObjectsFacade.getEngine().setPreferredSize(new Dimension(600,600));
+		CKGameObjectsFacade.getEngine().prefWidth(600);
+		CKGameObjectsFacade.getEngine().prefHeight(600);
+
+		
 		CKGameObjectsFacade.getEngine().loadScene(qData.getSceneID());
 		
 	}
@@ -1225,12 +1233,15 @@ public class Quest  //implements CKGameActionListenerInterface
 		JFrame frame = new JFrame();
 
 		//Quest quest = new Quest(creation(2));
-		Quest quest = new Quest(CKQuestFactory.getInstance().getAsset("level1-proto"));
-		frame.add(CKGameObjectsFacade.getEngine());
+		Quest quest = new Quest(CKQuestFactory.getInstance()
+				.getAsset("asset1851556717277832909"));
+	
+		 CKGameObjectsFacade.setQuest(quest);
+		 
 		frame.pack();
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		frame.add(CKGameObjectsFacade.getJPanelEngine());
 		CKGameObjectsFacade.setQuest(quest);
 		quest.gameLoop();
 	}
@@ -1366,7 +1377,7 @@ public class Quest  //implements CKGameActionListenerInterface
 	{
 		if(! bgSounds.containsKey(soundAID))
 		{
-			CK2dGraphicsEngine engine = CKGameObjectsFacade.getEngine();
+			FX2dGraphicsEngine engine = CKGameObjectsFacade.getEngine();
 			int SID = engine.createSoundInstance(0, soundAID);
 			bgSounds.put(soundAID, SID);
 		}

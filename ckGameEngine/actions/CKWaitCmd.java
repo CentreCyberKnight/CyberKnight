@@ -20,6 +20,7 @@ import ckGameEngine.CKSpellCast;
 import ckGameEngine.Quest;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGraphicsEngine.CK2dGraphicsEngine;
+import ckGraphicsEngine.FX2dGraphicsEngine;
 
 /**
  * @author dragonlord
@@ -55,7 +56,7 @@ public class CKWaitCmd extends CKQuestAction
 	protected void questDoAction(CKSpellCast cast)
 	{		
 		Quest w = CKGameObjectsFacade.getQuest();
-		CK2dGraphicsEngine e = CKGameObjectsFacade.getEngine();
+		FX2dGraphicsEngine e = CKGameObjectsFacade.getEngine();
 		e.createNullAction(0, w.getStartTime(), w.getStartTime()+delay);
 		//w.setStartTime(w.getStartTime()+delay);
 	}

@@ -16,6 +16,7 @@ import ckGameEngine.CKSpellCast;
 import ckGameEngine.Quest;
 import ckGraphicsEngine.BadInstanceIDError;
 import ckGraphicsEngine.CK2dGraphicsEngine;
+import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.LoadAssetError;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
 
@@ -58,7 +59,7 @@ public class CKActorEffect extends CKGUINode
 	
 	public int doActorEffect(CKSpellCast cast,boolean source,int startTime)
 	{
-		CK2dGraphicsEngine engine=CKGameObjectsFacade.getEngine();
+		FX2dGraphicsEngine engine=CKGameObjectsFacade.getEngine();
 		//Quest quest = CKGameObjectsFacade.getQuest();		
 		
 		int endTime = startTime+getDuration();

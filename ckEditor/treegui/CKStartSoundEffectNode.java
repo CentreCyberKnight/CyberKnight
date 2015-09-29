@@ -10,6 +10,7 @@ import javax.swing.tree.MutableTreeNode;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.Quest;
 import ckGraphicsEngine.CK2dGraphicsEngine;
+import ckGraphicsEngine.FX2dGraphicsEngine;
 
 public class CKStartSoundEffectNode extends CKGUINode
 {
@@ -39,7 +40,7 @@ public class CKStartSoundEffectNode extends CKGUINode
 	 */
 	public int startSoundEffects()
 	{
-		CK2dGraphicsEngine engine=CKGameObjectsFacade.getEngine();
+		FX2dGraphicsEngine engine=CKGameObjectsFacade.getEngine();
 		Quest quest = CKGameObjectsFacade.getQuest();
 		int ssid = engine.createSoundInstance(0, getSound().getAID());
 		engine.playSound(quest.getStartTime(), ssid);

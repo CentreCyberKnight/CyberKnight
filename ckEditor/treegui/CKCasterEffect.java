@@ -11,6 +11,7 @@ import ckCommonUtils.CKPosition;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.Quest;
 import ckGraphicsEngine.CK2dGraphicsEngine;
+import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.LoadAssetError;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
 
@@ -45,7 +46,7 @@ public class CKCasterEffect extends CKGUINode
 		int sourceEffect=-1;
 		try
 		{
-			CK2dGraphicsEngine engine=CKGameObjectsFacade.getEngine();
+			FX2dGraphicsEngine engine=CKGameObjectsFacade.getEngine();
 			Quest quest = CKGameObjectsFacade.getQuest();
 			sourceEffect = engine.createInstance(0,getGraphic().getAID(),
 													startingPos,quest.getStartTime(), 

@@ -29,6 +29,7 @@ import ckGraphicsEngine.BadInstanceIDError;
 import ckGraphicsEngine.CK2dGraphicsEngine;
 import ckGraphicsEngine.CKCoordinateTranslator;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
+import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.UnknownAnimationError;
 import ckGraphicsEngine.layers.CKGridGraphicsLayer;
 import static ckCommonUtils.CKPropertyStrings.*;
@@ -987,7 +988,7 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 		{// only run pictures if
 			// there is a quest.
 			Quest quest = CKGameObjectsFacade.getQuest();
-			CK2dGraphicsEngine engine = CKGameObjectsFacade.getEngine();
+			FX2dGraphicsEngine engine = CKGameObjectsFacade.getEngine();
 			if (engine != null)
 			{
 

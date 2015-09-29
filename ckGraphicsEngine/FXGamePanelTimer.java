@@ -60,14 +60,14 @@ public abstract class FXGamePanelTimer extends Canvas
 
 	public FXGamePanelTimer()
 	{
-		super(100,100);
+		super(600,600);
 		initialize(30,10);
 	
 	}
 
 		public FXGamePanelTimer(double framesPerSecond,int maxDropped)
 	{
-		super(100,100);
+		super(600,600);
 		initialize(framesPerSecond,maxDropped);
 	
 	}
@@ -208,5 +208,30 @@ private boolean prepGraphics(boolean force)
 	}
 	*/
 	
+
+
+public void setFps(int i)
+{
+	// TODO Auto-generated method stub
+	
+}
+
+
+
+public void startGame()
+{
+	// TODO Auto-generated method stub
+	
+}
+
+
+
+public double getFps()
+{
+	 //FIXME!!!
+	return 30; 
+}
+
+
 
 }
