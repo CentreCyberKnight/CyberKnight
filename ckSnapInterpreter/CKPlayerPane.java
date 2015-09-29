@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -54,5 +55,6 @@ public void setPlayerNodes(CKData data) {
  	cp.setFont(new Font("Courier New", 20));
 
  	this.add(cp, 2, 4, 3, 1);
-}
+	}
+
 }
