@@ -183,12 +183,15 @@ public class CKArtifactQuestRunner implements DocumentListener
 		 //quest = CKGameObjectsFacade.getQuest();
 		 //quest.creation(sceneId, frame);
 		 CKGameObjectsFacade.setQuest(quest);
-		 JFXPanel panel = new JFXPanel();
+/*		 JFXPanel panel = new JFXPanel();
 		 HBox root = new HBox();
 		 root.getChildren().add(CKGameObjectsFacade.getEngine());
 		 Scene scene = new Scene(root);
 		 panel.setScene(scene);
 		 return panel;
+		 */
+		 
+		 return CKGameObjectsFacade.getJPanelEngine();
 	 }
 
 	 

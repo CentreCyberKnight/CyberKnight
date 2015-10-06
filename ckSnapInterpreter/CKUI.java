@@ -41,11 +41,9 @@ import ckGameEngine.Direction;
 import ckGameEngine.Quest;
 import ckGameEngine.QuestData;
 import ckGameEngine.actions.CKSimpleGUIAction;
-import ckGraphicsEngine.CK2dGraphicsEngine;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.assets.CKAssetViewer;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
-import ckGraphicsEngine.assets.FXAssetViewer;
 import ckSatisfies.PositionReachedSatisfies;
 import ckSatisfies.Satisfies;
 import ckSnapInterpreter.CKDrawerTab;
@@ -116,14 +114,19 @@ public class CKUI extends Application
     	Pane menuPane = new Pane();
     	menuPane.setPrefSize(200, 200);
   
-    	populateModel();
-
+    	//populateModel();
+    	Quest q = createTestQuest();
+    	CKGameObjectsFacade.setQuest(q);
+    	
+    	
    //CKGameObjectsFacade.setQuest(quest);
-  		 //	swingNode.setContent(CKGameObjectsFacade.getEngine());
-    	CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("hero");
+  		 
+    	//CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("hero");
     	// need to slip this in.  FX2dGraphicsEngine engine = new FX2dGraphicsEngine();
 	//	FXAssetViewer view=new FXAssetViewer(1,A1,new Dimension(700,800),true);
-		FXAssetViewer view=new FXAssetViewer(1,A1,new Dimension(1500,820),true);
+		
+    	//FXAssetViewer view=new FXAssetViewer(1,A1,new Dimension(1500,820),true);
+		FX2dGraphicsEngine view = CKGameObjectsFacade.getEngine();
 //		view.maxWidth(Double.MAX_VALUE);
 //    	view.maxHeight(Double.MAX_VALUE);
 
@@ -175,10 +178,17 @@ public class CKUI extends Application
 	    primaryStage.setTitle("Test Drawer Tabs");
 	    primaryStage.setScene(scene);
 	    primaryStage.show();
+	    
+	    
+	    
+	    //now to add the game Thread....
+	    //Thread T = new gameThread();
+		//T.start();
+	    q.gameLoop();
     }
     
 
-	public void populateModel() {	
+	public void populateModel(QuestData q) {	
 
 
 		//make a team:)
@@ -293,10 +303,10 @@ public class CKUI extends Application
 		
 	    
 	    
-//		q2.addActor(babyActor,"ArtifactTest");
-//		q2.addActor(momActor,"ArtifactTest");
-//		q2.addActor(dadActor,"ArtifactTest");
-//		q2.setTeam("ArtifactTest");
+		q.addActor(babyActor,"ArtifactTest");
+		q.addActor(momActor,"ArtifactTest");
+		q.addActor(dadActor,"ArtifactTest");
+		q.setTeam("ArtifactTest");
 	    
 	    data = new CKData(mom, combatBoots, spell);
 	    data.setTeam(team);
@@ -312,6 +322,7 @@ public class CKUI extends Application
 	 {
 		 public void run()
 		 {
+			 System.out.println("STARTING GAME LOOP");
 			 quest.gameLoop();
 		 }
 }
@@ -386,7 +397,7 @@ public class CKUI extends Application
 		q.addTrigger(new CKTrigger(winSatisfies3,
 				new CKSimpleGUIAction("Dad","SPOOON!!"),TriggerResult.SATISFIED_END_QUEST));	
 	
-	//populateModel(q);
+	populateModel(q);
 	return new Quest(q);
 	}
 
