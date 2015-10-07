@@ -41,10 +41,9 @@ import ckGameEngine.Direction;
 import ckGameEngine.Quest;
 import ckGameEngine.QuestData;
 import ckGameEngine.actions.CKSimpleGUIAction;
-import ckGraphicsEngine.CK2dGraphicsEngine;
+import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.assets.CKAssetViewer;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
-import ckGraphicsEngine.assets.FXAssetViewer;
 import ckSatisfies.PositionReachedSatisfies;
 import ckSatisfies.Satisfies;
 import ckSnapInterpreter.CKDrawerTab;
@@ -115,17 +114,28 @@ public class CKUI extends Application
     	Pane menuPane = new Pane();
     	menuPane.setPrefSize(200, 200);
   
-    	populateModel();
-
+    	//populateModel();
+    	Quest q = createTestQuest();
+    	CKGameObjectsFacade.setQuest(q);
+    	
+    	
    //CKGameObjectsFacade.setQuest(quest);
-  		 //	swingNode.setContent(CKGameObjectsFacade.getEngine());
-    	CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("hero");
-    	CK2dGraphicsEngine engine = new CK2dGraphicsEngine();
+  		 
+    	//CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("hero");
+    	// need to slip this in.  FX2dGraphicsEngine engine = new FX2dGraphicsEngine();
 	//	FXAssetViewer view=new FXAssetViewer(1,A1,new Dimension(700,800),true);
-		FXAssetViewer view=new FXAssetViewer(1,A1,new Dimension(1500,820),true);
+		
+    	//FXAssetViewer view=new FXAssetViewer(1,A1,new Dimension(1500,820),true);
+		FX2dGraphicsEngine view = CKGameObjectsFacade.getEngine();
 //		view.maxWidth(Double.MAX_VALUE);
 //    	view.maxHeight(Double.MAX_VALUE);
+
+    	//menuPane.getChildren().add(view);
+
+		view.widthProperty().bind(menuPane.widthProperty());
+		view.heightProperty().bind(menuPane.heightProperty());
     	menuPane.getChildren().add(view);
+
 
     	
     	
@@ -139,7 +149,7 @@ public class CKUI extends Application
     	CKArtifactPane artifact = new CKArtifactPane(data);
     	CKDrawerTab artifactTab = new CKDrawerTab(artifact, DrawerSides.TOP, 350.0, 0.0, 400.0, 300.0, "ckSnapInterpreter/arrow.png");
     	
-    	CKSnapPane snap = new CKSnapPane(data);
+    	CKSnapPane snap = new CKSnapPane(data); //Snap Pane
     	CKDrawerTab snapTab = new CKDrawerTab(snap, DrawerSides.RIGHT, 750.0, 0.0, 690.0, 820.0, "ckSnapInterpreter/text.png");
     	
     	CKControlSpellsPane controls = new CKControlSpellsPane(data);
@@ -152,7 +162,9 @@ public class CKUI extends Application
     	CKPlayerStatsPane stats = new CKPlayerStatsPane(data);
     	CKDrawerTab statsTab = new CKDrawerTab(stats, DrawerSides.LEFT, 0.0, 470.0, 350.0, 350.0, "ckSnapInterpreter/text.png");
 
-		menuPane.getChildren().addAll(iconsTab, playerTab, artifactTab, abilitiesTab, snap, allArtifactsTab, statsTab);
+
+		menuPane.getChildren().addAll(iconsTab, playerTab, artifactTab, abilitiesTab, snapTab, allArtifactsTab, statsTab);
+
 		
 
 	  //  Scene scene = new Scene(menuPane,700,720);
@@ -166,10 +178,17 @@ public class CKUI extends Application
 	    primaryStage.setTitle("Test Drawer Tabs");
 	    primaryStage.setScene(scene);
 	    primaryStage.show();
+	    
+	    
+	    
+	    //now to add the game Thread....
+	    //Thread T = new gameThread();
+		//T.start();
+	    q.gameLoop();
     }
     
 
-	public void populateModel() {	
+	public void populateModel(QuestData q) {	
 
 
 		//make a team:)
@@ -284,10 +303,10 @@ public class CKUI extends Application
 		
 	    
 	    
-//		q2.addActor(babyActor,"ArtifactTest");
-//		q2.addActor(momActor,"ArtifactTest");
-//		q2.addActor(dadActor,"ArtifactTest");
-//		q2.setTeam("ArtifactTest");
+		q.addActor(babyActor,"ArtifactTest");
+		q.addActor(momActor,"ArtifactTest");
+		q.addActor(dadActor,"ArtifactTest");
+		q.setTeam("ArtifactTest");
 	    
 	    data = new CKData(mom, combatBoots, spell);
 	    data.setTeam(team);
@@ -303,6 +322,7 @@ public class CKUI extends Application
 	 {
 		 public void run()
 		 {
+			 System.out.println("STARTING GAME LOOP");
 			 quest.gameLoop();
 		 }
 }
@@ -377,7 +397,7 @@ public class CKUI extends Application
 		q.addTrigger(new CKTrigger(winSatisfies3,
 				new CKSimpleGUIAction("Dad","SPOOON!!"),TriggerResult.SATISFIED_END_QUEST));	
 	
-	//populateModel(q);
+	populateModel(q);
 	return new Quest(q);
 	}
 

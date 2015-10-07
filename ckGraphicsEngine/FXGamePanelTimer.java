@@ -42,11 +42,11 @@ public abstract class FXGamePanelTimer extends Canvas
 		@Override
 		public void handle(long arg0)
 		{
-			if (arg0%5 == 0)
+			//if (arg0%5 == 0)
 			{
 			calcState();
 			prepGraphics(false);
-			drawOffScreenBuffer(graphics,getWidth(),getHeight());
+			drawOffScreenBuffer(graphics,getWindowWidth(),getWindowHeight());
 			bufferToScreen();
 			}
 //			skip=!skip;
@@ -60,17 +60,33 @@ public abstract class FXGamePanelTimer extends Canvas
 
 	public FXGamePanelTimer()
 	{
+		super(600,600);
 		initialize(30,10);
 	
 	}
 
 		public FXGamePanelTimer(double framesPerSecond,int maxDropped)
 	{
+		super(600,600);
 		initialize(framesPerSecond,maxDropped);
 	
 	}
 
 		
+		
+		
+		
+	/* (non-Javadoc)
+		 * @see javafx.scene.Node#isResizable()
+		 */
+		@Override
+		public boolean isResizable()
+		{
+			return true;
+		}
+
+
+
 	public abstract void calcState();
 	public abstract void drawOffScreenBuffer(Graphics g,double d,double e);
 	
@@ -95,11 +111,30 @@ public abstract class FXGamePanelTimer extends Canvas
 		
 	}
 	
+	/**
+	 * This calculates the width as it stands in its parent window 
+	 * @return double of width
+	 */
+	public double getWindowWidth()
+	{
+		return getBoundsInParent().getWidth();
+	}
+
+	/**
+	 * This calculates the height as it stands in its parent window 
+	 * @return double of height
+	 */
+	public double getWindowHeight()
+	{
+		return getBoundsInParent().getHeight();
+	}
+	
+	
 	
 private boolean prepGraphics(boolean force)
 {
-	double width = getWidth();
-	double height=getHeight();
+	double width = getWindowWidth();
+	double height=getWindowHeight();
 	
 	if(screenBuffer==null || force||
 			screenBuffer.getWidth(null)<width ||
@@ -173,5 +208,30 @@ private boolean prepGraphics(boolean force)
 	}
 	*/
 	
+
+
+public void setFps(int i)
+{
+	// TODO Auto-generated method stub
+	
+}
+
+
+
+public void startGame()
+{
+	// TODO Auto-generated method stub
+	
+}
+
+
+
+public double getFps()
+{
+	 //FIXME!!!
+	return 30; 
+}
+
+
 
 }

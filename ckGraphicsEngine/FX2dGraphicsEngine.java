@@ -1,7 +1,6 @@
 package ckGraphicsEngine;
 
 import java.awt.Dimension;
-
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
@@ -11,7 +10,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Vector;
 
-import javax.swing.JFrame;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKWorkSupervisorListener;
@@ -27,6 +29,7 @@ import ckGraphicsEngine.assets.CKAssetInstance;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.assets.CKSpriteAsset;
 import ckGraphicsEngine.assets.CKSpriteInstance;
+import ckGraphicsEngine.assets.FXAssetViewer;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
 import ckGraphicsEngine.sceneAction.CKAddAssetAction;
 import ckGraphicsEngine.sceneAction.CKAddInstanceAction;
@@ -38,11 +41,9 @@ import ckGraphicsEngine.sceneAction.CKMoveInstanceAction;
 import ckGraphicsEngine.sceneAction.CKNullAction;
 import ckGraphicsEngine.sceneAction.CKRemoveInstanceAction;
 import ckGraphicsEngine.sceneAction.CKSceneAction;
-import ckGraphicsEngine.test.CKfpsTest;
 import ckSound.CKSound;
 import ckSound.CKSoundFactory;
 import ckSound.CKSoundLoopAction;
-import ckSound.CKSoundPlayAction;
 import ckSound.CKSoundStopAction;
 
 //public class CK2dGraphicsEngine extends CKGamePanelTimer implements
@@ -52,10 +53,6 @@ public class FX2dGraphicsEngine extends FXGamePanelTimer implements
 CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4537172638873370471L;
 	CKGraphicsAssetFactory afactory;
 	CKGraphicsLayerFactory lfactory;
 	CKSceneFactory sfactory;
@@ -100,7 +97,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 		
 		
 		scene=null;
-		MouseMessengerListener lis = new MouseMessengerListener();
+		new MouseMessengerListener();
 		this.setOnMouseClicked(	(e)->{
 			
 			MouseEvent click = FXSwingBridge.FXMouseEventToSwing(e);
@@ -573,160 +570,152 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 	
 	public static void main(String argv[]) 
 	{
-		
-//		
-//		JFrame frame = new JFrame();
-//		
-//		FX2dGraphicsEngine engine = new FX2dGraphicsEngine(30,5);
-//		engine.setPreferredSize(new Dimension(600,600));
-//		
-//		//get scene
-//		engine.loadScene("Kitchen");
-//
-//		
-//		String personAssetId = "babySprite";
-//		String spinAssetID = "Swirl";
-//		String slowSpinAsset="SlowSwirl";
-//		try
-//		{
-//			
-//			
-//			int tid =  engine.startTransaction(true);
-//			
-//
-//			//int tid = 0;
-//			
-//			engine.loadAsset(tid, personAssetId);
-//			engine.loadAsset(tid, spinAssetID);
-//			engine.loadAsset(tid, slowSpinAsset);
-//			
-//			
-//			CKPosition pos1 = new CKPosition(5,5,0,0);
-//			CKPosition pos2 = new CKPosition(1,1,0,0);
-//			CKPosition pos3 = new CKPosition(8,8,0,-1);
-//			
-//			//sprite
-//			int spriteID = engine.createInstance(tid,personAssetId,pos1,30,CKGraphicsLayer.SPRITE_LAYER);
-//
-//			//move camera
-//			CKPosition cam1 = new CKPosition(10,1,0,0);
-//			CKPosition cam2 = new CKPosition(1,10,0,0);
-//			
-//			//int arrives = engine.cameraPointAt(tid, cam1, 30,30);
-//			int arrives =30;
-//			
-//			//arrives = engine.cameraPointAt(tid, cam2, arrives,30);
-//			//spin			
-//			int fastspin = engine.createInstance(tid,spinAssetID,pos2,arrives,CKGraphicsLayer.SPRITE_LAYER);
-//			//regulated spin
-//			int spinIID = engine.createInstance(tid,slowSpinAsset,pos3,arrives+30,CKGraphicsLayer.SPRITE_LAYER);
-//			//walkforward
-//			arrives = arrives+30;
-//			engine.cameraFollowInstance(tid, spriteID, arrives+30, 0);
-//			engine.setAnimation(tid,spriteID,"NORTHWEST",arrives);
-//			
-//			CKPosition p1 = new CKPosition(3,2,0,0);
-//			CKPosition p2=new CKPosition(3,8,0,0);
-//			int endtime=engine.move(tid,spriteID,arrives+30,p1,p2,10);
-//			int SIID = engine.createSoundInstance(0,"Buzz");
-//			int SIID2 = engine.createSoundInstance(0,"Rainforest");
-//			engine.playSound(arrives+30,endtime,SIID,0.90);
-//			engine.playSound(0, SIID2, 0.90);
-//			
-//			/*//link swirl to person, move into place
-//			CKPosition p2SOUTHEAST = new CKPosition(3,8,0,-1);
-//			System.out.println("calcing spin");
-//			endtime = engine.move(tid, spinIID, endtime, pos3, p2SOUTHEAST, 90);
-//			engine.linkGraphics(tid, spinIID, spriteID, RelationalLinkType.RELATIVE, endtime);
-//			
-//			//now we move again
-//			
-//			engine.setAnimation(tid,spriteID,"NORTHEAST",endtime);
-//			
-//			CKPosition p3 = new CKPosition(8,8,0,0);
-//			endtime=engine.move(tid,spriteID,endtime,p2,p3,10);
-//			
-//			
-//			//add follow me sprite
-//
-//			CKPosition pfollow = new CKPosition(7,8,0,0);
-//			int spriteID2 = engine.createInstance(tid,personAssetId,pfollow,endtime,
-//					CKGraphicsLayer.SPRITE_LAYER);
-//			engine.linkGraphics(tid, spriteID2, spriteID, RelationalLinkType.PULL, endtime);
-//			
-//			//spiral turns off and on
-//			for(int i=0;i<10;i++)
-//			{
-//				int time = endtime+i*60;
-//			
-//				engine.hide(tid,spinIID,time);
-//				engine.reveal(tid,spinIID,time+30);
-//			}
-//			//move across screen
-//			p1 = new CKPosition(8,8,0,0);
-//			p2=new CKPosition(8,1,0,0);
-//			engine.setAnimation(tid,spriteID,"SOUTHEAST", endtime);
-//			endtime=engine.move(tid,spriteID,endtime,p1,p2,10);
-//
-//			//destroy entity
-//			engine.destroy(tid,fastspin,endtime);
-//			
-//			//move across screen
-//			p1 = new CKPosition(8,1,0,0);
-//			p2=new CKPosition(4,1,0,0);
-//			engine.setAnimation(tid,spriteID,"SOUTHWEST", endtime);
-//			endtime=engine.move(tid,spriteID,endtime,p1,p2,10);
-//
-//			
-//			//move across screen
-//			p1 = new CKPosition(4,1,0,0);
-//			p2=new CKPosition(4,6,0,0);			
-//			engine.setAnimation(tid,spriteID,"NORTHWEST", endtime);
-//			endtime=engine.move(tid,spriteID,endtime,p1,p2,10);
-//
-//			
-//			//move across screen
-//			p1 = new CKPosition(4,6,0,0);
-//			p2=new CKPosition(9,6,0,0);
-//			engine.setAnimation(tid,spriteID,"NORTHEAST", endtime);
-//			endtime=engine.move(tid,spriteID,endtime,p1,p2,10);*/
-//			
-//	
-//			
-//			
-//			engine.endTransaction(0, false);
-//		} catch (LoadAssetError e)
-//		{
-//			
-//			e.printStackTrace();
-//		} catch (BadInstanceIDError e)
-//		{
-//			
-//			e.printStackTrace();
-//		} catch (UnknownAnimationError e)
-//		{
-//			
-//			e.printStackTrace();
-//		} catch (CircularDependanceError e)
-//		{
-//			
-//			e.printStackTrace();
-//		}
-//		
-//		
-//		//get a person
-//		
-//		//move person across the screen
-//		 
-//		 
-//		
-//		frame.add(engine);
-//		frame.pack();
-//		frame.setVisible(true);
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-	
+		Application.launch(TestEngine.class,argv);
 	}
+	
+	
+	
+	public static class TestEngine extends Application
+	{
+		@Override
+		public void start(Stage stage) throws Exception
+		{	
+		
+		//JFrame frame = new JFrame();
+		
+		FX2dGraphicsEngine engine = new FX2dGraphicsEngine(30,5);
+		engine.resize(600,600);
+		
+		//get scene
+		engine.loadScene("Kitchen");
+
+		
+		String personAssetId = "babySprite";
+		String spinAssetID = "Swirl";
+		String slowSpinAsset="SlowSwirl";
+		try
+		{
+			
+			
+			int tid =  engine.startTransaction(true);
+			
+
+			//int tid = 0;
+			
+			engine.loadAsset(tid, personAssetId);
+			engine.loadAsset(tid, spinAssetID);
+			engine.loadAsset(tid, slowSpinAsset);
+			
+			
+			CKPosition pos1 = new CKPosition(5,5,0,0);
+			CKPosition pos2 = new CKPosition(1,1,0,0);
+			CKPosition pos3 = new CKPosition(8,8,0,-1);
+			
+			//sprite
+			int spriteID = engine.createInstance(tid,personAssetId,pos1,30,CKGraphicsLayer.SPRITE_LAYER);
+
+			new CKPosition(10,1,0,0);
+			new CKPosition(1,10,0,0);
+			
+			//int arrives = engine.cameraPointAt(tid, cam1, 30,30);
+			int arrives =30;
+			
+			engine.createInstance(tid,spinAssetID,pos2,arrives,CKGraphicsLayer.SPRITE_LAYER);
+			engine.createInstance(tid,slowSpinAsset,pos3,arrives+30,CKGraphicsLayer.SPRITE_LAYER);
+			//walkforward
+			arrives = arrives+30;
+			engine.cameraFollowInstance(tid, spriteID, arrives+30, 0);
+			engine.setAnimation(tid,spriteID,"NORTHWEST",arrives);
+			
+			CKPosition p1 = new CKPosition(3,2,0,0);
+			CKPosition p2=new CKPosition(3,8,0,0);
+			engine.move(tid,spriteID,arrives+30,p1,p2,10);
+			
+	
+			
+			
+			engine.endTransaction(0, false);
+		} catch (LoadAssetError e)
+		{
+			
+			e.printStackTrace();
+		} catch (BadInstanceIDError e)
+		{
+			
+			e.printStackTrace();
+		} catch (UnknownAnimationError e)
+		{
+			
+			e.printStackTrace();
+		} catch (CircularDependanceError e)
+		{
+			
+			e.printStackTrace();
+		}
+		
+		
+		//get a person
+		
+		//move person across the screen
+		 
+			stage.setTitle("Here");
+			HBox root = new HBox();
+			Scene scene = new Scene(root,600,600);
+			stage.setScene(scene);
+			//engine.setWidth(1500);
+			//engine.setHeight(820);
+		engine.maxWidth(Double.MAX_VALUE);
+    	engine.maxHeight(Double.MAX_VALUE);
+    	engine.widthProperty().bind(root.widthProperty());
+    	engine.heightProperty().bind(root.heightProperty());
+		root.getChildren().addAll(engine);
+		
+	   	
+			/*CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("hero");	
+		//	FXAssetViewer view=new FXAssetViewer(1,A1,new Dimension(700,800),true);
+			FXAssetViewer view=new FXAssetViewer(1,A1,new Dimension(1500,820),true);
+			view.maxWidth(Double.MAX_VALUE);
+	    	view.maxHeight(Double.MAX_VALUE);
+	    	root.getChildren().add(view);
+	    	*/
+		stage.show();
+		
+		
+	}
+
+	}	
+		public static class TestEngineSimple extends Application
+		{
+
+			@Override
+			public void start(Stage stage) throws Exception
+			{
+				 
+				stage.setTitle("Here");
+				HBox root = new HBox();
+				Scene scene = new Scene(root,600,600);
+				stage.setScene(scene);
+				
+		   	CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("hero");	
+		   	FXAssetViewer view=new FXAssetViewer(1,A1,new Dimension(1500,820),true);
+				
+					// TODO Auto-generated method stub
+//				view.maxWidth(Double.MAX_VALUE);
+	//	    	view.maxHeight(Double.MAX_VALUE);
+		   	root.getChildren().add(view);
+		    		
+			stage.show();
+			}
+			
+		}
+
+		
+		
+		
+		
+		
+		
+	
 
 
 
@@ -886,7 +875,8 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 		actions.add(new CKNullAction(startTime,endTime));
 		
 	}
-	
+
+
 	
 	
 	

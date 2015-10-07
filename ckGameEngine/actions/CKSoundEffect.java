@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -26,6 +27,7 @@ import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKSpellCast;
 import ckGameEngine.Quest;
 import ckGraphicsEngine.CK2dGraphicsEngine;
+import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckSound.CKSound;
 import ckSound.CKSoundFactory;
 
@@ -80,7 +82,7 @@ public class CKSoundEffect extends CKGameAction implements ActionListener
 	{
 		replaceListener(L);
 
-		CK2dGraphicsEngine engine = CKGameObjectsFacade.getEngine();
+		FX2dGraphicsEngine engine = CKGameObjectsFacade.getEngine();
 		Quest quest = CKGameObjectsFacade.getQuest();
 		if(playBackGroundStart || playBackGroundStop)
 		{

@@ -170,7 +170,7 @@ public class CKCombinedInputTest
 		 //quest = CKGameObjectsFacade.getQuest();
 		 //quest.creation(sceneId, frame);
 		 CKGameObjectsFacade.setQuest(quest);
-		 return CKGameObjectsFacade.getEngine();
+		 return CKGameObjectsFacade.getJPanelEngine();
 	 }
 
 	 

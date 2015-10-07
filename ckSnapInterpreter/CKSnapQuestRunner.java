@@ -182,7 +182,7 @@ public class CKSnapQuestRunner implements DocumentListener
 		 //quest = CKGameObjectsFacade.getQuest();
 		 //quest.creation(sceneId, frame);
 		 CKGameObjectsFacade.setQuest(quest);
-		 return CKGameObjectsFacade.getEngine();
+		 return CKGameObjectsFacade.getJPanelEngine();
 	 }
 
 	 

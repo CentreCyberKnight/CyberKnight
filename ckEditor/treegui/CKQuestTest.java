@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
+
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -29,6 +30,7 @@ import ckEditor.DataPickers.CKXMLFilteredAssetPicker;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.QuestData;
 import ckGraphicsEngine.CK2dGraphicsEngine;
+import ckGraphicsEngine.FX2dGraphicsEngine;
 
 
 
@@ -194,7 +196,7 @@ public class CKQuestTest extends CKGUINode implements CKXMLAsset<CKQuestTest>//,
 		QuestData q = CKQuestFactory.getInstance().getAsset(questID,true);
 		System.out.println("quest data value"+Integer.toHexString(System.identityHashCode(q)));
 		CKGameObjectsFacade.killEngine();
-		CK2dGraphicsEngine engine = CKGameObjectsFacade.getEngine();
+		FX2dGraphicsEngine engine = CKGameObjectsFacade.getEngine();
 		//FIXME q.setRandomSeed(randomSeed);
 
 		
@@ -321,7 +323,7 @@ public class CKQuestTest extends CKGUINode implements CKXMLAsset<CKQuestTest>//,
 		public void actionPerformed(ActionEvent arg0)
 		{
 			QuestData q = CKQuestFactory.getInstance().getAsset(questID);
-			CK2dGraphicsEngine engine = CKGameObjectsFacade.getEngine();
+			FX2dGraphicsEngine engine = CKGameObjectsFacade.getEngine();
 			//FIXME q.setRandomSeed(randomSeed);
 			
 			

@@ -119,7 +119,7 @@ public class CKQuestRunner2
 		 //quest = CKGameObjectsFacade.getQuest();
 		 //quest.creation(sceneId, frame);
 		 CKGameObjectsFacade.setQuest(quest);
-		 return CKGameObjectsFacade.getEngine();
+		 return CKGameObjectsFacade.getJPanelEngine();
 	 }
 
 	 

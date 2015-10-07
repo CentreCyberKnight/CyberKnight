@@ -98,7 +98,7 @@ public class CKLinkedEditor
 	 {
 		 
 		 //CKGameObjectsFacade.setQuest(new Quest(Quest.creation(sceneId)));
-		 return CKGameObjectsFacade.getEngine();
+		 return CKGameObjectsFacade.getJPanelEngine();
 	 }
 
 	 
