@@ -344,6 +344,8 @@ SnapSerializer.prototype.rawLoadProjectModel = function (xmlNode) {
     if (+xmlNode.attributes.version > this.version) {
         throw 'Project uses newer version of Serializer';
     }
+    
+    /* Spell info */
 
     /* Project Info */
 
@@ -398,15 +400,15 @@ SnapSerializer.prototype.rawLoadProjectModel = function (xmlNode) {
     }
     project.stage.setTempo(model.stage.attributes.tempo);
     
-    
-    StageMorph.prototype.dimensions = new Point(480, 360);
+    //changed these dimensions so that the stage does not reappear when a file is loaded
+    StageMorph.prototype.dimensions = new Point(1, 1);
     if (model.stage.attributes.width) {
         StageMorph.prototype.dimensions.x =
-            Math.max(+model.stage.attributes.width, 480);
+            Math.max(1, 1);
     }
     if (model.stage.attributes.height) {
         StageMorph.prototype.dimensions.y =
-            Math.max(+model.stage.attributes.height, 180);
+            Math.max(1, 1);
     }
     project.stage.setExtent(StageMorph.prototype.dimensions);
     SpriteMorph.prototype.useFlatLineEnds =

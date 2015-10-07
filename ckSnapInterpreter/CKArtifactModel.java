@@ -47,7 +47,7 @@ public class CKArtifactModel {
 	{
 		WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
 		JSObject jsobj = (JSObject) webEngine.executeScript("window");
-		webEngine.executeScript("ide.ckLoadXML()");
+		webEngine.executeScript("ide.ckImportXML()");
 	}
 	
 	/**

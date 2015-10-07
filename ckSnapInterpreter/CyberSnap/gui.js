@@ -3745,6 +3745,7 @@ IDE_Morph.prototype.rawOpenCloudDataString = function (str) {
     if (Process.prototype.isCatchingErrors) {
         try {
             model = this.serializer.parse(str);
+            java.print(str);
             this.serializer.loadMediaModel(model.childNamed('media'));
             this.serializer.openProject(
                 this.serializer.loadProjectModel(
@@ -4626,7 +4627,7 @@ IDE_Morph.prototype.exportProjectMedia = function (name) {
                 media = encodeURIComponent(
                     this.serializer.mediaXML(name)
                 );
-                javaProcess.setText('data:text/xml,' + media);
+                //javaProcess.setText('data:text/xml,' + media);
                 //menu.destroy();
                 this.showMessage('Exported!', 1);
             } catch (err) {
@@ -4641,7 +4642,7 @@ IDE_Morph.prototype.exportProjectMedia = function (name) {
             media = encodeURIComponent(
                 this.serializer.mediaXML()
             );
-            javaProcess.setText('data:text/xml,' + media);
+            //javaProcess.setText('data:text/xml,' + media);
             //menu.destroy();
             //this.showMessage('Exported!', 1);
         }
@@ -4690,39 +4691,22 @@ IDE_Morph.prototype.ckExportXML = function (name) {
         this.setProjectName(name);
         if (Process.prototype.isCatchingErrors) {
             try {
-                //menu = this.showMessage('Exporting');
-                str = encodeURIComponent(
-                    this.serializer.serialize(this.stage)
-                );
-                media = encodeURIComponent(
-                    this.serializer.mediaXML(name)
-                );
-                dta = encodeURIComponent('<snapdata>')
-                    + str
-                    + media
-                    + encodeURIComponent('</snapdata>');
-                javaProcess.setText('data:text/xml,' + dta);
-                //menu.destroy();
-                //this.showMessage('Exported!', 1);
+                str1 = this.serializer.serialize(this.stage);
+                media1 = this.serializer.mediaXML(name);
+                dta1 = str1 + media1;
+                javaProcess.setText(dta1);
             } catch (err) {
                 this.serializer.isCollectingMedia = false;
                 this.showMessage('Export failed: ' + err);
             }
         } else {
-            //menu = this.showMessage('Exporting');
-            str = encodeURIComponent(
-                this.serializer.serialize(this.stage)
-            );
-            media = encodeURIComponent(
-                this.serializer.mediaXML()
-            );
-            dta = encodeURIComponent('<snapdata>')
-                + str
-                + media
-                + encodeURIComponent('</snapdata>');
-            javaProcess.setText('data:text/xml,' + dta);
-            //menu.destroy();
-            //this.showMessage('Exported!', 1);
+        	str1 = this.serializer.serialize(this.stage);
+            media1 = this.serializer.mediaXML(name);
+            dta1 = '<snapdata>'
+            + str1
+            + media1
+            + '</snapdata>';
+            javaProcess.setText(dta1);
         }
     }
     this.serializer.isCollectingMedia = false;
@@ -4730,34 +4714,34 @@ IDE_Morph.prototype.ckExportXML = function (name) {
     // this.hasChangedMedia = false;
 };
 
-IDE_Morph.prototype.ckLoadXML = function () {
-	str = javaProcess.getText();	
-    var model;
+IDE_Morph.prototype.ckImportXML = function () {
+	//str = '<project name="hello you" app="Snap! 4.0, http://snap.berkeley.edu" version="1"><notes></notes><thumbnail>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAAB4CAYAAAB1ovlvAAADCUlEQ…nrCAiw42hLKCDAEM5YR0CAHUdbQgEBhnDGOgIC7DjaEgr8Atdp/Kj2NnoRAAAAAElFTkSuQmCC</thumbnail><stage name="Stage" width="480" height="360" costume="0" tempo="60" threadsafe="false" lines="round" codify="false" scheduled="false" id="1"><pentrails>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAOhUlEQ…ABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQIHLFxAWmhEwHPAAAAAElFTkSuQmCC</pentrails><costumes><list id="2"></list></costumes><sounds><list id="3"></list></sounds><variables></variables><blocks></blocks><scripts></scripts><sprites><sprite name="Sprite" idx="1" x="0" y="0" heading="90" scale="1" rotation="1" draggable="true" costume="0" color="80,80,80" pen="tip" id="8"><costumes><list id="9"></list></costumes><sounds><list id="10"></list></sounds><variables></variables><blocks></blocks><scripts><script x="90" y="59"><block s="forward"><l>10</l></block></script></scripts></sprite></sprites></stage><hidden></hidden><headers></headers><code></code><blocks></blocks><variables></variables></project>'
+	//str = javaProcess.getText();
+	str = '<project name="helloWorld" app="Snap! 4.0, http://snap.berkeley.edu" version="1"><notes></notes><thumbnail>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAAB4CAYAAAB1ovlvAAAAcUlEQVR42u3SMREAQAjEQEQgBf/W&#xD;7msU8MWuhEyqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4E9JWgUuBxwVAAAA&#xD;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJYHKAgGQwa1cnUAAAAASUVORK5CYII=</thumbnail><stage name="Stage" width="1" height="360" costume="0" tempo="60" threadsafe="false" lines="round" codify="false" scheduled="false" id="1"><pentrails>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAFoCAYAAACWmZGvAAAAFklEQVR42mNgGAWjYBSMglEwCkYu&#xD;AAAHCAABO09vxAAAAABJRU5ErkJggg==</pentrails><costumes><list id="2"></list></costumes><sounds><list id="3"></list></sounds><variables></variables><blocks></blocks><scripts></scripts><sprites><sprite name="Sprite" idx="0" x="0" y="0" heading="90" scale="1" rotation="1" draggable="true" costume="0" color="80,80,80" pen="tip" id="8"><costumes><list id="9"></list></costumes><sounds><list id="10"></list></sounds><variables></variables><blocks></blocks><scripts></scripts></sprite><sprite name="Go Forth" idx="0" x="135" y="140" heading="241" scale="1" rotation="1" draggable="true" costume="0" color="0,37.58699999999996,170.85000000000002" pen="tip" id="14"><costumes><list id="15"></list></costumes><sounds><list id="16"></list></sounds><variables></variables><blocks></blocks><scripts><script x="10" y="10"><block s="receiveID"></block></script></scripts></sprite><sprite name="LeftTurn" idx="0" x="199" y="-114" heading="319" scale="1" rotation="1" draggable="true" costume="0" color="159.93599999999995,0,163.20000000000002" pen="tip" id="21"><costumes><list id="22"></list></costumes><sounds><list id="23"></list></sounds><variables></variables><blocks></blocks><scripts><script x="10" y="10"><block s="receiveID"></block></script></scripts></sprite><sprite name="UTurn" idx="0" x="-177" y="102" heading="300" scale="1" rotation="1" draggable="true" costume="0" color="81.60000000000001,0,163.20000000000002" pen="tip" id="28"><costumes><list id="29"></list></costumes><sounds><list id="30"></list></sounds><variables></variables><blocks></blocks><scripts><script x="10" y="10"><block s="receiveID"></block></script></scripts></sprite><sprite name="Bash" idx="1" x="47" y="-43" heading="270" scale="1" rotation="1" draggable="true" costume="0" color="170.85000000000002,102.51000000000002,0" pen="tip" id="35"><costumes><list id="36"></list></costumes><sounds><list id="37"></list></sounds><variables></variables><blocks></blocks><scripts><script x="10" y="10"><block s="receiveID"></block></script></scripts></sprite></sprites></stage><hidden></hidden><headers></headers><code></code><blocks></blocks><variables></variables></project><media name="helloWorld" app="Snap! 4.0, http://snap.berkeley.edu" version="1"></media></snapdata>'
+	this.toggleAppMode(false);
+    this.spriteBar.tabBar.tabTo('scripts');
     StageMorph.prototype.hiddenPrimitives = {};
     StageMorph.prototype.codeMappings = {};
     StageMorph.prototype.codeHeaders = {};
     StageMorph.prototype.enableCodeMapping = false;
+    StageMorph.prototype.enableInheritance = false;
     if (Process.prototype.isCatchingErrors) {
         try {
-            //model = this.serializer.parse(str);
-        	//model = javaProcess.getText();
-            //this.serializer.loadMediaModel(model.childNamed('media'));
-            this.serializer.load(str, this);
+            this.serializer.openProject(
+                this.serializer.load(str, this),
+                this
+            );
         } catch (err) {
             this.showMessage('Load failed: ' + err);
         }
     } else {
-        model = this.serializer.parse(str);
-        this.serializer.loadMediaModel(model.childNamed('media'));
         this.serializer.openProject(
-            this.serializer.loadProjectModel(
-                model.childNamed('project'),
-                this
-            ),
+            this.serializer.load(str, this),
             this
         );
     }
     this.stopFastTracking();
+    //this.fixLayout();
 };
 
 
