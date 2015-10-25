@@ -141,7 +141,18 @@ implements ChangeListener,ActionListener,DocumentListener,ItemListener
 		add(spinnerPanel2);
 		
 		add(new JLabel("Shared Triggers"));
-		sharedTrigger = new JComboBox<CKTriggerList>(CKTriggerListFactory.getInstance().getAllAssetsVectored()); 
+		Vector<CKTriggerList> triggers = CKTriggerListFactory.getInstance().getAllAssetsVectored();
+		sharedTrigger = new JComboBox<CKTriggerList>(triggers);
+		String TLID = asset.getSharedTriggers().getTLid();
+		for(CKTriggerList trig: triggers)
+		{
+			if(TLID.equals(trig.getAID()))
+			{
+				sharedTrigger.setSelectedItem(trig);				
+			}
+		}
+		
+
 		add(sharedTrigger);
 		myTriggers = new CKTreeGui(asset.getPersonalTriggers());
 		add(myTriggers);
