@@ -345,8 +345,6 @@ SnapSerializer.prototype.rawLoadProjectModel = function (xmlNode) {
         throw 'Project uses newer version of Serializer';
     }
     
-    /* Spell info */
-
     /* Project Info */
 
     this.objects = {};
@@ -637,6 +635,15 @@ SnapSerializer.prototype.loadSprites = function (xmlString, ide) {
         if (model.attributes.pen) {
             sprite.penPoint = model.attributes.pen;
         }
+        
+        if (model.attributes.artifact) {
+        	sprite.artifact = model.attributes.artifact;
+        }
+        
+        if (model.attributes.indexNum) {
+        	sprite.indexNum = model.attributes.indexNum;
+        }
+        ide.checkList.put(sprite.artifact, sprite.indexNum);
         project.stage.add(sprite);
         ide.sprites.add(sprite);
         sprite.scale = parseFloat(model.attributes.scale || '1');
@@ -1183,6 +1190,20 @@ SnapSerializer.prototype.loadValue = function (model) {
         if (model.attributes.pen) {
             v.penPoint = model.attributes.pen;
         }
+        if (model.attributes.artifact) {
+        	v.artifact = model.attributes.artifact;
+        }
+        if (model.attributes.indexNum) {
+        	v.indexNum = model.attributes.indexNum;
+        }
+        if (model.attributes.pic) {
+        	v.setPic(model.attributes.pic);
+        }
+        if (model.attributes.spellNum) {
+        	v.spellNum = model.attributes.spellNum;
+        }
+        ide.checkList.put(v.artifact, v.indexNum);
+        ide.allSprites.add(v);
         myself.project.stage.add(v);
         v.scale = parseFloat(model.attributes.scale || '1');
         v.rotationStyle = parseFloat(
@@ -1194,6 +1215,9 @@ SnapSerializer.prototype.loadValue = function (model) {
         v.drawNew();
         v.gotoXY(+model.attributes.x || 0, +model.attributes.y || 0);
         myself.loadObject(v, model);
+        if (v.indexNum > 0){
+        	v.scripts.children[0].setSpec(v.artifact + ": Button " + v.spellNum);
+        }
         return v;
     case 'context':
         v = new Context(null);
@@ -1350,8 +1374,8 @@ SnapSerializer.prototype.openProject = function (project, ide) {
     });
 
     ide.sprites = new List(sprites);
-    sprite = sprites[0] || project.stage;
-
+    sprite = sprites[2] || project.stage;
+    ide.ckViewSpells();
     if (sizeOf(this.mediaDict) > 0) {
         ide.hasChangedMedia = false;
         this.mediaDict = {};
@@ -1477,6 +1501,10 @@ SpriteMorph.prototype.toXML = function (serializer) {
             ' scale="@"' +
             ' rotation="@"' +
             ' draggable="@"' +
+            ' artifact = "@"' +
+            ' indexNum = "@"' +
+            ' pic = "@"' +
+            ' spellNum = "@"' +
             '%' +
             ' costume="@" color="@,@,@" pen="@" ~>' +
             '%' + // nesting info
@@ -1494,6 +1522,10 @@ SpriteMorph.prototype.toXML = function (serializer) {
         this.scale,
         this.rotationStyle,
         this.isDraggable,
+        this.artifact,
+        this.indexNum,
+        this.pic,
+        this.spellNum,
         this.isVisible ? '' : ' hidden="true"',
         this.getCostumeIdx(),
         this.color.r,

@@ -1403,6 +1403,11 @@ SpriteMorph.prototype.init = function (globals) {
     this.version = Date.now(); // for observer optimization
     this.isClone = false; // indicate a "temporary" Scratch-style clone
     this.cloneOriginName = '';
+    
+    
+    this.artifact = "";
+    this.indexNum = 0;
+    this.spellNum = 0;
 
     //adding sprite morph icon 
     this.pic = null;
