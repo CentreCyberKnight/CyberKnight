@@ -3491,22 +3491,6 @@ SpriteMorph.prototype.forward = function (steps) {
 	//link to move in java
 	jsDebug.print("in forward");
 	javaMove.move2("left", 1);
-	/*
-    var dest,
-        dist = steps * this.parent.scale || 0;
-
-    if (dist >= 0) {
-        dest = this.position().distanceAngle(dist, this.heading);
-    } else {
-        dest = this.position().distanceAngle(
-            Math.abs(dist),
-            (this.heading - 180)
-        );
-    }
-    this.setPosition(dest);
-    this.positionTalkBubble();
-    */
-
 };
 
 

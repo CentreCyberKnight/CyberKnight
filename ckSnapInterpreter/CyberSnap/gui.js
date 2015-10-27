@@ -1304,17 +1304,33 @@ IDE_Morph.prototype.fireTEST = function() {
 
 //executes scripts
 //parameters are the artifact name & location of spell Vector
-IDE_Morph.prototype.executeScript = function(artifact, location) {
-	var lcArtifact;
-	var num = 1;
+IDE_Morph.prototype.executeScript = function() {
+	//var lcArtifact;
+	//var num = 1;
 	var morph;
-	
+	/*
 	lcArtifact = this.checkList.at(num);
 	while (lcArtifact != artifact) {
 		num++;
 		lcArtifact = this.checkList.at(num);
 	}
-	var sprite = this.allSprites.at(num+location);
+	*/ 
+	java.print("THIS IS IN JAVASCRIPT");
+	java.print("Goal " + artifactName);
+	java.print("Goal " + spellName);
+	var i = 0;
+	var found = false;
+	while ((i<=ide.allSprites.length()) && (found == false)) 
+		{
+			java.print(ide.allSprites.at(i).artifact);
+			java.print(ide.allSprites.at(i).name);
+			if ((artifactName == ide.allSprites.at(i).artifact) && (spellName == ide.allSprites.at(i).name))
+				{
+					var sprite = this.allSprites.at(i);
+					found = true;
+				}	
+			i++;
+		}	
 	var morph = sprite.scripts.children[0];
 	
 	var event = new CustomEvent("CK", {detail : morph.blockSpec});
