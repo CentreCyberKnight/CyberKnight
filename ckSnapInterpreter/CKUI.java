@@ -163,7 +163,7 @@ public class CKUI extends Application
     	CKDrawerTab statsTab = new CKDrawerTab(stats, DrawerSides.LEFT, 0.0, 470.0, 350.0, 350.0, "ckSnapInterpreter/text.png");
 
 
-		menuPane.getChildren().addAll(iconsTab, playerTab, artifactTab, abilitiesTab, snapTab, allArtifactsTab, statsTab);
+		menuPane.getChildren().addAll(iconsTab, playerTab, artifactTab, abilitiesTab, snapTab, allArtifactsTab, statsTab,controls);
 
 		
 
