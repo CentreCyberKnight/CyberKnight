@@ -1,5 +1,8 @@
 package ckSnapInterpreter;
 
+import static ckGameEngine.CKGameObjectsFacade.getConsole;
+import static ckGameEngine.CKGameObjectsFacade.getQuest;
+
 import java.util.Iterator;
 
 import netscape.javascript.JSObject;
@@ -14,6 +17,8 @@ import javafx.scene.web.WebEngine;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKSpell;
 import ckGameEngine.CKTeam;
+import ckGameEngine.Quest;
+import ckPythonInterpreter.CKPlayerObjectsFacade;
 
 public class CKControlSpellsPane extends HBox {
 
@@ -51,12 +56,33 @@ public class CKControlSpellsPane extends HBox {
 					
 					b.setOnAction(new EventHandler<ActionEvent>() {
 		    			@Override public void handle (ActionEvent e) {
+		    				CKPlayerObjectsFacade.setArtifact(data.getArtifact());
+		    				
+		    				CKGameObjectsFacade.setCurrentPlayer(data.getPlayer());
+		    				CKPlayerObjectsFacade.calcCPTurnLimit();
+		    				//FIXME need to some how set the current actor in the model as well.
+		    				
+		    				Quest w = getQuest();
+		    				
+		    				w.startTransaction();
+		    				//enableArtifactInput(); - should be handled by the GUI now.
+
+//		    				w.waitForInput();//this is satisfied by the completion of the python code running
+		    			
 		    				WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
 		    	    		JSObject jsobj = (JSObject) webEngine.executeScript("window");
 		    	    		jsobj.setMember("artifactName", data.getArtifact().getName());
 		    	    		jsobj.setMember("spellName", s.getName());
 		    	    		jsobj.setMember("java", new CKjsDebugger());
 		    	    		webEngine.executeScript("ide.executeScript()");
+		    				
+		    				w.endTransaction();
+		    				CKGameObjectsFacade.getEngine().blockTilActionsComplete();	
+		    				data.getPlayer().setCPConsumedLastRound(CKPlayerObjectsFacade.getCPTurnMax() - CKPlayerObjectsFacade.getCPTurnRemaining());
+		    				
+		    				CKGameObjectsFacade.setCurrentPlayer(null);
+		    				
+		    				
 		    			}
 		    		});
 					
