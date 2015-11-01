@@ -32,6 +32,7 @@ import ckGameEngine.CKGridActor;
 import ckGameEngine.CKGridItemSet;
 import ckGameEngine.CKSpellCast;
 import ckGameEngine.Direction;
+import ckGameEngine.Quest;
 import ckGameEngine.CKGrid.GridNode;
 import ckGraphicsEngine.CKSelection;
 import ckPythonInterpreter.CKPlayerObjectsFacade;
@@ -121,6 +122,7 @@ public class CKSpellObject {
 		} else
 		{
 			CPShortage("You don't have enough CP");
+
 			return false;
 		}
 
@@ -226,7 +228,11 @@ public class CKSpellObject {
 	public boolean move2(String modifier, int CP)
 	{
 		System.out.println("Inside of move CKSpellObject move2");
-		return move(modifier, CP);
+		Quest w =CKGameObjectsFacade.getQuest();
+		w.startTransaction();
+		boolean ret = move(modifier, CP);
+		w.endTransaction();
+		return ret;
 	}
 	
 	public static boolean move(String modifier, int CP)

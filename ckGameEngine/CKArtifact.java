@@ -427,6 +427,10 @@ public class CKArtifact implements CKXMLAsset<CKArtifact>
 			{
 				return limits;
 			}
+			if(limits==null)
+			{
+				return act.getAbilities();
+			}
 			return CKBook.minBounds(limits,act.getAbilities());
 		}
 	}

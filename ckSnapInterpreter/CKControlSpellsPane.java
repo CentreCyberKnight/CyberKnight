@@ -64,7 +64,7 @@ public class CKControlSpellsPane extends HBox {
 		    				
 		    				Quest w = getQuest();
 		    				
-		    				w.startTransaction();
+		    				//w.startTransaction();
 		    				//enableArtifactInput(); - should be handled by the GUI now.
 
 //		    				w.waitForInput();//this is satisfied by the completion of the python code running
@@ -76,11 +76,11 @@ public class CKControlSpellsPane extends HBox {
 		    	    		jsobj.setMember("java", new CKjsDebugger());
 		    	    		webEngine.executeScript("ide.executeScript()");
 		    				
-		    				w.endTransaction();
-		    				CKGameObjectsFacade.getEngine().blockTilActionsComplete();	
-		    				data.getPlayer().setCPConsumedLastRound(CKPlayerObjectsFacade.getCPTurnMax() - CKPlayerObjectsFacade.getCPTurnRemaining());
+		    				//w.endTransaction();
+		    				//CKGameObjectsFacade.getEngine().blockTilActionsComplete();	
+		    				//later   data.getPlayer().setCPConsumedLastRound(CKPlayerObjectsFacade.getCPTurnMax() - CKPlayerObjectsFacade.getCPTurnRemaining());
 		    				
-		    				CKGameObjectsFacade.setCurrentPlayer(null);
+		    				//CKGameObjectsFacade.setCurrentPlayer(null);
 		    				
 		    				
 		    			}

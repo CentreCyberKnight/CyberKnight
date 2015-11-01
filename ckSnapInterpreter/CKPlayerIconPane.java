@@ -27,8 +27,8 @@ public void setIcons(CKData data) {
 
 	//CKDrawerTab icons = new CKDrawerTab(CharacterIcons, DrawerSides.LEFT, 0.0, 0.0, 350.0, 170.0, "ckSnapInterpreter/headshot.png");
 	
-		CKGridActor[] players = data.getPlayer().getTeam().getCharacters();
-		System.out.println("This team is named " + data.getPlayer().getTeam().toString() + " and has " + data.getPlayer().getTeam().getCharacters().length + " players."); //team.tostring
+		CKGridActor[] players = data.getTeam().getCharacters();
+		System.out.println("This team is named " + data.getTeam().toString() + " and has " + data.getTeam().getCharacters().length + " players."); //team.tostring
 		int pIndex= 0;
 		for (CKGridActor p : players ) 
 			if(p != null) {

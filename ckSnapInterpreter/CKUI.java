@@ -191,19 +191,46 @@ public class CKUI extends Application
 	public void populateModel(QuestData q) {	
 
 
+		
+		//add to quest
+		ActorNode babyActor =	new ActorNode("ArtifactTestBaby",Direction.NORTHWEST, 
+				new CKPosition(9,0,0,0),new CKTriggerList());
+		babyActor.setControllerID("NULL");
+		ActorNode momActor =	new ActorNode("ArtifactTestMom",Direction.NORTHEAST, 
+				new CKPosition(9,7,0,0),new CKTriggerList());
+		momActor.setControllerID("NULL");
+		ActorNode dadActor =	new ActorNode("ArtifactTestDad",Direction.NORTHEAST, 
+				new CKPosition(5,9,0,0),new CKTriggerList());
+		dadActor.setControllerID("NULL");
+		
+	    
+	    
+		q.addActor(babyActor,"ArtifactTest");
+		q.addActor(momActor,"ArtifactTest");
+		q.addActor(dadActor,"ArtifactTest");
+		q.setTeam("ArtifactTest");
+	
+		
 		//make a team:)
 		CKBook teamplay = new CKBook();
-		CKChapter chap = new CKChapter(CH_MOVE, 1);
+		CKChapter chap = new CKChapter(CH_MOVE, 10);
 		chap.addPage(new CKPage(P_FORWARD));
 		chap.addPage(new CKPage(P_LEFT));
 		chap.addPage(new CKPage(P_RIGHT));
 		teamplay.addChapter(chap);
+		//teamplay.addChapter(MAX-);
 		
-		team = new CKTeam("heroes");
+		team = q.getActorsFromTeam("ArtifactTest").get(0).getTeam();                    //new CKTeam("heroes");
 		team.addToAbilties(teamplay);
+	
+		System.out.println(team.getAbilities().treeString());
 		
+		team.getArtifacts("Dad").get(0).setLimits(null);
+		
+		
+		/*
 		//add some characters!
-		CKGridActor dad = new CKGridActor("heroSprite",Direction.NORTHEAST);
+		CKGridActor dad = q.getActor("Dad");                     //new CKGridActor("heroSprite",Direction.NORTHEAST);
 		dad.setName("Dad");
 		
 		CKChapter dChap = new CKChapter(CH_MOVE,2);
@@ -241,7 +268,8 @@ public class CKUI extends Application
 		
 		
 		//sword of awesome
-		CKBook L2 = new CKBook("Limits",CH_EARTH,5,P_SLASH);
+		//CKBook L2 = new CKBook("Limits",CH_EARTH,5,P_SLASH);
+		CKBook L2= null;
 		CKBook A2 = new CKBook("abilties",CH_EQUIP_SLOTS,0,P_OFFHAND_WEAPON);
 		CKBook [] R2 = {new CKBook("Requirements", CH_EQUIP_SLOTS,0,P_OFFHAND_WEAPON),
 									 new CKBook("Requirements", CH_EQUIP_SLOTS,0,P_SWORD) };		
@@ -289,29 +317,13 @@ public class CKUI extends Application
 	    baby.setTeam(team);
 	    //mom.equipArtifact(P_SHOES, combatBoots);
 	    mom.equipArtifact(combatBoots);
+	    */
 	    
-		//add to quest
-		ActorNode babyActor =	new ActorNode("ArtifactTestBaby",Direction.NORTHWEST, 
-				new CKPosition(9,0,0,0),new CKTriggerList());
-		babyActor.setControllerID("NULL");
-		ActorNode momActor =	new ActorNode("ArtifactTestMom",Direction.NORTHEAST, 
-				new CKPosition(9,7,0,0),new CKTriggerList());
-		momActor.setControllerID("NULL");
-		ActorNode dadActor =	new ActorNode("ArtifactTestDad",Direction.NORTHEAST, 
-				new CKPosition(5,9,0,0),new CKTriggerList());
-		dadActor.setControllerID("NULL");
-		
-	    
-	    
-		q.addActor(babyActor,"ArtifactTest");
-		q.addActor(momActor,"ArtifactTest");
-		q.addActor(dadActor,"ArtifactTest");
-		q.setTeam("ArtifactTest");
-	    
-	    data = new CKData(mom, combatBoots, spell);
+//	    data = new CKData(mom, combatBoots, spell);
+		data = new CKData(null,null,null);
 	    data.setTeam(team);
 	   // data.setPlayer(mom);
-	    data.setArtifact(combatBoots);
+//	    data.setArtifact(combatBoots);
 //	    data.setSpell(spell);
 	   // CKGameObjectsFacade.getEngine();
 
