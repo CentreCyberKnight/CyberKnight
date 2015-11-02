@@ -153,6 +153,23 @@ public class CKSpellObject {
 		return voice(modifier, CP, target, "");
 	}
 
+	
+
+	public static boolean spell(String chapter, String page, int CP, CKPosition target,
+			String key)
+	{
+		if (attemptSpell(chapter, CP, page))
+		{
+			CKSpellCast cast = new CKSpellCast(getItemAt(target),
+					getCharacter(), chapter,page, CP, key);
+			cast.castSpell();
+			return true;
+		}
+		return false;
+	}
+
+	
+	
 	public static boolean fire(String modifier, int CP, CKPosition target,
 			String key)
 	{
@@ -172,6 +189,12 @@ public class CKSpellObject {
 		return fire(modifier, CP, target, "");
 	}
 
+	public void aiming(String modifier, int CP)
+	{
+		System.out.println("Aiming the bow");
+		aim(modifier,CP);
+		
+	}
 	public static CKPosition aim(String modifier, int CP)
 	{
 		System.out.println("Aiming");

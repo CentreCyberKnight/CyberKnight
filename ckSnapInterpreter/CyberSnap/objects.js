@@ -3442,6 +3442,12 @@ SpriteMorph.prototype.nestingBounds = function () {
 
 SpriteMorph.prototype.inferno = function (){
 	//put code here
+	jsDebug.print("in inferno");
+	javaMove.move2("left", 1);
+	javaMove.aiming("target");
+	jsDebug.print("leaving inferno");
+	//javaMove.spell("fire","bolt",5,pos,"");
+	 
 };
 
 SpriteMorph.prototype.ignite = function (){

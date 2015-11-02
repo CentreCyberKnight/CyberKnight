@@ -36,7 +36,8 @@ public class CKDrawerTab extends Pane
 	
 	
 	//nodes instead of just image
-	public CKDrawerTab(Node contents, DrawerSides side, Double x, Double y, Double w, Double h, String icon) 
+	public CKDrawerTab(Node contents, DrawerSides side, 
+			Double x, Double y, Double w, Double h, String icon) 
 	{
 		this.contents = contents;
 		this.side = side;
@@ -105,11 +106,11 @@ public class CKDrawerTab extends Pane
 	
 	//add interpolator...bouncy
 	public void setSlides(Double xMove, Double yMove) {
-		TranslateTransition slideOut = new TranslateTransition(Duration.seconds(1), contents);
-		TranslateTransition slideIn = new TranslateTransition(Duration.seconds(1), contents);
+		TranslateTransition slideOut = new TranslateTransition(Duration.seconds(.5), contents);
+		TranslateTransition slideIn = new TranslateTransition(Duration.seconds(.5), contents);
 		
-		TranslateTransition closeSlideOut = new TranslateTransition(Duration.seconds(1), close);
-		TranslateTransition closeSlideIn = new TranslateTransition(Duration.seconds(1), close);
+		TranslateTransition closeSlideOut = new TranslateTransition(Duration.seconds(.5), close);
+		TranslateTransition closeSlideIn = new TranslateTransition(Duration.seconds(.5), close);
 			
 		FadeTransition ftHide = new FadeTransition(Duration.seconds(0.1), open);
 		FadeTransition ftShow = new FadeTransition(Duration.seconds(0.6), open);
