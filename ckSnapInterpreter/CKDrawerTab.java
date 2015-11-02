@@ -23,6 +23,7 @@ public class CKDrawerTab extends Pane
 {
 	Rectangle open;
 	Rectangle close;
+	Rectangle clip;
 	Node contents;
 	DrawerSides side;
 	Double x;
@@ -50,11 +51,13 @@ public class CKDrawerTab extends Pane
 		this.height = h;
 		this.relocate(x, y);
 		this.setPrefSize(width, height);
+		clip = new Rectangle(0,0,w,h);
+		
 		createOpen(iconimage);
 		this.getChildren().addAll(contents);
 		createClose();
 		setPos();
-		
+		this.setClip(clip);
 		setContents();
 
 	}
