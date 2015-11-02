@@ -61,6 +61,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -109,8 +110,9 @@ public class CKUI extends Application
     public void start(Stage primaryStage) {
 
     	//The main pane that all DrawerTab nodes are added onto
-    	BorderPane border = new BorderPane();
-    	border.setPrefSize(200,200);
+    	//BorderPane border = new BorderPane();
+    	//border.setPrefSize(200,200);
+    	SplitPane split =new SplitPane();
     	Pane menuPane = new Pane();
     	menuPane.setPrefSize(200, 200);
   
@@ -140,11 +142,11 @@ public class CKUI extends Application
     	CKDrawerTab artifactTab = new CKDrawerTab(artifact, DrawerSides.TOP, 350.0, 0.0, 400.0, 300.0, "ckSnapInterpreter/arrow.png");
     	
     	CKSnapPane snap = new CKSnapPane(data); //Snap Pane
-    	CKDrawerTab snapTab = new CKDrawerTab(snap, DrawerSides.RIGHT, 750.0, 0.0, 690.0, 820.0, "ckSnapInterpreter/text.png");
+    	//CKDrawerTab snapTab = new CKDrawerTab(snap, DrawerSides.RIGHT, 750.0, 0.0, 690.0, 820.0, "ckSnapInterpreter/text.png");
     	
     	CKControlSpellsPane controls = new CKControlSpellsPane(data);
     	CKAllArtifactsPane allArtifacts = new CKAllArtifactsPane(data, controls);
-    	CKDrawerTab allArtifactsTab = new CKDrawerTab(allArtifacts, DrawerSides.BOTTOM, 350.0, 720.0, 400.0, 100.0, "ckSnapInterpreter/sword.png"); 
+    	CKDrawerTab allArtifactsTab = new CKDrawerTab(allArtifacts, DrawerSides.BOTTOM, 350.0, 500.0, 400.0, 100.0, "ckSnapInterpreter/sword.png"); 
     	
     	CKAddedAbilitiesPane abilities = new CKAddedAbilitiesPane(data);
     	CKDrawerTab abilitiesTab = new CKDrawerTab(abilities, DrawerSides.RIGHT, 350.0, 300.0, 400.0, 295.0, "ckSnapInterpreter/arrow.png");
@@ -153,12 +155,14 @@ public class CKUI extends Application
     	CKDrawerTab statsTab = new CKDrawerTab(stats, DrawerSides.LEFT, 0.0, 470.0, 350.0, 350.0, "ckSnapInterpreter/text.png");
 
 
-		menuPane.getChildren().addAll(iconsTab, playerTab, artifactTab, abilitiesTab, snapTab, allArtifactsTab, statsTab,controls);
+		menuPane.getChildren().addAll(iconsTab, playerTab, artifactTab, abilitiesTab, allArtifactsTab, statsTab,controls);
 
-		
+		split.getItems().addAll(menuPane,snap);
+		split.setDividerPosition(0, .75);
 
 	
-		Scene scene = new Scene(menuPane,1500,820);
+//		Scene scene = new Scene(menuPane,1500,820);
+		Scene scene = new Scene(split,1100,650);
 		
 	    primaryStage.setTitle("Test Drawer Tabs");
 	    primaryStage.setScene(scene);
