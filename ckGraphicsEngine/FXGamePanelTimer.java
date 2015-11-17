@@ -4,11 +4,21 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.time.LocalDateTime;
+
+import java.util.concurrent.Semaphore;
+
+
+import com.sun.xml.internal.bind.v2.runtime.IllegalAnnotationException;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.util.Duration;
 
 public abstract class FXGamePanelTimer extends Canvas
 {
@@ -17,43 +27,32 @@ public abstract class FXGamePanelTimer extends Canvas
 	 * 
 	 */
 
-	//private double fps;          //how many frames should be displayed per second.
-	//private long framePeriod;  // how many nano seconds? take place between frames.
-	//private long presentFrame;    //-current frame game engine is working to calculate.  Note that frames will likely cycle throught all possible values in the course of the game and should not be viewed as unique identifiers, but rather relative identifiers.
-	//private int maxDroppedFrames; //maximum number of frames that can be dropped before the timer should drop out of real-time.
-	private Image screenBuffer; //buffers what should be drawn to the screen to avoid flickering effect.
+	private double fps;          //how many frames should be displayed per second.
 	private Graphics graphics;
-	/*private volatile boolean running;  //is the panel running
-	private volatile boolean paused; //is the panel in a paused state?
-	private int minSleep; //minimum number of milliseconds to sleep
-	private Thread animator; //thread to run the panel
-	*/
+	private Image screenBuffer; //buffers what should be drawn to the screen to avoid flickering effect.
 	AnimationTimer timer;
-	private boolean skip=false;
-	
-	
 	private void initialize(double f_per_s,int drops)
 	{
 		screenBuffer=null;
 	
-		timer = new AnimationTimer()
-		{
-		
-		@Override
-		public void handle(long arg0)
-		{
-			//if (arg0%5 == 0)
-			{
-			calcState();
-			prepGraphics(false);
-			drawOffScreenBuffer(graphics,getWindowWidth(),getWindowHeight());
-			bufferToScreen();
+		@SuppressWarnings("rawtypes")
+		ScheduledService time = new ScheduledService(){
+			protected Task createTask() {
+				return new Task() {
+					protected Integer call() {
+						Platform.runLater(() -> {
+							calcState();
+							prepGraphics(false);
+							drawOffScreenBuffer(graphics,getWindowWidth(),getWindowHeight());
+							bufferToScreen();		
+						});
+						return 0;
+					}
+				};
 			}
-//			skip=!skip;
-			
-		}
 		};
-		timer.start();
+		time.setPeriod(Duration.seconds(1/f_per_s));
+		time.start();
 	}
 	
 	
@@ -72,9 +71,7 @@ public abstract class FXGamePanelTimer extends Canvas
 	
 	}
 
-		
-		
-		
+				
 		
 	/* (non-Javadoc)
 		 * @see javafx.scene.Node#isResizable()
@@ -156,63 +153,11 @@ private boolean prepGraphics(boolean force)
 	return true;	
 }
 	
-	
-	
-	/*
-	
-	@Override
-	public void run()
-	{
-		//System.out.println("thread running");
-		running=true;
-		int droppedFrames=0;
-		long oversleep=0;
-		long nextWake=System.nanoTime();
-		
-		while(running)
-		{
-			presentFrame++;
-			nextWake+=framePeriod;
-			calcState();
-			if(oversleep>framePeriod && droppedFrames<maxDroppedFrames)
-			{
-				droppedFrames++;
-				presentFrame++;
-				nextWake+=framePeriod;
-				calcState();
-				oversleep-=framePeriod;
-			}
-			if(!paused)
-			{
-				prepGraphics(false);
-				drawOffScreenBuffer(graphics,getWidth(),getHeight());
-				bufferToScreen();
-			}
-			droppedFrames=0;
-			
-			
-			//sleep now..
-			try
-			{
-				Thread.sleep(calcSleepTime(nextWake));
-			} catch (InterruptedException e)
-			{
-				//do nothing..
-			}
-			
-			//calculate oversleep time
-			oversleep=System.nanoTime()-nextWake;
-		}//game is stopped
-		
-		
-	}
-	*/
-	
 
-
-public void setFps(int i)
+public void setFps(double fps)
 {
-	// TODO Auto-generated method stub
+	this.fps = fps;
+	long framePeriod = (long) (1000000000L/this.fps);//nano seconds
 	
 }
 
@@ -228,8 +173,7 @@ public void startGame()
 
 public double getFps()
 {
-	 //FIXME!!!
-	return 30; 
+	return fps; 
 }
 
 

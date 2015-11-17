@@ -21,6 +21,10 @@ import static ckCommonUtils.CKPropertyStrings.P_TARGET;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.python.modules.time.Time;
+
+import javafx.scene.web.WebEngine;
+import netscape.javascript.JSObject;
 import ckCommonUtils.CKAreaPositions;
 import ckCommonUtils.CKPosition;
 import ckGameEngine.CKAbstractGridItem;
@@ -191,7 +195,7 @@ public class CKSpellObject {
 
 	public void aiming(String modifier, int CP)
 	{
-		System.out.println("Aiming the bow");
+		System.out.println("Aiming the bow Java");
 		aim(modifier,CP);
 		
 	}
@@ -251,6 +255,7 @@ public class CKSpellObject {
 	public boolean move2(String modifier, int CP)
 	{
 		System.out.println("Inside of move CKSpellObject move2");
+		
 		Quest w =CKGameObjectsFacade.getQuest();
 		w.startTransaction();
 		boolean ret = move(modifier, CP);
@@ -270,8 +275,23 @@ public class CKSpellObject {
 			CKSpellCast cast = new CKSpellCast(getCharacter(), getCharacter(),
 					CH_MOVE, modifier, CP, "");
 			cast.castSpell();
+
+			WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
+			JSObject jsobj = (JSObject) webEngine.executeScript("window");
+			webEngine.executeScript("ide.stage.threads.resumeAll(ide.stage)");
+			/*
+			int num = 0;
+			jsobj.setMember("javaNum", num); //set something to indicate that we are don
+			*/
 			return true;
 		}
+		WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
+		JSObject jsobj = (JSObject) webEngine.executeScript("window");
+		/*
+		int num = 0;
+		jsobj.setMember("javaNum", num); //set something to indicate that we are don
+		*/
+		webEngine.executeScript("ide.stage.threads.resumeAll(ide.stage)");
 		return false;
 
 	}

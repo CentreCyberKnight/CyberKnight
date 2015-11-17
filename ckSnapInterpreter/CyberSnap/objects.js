@@ -3444,7 +3444,7 @@ SpriteMorph.prototype.inferno = function (){
 	//put code here
 	jsDebug.print("in inferno");
 	javaMove.move2("left", 1);
-	javaMove.aiming("target");
+	javaMove.aiming("target", 1);
 	jsDebug.print("leaving inferno");
 	//javaMove.spell("fire","bolt",5,pos,"");
 	 
@@ -3494,9 +3494,16 @@ SpriteMorph.prototype.snapCompletes = function() {
 };
 
 SpriteMorph.prototype.forward = function (steps) {
-	//link to move in java
 	jsDebug.print("in forward");
+	ide.stage.threads.pauseAll(ide.stage);
 	javaMove.move2("left", 1);
+	/*
+	while(javaNum === 0)
+		{
+		//have it continuously check to see if java is done doing stuff
+		//before moving on to next chunk of code
+		}
+		*/
 };
 
 
@@ -3536,7 +3543,7 @@ SpriteMorph.prototype.faceToXY = function (x, y) {
 };
 
 SpriteMorph.prototype.turn = function (degrees) {
-    this.setHeading(this.heading + (+degrees || 0));
+    //java.print("turned!!!!!!");
 };
 
 SpriteMorph.prototype.turnLeft = function (degrees) {

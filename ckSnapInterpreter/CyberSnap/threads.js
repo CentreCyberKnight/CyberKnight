@@ -254,7 +254,7 @@ ThreadManager.prototype.step = function () {
             proc.runStep();
         }
     });
-
+	
     this.removeTerminatedProcesses();
 };
 
@@ -276,7 +276,7 @@ ThreadManager.prototype.removeTerminatedProcesses = function () {
             
             //catches invisible hat block
             if (proc.topBlock.selector === 'receiveID') {
-            	//sets an indicator that we will call snapCompletes()
+            	//sets an indicator that we will call snapCompletes()    	
             	ide.end = true;
             }
             
@@ -501,8 +501,8 @@ Process.prototype.pauseStep = function () {
 
 Process.prototype.evaluateContext = function () {
     var exp = this.context.expression;
-    //jsDebug.print("evaluateContext");
     this.frameCount += 1;
+
     if (exp instanceof BlockMorph) {
         return this.evaluateBlock(exp, exp.inputs().length);
     }
@@ -530,6 +530,7 @@ Process.prototype.evaluateContext = function () {
 Process.prototype.evaluateBlock = function (block, argCount) {
     // check for special forms
 	//jsDebug.print("eval block");
+	
     if (contains(['reportOr', 'reportAnd', 'doReport'], block.selector)) {
         return this[block.selector](block);
     }
@@ -558,6 +559,15 @@ Process.prototype.evaluateBlock = function (block, argCount) {
                 rcvr[block.selector].apply(rcvr, inputs)
             );
             this.popContext();
+        }
+        
+        if(block.nextBlock() != null)
+        {
+            if(block.nextBlock().selector === 'forward')
+            {
+                //MAKE CALL TO SET THINGS UP FOR AIM FUNCTION
+                ide.stage.threads.pauseAll(ide.stage);     
+            }
         }
     }
 };
