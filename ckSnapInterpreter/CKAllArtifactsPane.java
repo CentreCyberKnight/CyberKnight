@@ -26,7 +26,7 @@ public class CKAllArtifactsPane extends HBox {
     		try {
     			setAllArtifactsNodes(data, controls);
     			System.out.println(data.getPlayer().getName());
-    			System.out.println(data.getArtifact().getName());
+    			//System.out.println(data.getArtifact().getName());
     		}
     		catch (JSException e) {
     			System.out.println(e.getMessage());

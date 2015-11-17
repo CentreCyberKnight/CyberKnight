@@ -1315,7 +1315,7 @@ IDE_Morph.prototype.executeScript = function() {
 		lcArtifact = this.checkList.at(num);
 	}
 	*/ 
-	java.print("THIS IS IN JAVASCRIPT");
+	java.print("THIS IS IN JAVASCRIPT EX");
 	java.print("Goal " + artifactName);
 	java.print("Goal " + spellName);
 	var i = 0;
@@ -1335,6 +1335,9 @@ IDE_Morph.prototype.executeScript = function() {
 	
 	var event = new CustomEvent("CK", {detail : morph.blockSpec});
 	document.getElementById('world').dispatchEvent(event);
+	java.print("Leaving JAVASCRIPT");
+
+	
 };
 
 IDE_Morph.prototype.ckViewSpells = function(){

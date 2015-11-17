@@ -32,12 +32,13 @@ public class CKPlayerStatsPane extends GridPane {
 		this.setOpacity(0.5);
     	data.registerPlayerObserver((player) ->
     	{
-    		try {
+    		/*FIXME 
+    		 * try {
     			setStats(data);
     		}
     		catch (JSException e) {
     			System.out.println(e.getMessage());
-    		}
+    		}*/
     	});
 		//setStats(data);
 //		CKDrawerTab stats = new CKDrawerTab(PlayerStatsWindow, DrawerSides.LEFT, 0.0, 470.0, 350.0, 350.0, "ckSnapInterpreter/text.png");
