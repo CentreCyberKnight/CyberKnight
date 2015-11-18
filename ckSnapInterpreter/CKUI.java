@@ -1,6 +1,7 @@
 package ckSnapInterpreter;
 
 import static ckCommonUtils.CKPropertyStrings.CH_EARTH;
+
 import static ckCommonUtils.CKPropertyStrings.CH_EQUIP_SLOTS;
 import static ckCommonUtils.CKPropertyStrings.CH_FIRE;
 import static ckCommonUtils.CKPropertyStrings.CH_MOVE;
@@ -8,6 +9,7 @@ import static ckCommonUtils.CKPropertyStrings.CH_VOICE;
 import static ckCommonUtils.CKPropertyStrings.P_ARMOR;
 import static ckCommonUtils.CKPropertyStrings.P_FORWARD;
 import static ckCommonUtils.CKPropertyStrings.P_IGNITE;
+import static ckCommonUtils.CKPropertyStrings.P_FRONT;
 import static ckCommonUtils.CKPropertyStrings.P_LEFT;
 import static ckCommonUtils.CKPropertyStrings.P_OFFHAND_WEAPON;
 import static ckCommonUtils.CKPropertyStrings.P_RIGHT;
@@ -186,7 +188,7 @@ public class CKUI extends Application
 				new CKPosition(9,0,0,0),new CKTriggerList());
 		babyActor.setControllerID("NULL");
 		ActorNode momActor =	new ActorNode("ArtifactTestMom",Direction.NORTHEAST, 
-				new CKPosition(9,7,0,0),new CKTriggerList());
+				new CKPosition(5,8,0,0),new CKTriggerList());
 		momActor.setControllerID("NULL");
 		ActorNode dadActor =	new ActorNode("ArtifactTestDad",Direction.NORTHEAST, 
 				new CKPosition(5,9,0,0),new CKTriggerList());
@@ -208,7 +210,10 @@ public class CKUI extends Application
 		chap.addPage(new CKPage(P_RIGHT));
 		teamplay.addChapter(chap);
 		teamplay.addChapter(new CKChapter("Fire",10,"bolt"));
+		
 		teamplay.addChapter(new CKChapter("Aim",10,"target"));
+		teamplay.addChapter(new CKChapter("Aim",10,P_FRONT));
+		teamplay.addChapter(new CKChapter("Water",10,"rain"));
 		//teamplay.addChapter(MAX-);
 		
 		team = q.getActorsFromTeam("ArtifactTest").get(0).getTeam();                    //new CKTeam("heroes");

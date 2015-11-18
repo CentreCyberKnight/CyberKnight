@@ -326,7 +326,8 @@ public class CKGUINode extends DefaultMutableTreeNode implements CKGUIEditable
 		popup.add(removeAction);
 		
 		JMenuItem moveUpAction = new JMenuItem("Move Action Up");
-		if(myparent!=null &&!myparent.childOrderLocked && myparent.childRemoveable && myparent.getFirstChild() !=this)
+		if(myparent!=null &&!myparent.childOrderLocked && 
+				myparent.childRemoveable && myparent.getFirstChild()!=null && myparent.getFirstChild() !=this)
 		{moveUpAction.addActionListener(new TreeMoveUpActionListener(tree));}
 		else {moveUpAction.setEnabled(false); }
 		popup.add(moveUpAction);

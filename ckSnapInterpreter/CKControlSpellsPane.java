@@ -31,7 +31,7 @@ public class CKControlSpellsPane extends HBox {
     	//ControlSpells.setStyle("-fx-background-color: rgb(0, 20, 28)");
     	this.setOpacity(0.0);
     	this.setTranslateX(350);
-    	this.setTranslateY(570);
+    	this.setTranslateY(420);
 		data.registerArtifactObserver((artifact) -> 
 		{
 			setControlSpells(data);

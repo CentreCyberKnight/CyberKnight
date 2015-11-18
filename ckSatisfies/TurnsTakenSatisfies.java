@@ -198,17 +198,20 @@ public class TurnsTakenSatisfies extends Satisfies {
 			pc = initializeActorBox(nameBox[index],pc);
 			nameBox[index].setEnabled(!useselfTarget);
 		}
+		
+		/*
 		String temp = this.getParent().getParent().toString();
 		if(!useselfTarget)
 		{
 		pc = initializeActorBox(nameBox[index],pc);
 		}
-		else if (temp !=null)
+//		else if (temp !=null)
+//		else if (this.getParent().getParent()==null)
 		{
 			nameBox[index].addItem("Not Availible");
 			nameBox[index].setEnabled(false);
 			pc = temp;
-		}
+		}*/
 		else {pc="";}
 		turnsTaken[index].setValue(turns);	
 		
