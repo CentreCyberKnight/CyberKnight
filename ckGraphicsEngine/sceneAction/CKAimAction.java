@@ -197,6 +197,9 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 		this.endTime++; //keep it from closing
 		CKCoordinateTranslator trans = scene.getTrans();
 		Point p = trans.convertScreenToMap(mouseP);
+		//System.out.println("For point "+mouseP+ "Creates "+ p);
+		
+		
 		if(presentPoint.x!=p.x || presentPoint.y!=p.y||visible==false)
 		{
 			
@@ -327,8 +330,8 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 	@Override
 	public void handleMouseMoved(MouseEvent e)
 	{
-		//System.out.println("Aim Action Mouse Moved"+e);
-
+		System.out.println("Aim Action Mouse Moved"+e.getPoint());
+		
 		mouseP= e.getPoint();		
 	}
 	
