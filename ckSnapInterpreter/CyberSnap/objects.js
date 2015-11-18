@@ -3455,6 +3455,7 @@ SpriteMorph.prototype.inferno = function (){
 	//put code here
 	jsDebug.print("in inferno");
 	javaMove.move2("left", 1);
+
 	javaMove.aiming("target", 1);
 	jsDebug.print("leaving inferno");
 	//javaMove.spell("fire","bolt",5,pos,"");

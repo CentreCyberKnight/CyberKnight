@@ -108,6 +108,7 @@ public class CKUI extends Application
 	SequentialTransition stControls = new SequentialTransition (p, ftShowControls);
 
 
+
     @Override
     public void start(Stage primaryStage) {
 
@@ -129,6 +130,7 @@ public class CKUI extends Application
 		view.widthProperty().bind(menuPane.widthProperty());
 		view.heightProperty().bind(menuPane.heightProperty());
     	menuPane.getChildren().add(view);
+	     
 
 
     	
@@ -155,6 +157,8 @@ public class CKUI extends Application
     	
     	CKPlayerStatsPane stats = new CKPlayerStatsPane(data);
     	CKDrawerTab statsTab = new CKDrawerTab(stats, DrawerSides.LEFT, 0.0, 470.0, 350.0, 350.0, "ckSnapInterpreter/text.png");
+
+
 
 
 		menuPane.getChildren().addAll(iconsTab, playerTab, artifactTab, abilitiesTab, allArtifactsTab, statsTab,controls);

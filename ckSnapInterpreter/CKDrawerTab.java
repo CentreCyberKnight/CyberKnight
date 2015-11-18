@@ -58,6 +58,7 @@ public class CKDrawerTab extends Pane
 		createClose();
 		setPos();
 		this.setClip(clip);
+		this.setPickOnBounds(false);
 		setContents();
 
 	}
