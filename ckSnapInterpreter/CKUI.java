@@ -128,7 +128,7 @@ public class CKUI extends Application
 
 		view.widthProperty().bind(menuPane.widthProperty());
 		view.heightProperty().bind(menuPane.heightProperty());
-    	menuPane.getChildren().add(view);
+    	//menuPane.getChildren().add(view);
 
 
     	
@@ -157,7 +157,7 @@ public class CKUI extends Application
     	CKDrawerTab statsTab = new CKDrawerTab(stats, DrawerSides.LEFT, 0.0, 470.0, 350.0, 350.0, "ckSnapInterpreter/text.png");
 
 
-		menuPane.getChildren().addAll(iconsTab, playerTab, artifactTab, abilitiesTab, allArtifactsTab, statsTab,controls);
+		menuPane.getChildren().addAll(view,iconsTab, playerTab, artifactTab, abilitiesTab, allArtifactsTab, statsTab,controls);
 
 		split.getItems().addAll(menuPane,snap);
 		split.setDividerPosition(0, .75);

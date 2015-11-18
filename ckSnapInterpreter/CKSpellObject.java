@@ -219,12 +219,23 @@ public class CKSpellObject {
 					return quick;
 				}
 
-				CKSelection sel = new CKSelection();
-				CKPosition pos = sel.SelectTarget(getCharacter().getPos(), 0,
-						CP);
+				
+				Thread t = new Thread()
+						{
+				
+						public void run()
+						{
+							CKSelection sel = new CKSelection();
+							CKPosition pos = sel.SelectTarget(getCharacter().getPos(), 0,
+									CP);
 
-				getCharacter().getTurnController().fireAimLogEvent(pos);
-				return pos;
+							getCharacter().getTurnController().fireAimLogEvent(pos);
+							//do call back here
+						}			
+
+						};
+						t.start();
+				return null;
 			} else if (modifier.equalsIgnoreCase(P_STAR))
 			{
 				CKPosition quick = getCharacter().getTurnController()
@@ -244,6 +255,8 @@ public class CKSpellObject {
 						0, CP, offsets);
 
 				getCharacter().getTurnController().fireAimLogEvent(pos);
+				
+
 				return pos;
 			}
 		}
