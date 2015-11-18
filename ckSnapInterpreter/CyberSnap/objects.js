@@ -248,6 +248,7 @@ SpriteMorph.prototype.initBlocks = function () {
         
         
         
+        
         //Wind
         shock: {
             only: SpriteMorph,
