@@ -97,7 +97,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 		
 		
 		scene=null;
-		new MouseMessengerListener();
+		//new MouseMessengerListener();
 		this.setOnMouseClicked(	(e)->{
 			
 			MouseEvent click = FXSwingBridge.FXMouseEventToSwing(e);
@@ -112,7 +112,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 		this.setOnMouseMoved(	(e)->{
 			
 			MouseEvent click = FXSwingBridge.FXMouseEventToSwing(e);
-				
+			System.out.println("Recieved Mouse Moved event" +e.getX()+","+e.getY());
 				
 				for(CKGraphicMouseInterface listener:mouseListeners)
 				{
@@ -801,14 +801,14 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 
 	@Override
 	public void selectAreaOffsets(CKPosition originLocation, float minDistance,
-			float maxDistance, CKSelectedPositionsListeners callSOUTHEAST,
+			float maxDistance, CKSelectedPositionsListeners callback,
 			Collection<CKPosition> offsets)
 	{
 		//start new transaction
 		int t=this.startTransaction(true);
 		//create the action
 		CKAimAction a = new CKAimAction(originLocation,minDistance,
-				maxDistance,callSOUTHEAST,offsets);
+				maxDistance,callback,offsets);
 		actions.add(a);
 		//add to listeners list
 		this.addMouseListener(a);

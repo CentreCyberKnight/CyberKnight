@@ -239,6 +239,13 @@ SpriteMorph.prototype.initBlocks = function () {
         
         
         //Water
+		rain: {
+            only: SpriteMorph,
+            type: 'command',
+            category: 'water',
+            spec: 'Rain',
+        },
+        
         
         
         //Wind
@@ -1826,6 +1833,9 @@ SpriteMorph.prototype.blockTemplates = function (category) {
     	blocks.push(block('shock'));
     	blocks.push(block('storm'));
     	blocks.push(block('revive'));
+    }
+    else if (cat === 'water') {
+    	blocks.push(block('rain'));
     }
     
     else if (cat === 'motion') {
@@ -3465,6 +3475,16 @@ SpriteMorph.prototype.fusion = function (){
 SpriteMorph.prototype.fireEat = function (){
 	//put code here
 };
+
+SpriteMorph.prototype.rain = function (){
+	jsDebug.print("Making it Rain");
+	//works javaMove.move2("left", 1);
+	//var target = javaMove.aim("front",1); //no work:(
+	var target = javaMove.aiming("front",1);
+	javaMove.spell("Water","rain",1,target,"");
+};
+
+
 
 
 SpriteMorph.prototype.storm = function (){

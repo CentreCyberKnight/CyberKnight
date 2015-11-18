@@ -159,7 +159,7 @@ public class CKSpellObject {
 
 	
 
-	public static boolean spell(String chapter, String page, int CP, CKPosition target,
+	public boolean spell(String chapter, String page, int CP, CKPosition target,
 			String key)
 	{
 		if (attemptSpell(chapter, CP, page))
@@ -193,10 +193,13 @@ public class CKSpellObject {
 		return fire(modifier, CP, target, "");
 	}
 
-	public void aiming(String modifier, int CP)
+	public CKPosition aiming(String modifier, int CP)
 	{
-		System.out.println("Aiming the bow Java");
-		aim(modifier,CP);
+
+		System.out.println("Aiming the bow");
+		CKPosition pos = aim(modifier,CP);
+		System.out.println("Position"+pos);
+		return pos;
 		
 	}
 	public static CKPosition aim(String modifier, int CP)
@@ -247,8 +250,7 @@ public class CKSpellObject {
 				getCharacter().getTurnController().fireAimLogEvent(pos);
 				return pos;
 			}
-		}
-		return null;
+		}		return null;
 
 	}
 	

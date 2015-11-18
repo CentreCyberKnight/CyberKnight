@@ -132,7 +132,14 @@ public class ActorAIController extends ActorController
 	@Override
 	public String toString()
 	{
-		return "AIController for "+getActor().getName();
+		String ret ="AIController for ";
+		if(getActor()==null)
+		{ret = ret+ "Null";}
+		else
+		{
+			ret = ret+ getActor().getName();
+		}
+		return ret;
 	}
 
 	public static void getCmds(GridNode node)//,CKPosition destination)
