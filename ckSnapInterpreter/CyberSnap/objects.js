@@ -158,6 +158,7 @@ SpriteMorph.uber = PenMorph.prototype;
 
 SpriteMorph.prototype.categories =
     [
+     	'aim',
      	'fire',
         'motion',
      	'water',
@@ -172,6 +173,7 @@ SpriteMorph.prototype.categories =
 
 SpriteMorph.prototype.blockColor = {
     motion : new Color(203, 122, 0),
+    aim:new Color(0,255,255),
     fire : new Color(247, 0, 0),
     water : new Color(0, 0, 247),
     wind : new Color(224, 224, 224),
@@ -204,12 +206,25 @@ SpriteMorph.prototype.bubbleMaxTextWidth = 130;
 
 SpriteMorph.prototype.initBlocks = function () {
     SpriteMorph.prototype.blocks = {
+        //aim
+    	front: {
+    	    only: SpriteMorph,
+            type: 'reporter',
+            category: 'aim',
+            spec: 'front'
+        },
+    	near: {
+    	    only: SpriteMorph,
+            type: 'reporter',
+            category: 'aim',
+            spec: 'near',
+        },
         //fire
         inferno: {
             only: SpriteMorph,
             type: 'command',
             category: 'fire',
-            spec: 'Inferno',
+            spec: 'Inferno at %dst',  //%obj puts in an arrow, dst has a drop down
         },
         ignite: {
             only: SpriteMorph,
@@ -1822,7 +1837,12 @@ SpriteMorph.prototype.blockTemplates = function (category) {
             }
         }
     }
-    if (cat === 'fire') {
+    if (cat == 'aim')
+    {
+	    blocks.push(block('front'));
+    	blocks.push(block('near'));    
+    }
+    else if (cat === 'fire') {
     	blocks.push(block('inferno'));
     	blocks.push(block('ignite'));
     	blocks.push(block('flash'));
@@ -3449,16 +3469,33 @@ SpriteMorph.prototype.nestingBounds = function () {
 };
 
 
+//SpriteMorpg aim primitives
+SpriteMorph.prototype.front = function (){
+	return javaMove.aim("front",1);
+};
+
+SpriteMorph.prototype.near = function (){
+	var tar =javaMove.delayAim("short target",4);
+	if(! tar.isSet())
+	{
+		ide.stage.threads.pauseAll(ide.stage);
+	}
+	return tar;
+};
+
+
+
+
+
 // SpriteMorph fire primitives
 
-SpriteMorph.prototype.inferno = function (){
+SpriteMorph.prototype.inferno = function (target){
 	//put code here
 	jsDebug.print("in inferno");
 	javaMove.move2("left", 1);
-
-	javaMove.aiming("target", 1);
-	jsDebug.print("leaving inferno");
-	//javaMove.spell("fire","bolt",5,pos,"");
+//	javaMove.aiming("target", 1);
+//	jsDebug.print("leaving inferno");
+	javaMove.spell("fire","bolt",5,target,"");
 	 
 };
 

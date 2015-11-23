@@ -17,15 +17,18 @@ import static ckCommonUtils.CKPropertyStrings.P_STAR;
 import static ckCommonUtils.CKPropertyStrings.P_STRING;
 import static ckCommonUtils.CKPropertyStrings.P_TALK;
 import static ckCommonUtils.CKPropertyStrings.P_TARGET;
+import static ckCommonUtils.CKPropertyStrings.P_SHORT_TARGET;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.python.modules.time.Time;
 
+import javafx.application.Platform;
 import javafx.scene.web.WebEngine;
 import netscape.javascript.JSObject;
 import ckCommonUtils.CKAreaPositions;
+import ckCommonUtils.CKDelayedObject;
 import ckCommonUtils.CKPosition;
 import ckGameEngine.CKAbstractGridItem;
 import ckGameEngine.CKArtifact;
@@ -132,36 +135,46 @@ public class CKSpellObject {
 
 
 	}
-
-	public static boolean voice(String modifier, int CP, CKPosition target,
-			String key)
-	{
-		if (attemptSpell(CH_VOICE, CP, modifier))
-		{
-			if (modifier.equalsIgnoreCase(P_TALK))
-			{
-				// TODO remove PC pc = (PC)target;
-				CKSpellCast cast = new CKSpellCast(getItemAt(target),
-						getCharacter(), CH_VOICE, modifier, CP, key);
-				cast.castSpell();
-			}
-
-			return true;
-
-		}
-		return false;
-	}
-
-	public static boolean voice(String modifier, int CP, CKPosition target)
-	{
-		return voice(modifier, CP, target, "");
-	}
-
 	
-
-	public boolean spell(String chapter, String page, int CP, CKPosition target,
+/*	public boolean spell(String chapter, String page, int CP, 
+			CKDelayedObject<CKPosition> target,
 			String key)
 	{
+		System.out.println("You are in the delayedSpell");
+		if (! target.isSet())
+		{
+			throw new NullPointerException("CKDelayedObject has not been set");
+		}
+		return spell(chapter,page,CP,target.getValue(),key);
+	}
+	*/
+	
+	public boolean spell(String chapter, String page, int CP, 
+			Object protoTarget, //CKPosition target or CKDelayedObject<CKPosition>,
+			String key)
+	{
+		System.out.println("You are in Spell");
+
+	//	public boolean spell(String chapter, String page, int CP, 
+	//			CKDelayedObject<CKPosition> target,
+	//			String key)
+		
+		CKPosition target =null;
+		if(protoTarget instanceof CKPosition     )
+		{
+			target = (CKPosition) protoTarget;
+		}
+		else if (protoTarget instanceof CKDelayedObject)
+		{
+			System.out.println("You are using the delayedSpell");
+			target = ((CKDelayedObject<CKPosition>) protoTarget ).getValue();
+			if (target==null )
+			{
+				throw new NullPointerException("CKDelayedObject has not been set");
+			}
+		}
+		
+		
 		if (attemptSpell(chapter, CP, page))
 		{
 			CKSpellCast cast = new CKSpellCast(getItemAt(target),
@@ -173,38 +186,80 @@ public class CKSpellObject {
 	}
 
 	
+
 	
-	public static boolean fire(String modifier, int CP, CKPosition target,
-			String key)
+	
+	public CKDelayedObject<CKPosition> delayAim(String modifier, int CP)
 	{
-		if (attemptSpell(CH_FIRE, CP, modifier))
+		System.out.println("DELAY Aiming:" +modifier);
+		if (attemptSpell(CH_AIM, CP, modifier))
 		{
-			CKSpellCast cast = new CKSpellCast(getItemAt(target),
-					getCharacter(), CH_FIRE, modifier, CP, key);
-			cast.castSpell();
-			return true;
+			if (modifier.equalsIgnoreCase(P_SHORT_TARGET))
+			{
+				CKPosition quick = getCharacter().getTurnController()
+						.useStoredAim();
+				if (quick != null)
+				{
+					
+					return new CKDelayedObject<CKPosition>(quick);
+				}
 
+				CKDelayedObject<CKPosition> delPos = new CKDelayedObject<>();
+				Thread t = new Thread()
+						{
+				
+						public void run()
+						{
+							CKSelection sel = new CKSelection();
+							CKPosition pos = sel.SelectTarget(getCharacter().getPos(), 0,
+									CP);
+
+							getCharacter().getTurnController().fireAimLogEvent(pos);
+							delPos.setValue(pos);
+							Platform.runLater(new Runnable() {
+									public void run()
+									{
+										WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
+										webEngine.executeScript("ide.stage.threads.resumeAll(ide.stage)");
+									}
+							});
+							//do call back here
+						}			
+						};
+						t.start();
+				return delPos;
+			} else if (modifier.equalsIgnoreCase(P_STAR))
+			{
+				CKPosition quick = getCharacter().getTurnController()
+						.useStoredAim();
+				if (quick != null)
+				{
+					return new CKDelayedObject<CKPosition>(quick);
+				}
+
+				CKSelection sel = new CKSelection();
+				ArrayList<CKPosition> offsets = new ArrayList<CKPosition>();
+				offsets.add(new CKPosition(1, 1));
+				offsets.add(new CKPosition(1, -1));
+				offsets.add(new CKPosition(-1, 1));
+				offsets.add(new CKPosition(-1, -1));
+				CKPosition pos = sel.SelectTargetArea(getCharacter().getPos(),
+						0, CP, offsets);
+
+				getCharacter().getTurnController().fireAimLogEvent(pos);
+				
+				return new CKDelayedObject<CKPosition>(pos);
+				//return pos;
+			}
 		}
-		return false;
-	}
+		return null;
 
-	public static boolean fire(String modifier, int CP, CKPosition target)
-	{
-		return fire(modifier, CP, target, "");
 	}
-
-	public CKPosition aiming(String modifier, int CP)
+	
+	
+	public CKPosition aim(String modifier, int CP)
 	{
-
-		System.out.println("Aiming the bow");
-		CKPosition pos = aim(modifier,CP);
-		System.out.println("Position"+pos);
-		return pos;
-		
-	}
-	public static CKPosition aim(String modifier, int CP)
-	{
-		System.out.println("Aiming");
+		System.out.println("Aiming: "+modifier);
 		if (attemptSpell(CH_AIM, CP, modifier))
 		{
 			if (modifier.equalsIgnoreCase(P_SELF))
@@ -266,6 +321,8 @@ public class CKSpellObject {
 		}		return null;
 
 	}
+	
+
 	
 	public boolean move2(String modifier, int CP)
 	{
@@ -373,66 +430,7 @@ public class CKSpellObject {
 		cast.castSpell();
 	}
 
-	public static boolean earth(String modifier, int CP, CKPosition target,
-			String key)
-	{
-		if (attemptSpell(CH_EARTH, CP, modifier))
-		{
-			CKSpellCast cast = new CKSpellCast(getItemAt(target),
-					getCharacter(), CH_EARTH, modifier, CP, key);
-			cast.castSpell();
-			return true;
-
-		}
-		return false;
-	}
-
-	public static boolean earth(String modifier, int CP, CKPosition target)
-	{
-		return earth(modifier, CP, target, "");
-	}
-
-	public static boolean water(String modifier, int CP, CKPosition target,
-			String key)
-	{
-		if (attemptSpell(CH_WATER, CP, modifier))
-		{
-			CKSpellCast cast = new CKSpellCast(getItemAt(target),
-					getCharacter(), CH_WATER, modifier, CP, key);
-			cast.castSpell();
-			return true;
-
-		}
-		return false;
-	}
-
-	public static boolean water(String modifier, int CP, CKPosition target)
-	{
-		return water(modifier, CP, target, "");
-	}
-
-	public static boolean wind(String modifier, int CP, CKPosition target,
-			String key)
-	{
-		if (attemptSpell(CH_WIND, CP, modifier))
-		{
-			CKSpellCast cast = new CKSpellCast(getItemAt(target),
-					getCharacter(), CH_WIND, modifier, CP, key);
-			System.out.println("Before Spell: "
-					+ getCharacter().getCyberPoints());
-			cast.castSpell();
-			System.out.println("After Spell: "
-					+ getCharacter().getCyberPoints());
-			return true;
-
-		}
-		return false;
-	}
-
-	public static boolean wind(String modifier, int CP, CKPosition target)
-	{
-		return wind(modifier, CP, target, "");
-	}
+	
 
 	public static String scryString(String modifier, int CP, CKPosition target,
 			String key)

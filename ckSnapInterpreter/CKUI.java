@@ -18,6 +18,7 @@ import static ckCommonUtils.CKPropertyStrings.P_SING;
 import static ckCommonUtils.CKPropertyStrings.P_SLASH;
 import static ckCommonUtils.CKPropertyStrings.P_SWORD;
 import static ckCommonUtils.CKPropertyStrings.P_TALK;
+import static ckCommonUtils.CKPropertyStrings.*;
 
 import java.awt.Dimension;
 import java.util.Iterator;
@@ -217,6 +218,7 @@ public class CKUI extends Application
 		
 		teamplay.addChapter(new CKChapter("Aim",10,"target"));
 		teamplay.addChapter(new CKChapter("Aim",10,P_FRONT));
+		teamplay.addChapter(new CKChapter("Aim",0,P_SHORT_TARGET));
 		teamplay.addChapter(new CKChapter("Water",10,"rain"));
 		//teamplay.addChapter(MAX-);
 		

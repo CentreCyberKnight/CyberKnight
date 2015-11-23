@@ -101,7 +101,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 		this.setOnMouseClicked(	(e)->{
 			
 			MouseEvent click = FXSwingBridge.FXMouseEventToSwing(e);
-					System.out.println("Recieved Mouse click event");
+					//System.out.println("Recieved Mouse click event");
 					if(gui.handleMouseEvent(click)) 	{ return;		}
 				 //check this to see if I should continue
 			for(CKGraphicMouseInterface listener:mouseListeners)
@@ -112,7 +112,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 		this.setOnMouseMoved(	(e)->{
 			
 			MouseEvent click = FXSwingBridge.FXMouseEventToSwing(e);
-			System.out.println("Recieved Mouse Moved event" +e.getX()+","+e.getY());
+			//System.out.println("Recieved Mouse Moved event" +e.getX()+","+e.getY());
 				
 				for(CKGraphicMouseInterface listener:mouseListeners)
 				{

@@ -5,7 +5,7 @@ import ckGameEngine.AimDescription;
 import ckGameEngine.Direction;
 import static ckCommonUtils.CKPropertyStrings.*;
 
-/**A CK GraphicsAsset fFactory that uses XML files store data
+/**A CK Asset fFactory 
  * 
  * @author Michael K. Bradshaw
  *
