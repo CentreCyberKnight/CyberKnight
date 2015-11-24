@@ -3492,10 +3492,20 @@ SpriteMorph.prototype.near = function (){
 SpriteMorph.prototype.inferno = function (target){
 	//put code here
 	jsDebug.print("in inferno");
-	javaMove.move2("left", 1);
+//	javaMove.move2("left", 1);
 //	javaMove.aiming("target", 1);
 //	jsDebug.print("leaving inferno");
-	javaMove.spell("fire","bolt",5,target,"");
+
+	var complete = javaMove.spell("fire","bolt",5,target,"");
+	if(complete==null)
+	{
+		jsDebug.print("Spell Fails--Needs to stop here!");
+	}
+	else if (!complete.isSet())
+	{
+		ide.stage.threads.pauseAll(ide.stage);
+	}
+	
 	 
 };
 

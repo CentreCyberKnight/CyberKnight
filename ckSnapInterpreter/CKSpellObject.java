@@ -149,7 +149,7 @@ public class CKSpellObject {
 	}
 	*/
 	
-	public boolean spell(String chapter, String page, int CP, 
+	public CKDelayedObject<Boolean> spell(String chapter, String page, int CP, 
 			Object protoTarget, //CKPosition target or CKDelayedObject<CKPosition>,
 			String key)
 	{
@@ -177,12 +177,34 @@ public class CKSpellObject {
 		
 		if (attemptSpell(chapter, CP, page))
 		{
+			
+			CKDelayedObject<Boolean> completed = new CKDelayedObject<>();
 			CKSpellCast cast = new CKSpellCast(getItemAt(target),
 					getCharacter(), chapter,page, CP, key);
-			cast.castSpell();
-			return true;
+					
+			Thread t = new Thread()
+					{
+			
+					public void run()
+					{
+
+						cast.castSpell();
+						completed.setValue(true);
+
+						Platform.runLater(new Runnable() {
+								public void run()
+								{
+									WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
+									webEngine.executeScript("ide.stage.threads.resumeAll(ide.stage)");
+								}
+						});
+
+					}
+					};
+			t.start();
+			return completed;
 		}
-		return false;
+		return null;
 	}
 
 	

@@ -1,10 +1,5 @@
 package ckSnapInterpreter;
 
-import static ckCommonUtils.CKPropertyStrings.CH_MOVE;
-import static ckCommonUtils.CKPropertyStrings.P_FORWARD;
-import static ckCommonUtils.CKPropertyStrings.P_FRONT;
-import static ckCommonUtils.CKPropertyStrings.P_LEFT;
-import static ckCommonUtils.CKPropertyStrings.P_RIGHT;
 import static ckCommonUtils.CKPropertyStrings.*;
 
 import java.util.Vector;
@@ -186,6 +181,12 @@ public class CKUI extends Application
 		teamplay.addChapter(new CKChapter("Fire",10,"bolt"));
 
 		teamplay.addChapter(new CKChapter(MAX_CP,1000));
+		teamplay.addChapter(new CKChapter(CH_EVADE,0));
+		teamplay.addChapter(new CKChapter(CH_ACCURACY,0));
+		teamplay.addChapter(new CKChapter(CH_DEFENSE,0));
+		teamplay.addChapter(new CKChapter(CH_DEFENSE_EFFECTIVENESS,70));
+		teamplay.addChapter(new CKChapter(MAX_DAMAGE,40));
+		teamplay.addChapter(new CKChapter(CH_ATTACK_BONUS,0));
 		teamplay.addChapter(new CKChapter("Aim",10,"target"));
 		teamplay.addChapter(new CKChapter("Aim",10,P_FRONT));
 		teamplay.addChapter(new CKChapter("Aim",0,P_SHORT_TARGET));

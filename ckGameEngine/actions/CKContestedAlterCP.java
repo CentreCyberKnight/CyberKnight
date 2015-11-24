@@ -214,7 +214,7 @@ public class CKContestedAlterCP extends CKGameAction
 		int cp = cast.getCp();
 		double base = a*cp*cp+b*cp;
 		//TODO work with randomization?		
-		int damage = (int) Math.ceil(base* getMultiplier()+attack);
+		int damage = - (int) Math.ceil(base* getMultiplier()+attack);
 
 		//TODO graphical printout of this effect...
 		
