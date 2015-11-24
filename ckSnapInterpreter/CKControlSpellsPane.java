@@ -10,9 +10,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.web.WebEngine;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKSpell;
@@ -32,6 +34,9 @@ public class CKControlSpellsPane extends HBox {
     	this.setOpacity(0.0);
     	this.setTranslateX(350);
     	this.setTranslateY(420);
+    	
+    	
+    	
 		data.registerArtifactObserver((artifact) -> 
 		{
 			setControlSpells(data);

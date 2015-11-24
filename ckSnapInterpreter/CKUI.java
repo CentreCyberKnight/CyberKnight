@@ -1,52 +1,27 @@
 package ckSnapInterpreter;
 
-import static ckCommonUtils.CKPropertyStrings.CH_EARTH;
-
-import static ckCommonUtils.CKPropertyStrings.CH_EQUIP_SLOTS;
-import static ckCommonUtils.CKPropertyStrings.CH_FIRE;
 import static ckCommonUtils.CKPropertyStrings.CH_MOVE;
-import static ckCommonUtils.CKPropertyStrings.CH_VOICE;
-import static ckCommonUtils.CKPropertyStrings.P_ARMOR;
 import static ckCommonUtils.CKPropertyStrings.P_FORWARD;
-import static ckCommonUtils.CKPropertyStrings.P_IGNITE;
 import static ckCommonUtils.CKPropertyStrings.P_FRONT;
 import static ckCommonUtils.CKPropertyStrings.P_LEFT;
-import static ckCommonUtils.CKPropertyStrings.P_OFFHAND_WEAPON;
 import static ckCommonUtils.CKPropertyStrings.P_RIGHT;
-import static ckCommonUtils.CKPropertyStrings.P_SHOES;
-import static ckCommonUtils.CKPropertyStrings.P_SING;
-import static ckCommonUtils.CKPropertyStrings.P_SLASH;
-import static ckCommonUtils.CKPropertyStrings.P_SWORD;
-import static ckCommonUtils.CKPropertyStrings.P_TALK;
 import static ckCommonUtils.CKPropertyStrings.*;
 
-import java.awt.Dimension;
-import java.util.Iterator;
 import java.util.Vector;
 
-import javax.swing.SwingUtilities;
-
-import netscape.javascript.JSException;
-import netscape.javascript.JSObject;
 import ckCommonUtils.CKPosition;
-import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckEditor.treegui.ActorNode;
-import ckEditor.treegui.BookList;
-import ckGameEngine.CKArtifact;
 import ckGameEngine.CKBook;
 import ckGameEngine.CKChapter;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKPage;
-import ckGameEngine.CKSpell;
 import ckGameEngine.CKTeam;
 import ckGameEngine.Direction;
 import ckGameEngine.Quest;
 import ckGameEngine.QuestData;
 import ckGameEngine.actions.CKSimpleGUIAction;
 import ckGraphicsEngine.FX2dGraphicsEngine;
-import ckGraphicsEngine.assets.CKAssetViewer;
-import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckSatisfies.PositionReachedSatisfies;
 import ckSatisfies.Satisfies;
 import ckSnapInterpreter.CKDrawerTab;
@@ -57,25 +32,12 @@ import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Application;
-import javafx.embed.swing.SwingNode;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -151,7 +113,14 @@ public class CKUI extends Application
     	
     	CKControlSpellsPane controls = new CKControlSpellsPane(data);
     	CKAllArtifactsPane allArtifacts = new CKAllArtifactsPane(data, controls);
-    	CKDrawerTab allArtifactsTab = new CKDrawerTab(allArtifacts, DrawerSides.BOTTOM, 350.0, 500.0, 400.0, 100.0, "ckSnapInterpreter/sword.png"); 
+    	CKDrawerTab allArtifactsTab = new CKDrawerTab(allArtifacts, DrawerSides.BOTTOM, 
+    			350.0, 500.0, 400.0, 100.0, "ckSnapInterpreter/sword.png"); 
+    	
+//    	allArtifactsTab.translateXProperty().bind(menuPane.widthProperty().divide(2) );
+    	allArtifactsTab.layoutYProperty().bind(menuPane.heightProperty().subtract(100) );
+    	
+    	
+    	
     	
     	CKAddedAbilitiesPane abilities = new CKAddedAbilitiesPane(data);
     	CKDrawerTab abilitiesTab = new CKDrawerTab(abilities, DrawerSides.RIGHT, 350.0, 300.0, 400.0, 295.0, "ckSnapInterpreter/arrow.png");
@@ -215,7 +184,8 @@ public class CKUI extends Application
 		chap.addPage(new CKPage(P_RIGHT));
 		teamplay.addChapter(chap);
 		teamplay.addChapter(new CKChapter("Fire",10,"bolt"));
-		
+
+		teamplay.addChapter(new CKChapter(MAX_CP,1000));
 		teamplay.addChapter(new CKChapter("Aim",10,"target"));
 		teamplay.addChapter(new CKChapter("Aim",10,P_FRONT));
 		teamplay.addChapter(new CKChapter("Aim",0,P_SHORT_TARGET));

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKPropertyStrings;
@@ -50,7 +52,8 @@ public class CKGridActor extends CKGridItem
 	String controllerID;// = "BOTH";
 	
 	private int instanceID=-100;
-	private int cyberPoints=100;
+	private IntegerProperty cyberPointsProperty  = new SimpleIntegerProperty(100);
+//	private int cyberPoints=100;
 	private int turnsTaken = 0;
 	
 	
@@ -64,6 +67,8 @@ public class CKGridActor extends CKGridItem
 
 	public CKGridActor(String assetID,Direction direction)
 	{
+		
+		
 		setAssetID(assetID); 
 		this.direction = direction;
 		setControllerID("BOTH");
@@ -88,6 +93,28 @@ public class CKGridActor extends CKGridItem
 		return presentTime+offset;	
 	}
 	
+	
+	
+	/**
+	 * @return the cyberPointsProperty
+	 */
+	public IntegerProperty getCyberPointsProperty()
+	{
+		return cyberPointsProperty;
+	}
+
+
+
+	/**
+	 * @param cyberPointsProperty the cyberPointsProperty to set
+	 */
+	public void setCyberPointsProperty(IntegerProperty cyberPointsProperty)
+	{
+		this.cyberPointsProperty = cyberPointsProperty;
+	}
+
+
+
 	/**
 	 * @return the controllerID
 	 */
@@ -335,7 +362,7 @@ public class CKGridActor extends CKGridItem
 	 */
 	public int getCyberPoints()
 	{
-		return cyberPoints;
+		return cyberPointsProperty.getValue();
 	}
 
 
@@ -345,13 +372,17 @@ public class CKGridActor extends CKGridItem
 	 */
 	public void setCyberPoints(int cyberPoints)
 	{
-		this.cyberPoints = cyberPoints;
 		CKBook  book = getAbilities();
 		int m = book.getChapter(CKPropertyStrings.MAX_CP).getValue();
-		if(m < this.cyberPoints)
+		if(m < cyberPoints)
 		{
-			this.cyberPoints=m;
+			this.cyberPointsProperty.setValue(m);
 		}
+		else
+		{
+			this.cyberPointsProperty.setValue(cyberPoints);
+		}
+		
 		this.notifyListenerCP(cyberPoints);	
 	}
 
@@ -404,7 +435,7 @@ public class CKGridActor extends CKGridItem
 
 	public boolean isDead()
 	{
-		return cyberPoints<0;
+		return cyberPointsProperty.getValue()<0;
 	}
 
 	
@@ -679,7 +710,7 @@ public class CKGridActor extends CKGridItem
 	//	I.setControllerID(controllerID);
 		I.setCoreAbilities((CKBook) coreAbilities.clone());
 		I.setCPConsumedLastRound(cpConsumedLastRound);
-		I.setCyberPoints(cyberPoints);
+		I.setCyberPoints(cyberPointsProperty.getValue());
 		I.setDirection(direction);
 		I.setQuestAbilities((CKBook)questAbilities.clone());
 		//I.setScriptController(null); Simon: Set Script Controller requires a string, but the TurnController turns it into a TurnController, which the method can't take. What should I do?

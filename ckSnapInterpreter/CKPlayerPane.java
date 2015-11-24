@@ -1,6 +1,7 @@
 package ckSnapInterpreter;
 
 import netscape.javascript.JSException;
+
 import ckGameEngine.CKTeam;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -8,10 +9,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import static ckCommonUtils.CKPropertyStrings.*;
 
 public class CKPlayerPane extends GridPane {
 
@@ -22,8 +25,8 @@ public class CKPlayerPane extends GridPane {
 		this.setVgap(2);
 		this.setAlignment(Pos.CENTER);
 		this.setPrefSize(350, 300);
-		this.setStyle("-fx-background-color: rgb(217, 210, 240)");
-		this.setOpacity(0.5);
+		this.setStyle("-fx-background-color: rgba(217, 210, 240,.8)");
+		//this.setOpacity(0.5);
     	data.registerPlayerObserver((player) ->
     	{
     		try {
@@ -50,11 +53,28 @@ public void setPlayerNodes(CKData data) {
  	playername.setFont(new Font("Comic Sans MS", 30));
  	this.add(playername, 2, 3, 2, 1);
  	int cyberpts = data.getPlayer().getCyberPoints();
- 	Label cp = new Label("CyberPoints: " + Integer.toString(cyberpts));
+ 	Label cpText = new Label("CP:   ");
+
+ 	cpText.setTextFill(Color.BLACK);
+ 	cpText.setFont(new Font("Courier New", 20));
+ 	
+ 	Label cp = new Label();//"CyberPoints: " + Integer.toString(cyberpts));
+ 	cp.textProperty().bind(data.getPlayer().getCyberPointsProperty().asString());
+
  	cp.setTextFill(Color.BLACK);
  	cp.setFont(new Font("Courier New", 20));
+ 	
+ 	
+ 	Label cpMax = new Label("/"+data.getPlayer().getAbilities().getChapter(MAX_CP).getValue());
 
- 	this.add(cp, 2, 4, 3, 1);
+ 	cpMax.setTextFill(Color.BLACK);
+ 	cpMax.setFont(new Font("Courier New", 20));
+
+ 	
+ 	HBox cpPane = new HBox();
+ 	cpPane.getChildren().addAll(cpText,cp,cpMax);
+ 	
+ 	this.add(cpPane, 2, 4, 3, 1);
 	}
 
 }

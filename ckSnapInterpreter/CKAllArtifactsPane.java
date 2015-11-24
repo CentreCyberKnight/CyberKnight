@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKTeam;
 
@@ -20,7 +21,10 @@ public class CKAllArtifactsPane extends HBox {
 	//	ArtifactSelectionWindow.setStyle("-fx-background-color: rgb(0, 20, 28)");
 	//	ArtifactSelectionWindow.setOpacity(0.2);
 		
-		//CKDrawerTab allArtifacts = new CKDrawerTab(this, DrawerSides.BOTTOM, 350.0, 720.0, 400.0, 100.0, "ckSnapInterpreter/sword.png");    	
+		//CKDrawerTab allArtifacts = new CKDrawerTab(this, DrawerSides.BOTTOM, 350.0, 720.0, 400.0, 100.0, "ckSnapInterpreter/sword.png");
+		controls.layoutXProperty().bind(this.layoutXProperty());
+		controls.layoutYProperty().bind(this.layoutYProperty().subtract(100));
+		
     	data.registerPlayerObserver((player) ->
     	{
     		try {

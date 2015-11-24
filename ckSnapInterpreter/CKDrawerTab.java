@@ -164,7 +164,7 @@ public class CKDrawerTab extends Pane
 		this.open = new Rectangle(0, 0, Color.web(rectColor, rectOpacity));
 		//open.relocate(x, y);
 		open.setFill(new ImagePattern(iconimage));
-		open.setOpacity(0.5);
+		//open.setOpacity(0.5);
 		open.setWidth(50);
 		open.setHeight(50);
 		
