@@ -5,6 +5,7 @@ import java.util.Vector;
 import netscape.javascript.JSException;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -15,15 +16,13 @@ public class CKAllArtifactsPane extends HBox {
 	
 	public CKAllArtifactsPane(CKData data, CKControlSpellsPane controls) {
 
-		this.setPrefSize(400, 100);
+		this.setPrefSize(400, 110);
 	//	ArtifactSelectionWindow.setPadding(new Insets(15, 12, 15, 12));
 	//	ArtifactSelectionWindow.setSpacing(10);
 	//	ArtifactSelectionWindow.setStyle("-fx-background-color: rgb(0, 20, 28)");
 	//	ArtifactSelectionWindow.setOpacity(0.2);
 		
 		//CKDrawerTab allArtifacts = new CKDrawerTab(this, DrawerSides.BOTTOM, 350.0, 720.0, 400.0, 100.0, "ckSnapInterpreter/sword.png");
-		controls.layoutXProperty().bind(this.layoutXProperty());
-		controls.layoutYProperty().bind(this.layoutYProperty().subtract(100));
 		
     	data.registerPlayerObserver((player) ->
     	{
@@ -55,7 +54,7 @@ public class CKAllArtifactsPane extends HBox {
 				aIndex++;
 				System.out.println(aIndex + ": " + a.getIconId());
 				Button b = new Button(a.getAID(), new ImageView(a.getFXImage()));
-
+				b.setContentDisplay(ContentDisplay.TOP);
 				b.setOnMouseEntered(e -> {
 					// setControlSpells();
 					data.setArtifact(a);
