@@ -12,6 +12,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -32,8 +33,8 @@ public class CKControlSpellsPane extends HBox {
     	this.setSpacing(10);
     	//ControlSpells.setStyle("-fx-background-color: rgb(0, 20, 28)");
     	this.setOpacity(0.0);
-    	this.setTranslateX(350);
-    	this.setTranslateY(420);
+    	//this.setTranslateX(350);
+    	//this.setTranslateY(420);
     	
     	
     	
@@ -58,7 +59,7 @@ public class CKControlSpellsPane extends HBox {
     				aIndex ++;
     				System.out.println(aIndex + ": " + s.getIconID());
 					Button b = new Button(s.getIconID(), new ImageView(s.getFXImage()));
-					
+					b.setContentDisplay(ContentDisplay.TOP);
 					b.setOnAction(new EventHandler<ActionEvent>() {
 		    			@Override public void handle (ActionEvent e) {
 		    				CKPlayerObjectsFacade.setArtifact(data.getArtifact());

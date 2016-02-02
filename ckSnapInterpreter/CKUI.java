@@ -109,13 +109,14 @@ public class CKUI extends Application
     	CKControlSpellsPane controls = new CKControlSpellsPane(data);
     	CKAllArtifactsPane allArtifacts = new CKAllArtifactsPane(data, controls);
     	CKDrawerTab allArtifactsTab = new CKDrawerTab(allArtifacts, DrawerSides.BOTTOM, 
-    			350.0, 500.0, 400.0, 100.0, "ckSnapInterpreter/sword.png"); 
+    			350.0, 500.0, 400.0, 120.0, "ckSnapInterpreter/sword.png"); 
     	
 //    	allArtifactsTab.translateXProperty().bind(menuPane.widthProperty().divide(2) );
-    	allArtifactsTab.layoutYProperty().bind(menuPane.heightProperty().subtract(100) );
+    	allArtifactsTab.layoutYProperty().bind(menuPane.heightProperty().subtract(120) );
     	
-    	
-    	
+    	controls.layoutXProperty().bind(allArtifactsTab.layoutXProperty());
+		controls.layoutYProperty().bind(allArtifactsTab.layoutYProperty().subtract(140));
+	
     	
     	CKAddedAbilitiesPane abilities = new CKAddedAbilitiesPane(data);
     	CKDrawerTab abilitiesTab = new CKDrawerTab(abilities, DrawerSides.RIGHT, 350.0, 300.0, 400.0, 295.0, "ckSnapInterpreter/arrow.png");
