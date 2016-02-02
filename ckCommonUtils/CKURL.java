@@ -41,6 +41,7 @@ public class CKURL
 			base = "jar:"+base+"CKResources.jar!/";
 		}
 		url = new URL(base+filename);
+		//System.out.println("URL is"+url);
 	}
 	
 	public InputStream getInputStream() throws IOException

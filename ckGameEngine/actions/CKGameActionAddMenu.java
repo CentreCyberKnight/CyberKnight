@@ -249,7 +249,7 @@ class TreeAddActionListener implements ActionListener
 			{
 				action = new CKSharedTriggerList();
 			}
-			else if(name.compareTo("DIALOG_ACTION")==0)
+			else if(name.compareTo("DIALOGUE_ACTION")==0)
 			{				
 				action = new CKDialogAction();
 			}

@@ -75,6 +75,7 @@ public class CKEditor
 	 */
 	public static void main(String[] args)
 	{
+
 		JFrame frame = new JFrame();
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
