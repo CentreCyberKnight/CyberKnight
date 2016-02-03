@@ -84,7 +84,8 @@ extends CKXMLAssetPropertiesEditor<CKGridItem> implements ChangeListener
 		panel.add(new JLabel("Abilities"));
 		
 		
-		myAbilities = new CKTreeGui(this.asset.getAbilities());
+		//myAbilities = new CKTreeGui(this.asset.getAbilities());
+		myAbilities = new CKTreeGui(this.asset.getCoreAbilities());
 		panel.add(myAbilities);
 		
 		

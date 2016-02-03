@@ -181,7 +181,7 @@ static class TreeAddActionListener implements ActionListener
 			tree.addNode(node,action,position);	
 			
 			
-			tree.addNode(node,action);		
+			//Don't need this anymoretree.addNode(node,action);		
 		}
 			
 	

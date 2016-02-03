@@ -6,6 +6,8 @@ import java.beans.Encoder;
 import ckCommonUtils.CKPosition;
 import ckEditor.CKXMLAssetPropertiesEditor;
 import ckGameEngine.actions.CKGameActionListenerInterface;
+import ckTrigger.CKSharedTrigger;
+import ckTrigger.CKSharedTriggerList;
 import ckTrigger.TriggerResult;
 
 public class CKGridActorOverLay extends CKGridActor
@@ -15,7 +17,10 @@ public class CKGridActorOverLay extends CKGridActor
 	
 	
 	
-	
+	public CKGridActorOverLay()
+	{
+		this.setSharedTriggers(new CKSharedTriggerList("NULL"));
+	}
 	
 	
 	

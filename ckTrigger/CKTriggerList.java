@@ -22,7 +22,7 @@ public class CKTriggerList extends CKTriggerListNode implements CKXMLAsset<CKTri
 	 */
 	private static final long serialVersionUID = 8352591688558659358L;
 	//private String name;
-	private String AID;
+	private String AID="";
 	
 	public CKTriggerList()
 	{
