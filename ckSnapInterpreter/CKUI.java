@@ -19,6 +19,7 @@ import ckGameEngine.actions.CKSimpleGUIAction;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckSatisfies.PositionReachedSatisfies;
 import ckSatisfies.Satisfies;
+import ckSatisfies.TrueSatisfies;
 import ckSnapInterpreter.CKDrawerTab;
 import ckTrigger.CKTrigger;
 import ckTrigger.CKTriggerList;
@@ -78,8 +79,8 @@ public class CKUI extends Application
     	menuPane.setPrefSize(200, 200);
   
     	//populateModel();
-    	Quest q = createTestQuest();
-    	CKGameObjectsFacade.setQuest(q);
+    	quest = createTestQuest();
+    	CKGameObjectsFacade.setQuest(quest);
     	
     	
  
@@ -143,9 +144,9 @@ public class CKUI extends Application
 	    
 	    
 	    //now to add the game Thread....
-	    //Thread T = new gameThread();
-		//T.start();
-	    q.gameLoop();
+	    Thread T = new gameThread();
+		T.start();
+	    //q.gameLoop();
     }
     
 
@@ -213,7 +214,16 @@ public class CKUI extends Application
 		 public void run()
 		 {
 			 System.out.println("STARTING GAME LOOP");
-			 quest.gameLoop();
+			 try
+			 {
+				 quest.gameLoop();
+			 }
+			 catch (Exception e)
+			 {
+				System.out.println(e);
+			 }
+			 
+			 System.out.println("ENDING GAME LOOP");
 		 }
 }
     public Quest createTestQuest()
@@ -230,10 +240,10 @@ public class CKUI extends Application
 /*		CKSequentialAction start = new CKSequentialAction();
 		start.add()
 	*/
-	/*	q.addTrigger(new CKTrigger(new TrueSatisfies(), 
+		q.addTrigger(new CKTrigger(new TrueSatisfies(), 
 				new CKSimpleGUIAction("Dad","Lets race to get to the fridge"),
 				TriggerResult.INIT_ONLY));
-		*/
+		
 		//Win actions
 		q.addTrigger(new CKTrigger(winSatisfies1,
 				new CKSimpleGUIAction("Baby","GAGA!!"),TriggerResult.SATISFIED_END_QUEST));	
@@ -241,7 +251,12 @@ public class CKUI extends Application
 				new CKSimpleGUIAction("Mom","Looks like I won.  Who wants brownies?"),TriggerResult.SATISFIED_END_QUEST));	
 		q.addTrigger(new CKTrigger(winSatisfies3,
 				new CKSimpleGUIAction("Dad","SPOOON!!"),TriggerResult.SATISFIED_END_QUEST));	
-	
+	/*
+		q.addTrigger(new CKTrigger(new TrueSatisfies(),
+				new CKSimpleGUIAction("Dad","SPOOON!!"),TriggerResult.SATISFIED_END_QUEST));	
+	*/
+		
+		
 	populateModel(q);
 	return new Quest(q);
 	}
