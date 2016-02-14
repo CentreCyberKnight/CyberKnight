@@ -108,13 +108,16 @@ public class CKSpellObject {
 		System.out.println(limits.treeString());
 		System.out.println(modifier+"  "+val);
 
+		/*
+		 * 
+		 * FIXME We will need to uncomment this in the future.
 		if (!limits.meetsRequirements(chapter, val, modifier))
 		{
 			unknownSpell("you don't know that spell " + chapter + ":"
 					+ modifier + "-" + val);
 			return false;
 		}
-
+*/
 		// now test for enough CP - spell fizzle
 		int ap = CKPlayerObjectsFacade.getCPTurnRemaining();
 		System.out.println("points left?" + ap);

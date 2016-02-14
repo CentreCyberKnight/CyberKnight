@@ -32,7 +32,7 @@
     needs blocks.js, threads.js, morphic.js and widgets.js
 
 
-    toc
+    to
     ---
     the following list shows the order in which all constructors are
     defined. Use this list to locate code in this document:
@@ -220,12 +220,12 @@ SpriteMorph.prototype.initBlocks = function () {
             spec: 'near',
         },
         //fire
-        inferno: {
+/*        bolt: {
             only: SpriteMorph,
             type: 'command',
             category: 'fire',
-            spec: 'Inferno at %dst',  //%obj puts in an arrow, dst has a drop down
-        },
+            spec: 'bolt at %dst for %n',  //%obj puts in an arrow, dst has a drop down
+        },*/
         ignite: {
             only: SpriteMorph,
             type: 'command',
@@ -1306,6 +1306,95 @@ SpriteMorph.prototype.initBlocks = function () {
 
 SpriteMorph.prototype.initBlocks();
 
+
+
+CyberKnight = {};
+
+CyberKnight.castSpell = function(catagory,spell,cp,target,key)
+{
+	jsDebug.print(catagory+" "+spell+" for "+cp);
+
+	var complete = javaMove.spell(catagory,spell,cp,target,key)
+	if(complete==null)
+	{
+		jsDebug.print("Spell Fails--Needs to stop here!");
+	}
+	else if (!complete.isSet())
+	{
+		ide.stage.threads.pauseAll(ide.stage);
+	}	 
+}
+
+
+CyberKnight.spells =
+[
+["fire","bolt",-1],
+["water","dance",-1]
+];
+
+
+CyberKnight.craftName = function(spell)
+{
+	return "CK"+spell[0]+"_"+spell[1];
+}
+
+
+CyberKnight.writeSpellCommands = function()
+{
+	
+	//jsDebug.print("Does this work?);
+	
+	
+	for(var i=0;i<CyberKnight.spells.length;i++)
+	{
+		var spell = CyberKnight.spells[i];
+		var name = CyberKnight.craftName(spell);
+		jsDebug.print("Loading "+spell+" named"+name);
+
+		
+		//first write block		
+		var cpSlot = "";
+		if(spell[2]==-1) { cpSlot = " for %n"; }
+
+		SpriteMorph.prototype.blocks[name] =
+		{
+			only: SpriteMorph,
+			type: 'command',
+			category: spell[0],
+			spec:spell[1]+" at %dst"+cpSlot,
+		};
+		//then link the target	
+		
+		SpriteMorph.prototype[name] = function (target,cp)
+		{	
+			var CP = cp;
+			if(spell[2]>=0) { CP = spell[2]; }			
+			CyberKnight.castSpell(spell[0],spell[1],CP,target,"");
+		}
+	}
+	
+};
+
+/**
+	puts blocks into the categories so we can see them.
+*/
+CyberKnight.pushCategories = function(cat,blocks,block)
+{
+	for(var i=0;i<CyberKnight.spells.length;i++)
+	{
+		var spell = CyberKnight.spells[i];
+		if(spell[0]===cat)
+		{	
+			var name = CyberKnight.craftName(spell);
+			blocks.push(block(name));	
+		}	
+	}
+};
+
+
+CyberKnight.writeSpellCommands();
+	
+
 SpriteMorph.prototype.initBlockMigrations = function () {
     SpriteMorph.prototype.blockMigrations = {
         doStopAll: {
@@ -1837,28 +1926,14 @@ SpriteMorph.prototype.blockTemplates = function (category) {
             }
         }
     }
+    //Called this function here.  Any other way to do this? TODO
+    CyberKnight.pushCategories(cat,blocks,block);
+    
     if (cat == 'aim')
     {
 	    blocks.push(block('front'));
     	blocks.push(block('near'));    
-    }
-    else if (cat === 'fire') {
-    	blocks.push(block('inferno'));
-    	blocks.push(block('ignite'));
-    	blocks.push(block('flash'));
-    	blocks.push(block('fusion'));
-    	blocks.push(block('fireEat'));
-    } 
-    
-    else if (cat === 'wind') {
-    	blocks.push(block('shock'));
-    	blocks.push(block('storm'));
-    	blocks.push(block('revive'));
-    }
-    else if (cat === 'water') {
-    	blocks.push(block('rain'));
-    }
-    
+    }    
     else if (cat === 'motion') {
 
         blocks.push(block('forward'));
@@ -3485,30 +3560,12 @@ SpriteMorph.prototype.near = function (){
 
 
 
-
-
 // SpriteMorph fire primitives
-
-SpriteMorph.prototype.inferno = function (target){
-	//put code here
-	jsDebug.print("in inferno");
-//	javaMove.move2("left", 1);
-//	javaMove.aiming("target", 1);
-//	jsDebug.print("leaving inferno");
-
-	var complete = javaMove.spell("fire","bolt",5,target,"");
-	if(complete==null)
-	{
-		jsDebug.print("Spell Fails--Needs to stop here!");
-	}
-	else if (!complete.isSet())
-	{
-		ide.stage.threads.pauseAll(ide.stage);
-	}
-	
-	 
+/*
+SpriteMorph.prototype['bolt'] = function (target,cp){
+	CyberKnight.castSpell("fire","bolt",cp,target,"");
 };
-
+*/
 SpriteMorph.prototype.ignite = function (){
 	//put code here
 };

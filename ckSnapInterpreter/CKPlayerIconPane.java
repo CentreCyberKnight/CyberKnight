@@ -39,7 +39,7 @@ public void setIcons(CKData data) {
 					Button b = new Button(p.getName(), new ImageView(p.getFXPortrait()));
 					b.setContentDisplay(ContentDisplay.TOP);
 					b.setOnAction(e -> {	
-						data.setPlayer(p);
+					data.setPlayer(p);
 						
 //						setAllArtifactsNodes();
 //						ControlSpells.getChildren().clear();
