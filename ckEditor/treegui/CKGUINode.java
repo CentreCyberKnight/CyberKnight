@@ -327,13 +327,16 @@ public class CKGUINode extends DefaultMutableTreeNode implements CKGUIEditable
 		
 		JMenuItem moveUpAction = new JMenuItem("Move Action Up");
 		if(myparent!=null &&!myparent.childOrderLocked && 
-				myparent.childRemoveable && myparent.getFirstChild()!=null && myparent.getFirstChild() !=this)
+				myparent.childRemoveable && myparent.children!=null &&myparent.children.size()>0
+				&& myparent.getFirstChild()!=null && myparent.getFirstChild() !=this)
 		{moveUpAction.addActionListener(new TreeMoveUpActionListener(tree));}
 		else {moveUpAction.setEnabled(false); }
 		popup.add(moveUpAction);
 
 		JMenuItem moveDownAction = new JMenuItem("Move Action Down");
-		if(myparent!=null &&!myparent.childOrderLocked && myparent.childRemoveable && myparent.getLastChild() !=this)
+		if(myparent!=null &&!myparent.childOrderLocked &&  
+				myparent.children!=null &&myparent.children.size()>0 &&
+				myparent.childRemoveable && myparent.getLastChild() !=this)
 		{moveDownAction.addActionListener(new TreeMoveDownActionListener(tree));}
 		else { moveDownAction.setEnabled(false); }
 		popup.add(moveDownAction);

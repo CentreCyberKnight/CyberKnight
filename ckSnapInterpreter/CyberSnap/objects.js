@@ -32,7 +32,7 @@
     needs blocks.js, threads.js, morphic.js and widgets.js
 
 
-    to
+    toc
     ---
     the following list shows the order in which all constructors are
     defined. Use this list to locate code in this document:
@@ -164,7 +164,7 @@ SpriteMorph.prototype.categories =
      	'water',
         'control',
         'wind',
-        'voice',
+        'operators',
         'earth',
         'variables',
         'lightning',
@@ -179,7 +179,7 @@ SpriteMorph.prototype.blockColor = {
     wind : new Color(224, 224, 224),
     control : new Color(128, 44, 39),
     lightning : new Color(255, 239, 0),
-    voice : new Color(144, 39, 156),
+    operators : new Color(144, 39, 156),
     variables : new Color(94, 110, 99),
     earth : new Color(13, 156, 51),
     other : new Color(243, 118, 29)
@@ -219,77 +219,6 @@ SpriteMorph.prototype.initBlocks = function () {
             category: 'aim',
             spec: 'near',
         },
-        //fire
-/*        bolt: {
-            only: SpriteMorph,
-            type: 'command',
-            category: 'fire',
-            spec: 'bolt at %dst for %n',  //%obj puts in an arrow, dst has a drop down
-        },*/
-        ignite: {
-            only: SpriteMorph,
-            type: 'command',
-            category: 'fire',
-            spec: 'Ignite',
-        },
-        flash: {
-            only: SpriteMorph,
-            type: 'command',
-            category: 'fire',
-            spec: 'Flash-Blind %n Times',
-            defaults: [5]
-        },
-        fusion: {
-            only: SpriteMorph,
-            type: 'command',
-            category: 'fire',
-            spec: 'Fusion',
-        },
-        fireEat: {
-            only: SpriteMorph,
-            type: 'command',
-            category: 'fire',
-            spec: 'Fire Eat',
-        },
-        
-        
-        //Water
-		rain: {
-            only: SpriteMorph,
-            type: 'command',
-            category: 'water',
-            spec: 'Rain',
-        },
-        
-        
-        
-        
-        //Wind
-        shock: {
-            only: SpriteMorph,
-            type: 'command',
-            category: 'wind',
-            spec: 'Shock',
-        },
-        
-        storm: {
-            only: SpriteMorph,
-            type: 'command',
-            category: 'wind',
-            spec: 'Storm',
-        },
-        
-        revive: {
-            only: SpriteMorph,
-            type: 'command',
-            category: 'wind',
-            spec: 'Revive',
-        },
-        
-        //Earth
-        
-        
-        //Lightning
 
         // Motion
         forward: {
@@ -1329,7 +1258,10 @@ CyberKnight.castSpell = function(catagory,spell,cp,target,key)
 CyberKnight.spells =
 [
 ["fire","bolt",-1],
-["water","dance",-1]
+["water","poison",-1],
+["fire","sunbeam",-1],
+["earth","slice",-1],
+["wind","blow off balance",-1],
 ];
 
 
@@ -1365,21 +1297,28 @@ CyberKnight.writeSpellCommands = function()
 		};
 		//then link the target	
 		
-		SpriteMorph.prototype[name] = function (target,cp)
+		SpriteMorph.prototype[name] = CyberKnight.createSpellFunction(spell);
+	}
+	
+};
+
+CyberKnight.createSpellFunction = function(spell)
+{
+	return  function (target,cp)
 		{	
 			var CP = cp;
 			if(spell[2]>=0) { CP = spell[2]; }			
 			CyberKnight.castSpell(spell[0],spell[1],CP,target,"");
-		}
-	}
-	
+		};
 };
+
 
 /**
 	puts blocks into the categories so we can see them.
 */
 CyberKnight.pushCategories = function(cat,blocks,block)
 {
+	jsDebug.print("Printing for "+cat);
 	for(var i=0;i<CyberKnight.spells.length;i++)
 	{
 		var spell = CyberKnight.spells[i];
@@ -1939,7 +1878,7 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         blocks.push(block('forward'));
         blocks.push(block('turn'));
         blocks.push(block('turnLeft'));
-        blocks.push('-');
+/*        blocks.push('-');
         blocks.push(block('setHeading'));
         blocks.push(block('doFaceTowards'));
         blocks.push('-');
@@ -1960,9 +1899,9 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         blocks.push(block('yPosition'));
         blocks.push(watcherToggle('direction'));
         blocks.push(block('direction'));
-
+*/
     } 
-    
+  /*  
     else if (cat === 'looks') {
 
         blocks.push(block('doSwitchToCostume'));
@@ -2059,7 +1998,8 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         blocks.push('-');
         blocks.push(block('doStamp'));
 
-    } else if (cat === 'control') {
+    }*/
+     else if (cat === 'control') {
 
         blocks.push(block('receiveGo'));
         blocks.push(block('receiveKey'));
@@ -2261,8 +2201,10 @@ SpriteMorph.prototype.blockTemplates = function (category) {
 
     /////////////////////////////////
 
-    } else if (cat === 'variables') {
-
+    }
+    else if (cat === 'variables') {
+		jsDebug.print("INSIDE VARIABLES");
+    
         button = new PushButtonMorph(
             null,
             function () {
@@ -2320,10 +2262,10 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         blocks.push(block('doChangeVar'));
         blocks.push(block('doShowVar'));
         blocks.push(block('doHideVar'));
-        blocks.push(block('doDeclareVariables'));
+       blocks.push(block('doDeclareVariables'));
 
         blocks.push('=');
-
+/*
         blocks.push(block('reportNewList'));
         blocks.push('-');
         blocks.push(block('reportCONS'));
@@ -2398,7 +2340,7 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         button.userMenu = helpMenu;
         button.selector = 'addCustomBlock';
         button.showHelp = BlockMorph.prototype.showHelp;
-        blocks.push(button);
+        blocks.push(button);*/
     }
     return blocks;
 };
@@ -3566,44 +3508,6 @@ SpriteMorph.prototype['bolt'] = function (target,cp){
 	CyberKnight.castSpell("fire","bolt",cp,target,"");
 };
 */
-SpriteMorph.prototype.ignite = function (){
-	//put code here
-};
-
-SpriteMorph.prototype.flash = function (){
-	//put code here
-};
-
-SpriteMorph.prototype.fusion = function (){
-	//put code here
-};
-
-SpriteMorph.prototype.fireEat = function (){
-	//put code here
-};
-
-SpriteMorph.prototype.rain = function (){
-	jsDebug.print("Making it Rain");
-	//works javaMove.move2("left", 1);
-	//var target = javaMove.aim("front",1); //no work:(
-	var target = javaMove.aiming("front",1);
-	javaMove.spell("Water","rain",1,target,"");
-};
-
-
-
-
-SpriteMorph.prototype.storm = function (){
-	//put code here
-};
-
-SpriteMorph.prototype.shock = function (){
-	//put code here
-};
-
-SpriteMorph.prototype.revive = function (){
-	//put code here
-};
 
 // SpriteMorph motion primitives
 
@@ -5644,10 +5548,10 @@ StageMorph.prototype.blockTemplates = function (category) {
         blocks.push(block('doDeclareVariables'));
 
         blocks.push('=');
-
+/*
         blocks.push(block('reportNewList'));
         blocks.push('-');
-        blocks.push(block('reportCONS'));
+      blocks.push(block('reportCONS'));
         blocks.push(block('reportListItem'));
         blocks.push(block('reportCDR'));
         blocks.push('-');
@@ -5658,7 +5562,7 @@ StageMorph.prototype.blockTemplates = function (category) {
         blocks.push(block('doDeleteFromList'));
         blocks.push(block('doInsertInList'));
         blocks.push(block('doReplaceInList'));
-
+*/
     // for debugging: ///////////////
 
         if (this.world().isDevMode) {
