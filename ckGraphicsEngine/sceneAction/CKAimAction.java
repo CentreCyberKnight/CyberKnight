@@ -57,8 +57,8 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 	boolean closing = false;
 	private Collection<CKPosition> offsets;
 	
-	public CKAimAction(CKPosition originLocation, float minDistance,
-			float maxDistance, CKSelectedPositionsListeners callback,
+	public CKAimAction(CKPosition originLocation, double minDistance,
+			double maxDistance, CKSelectedPositionsListeners callback,
 			SelectAreaType type)
 	{
 		super(0,1000 );
@@ -74,8 +74,8 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 
 	
 
-	public CKAimAction(CKPosition originLocation, float minDistance,
-			float maxDistance, CKSelectedPositionsListeners callback,
+	public CKAimAction(CKPosition originLocation, double minDistance,
+			double maxDistance, CKSelectedPositionsListeners callback,
 			Collection<CKPosition> offsets)
 	{
 		super(0,1000 );

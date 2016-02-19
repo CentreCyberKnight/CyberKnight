@@ -5,6 +5,7 @@ import java.util.Collection;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.LogListener;
 import ckGameEngine.CKGrid;
+import ckGraphicsEngine.CKGraphicsEngine.SelectAreaType;
 
 
 public interface CKGraphicsEngine
@@ -253,7 +254,7 @@ public interface CKGraphicsEngine
 	 * @param callback - who to report selected positions to.
 	 * @param type - Provides alternative selection types. 
 	 */
-	void selectArea(CKPosition originLocation,float minDistance,float maxDistance,
+	void selectArea(CKPosition originLocation,double minDistance,double maxDistance,
 			                     CKSelectedPositionsListeners callback,	SelectAreaType type);
 	
 	/**
@@ -264,7 +265,7 @@ public interface CKGraphicsEngine
 	 * @param callback - who to report selected positions to.
 	 * @param offsets - A collection of CKPositions that describe offsets from the selected tile that will be selected.
 	 */
-	void selectAreaOffsets(CKPosition originLocation,float minDistance,float maxDistance,
+	void selectAreaOffsets(CKPosition originLocation,double minDistance,double maxDistance,
 			                     CKSelectedPositionsListeners callback,	Collection<CKPosition> offsets);
 	
 	
@@ -301,5 +302,6 @@ public interface CKGraphicsEngine
 			Collection<CKPosition> possibles,
 			CKSelectedPositionsListeners callback,
 			Collection<CKPosition> offsets);
+
 
 }

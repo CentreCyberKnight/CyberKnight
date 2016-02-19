@@ -20,6 +20,7 @@ import static ckCommonUtils.CKPropertyStrings.P_TARGET;
 import static ckCommonUtils.CKPropertyStrings.P_SHORT_TARGET;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.python.modules.time.Time;
@@ -30,6 +31,8 @@ import netscape.javascript.JSObject;
 import ckCommonUtils.CKAreaPositions;
 import ckCommonUtils.CKDelayedObject;
 import ckCommonUtils.CKPosition;
+import ckDatabase.AimDescriptionFactory;
+import ckGameEngine.AimDescription;
 import ckGameEngine.CKAbstractGridItem;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKBook;
@@ -139,18 +142,7 @@ public class CKSpellObject {
 
 	}
 	
-/*	public boolean spell(String chapter, String page, int CP, 
-			CKDelayedObject<CKPosition> target,
-			String key)
-	{
-		System.out.println("You are in the delayedSpell");
-		if (! target.isSet())
-		{
-			throw new NullPointerException("CKDelayedObject has not been set");
-		}
-		return spell(chapter,page,CP,target.getValue(),key);
-	}
-	*/
+
 	
 	public CKDelayedObject<Boolean> spell(String chapter, String page, int CP, 
 			Object protoTarget, //CKPosition target or CKDelayedObject<CKPosition>,
@@ -213,138 +205,90 @@ public class CKSpellObject {
 	
 
 	
-	
-	public CKDelayedObject<CKPosition> delayAim(String modifier, int CP)
-	{
-		System.out.println("DELAY Aiming:" +modifier);
-		if (attemptSpell(CH_AIM, CP, modifier))
-		{
-			if (modifier.equalsIgnoreCase(P_SHORT_TARGET))
-			{
-				CKPosition quick = getCharacter().getTurnController()
-						.useStoredAim();
-				if (quick != null)
-				{
-					
-					return new CKDelayedObject<CKPosition>(quick);
-				}
 
-				CKDelayedObject<CKPosition> delPos = new CKDelayedObject<>();
-				Thread t = new Thread()
-						{
-				
-						public void run()
-						{
-							CKSelection sel = new CKSelection();
-							CKPosition pos = sel.SelectTarget(getCharacter().getPos(), 0,
-									CP);
-
-							getCharacter().getTurnController().fireAimLogEvent(pos);
-							delPos.setValue(pos);
-							Platform.runLater(new Runnable() {
-									public void run()
-									{
-										WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
-										webEngine.executeScript("ide.stage.threads.resumeAll(ide.stage)");
-									}
-							});
-							//do call back here
-						}			
-						};
-						t.start();
-				return delPos;
-			} else if (modifier.equalsIgnoreCase(P_STAR))
-			{
-				CKPosition quick = getCharacter().getTurnController()
-						.useStoredAim();
-				if (quick != null)
-				{
-					return new CKDelayedObject<CKPosition>(quick);
-				}
-
-				CKSelection sel = new CKSelection();
-				ArrayList<CKPosition> offsets = new ArrayList<CKPosition>();
-				offsets.add(new CKPosition(1, 1));
-				offsets.add(new CKPosition(1, -1));
-				offsets.add(new CKPosition(-1, 1));
-				offsets.add(new CKPosition(-1, -1));
-				CKPosition pos = sel.SelectTargetArea(getCharacter().getPos(),
-						0, CP, offsets);
-
-				getCharacter().getTurnController().fireAimLogEvent(pos);
-				
-				return new CKDelayedObject<CKPosition>(pos);
-				//return pos;
-			}
-		}
-		return null;
-
-	}
-	
-	
-	public CKPosition aim(String modifier, int CP)
+	public CKDelayedObject<CKPosition> aim(String modifier, int CP)
 	{
 		System.out.println("Aiming: "+modifier);
 		if (attemptSpell(CH_AIM, CP, modifier))
 		{
-			if (modifier.equalsIgnoreCase(P_SELF))
-			{
-				return getCharacter().getPos();
-			}
-			if (modifier.equalsIgnoreCase(P_FRONT))
-			{
-				return getCharacter().getNextPosition();
-			} else if (modifier.equalsIgnoreCase(P_TARGET))
-			{
-				CKPosition quick = getCharacter().getTurnController()
-						.useStoredAim();
-				if (quick != null)
-				{
-					return quick;
-				}
 
-				
+			CKPosition quick = getCharacter().getTurnController()
+					.useStoredAim();
+			if (quick != null)
+			{
+				return new CKDelayedObject<CKPosition>(quick);
+			}
+
+			
+			
+			//check DB
+			
+			AimDescription aim = AimDescriptionFactory.getInstance()
+					.getAsset(modifier);
+
+			CKGridActor actor = getCharacter();
+			CKPosition origin = actor.getPos(); 
+			Direction dir = actor.getDirection();
+			CKPosition [] offsets = AimDescription.calculateTarget(origin,
+											aim.getOffsets(dir));
+
+			CKDelayedObject<CKPosition> target = new CKDelayedObject<>();
+			
+			if(aim.isAutoResolve())
+			{
+				if(offsets.length==1) 
+				{
+					target.setValue(offsets[0]);
+				}
+				else
+				{
+					target.setValue(new CKAreaPositions(origin,offsets));
+				}
+				return target;
+			}
+			else
+			{
+
 				Thread t = new Thread()
-						{
-				
-						public void run()
-						{
-							CKSelection sel = new CKSelection();
-							CKPosition pos = sel.SelectTarget(getCharacter().getPos(), 0,
-									CP);
-
-							getCharacter().getTurnController().fireAimLogEvent(pos);
-							//do call back here
-						}			
-
-						};
-						t.start();
-				return null;
-			} else if (modifier.equalsIgnoreCase(P_STAR))
-			{
-				CKPosition quick = getCharacter().getTurnController()
-						.useStoredAim();
-				if (quick != null)
 				{
-					return quick;
-				}
+					
+					public void run()
+					{
+						CKSelection sel = new CKSelection();
+						//blocking call
+						CKPosition pos;
+						if(offsets.length==1)
+						{
+							pos = sel.SelectTarget(origin, 
+									aim.getMinDistance(),aim.getMaxDistance());
+						}
+						else
+						{
+						pos = sel.SelectTargetArea(origin,
+								aim.getMinDistance(),aim.getMaxDistance(),
+								new ArrayList<CKPosition>(Arrays.asList(offsets)));
+						}
+						getCharacter().getTurnController().fireAimLogEvent(pos);
 
-				CKSelection sel = new CKSelection();
-				ArrayList<CKPosition> offsets = new ArrayList<CKPosition>();
-				offsets.add(new CKPosition(1, 1));
-				offsets.add(new CKPosition(1, -1));
-				offsets.add(new CKPosition(-1, 1));
-				offsets.add(new CKPosition(-1, -1));
-				CKPosition pos = sel.SelectTargetArea(getCharacter().getPos(),
-						0, CP, offsets);
-
-				getCharacter().getTurnController().fireAimLogEvent(pos);
+						target.setValue(pos);
+						Platform.runLater(new Runnable() {
+							public void run()
+										{
+											WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
+											webEngine.executeScript("ide.stage.threads.resumeAll(ide.stage)");
+										}
+								});
+								//do call back here
+							}			
+				};
+				t.start();
+				return target;	
 				
-
-				return pos;
+				
 			}
-		}		return null;
-
+		}
+		return null;
+			
 	}
 	
 

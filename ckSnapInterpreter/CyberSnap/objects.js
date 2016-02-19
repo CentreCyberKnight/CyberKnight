@@ -207,6 +207,7 @@ SpriteMorph.prototype.bubbleMaxTextWidth = 130;
 SpriteMorph.prototype.initBlocks = function () {
     SpriteMorph.prototype.blocks = {
         //aim
+    	/*
     	front: {
     	    only: SpriteMorph,
             type: 'reporter',
@@ -219,7 +220,7 @@ SpriteMorph.prototype.initBlocks = function () {
             category: 'aim',
             spec: 'near',
         },
-
+*/
         // Motion
         forward: {
             only: SpriteMorph,
@@ -1254,16 +1255,51 @@ CyberKnight.castSpell = function(catagory,spell,cp,target,key)
 	}	 
 }
 
+CyberKnight.castAimSpell = function(catagory,spell,cp,target,key)
+{
+	var tar =javaMove.aim(spell,cp);
+	
+	
+	if(! tar.isSet())
+	{
+		jsDebug.print("Pausing for AIM spell to complete");
+		ide.stage.threads.pauseAll(ide.stage);
+	}
+	jsDebug.print("TARGET IS"+tar+" "+tar.isSet());
+	return tar;
+}
+
 
 CyberKnight.spells =
 [
-["fire","bolt",-1],
 ["water","poison",-1],
-["fire","sunbeam",-1],
-["earth","slice",-1],
 ["wind","blow off balance",-1],
+["water","make wet",-1],
+["water","ice walls",-1],
+["water","drown",-1],
+["water","freeze water",-1],
+["water","cold",-1],
+["water","immune to fire",-1],
+["water","invisibility",-1],
+["fire","bolt",-1],
+["fire","sunbeam",-1],
+["fire","flash",8],
+["fire","heat up",-1],
+["fire","Burn it down",-1],
+["fire","soul burn",10],
+["earth","slice",-1],
+["earth","wall",-1],
+["earth","dig",-1],
+["earth","projectile",-1],
+["earth","mud",10],
+["earth","stone skin",10],
 ];
 
+CyberKnight.aimSpells =
+[
+['aim','short target',4,'Near 1'],
+['aim','front',1,'Front 1']
+];
 
 CyberKnight.craftName = function(spell)
 {
@@ -1281,7 +1317,7 @@ CyberKnight.writeSpellCommands = function()
 	{
 		var spell = CyberKnight.spells[i];
 		var name = CyberKnight.craftName(spell);
-		jsDebug.print("Loading "+spell+" named"+name);
+		jsDebug.print("Loading "+spell+" named "+name);
 
 		
 		//first write block		
@@ -1313,6 +1349,51 @@ CyberKnight.createSpellFunction = function(spell)
 };
 
 
+/**AIM STUFF **/
+
+CyberKnight.writeAimSpellCommands = function()
+{
+	
+	//jsDebug.print("Does this work?);
+	
+	
+	for(var i=0;i<CyberKnight.aimSpells.length;i++)
+	{
+		var spell = CyberKnight.aimSpells[i];
+		var name = CyberKnight.craftName(spell);
+		jsDebug.print("Loading "+spell+" named "+name);
+
+		
+		//first write block		
+		var cpSlot = "";
+		if(spell[2]==-1) { cpSlot = " for %n"; }
+
+		SpriteMorph.prototype.blocks[name] =
+		{
+			only: SpriteMorph,
+			type: 'reporter',
+			category: spell[0],
+			spec:spell[3]+cpSlot,
+		};
+		//then link the target	
+		
+		SpriteMorph.prototype[name] = CyberKnight.createAimSpellFunction(spell);
+		
+	}
+	
+};
+
+CyberKnight.createAimSpellFunction = function(spell)
+{
+	return  function (target,cp)
+		{	
+			var CP = cp;
+			if(spell[2]>=0) { CP = spell[2]; }			
+			return CyberKnight.castAimSpell(spell[0],spell[1],CP,target,"");
+		};
+};
+
+
 /**
 	puts blocks into the categories so we can see them.
 */
@@ -1328,11 +1409,26 @@ CyberKnight.pushCategories = function(cat,blocks,block)
 			blocks.push(block(name));	
 		}	
 	}
+
+
+	for(var i=0;i<CyberKnight.aimSpells.length;i++)
+	{
+		var spell = CyberKnight.aimSpells[i];
+		//jsDebug.print("Printing for "+cat+" "+spell[0]+"  "+spell[0]===cat);
+		
+		if(spell[0]===cat)
+		{	
+			var name = CyberKnight.craftName(spell);
+			blocks.push(block(name));	
+		}	
+	}
+	
+	
 };
 
 
 CyberKnight.writeSpellCommands();
-	
+CyberKnight.writeAimSpellCommands();	
 
 SpriteMorph.prototype.initBlockMigrations = function () {
     SpriteMorph.prototype.blockMigrations = {
@@ -1866,14 +1962,17 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         }
     }
     //Called this function here.  Any other way to do this? TODO
+    
     CyberKnight.pushCategories(cat,blocks,block);
     
-    if (cat == 'aim')
+/*    if (cat === 'aim')
     {
 	    blocks.push(block('front'));
     	blocks.push(block('near'));    
     }    
-    else if (cat === 'motion') {
+    else*/
+    
+   	if (cat === 'motion') {
 
         blocks.push(block('forward'));
         blocks.push(block('turn'));
@@ -3485,21 +3584,22 @@ SpriteMorph.prototype.nestingBounds = function () {
     return result;
 };
 
-
+/*
 //SpriteMorpg aim primitives
+
 SpriteMorph.prototype.front = function (){
 	return javaMove.aim("front",1);
 };
 
 SpriteMorph.prototype.near = function (){
-	var tar =javaMove.delayAim("short target",4);
+	var tar =javaMove.aim("short target",4);
 	if(! tar.isSet())
 	{
 		ide.stage.threads.pauseAll(ide.stage);
 	}
 	return tar;
 };
-
+*/
 
 
 // SpriteMorph fire primitives

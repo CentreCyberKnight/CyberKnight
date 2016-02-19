@@ -18,7 +18,8 @@ public class CKSelection implements CKSelectedPositionsListeners
 		
 	}
 	
-	public synchronized CKPosition SelectTarget(CKPosition originLocation, float minDistance,float maxDistance)
+	public synchronized CKPosition SelectTarget(CKPosition originLocation, 
+			double minDistance,double maxDistance)
 	{
 		
 		while(! ready)
@@ -42,7 +43,7 @@ public class CKSelection implements CKSelectedPositionsListeners
 	}
 
 	public synchronized CKPosition SelectTargetArea(CKPosition originLocation, 
-			float minDistance,float maxDistance,Collection <CKPosition>offsets)
+			double minDistance,double maxDistance,Collection <CKPosition>offsets)
 	{
 		
 		while(! ready)

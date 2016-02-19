@@ -766,8 +766,8 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 
 
 	@Override
-	public void selectArea(CKPosition originLocation, float minDistance,
-			float maxDistance, CKSelectedPositionsListeners callSOUTHEAST,
+	public void selectArea(CKPosition originLocation, double minDistance,
+			double maxDistance, CKSelectedPositionsListeners callSOUTHEAST,
 			SelectAreaType type)
 	{
 		//start new transaction
@@ -786,8 +786,8 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 
 
 	@Override
-	public void selectAreaOffsets(CKPosition originLocation, float minDistance,
-			float maxDistance, CKSelectedPositionsListeners callSOUTHEAST,
+	public void selectAreaOffsets(CKPosition originLocation, double minDistance,
+			double maxDistance, CKSelectedPositionsListeners callSOUTHEAST,
 			Collection<CKPosition> offsets)
 	{
 		//start new transaction
