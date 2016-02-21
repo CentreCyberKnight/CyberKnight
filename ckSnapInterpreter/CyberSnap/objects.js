@@ -160,7 +160,7 @@ SpriteMorph.prototype.categories =
     [
      	'aim',
      	'fire',
-        'motion',
+        'move',
      	'water',
         'control',
         'wind',
@@ -172,7 +172,7 @@ SpriteMorph.prototype.categories =
     ];
 
 SpriteMorph.prototype.blockColor = {
-    motion : new Color(203, 122, 0),
+    move : new Color(203, 122, 0),
     aim:new Color(0,255,255),
     fire : new Color(247, 0, 0),
     water : new Color(0, 0, 247),
@@ -222,24 +222,25 @@ SpriteMorph.prototype.initBlocks = function () {
         },
 */
         // Motion
-        forward: {
+/*        forward: {
             only: SpriteMorph,
             type: 'command',
             category: 'motion',
             spec: 'move %n steps',
             defaults: [10]
         },
+        */
         turn: {
             only: SpriteMorph,
             type: 'command',
-            category: 'motion',
+            category: '<',
             spec: 'turn %clockwise %n degrees',
             defaults: [15]
         },
         turnLeft: {
             only: SpriteMorph,
             type: 'command',
-            category: 'motion',
+            category: '<',
             spec: 'turn %counterclockwise %n degrees',
             defaults: [15]
         },
@@ -1269,7 +1270,20 @@ CyberKnight.castAimSpell = function(catagory,spell,cp,target,key)
 	return tar;
 }
 
+CyberKnight.castSelfSpell = function(catagory,spell,cp,key)
+{
+	jsDebug.print(catagory+" "+spell+" for "+cp);
 
+	var complete = javaMove.selfSpell(catagory,spell,cp,key)
+	if(complete==null)
+	{
+		jsDebug.print("Spell Fails--Needs to stop here!");
+	}
+	else if (!complete.isSet())
+	{
+		ide.stage.threads.pauseAll(ide.stage);
+	}	 
+}
 CyberKnight.spells =
 [
 ["water","poison",-1],
@@ -1295,10 +1309,22 @@ CyberKnight.spells =
 ["earth","stone skin",10],
 ];
 
+CyberKnight.selfSpells = 
+[
+["move","forward",-1],
+["move","left",1],
+["move","right",1],
+]
+
 CyberKnight.aimSpells =
 [
-['aim','short target',4,'Near 1'],
-['aim','front',1,'Front 1']
+['aim','self',0,"Self"],
+['aim','swipe',2,"Swipe"],
+['aim','front',1,'Front'],
+['aim','short target',2,'Near'],
+['aim','mid target',4,'Ranged'],
+['aim','far target',6,'Distant'],
+['aim','star',3,"Star"],
 ];
 
 CyberKnight.craftName = function(spell)
@@ -1394,6 +1420,52 @@ CyberKnight.createAimSpellFunction = function(spell)
 };
 
 
+
+/**SELF SPELL STUFF **/
+
+CyberKnight.writeSelfSpellCommands = function()
+{
+	
+	//jsDebug.print("Does this work?);
+	
+	
+	for(var i=0;i<CyberKnight.selfSpells.length;i++)
+	{
+		var spell = CyberKnight.selfSpells[i];
+		var name = CyberKnight.craftName(spell);
+		jsDebug.print("Loading "+spell+" named "+name);
+
+		
+		//first write block		
+		var cpSlot = "";
+		if(spell[2]==-1) { cpSlot = " for %n"; }
+
+		SpriteMorph.prototype.blocks[name] =
+		{
+			only: SpriteMorph,
+			type: 'command',
+			category: spell[0],
+			spec:spell[1]+cpSlot,
+		};
+		//then link the target	
+		
+		SpriteMorph.prototype[name] = CyberKnight.createSelfSpellFunction(spell);
+		
+	}
+	
+};
+
+CyberKnight.createSelfSpellFunction = function(spell)
+{
+	return  function (cp)
+		{	
+			var CP = cp;
+			if(spell[2]>=0) { CP = spell[2]; }			
+			return CyberKnight.castSelfSpell(spell[0],spell[1],CP,"");
+		};
+};
+
+
 /**
 	puts blocks into the categories so we can see them.
 */
@@ -1422,6 +1494,18 @@ CyberKnight.pushCategories = function(cat,blocks,block)
 			blocks.push(block(name));	
 		}	
 	}
+
+	for(var i=0;i<CyberKnight.selfSpells.length;i++)
+	{
+		var spell = CyberKnight.selfSpells[i];
+		//jsDebug.print("Printing for "+cat+" "+spell[0]+"  "+spell[0]===cat);
+		
+		if(spell[0]===cat)
+		{	
+			var name = CyberKnight.craftName(spell);
+			blocks.push(block(name));	
+		}	
+	}
 	
 	
 };
@@ -1429,6 +1513,8 @@ CyberKnight.pushCategories = function(cat,blocks,block)
 
 CyberKnight.writeSpellCommands();
 CyberKnight.writeAimSpellCommands();	
+CyberKnight.writeSelfSpellCommands();	
+
 
 SpriteMorph.prototype.initBlockMigrations = function () {
     SpriteMorph.prototype.blockMigrations = {
@@ -1974,9 +2060,10 @@ SpriteMorph.prototype.blockTemplates = function (category) {
     
    	if (cat === 'motion') {
 
-        blocks.push(block('forward'));
+        /*blocks.push(block('forward'));
         blocks.push(block('turn'));
         blocks.push(block('turnLeft'));
+        */
 /*        blocks.push('-');
         blocks.push(block('setHeading'));
         blocks.push(block('doFaceTowards'));
@@ -3622,20 +3709,14 @@ Morph.prototype.setPosition = function (aPoint, justMe) {
 SpriteMorph.prototype.snapCompletes = function() {
 	completionListener.snapCompletes();	
 };
-
+/*
 SpriteMorph.prototype.forward = function (steps) {
 	jsDebug.print("in forward");
 	ide.stage.threads.pauseAll(ide.stage);
 	javaMove.move2("left", 1);
-	/*
-	while(javaNum === 0)
-		{
-		//have it continuously check to see if java is done doing stuff
-		//before moving on to next chunk of code
-		}
-		*/
+	
 };
-
+*/
 
 
 SpriteMorph.prototype.setHeading = function (degrees) {

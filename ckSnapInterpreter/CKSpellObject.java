@@ -142,6 +142,13 @@ public class CKSpellObject {
 
 	}
 	
+	public CKDelayedObject<Boolean> selfSpell(String chapter, String page, int CP, 
+			//Object protoTarget, //CKPosition target or CKDelayedObject<CKPosition>,
+			String key)
+	{
+		
+		return spell(chapter,page,CP,  getCharacter().getPos() ,key);
+	}
 
 	
 	public CKDelayedObject<Boolean> spell(String chapter, String page, int CP, 
