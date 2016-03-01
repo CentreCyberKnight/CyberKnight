@@ -273,7 +273,8 @@ public class CKSpellObject {
 						{
 						pos = sel.SelectTargetArea(origin,
 								aim.getMinDistance(),aim.getMaxDistance(),
-								new ArrayList<CKPosition>(Arrays.asList(offsets)));
+								//new ArrayList<CKPosition>(Arrays.asList(offsets)));//these will be offset in the underlying aim selector
+								new ArrayList<CKPosition>(Arrays.asList(aim.getOffsets(dir))));
 						}
 						getCharacter().getTurnController().fireAimLogEvent(pos);
 
