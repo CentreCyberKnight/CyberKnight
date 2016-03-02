@@ -1288,6 +1288,7 @@ CyberKnight.spells =
 [
 ["water","poison",-1],
 ["wind","blow off balance",-1],
+["wind", "shock",-1],
 ["water","make wet",-1],
 ["water","ice walls",-1],
 ["water","drown",-1],

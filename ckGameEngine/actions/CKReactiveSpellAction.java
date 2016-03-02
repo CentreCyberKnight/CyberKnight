@@ -665,6 +665,8 @@ public void setCost(int cost)
 	@Override
 	public void storeComponentValues()
 	{
+		
+		
 		useCast = useCastBox[EDIT].isSelected();
 		useBook = useBookBox[EDIT].isSelected();
 		useStatic = useStaticBox[EDIT].isSelected();
