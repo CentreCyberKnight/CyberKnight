@@ -11,6 +11,7 @@ import ckGameEngine.CKChapter;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKPage;
+import ckGameEngine.CKSpellCast;
 import ckGameEngine.CKTeam;
 import ckGameEngine.Direction;
 import ckGameEngine.Quest;
@@ -28,12 +29,15 @@ import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -126,9 +130,18 @@ public class CKUI extends Application
     	CKDrawerTab statsTab = new CKDrawerTab(stats, DrawerSides.LEFT, 0.0, 470.0, 350.0, 350.0, "ckSnapInterpreter/text.png");
 
 
+    	Button startTurn = new Button("StartTurn");
+    	startTurn.setOnAction(e-> {castSpellOnCurrent("WORLD", "START TURN",1);} );
+    	startTurn.relocate(350, 0);
 
+    	Button endTurn = new Button("EndTurn");
+    	endTurn.setOnAction(e-> {castSpellOnCurrent("WORLD", "END TURN",1);} );
+    	endTurn.relocate(350, 50);
 
-		menuPane.getChildren().addAll(iconsTab, playerTab, artifactTab, abilitiesTab, allArtifactsTab, statsTab,controls);
+    	menuPane.getChildren().addAll(iconsTab, playerTab, artifactTab,
+										abilitiesTab, allArtifactsTab, statsTab,controls,
+										startTurn,endTurn
+				);
 
 		split.getItems().addAll(menuPane,snap);
 		split.setDividerPosition(0, .75);
@@ -148,6 +161,40 @@ public class CKUI extends Application
 		T.start();
 	    //q.gameLoop();
     }
+    
+    
+    
+    public void castSpellOnCurrent(String chapter, String page,int CP)
+    {
+    	
+    	CKGridActor actor = data.getPlayer();
+    	if(actor == null) { return;}
+    	
+    	
+    	CKSpellCast cast = new CKSpellCast(actor,
+				actor, chapter,page, CP, "");
+/*				
+		Thread t = new Thread()
+				{
+		
+				public void run()
+				{
+
+
+				}
+				};
+	*/			Platform.runLater(new Runnable()
+						{
+						public void run()
+						{
+							cast.castSpell();
+							
+							
+						}
+						});
+    }
+    
+    
     
 
 	public void populateModel(QuestData q) {	
@@ -183,6 +230,8 @@ public class CKUI extends Application
 		teamplay.addChapter(new CKChapter("Fire",10,"bolt"));
 
 		teamplay.addChapter(new CKChapter(MAX_CP,1000));
+		teamplay.addChapter(new CKChapter(RECHARGE_CP,10));
+		
 		teamplay.addChapter(new CKChapter(CH_EVADE,0));
 		teamplay.addChapter(new CKChapter(CH_ACCURACY,0));
 		teamplay.addChapter(new CKChapter(CH_DEFENSE,0));
