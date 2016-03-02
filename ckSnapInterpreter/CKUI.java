@@ -171,19 +171,10 @@ public class CKUI extends Application
     	if(actor == null) { return;}
     	
     	
-    	CKSpellCast cast = new CKSpellCast(actor,
+    	CKSpellCast cast = new CKSpellCast(CKSpellObject.getItemAt(actor.getPos()),
 				actor, chapter,page, CP, "");
-/*				
-		Thread t = new Thread()
-				{
-		
-				public void run()
-				{
-
-
-				}
-				};
-	*/			Platform.runLater(new Runnable()
+    	
+			Platform.runLater(new Runnable()
 						{
 						public void run()
 						{

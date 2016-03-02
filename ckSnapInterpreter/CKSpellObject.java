@@ -70,7 +70,7 @@ public class CKSpellObject {
 		return null;
 	}
 
-	private static CKAbstractGridItem getItemAt(CKPosition pos)
+	public static CKAbstractGridItem getItemAt(CKPosition pos)
 	{
 
 		if (pos instanceof CKAreaPositions)
