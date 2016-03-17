@@ -1296,6 +1296,7 @@ CyberKnight.spells =
 ["water","cold",-1],
 ["water","immune to fire",-1],
 ["water","invisibility",-1],
+["water","throw ice shards",-1],
 ["fire","bolt",-1],
 ["fire","sunbeam",-1],
 ["fire","flash",8],
