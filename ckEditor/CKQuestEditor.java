@@ -173,7 +173,8 @@ public class CKQuestEditor extends CKXMLAssetPropertiesEditor<QuestData> impleme
 				
 		CKAssetInstance hfront = new CKAssetInstance(new CKPosition(),front,2);
 		CKAssetInstance hback = new CKAssetInstance(new CKPosition(),back,3);
-	
+		assert false;
+		/*
 		sceneViewer.addMouseMotionListener(new CKTileHighlighter(scene,hfront,hback,8002,8003));
 		
 		CKSceneSlider slider = new CKSceneSlider(scene);
@@ -186,7 +187,7 @@ public class CKQuestEditor extends CKXMLAssetPropertiesEditor<QuestData> impleme
 		sceneViewer.addMouseListener(pHelper);
 		
 		sceneViewer.addMouseMotionListener(new ShowCoordsListener());
-		
+		*/
 	}
 	
 	

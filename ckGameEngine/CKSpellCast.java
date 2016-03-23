@@ -1,6 +1,10 @@
 package ckGameEngine;
 
+import javafx.application.Platform;
+import javafx.scene.web.WebEngine;
+import netscape.javascript.JSObject;
 import ckCommonUtils.CKPosition;
+import ckGameEngine.ActorSnapController.SnapRunner;
 import ckGameEngine.actions.CKGameActionListener;
 import ckGameEngine.actions.CKGameActionListenerInterface;
 
@@ -281,41 +285,121 @@ public class CKSpellCast implements Cloneable
 		castSpell(listener);//, key);
 	}
 	
-	public void castSpell(CKGameActionListenerInterface boss)//, String key)
+	private volatile boolean done = false; 
+	public synchronized void castSpell(CKGameActionListenerInterface boss)//, String key)
 	{
-		
 		if(CKGameObjectsFacade.isPrediction())
 		{
 			graphics=false;
 			result = CKGameObjectsFacade.getPredictionResult();
 			target = CKGameObjectsFacade.replaceTargets(target);
 		}		
+	//FIXME will need to handle world filters--could just add to actors... 
+/*	if(redirect ==null)
+	{
+		CKGameObjectsFacade.getQuest().applyWorldFilters(boss,this);
+	}
+	*/
+	if(! CKGameObjectsFacade.isPrediction())
+	{ System.err.println("Casting:"+this.toString()); }
+
+	CKAbstractGridItem item = getItemTarget();
+	
+	if(item == null) // FIXME This should never happen now
+	{
+		CKGameObjectsFacade.targetSpell(boss,this);
+	}		
+	else //goto Pc to filter and resolve this spell
+	{
+		item.targetSpell(boss,this);
+	}
 		
 		
 		
+		
+		
+		
+		
+		
+		/*
+		
+		
+		done = false;
+		FXRunner runner = new FXRunner(boss,this);
+		
+		runner.run(); // no thread isused...
+		/*
+		if(Platform.isFxApplicationThread())
+		{
+			runner.run(); //no thread needed...
+		}
+		else//schedule this to run on the FXthread
+		{
+			Platform.runLater(runner);
+				while(!done) 
+				{
+					try {
+						  wait();
+						} 
+					catch (InterruptedException e) {}
+				}
+		}*/
+
+	}
+		/*
+	public synchronized void spellComplete()
+		{
+			done=true;
+			notify();
+		}
+	
+	
+	public class FXRunner extends Thread
+	{
+		protected CKGameActionListenerInterface boss;
+		protected CKSpellCast parent;
+		
+		public FXRunner(CKGameActionListenerInterface boss,
+				CKSpellCast parent)
+				{
+					this.boss = boss;
+					this.parent = parent;
+			
+				}
+		
+		public void run()
+		{
+			if(CKGameObjectsFacade.isPrediction())
+			{
+				graphics=false;
+				result = CKGameObjectsFacade.getPredictionResult();
+				target = CKGameObjectsFacade.replaceTargets(target);
+			}		
 		//FIXME will need to handle world filters--could just add to actors... 
 	/*	if(redirect ==null)
 		{
 			CKGameObjectsFacade.getQuest().applyWorldFilters(boss,this);
 		}
 		*/
-		if(! CKGameObjectsFacade.isPrediction())
-		{ System.err.println("Casting:"+toString()); }
+	/*	if(! CKGameObjectsFacade.isPrediction())
+		{ System.err.println("Casting:"+parent.toString()); }
 
 		CKAbstractGridItem item = getItemTarget();
 		
 		if(item == null) // FIXME This should never happen now
 		{
-			CKGameObjectsFacade.targetSpell(boss,this);
+			CKGameObjectsFacade.targetSpell(boss,parent);
 		}		
 		else //goto Pc to filter and resolve this spell
 		{
-			item.targetSpell(boss,this);
+			item.targetSpell(boss,parent);
 		}
 
+		parent.spellComplete();
+	}
 	}
 
-
+*/
 	/* (non-Javadoc)
 	 * @see java.lang.Object#clone()
 	 */

@@ -3,6 +3,7 @@ package ckSnapInterpreter;
 import java.util.Vector;
 
 import netscape.javascript.JSException;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -10,49 +11,63 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import ckGameEngine.CKArtifact;
+import ckGameEngine.CKBook;
+import ckGameEngine.CKGridActor;
+import ckGameEngine.CKStatsChangeListener;
 import ckGameEngine.CKTeam;
 
-public class CKAllArtifactsPane extends HBox {
+public class CKAllArtifactsPane extends HBox implements CKStatsChangeListener
+{
+
+	private CKDataModel data;
+	private CKControlSpellsPane controls;
+	private CKGridActor current;
 	
-	public CKAllArtifactsPane(CKData data, CKControlSpellsPane controls) {
+	public CKAllArtifactsPane(CKDataModel data, CKControlSpellsPane controls)
+	{
+		this.data = data;
+		this.controls = controls;
 
 		this.setPrefSize(400, 110);
-	//	ArtifactSelectionWindow.setPadding(new Insets(15, 12, 15, 12));
-	//	ArtifactSelectionWindow.setSpacing(10);
-	//	ArtifactSelectionWindow.setStyle("-fx-background-color: rgb(0, 20, 28)");
-	//	ArtifactSelectionWindow.setOpacity(0.2);
-		
-		//CKDrawerTab allArtifacts = new CKDrawerTab(this, DrawerSides.BOTTOM, 350.0, 720.0, 400.0, 100.0, "ckSnapInterpreter/sword.png");
-		
-    	data.registerPlayerObserver((player) ->
-    	{
-    		try {
-    			setAllArtifactsNodes(data, controls);
-    			System.out.println(data.getPlayer().getName());
-    			//System.out.println(data.getArtifact().getName());
-    		}
-    		catch (JSException e) {
-    			System.out.println(e.getMessage());
-    		}
-    	});
-		//setAllArtifactsNodes(data, controls);
+
+		data.registerPlayerObserver((player) -> {
+			setAllArtifactsNodes(false);
+		});
+		// setAllArtifactsNodes(data, controls);
 	}
 
-	public void setAllArtifactsNodes(CKData data, CKControlSpellsPane controls) {
-
-		System.out.println("try statement" + data.getPlayer());
-		// data.setArtifact(null);
-		Vector<CKArtifact> arts = data.getPlayer().getTeam()
-				.getArtifacts(data.getPlayer().getName());
-		System.out.println(data.getPlayer().getName() + " is equipped with "
-				+ arts.size() + " artifacts");
-		int aIndex = 0;
+	public void setAllArtifactsNodes(boolean force) 
+	{
+		CKGridActor actor = data.getPlayer();
+		
+		if(current==actor && ! force) { return;}
+		
+		if (current != null) { current.removeListener(this); }
+		
+		current = actor;
 		this.getChildren().clear();
+		
+		if(actor==null) { return; }
+		
+		current.addListener(this);
+		
+		
+		Vector<CKArtifact> arts = current.getTeam()
+				.getArtifacts(current.getName());
+
+//		int aIndex = 0;
+
+		if(arts.size() >0)
+		{
+			data.setArtifact(arts.get(0));
+		}
+		
 		for (CKArtifact a : arts)
 		{
-			if (a != null) {
-				aIndex++;
-				System.out.println(aIndex + ": " + a.getIconId());
+			if (a != null)
+			{
+//				aIndex++;
+//				System.out.println(aIndex + ": " + a.getIconId());
 				Button b = new Button(a.getAID(), new ImageView(a.getFXImage()));
 				b.setContentDisplay(ContentDisplay.TOP);
 				b.setOnMouseEntered(e -> {
@@ -77,9 +92,51 @@ public class CKAllArtifactsPane extends HBox {
 
 				this.getChildren().add(b);
 				this.setAlignment(Pos.CENTER_LEFT);
-			}				
-    	}
+			}
+		}
+	}
+
+	@Override
+	public void equippedChanged()
+	{
+		redraw(true);
+		
+	}
+
+	@Override
+	public void statsChanged(CKBook stats)
+	{
+		//no action!!
+	}
+
+	@Override
+	public void cpChanged(int cp)
+	{
+		// no action!!
+	}
+	
+	
+	public void redraw(boolean force)
+	{
+		if (Platform.isFxApplicationThread())
+		{
+			this.setAllArtifactsNodes(force);
+		} else
+		{
+			Platform.runLater(new Runnable()
+			{
+
+				@Override
+				public void run()
+				{
+					setAllArtifactsNodes(force);
+				}
+			}
+
+			);
+
+		}
+		
+	
 	}
 }
-    	
-   

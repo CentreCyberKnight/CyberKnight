@@ -56,7 +56,7 @@ public class CKUI extends Application
 	GridPane ArtifactDescriptionWindow;
 	HBox ArtifactSelectionWindow;
 	VBox AddedAbilitiesWindow;
-	public CKData data;
+	public CKDataModel data;
 	QuestData q;
 	CKTeam team;
 	Vector<CKGridActor> actors;
@@ -243,7 +243,7 @@ public class CKUI extends Application
 		team.getArtifacts("Dad").get(0).setLimits(null);
 		
     
-		data = new CKData(null,null,null);
+		data = new CKDataModel(null,null,null);
 	    data.setTeam(team);
 
     }

@@ -21,6 +21,7 @@ import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckPythonInterpreter.CKPythonConsoleExtended;
 import ckPythonInterpreter.CKPythonEditorPane;
 import ckPythonInterpreter.CKTeamView;
+import ckSnapInterpreter.CKDataModel;
 import ckTrigger.CKTriggerListNode;
 
 public class CKGameObjectsFacade
@@ -317,5 +318,19 @@ public class CKGameObjectsFacade
 		}
 		return items.get(target);
 	}
+
+
+	private static CKDataModel dataModel = new CKDataModel(null, null, null);
+	public static void setDataModel(CKDataModel data)
+	{
+		dataModel = data;		
+	}
+	
+	public static CKDataModel getDataModel()
+	{
+		return dataModel;
+	}
+	
+	
 	
 }

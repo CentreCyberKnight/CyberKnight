@@ -19,7 +19,7 @@ import ckGameEngine.CKTeam;
 public class CKPlayerStatsPane extends GridPane {
 	
 	
-	public CKPlayerStatsPane(CKData data) {
+	public CKPlayerStatsPane(CKDataModel data) {
 		
 		//PlayerStatsWindow = new GridPane();
 		this.setPrefSize(400, 300);
@@ -46,7 +46,7 @@ public class CKPlayerStatsPane extends GridPane {
 	}
 	
 	
-    public void setStats(CKData data) {
+    public void setStats(CKDataModel data) {
     	this.getChildren().clear();
     	if(data.getPlayer() == null) {
     		return;

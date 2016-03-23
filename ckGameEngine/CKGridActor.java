@@ -6,7 +6,9 @@ package ckGameEngine;
 import static ckCommonUtils.CKPropertyStrings.CH_EQUIP_SLOTS;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javafx.beans.property.IntegerProperty;
@@ -665,10 +667,12 @@ public class CKGridActor extends CKGridItem
 
 
 	
-	Vector<CKStatsChangeListener> listeners=new Vector<CKStatsChangeListener>();
+	Vector<CKStatsChangeListener> Ulisteners=new Vector<CKStatsChangeListener>();
+	List<CKStatsChangeListener> listeners = (List<CKStatsChangeListener>) Collections.synchronizedList(Ulisteners);
 	
 	private void notifyListenersEquipped()
 	{
+		
 		for (CKStatsChangeListener l: listeners)
 		{
 			l.equippedChanged();
@@ -683,18 +687,28 @@ public class CKGridActor extends CKGridItem
 		}
 	}
 	
-	private void notifyListenerCP(int cp)
+	private  void notifyListenerCP(int cp)
 	{
+		//listeners.forEach(l->{l.cpChanged(cp);});
+		
+		
+		Iterator<CKStatsChangeListener> iter = listeners.iterator();
+		while(iter.hasNext())
+		{
+			iter.next().cpChanged(cp);
+		}
+		/*
 		for (CKStatsChangeListener l: listeners)
 		{
 			l.cpChanged(cp);
-		}
+		}*/
 	}
 	
 	
-	public void addListener(CKStatsChangeListener l)
+	public  void addListener(CKStatsChangeListener l)
 	{
-		listeners.add(l);
+		if(! listeners.contains(l))
+			{listeners.add(l);}
 	}
 	
 	public void removeListener(CKStatsChangeListener l)

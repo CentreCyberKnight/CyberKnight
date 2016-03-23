@@ -1,6 +1,5 @@
 package ckSnapInterpreter;
 
-import static ckGameEngine.CKGameObjectsFacade.getConsole;
 import static ckGameEngine.CKGameObjectsFacade.getQuest;
 
 import java.util.Iterator;
@@ -10,23 +9,20 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.web.WebEngine;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKSpell;
-import ckGameEngine.CKTeam;
 import ckGameEngine.Quest;
 import ckPythonInterpreter.CKPlayerObjectsFacade;
 
 public class CKControlSpellsPane extends HBox {
 
 	
-	public CKControlSpellsPane(CKData data) {
+	public CKControlSpellsPane(CKDataModel data) {
 
     	this.setPrefSize(400, 150);
     	this.setPadding(new Insets(15, 12, 15, 12));
@@ -47,9 +43,14 @@ public class CKControlSpellsPane extends HBox {
 	}
 	
 
-	public void setControlSpells(CKData data) {
+	public void setControlSpells(CKDataModel data) 
+	{
+		
+		if(data.getArtifact()==null)
+		{return;}
+		
 		try {
-			System.out.println(data.getArtifact().getName() + " is equipped with " + data.getArtifact().spellCount() + " spells");
+			//System.out.println(data.getArtifact().getName() + " is equipped with " + data.getArtifact().spellCount() + " spells");
     		int aIndex = 0;
     		this.getChildren().clear();
 
@@ -62,32 +63,25 @@ public class CKControlSpellsPane extends HBox {
 					b.setContentDisplay(ContentDisplay.TOP);
 					b.setOnAction(new EventHandler<ActionEvent>() {
 		    			@Override public void handle (ActionEvent e) {
-		    				CKPlayerObjectsFacade.setArtifact(data.getArtifact());
 		    				
+		    				//if data.getPlayer == getCurrentPlayer we are OK.
+		    				//set by turn controller.
+		    				if (CKGameObjectsFacade.getCurrentPlayer() != data.getPlayer())
+		    				{
+		    					return; //this button should not work for you....		    					
+		    				}
+
+		    				
+		    				CKPlayerObjectsFacade.setArtifact(data.getArtifact());
 		    				CKGameObjectsFacade.setCurrentPlayer(data.getPlayer());
 		    				CKPlayerObjectsFacade.calcCPTurnLimit();
-		    				//FIXME need to some how set the current actor in the model as well.
 		    				
-		    				Quest w = getQuest();
-		    				
-		    				//w.startTransaction();
-		    				//enableArtifactInput(); - should be handled by the GUI now.
-
-//		    				w.waitForInput();//this is satisfied by the completion of the python code running
-		    			
 		    				WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
 		    	    		JSObject jsobj = (JSObject) webEngine.executeScript("window");
 		    	    		jsobj.setMember("artifactName", data.getArtifact().getName());
 		    	    		jsobj.setMember("spellName", s.getName());
 		    	    		jsobj.setMember("java", new CKjsDebugger());
 		    	    		webEngine.executeScript("ide.executeScript()");
-		    				
-		    				//w.endTransaction();
-		    				//CKGameObjectsFacade.getEngine().blockTilActionsComplete();	
-		    				//later   data.getPlayer().setCPConsumedLastRound(CKPlayerObjectsFacade.getCPTurnMax() - CKPlayerObjectsFacade.getCPTurnRemaining());
-		    				
-		    				//CKGameObjectsFacade.setCurrentPlayer(null);
-		    				
 		    				
 		    			}
 		    		});

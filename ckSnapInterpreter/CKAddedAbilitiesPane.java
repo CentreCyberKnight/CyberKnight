@@ -18,7 +18,7 @@ import ckGameEngine.CKTeam;
 public class CKAddedAbilitiesPane extends VBox {
 	
    	//The selected artifact's enlarged image and description
-	public CKAddedAbilitiesPane(CKData data) {
+	public CKAddedAbilitiesPane(CKDataModel data) {
     	//AddedAbilitiesWindow = new VBox();
     	this.setPrefSize(400, 295);
     	this.setPadding(new Insets(5));
@@ -44,7 +44,7 @@ public class CKAddedAbilitiesPane extends VBox {
 	
 	
 	//export blocks here
-	public void setAddedAbilityNodes(CKData data) {
+	public void setAddedAbilityNodes(CKDataModel data) {
 		this.getChildren().clear();
     	Label title = new Label("Added Abilities");
      	title.setTextFill(Color.BLACK);
@@ -74,7 +74,7 @@ public class CKAddedAbilitiesPane extends VBox {
 				l.setFont(new Font("Comic Sans MS", 15));
 				Label value = new Label(Integer.toString((c.getValue())));
 				value.setFont(new Font("Comic Sans MS", 15));
-				System.out.println("stat: " + c.getName() + " has been printed");
+				//System.out.println("stat: " + c.getName() + " has been printed");
 				addedAbs.getChildren().add(l);
 			}
 		}

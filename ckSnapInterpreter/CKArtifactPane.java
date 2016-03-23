@@ -15,7 +15,7 @@ public class CKArtifactPane extends GridPane {
 	
 
 	//The selected artifact's enlarged image and description
-	public CKArtifactPane(CKData data) {
+	public CKArtifactPane(CKDataModel data) {
     	//ArtifactDescriptionWindow = new GridPane();
     	this.setPrefSize(400, 300);
     	this.setPadding(new Insets(5));
@@ -36,7 +36,7 @@ public class CKArtifactPane extends GridPane {
 	}
 
 	
-	public void setArtifactNodes(CKData data) {
+	public void setArtifactNodes(CKDataModel data) {
 		this.getChildren().clear();
 		//guardian if statement to ensure no null pointer exception
 		if (data.getArtifact() == null) {

@@ -330,7 +330,7 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 	@Override
 	public void handleMouseMoved(MouseEvent e)
 	{
-		System.out.println("Aim Action Mouse Moved"+e.getPoint());
+		//System.out.println("Aim Action Mouse Moved"+e.getPoint());
 		
 		mouseP= e.getPoint();		
 	}

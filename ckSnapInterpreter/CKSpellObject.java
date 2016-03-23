@@ -108,8 +108,8 @@ public class CKSpellObject {
 	public static boolean attemptSpell(String chapter, int val, String modifier)
 	{
 		CKBook limits = getAbilties();
-		System.out.println(limits.treeString());
-		System.out.println(modifier+"  "+val);
+		//System.out.println(limits.treeString());
+		//System.out.println(modifier+"  "+val);
 
 		/*
 		 * 
@@ -155,12 +155,8 @@ public class CKSpellObject {
 			Object protoTarget, //CKPosition target or CKDelayedObject<CKPosition>,
 			String key)
 	{
-		System.out.println("You are in Spell");
+		//System.out.println("You are in Spell");
 
-	//	public boolean spell(String chapter, String page, int CP, 
-	//			CKDelayedObject<CKPosition> target,
-	//			String key)
-		
 		CKPosition target =null;
 		if(protoTarget instanceof CKPosition     )
 		{
@@ -168,7 +164,7 @@ public class CKSpellObject {
 		}
 		else if (protoTarget instanceof CKDelayedObject)
 		{
-			System.out.println("You are using the delayedSpell");
+			//System.out.println("You are using the delayedSpell");
 			target = ((CKDelayedObject<CKPosition>) protoTarget ).getValue();
 			if (target==null )
 			{
@@ -189,10 +185,16 @@ public class CKSpellObject {
 			
 					public void run()
 					{
-
+						//System.err.println("Casting spell:"+cast+" FX thread?"+Platform.isFxApplicationThread());
+						
+						Quest w =CKGameObjectsFacade.getQuest();
+						w.startTransaction();
+						
 						cast.castSpell();
 						completed.setValue(true);
+						w.endTransaction();
 
+						
 						Platform.runLater(new Runnable() {
 								public void run()
 								{
