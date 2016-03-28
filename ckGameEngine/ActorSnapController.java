@@ -122,7 +122,7 @@ public class ActorSnapController extends ActorController
 		
 		this.waitForSnap();
 		
-		CKGameObjectsFacade.getEngine().blockTilActionsComplete();	
+		//CKGameObjectsFacade.getEngine().blockTilActionsComplete();	
 		
 		getActor().setCPConsumedLastRound(CKPlayerObjectsFacade.getCPTurnMax() - CKPlayerObjectsFacade.getCPTurnRemaining());
 		

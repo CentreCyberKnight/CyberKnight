@@ -187,12 +187,12 @@ public class CKSpellObject {
 					{
 						//System.err.println("Casting spell:"+cast+" FX thread?"+Platform.isFxApplicationThread());
 						
-						Quest w =CKGameObjectsFacade.getQuest();
-						w.startTransaction();
+						//Quest w =CKGameObjectsFacade.getQuest();
+						//w.startTransaction();
 						
 						cast.castSpell();
 						completed.setValue(true);
-						w.endTransaction();
+						//w.endTransaction();
 
 						
 						Platform.runLater(new Runnable() {
