@@ -200,11 +200,11 @@ public class CKMarkGridActor extends CKGameAction implements ItemListener
 		{
 			if(page.length()==0)
 			{	
-				actor.addChapter(cast.getPage(),cast.getCp());
+				actor.addChapter(chapter,cost);
 			}
 			else
 			{
-				actor.addPage(cast.getPage(),cast.getCp(),cast.getKey());
+				actor.addPage(chapter,cost,page);
 			}
 		}
 		notifyListener();

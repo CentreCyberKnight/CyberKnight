@@ -96,6 +96,18 @@ public class OngoingEffectController extends ActorController implements CKTurnLi
 		
 	}
 
+
+
+	/* (non-Javadoc)
+	 * @see ckGameEngine.ActorController#onRemove()
+	 */
+	@Override
+	public void onRemove()
+	{
+		//we do nothing special.  
+		//All "death" effects for an ongoing effect should be handled in the call to die.
+	}
+
 	
 	
 	
