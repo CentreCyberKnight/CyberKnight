@@ -36,8 +36,7 @@ public class CKPlayerPane extends GridPane implements CKStatsChangeListener
 		this.setPrefSize(350, 300);
 		this.setStyle("-fx-background-color: rgba(217, 210, 240,.8)");
 		// this.setOpacity(0.5);
-	// MKB DEBUG this causes a race condition...
-/*		data.registerPlayerObserver((player) -> {
+		data.registerPlayerObserver((player) -> {
 			try
 			{
 				setPlayerNodes(false);
@@ -46,7 +45,7 @@ public class CKPlayerPane extends GridPane implements CKStatsChangeListener
 				System.out.println(e.getMessage());
 			}
 		});
-	*/	
+		
 		// setPlayerNodes(data);
 		// CKDrawerTab player = new CKDrawerTab(PlayerDescriptionWindow,
 		// DrawerSides.LEFT, 0.0, 170.0, 350.0, 300.0,
