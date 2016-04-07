@@ -1251,7 +1251,8 @@ CyberKnight.castSpell = function(catagory,spell,cp,target,key)
 		jsDebug.print("Spell Fails--Needs to stop here!");
 	}
 	else if (!complete.isSet())
-	{
+	{	//MKB DEBUG
+		console.log("Pausing spell",spell);
 		ide.stage.threads.pauseAll(ide.stage);
 	}	 
 }
@@ -5175,7 +5176,10 @@ StageMorph.prototype.IdEvent = function (ID) {
        }
     });
     hats.forEach(function (block) {
-        procs.push(myself.threads.startProcess(block, myself.isThreadSafe));
+    	console.log("starting",block);
+        procs.push(myself.threads.startProcess(block, myself.isThreadSafe,
+        			false,function(e){console.log("Process finished!!");}));
+        			
     });
     
     return procs;	

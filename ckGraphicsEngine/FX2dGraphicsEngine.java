@@ -183,7 +183,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 			scene.loadActions(actions); //this should block for us?
 			actions=null;			
 		}
-//System.out.println("Leaving end Transaction");
+//		System.err.println("Leaving end Transaction");
 	}
 
 	@Override

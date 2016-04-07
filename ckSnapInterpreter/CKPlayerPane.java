@@ -36,7 +36,8 @@ public class CKPlayerPane extends GridPane implements CKStatsChangeListener
 		this.setPrefSize(350, 300);
 		this.setStyle("-fx-background-color: rgba(217, 210, 240,.8)");
 		// this.setOpacity(0.5);
-		data.registerPlayerObserver((player) -> {
+	// MKB DEBUG this causes a race condition...
+/*		data.registerPlayerObserver((player) -> {
 			try
 			{
 				setPlayerNodes(false);
@@ -45,6 +46,7 @@ public class CKPlayerPane extends GridPane implements CKStatsChangeListener
 				System.out.println(e.getMessage());
 			}
 		});
+	*/	
 		// setPlayerNodes(data);
 		// CKDrawerTab player = new CKDrawerTab(PlayerDescriptionWindow,
 		// DrawerSides.LEFT, 0.0, 170.0, 350.0, 300.0,
@@ -59,31 +61,28 @@ public class CKPlayerPane extends GridPane implements CKStatsChangeListener
 		CKGridActor actor = data.getPlayer();
 
 		if (current == actor && ! force)
-		{// nothing to do.
-			if(force)
-			{
-				
-			}
+		{
 			return;
 		}
-		if (current != null)
+		
+		if (current!=actor)
 		{
-			current.removeListener(this);
+			if(current != null)
+			{
+				current.removeListener(this);
+			}
+			actor.addListener(this);
 		}
 
 		Rectangle imageRect = new Rectangle(180, 250);
 		this.getChildren().clear();
 		this.add(imageRect, 0, 0, 2, 5);
-
-		current = actor;
+		
+		current=actor;
 		if (actor == null)
 		{
 			return;
 		}
-
-		// register to receive changes
-		data.getPlayer().addListener(this);
-
 		imageRect.setFill(new ImagePattern(data.getPlayer().getFXImage()));
 
 		Label playername = new Label(data.getPlayer().getName());

@@ -154,6 +154,8 @@ ThreadManager.prototype.startProcess = function (
     exportResult,
     callback
 ) {
+	//callback("d");
+
     var active = this.findProcess(block),
         top = block.topBlock(),
         newProc;
@@ -236,6 +238,7 @@ ThreadManager.prototype.isPaused = function () {
 
 ThreadManager.prototype.resumeAll = function (stage) {
     this.processes.forEach(function (proc) {
+    	console.log("RESUMING_______________________",proc);
         proc.resume();
     });
     if (stage) {
@@ -264,6 +267,8 @@ ThreadManager.prototype.removeTerminatedProcesses = function () {
     var remaining = [];
     this.processes.forEach(function (proc) {
         if ((!proc.isRunning() && !proc.errorFlag) || proc.isDead) {
+        
+        	//console.log("DYING",proc,proc.isRunning(),proc.errorFlag,proc.isDead);
             if (proc.topBlock instanceof BlockMorph) {
                 proc.topBlock.removeHighlight();
             }
@@ -301,12 +306,18 @@ ThreadManager.prototype.removeTerminatedProcesses = function () {
                 }
             }
         } else {
+        	//onComplete should still run!
+            //if (proc.onComplete instanceof Function) {
+            //        proc.onComplete(null);
+            //}
+        
             remaining.push(proc);
         }
     });
     
     //'snapCompletes()' was received and the queue is now empty
     //resets for next time through & actually calls listener
+    //jsDebug.print("IDE val"+ide.end+" Process Length"+this.processes.length);
     if (ide.end === true && this.processes.length === 0) {
     	ide.end = false;
     	completionListener.snapCompletes();	
@@ -431,9 +442,10 @@ Process.prototype.runStep = function () {
     // of several contexts, even of several blocks
 
     if (this.isPaused) { // allow pausing in between atomic steps:
+    
         return this.pauseStep();
     }
-
+	
     this.readyToYield = false;
     while (!this.readyToYield
             && this.context
@@ -470,6 +482,7 @@ Process.prototype.runStep = function () {
 };
 
 Process.prototype.stop = function () {
+	console.log("STOPPING Process",this);
     this.readyToYield = true;
     this.readyToTerminate = true;
     this.errorFlag = false;
@@ -561,14 +574,20 @@ Process.prototype.evaluateBlock = function (block, argCount) {
             this.popContext();
         }
         
-        if(block.nextBlock() != null)
-        {
+	//commenting out this if stmt will cause it to fail :(
+	if(block.nextBlock() != null)
+        {/*
+		//MKB don't need this?
             if(block.nextBlock().selector === 'forward')
             {
                 //MAKE CALL TO SET THINGS UP FOR AIM FUNCTION
                 ide.stage.threads.pauseAll(ide.stage);     
             }
+            */
+            
         }
+       
+        
     }
 };
 

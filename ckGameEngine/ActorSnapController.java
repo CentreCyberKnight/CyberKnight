@@ -44,7 +44,7 @@ public class ActorSnapController extends ActorController
 		public synchronized void snapCompletes()
 		{
 			done=true;
-			System.out.println("HI");
+			System.out.println("SNAP COMPLETES");
 			
 			notify();
 		}
@@ -122,7 +122,7 @@ public class ActorSnapController extends ActorController
 		
 		this.waitForSnap();
 		
-		//CKGameObjectsFacade.getEngine().blockTilActionsComplete();	
+		CKGameObjectsFacade.getEngine().blockTilActionsComplete();	
 		
 		getActor().setCPConsumedLastRound(CKPlayerObjectsFacade.getCPTurnMax() - CKPlayerObjectsFacade.getCPTurnRemaining());
 		

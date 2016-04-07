@@ -1324,7 +1324,8 @@ IDE_Morph.prototype.executeScript = function() {
 		{
 			java.print(ide.allSprites.at(i).artifact);
 			java.print(ide.allSprites.at(i).name);
-			if ((artifactName == ide.allSprites.at(i).artifact) && (spellName == ide.allSprites.at(i).name))
+			if ((artifactName == ide.allSprites.at(i).artifact) 
+			&& (spellName == ide.allSprites.at(i).name))
 				{
 					var sprite = this.allSprites.at(i);
 					found = true;
@@ -1332,7 +1333,7 @@ IDE_Morph.prototype.executeScript = function() {
 			i++;
 		}	
 	var morph = sprite.scripts.children[0];
-	
+	//console.log(morph);
 	var event = new CustomEvent("CK", {detail : morph.blockSpec});
 	document.getElementById('world').dispatchEvent(event);
 	java.print("Leaving JAVASCRIPT");
