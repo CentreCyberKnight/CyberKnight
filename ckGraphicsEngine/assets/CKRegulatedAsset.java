@@ -16,8 +16,8 @@ public class CKRegulatedAsset extends CKGraphicsAsset
 {
 	CKGraphicsAsset asset=CKNullAsset.getNullAsset();
 	String assetID="";
-	int maxRate;
-	int adjust;
+	int maxRate=1;
+	int adjust=1;
 	
 	/**
 	 *  Default Constructor forXMLEncode
