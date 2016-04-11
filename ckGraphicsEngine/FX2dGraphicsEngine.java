@@ -572,6 +572,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 	public static void main(String argv[]) 
 	{
 		Application.launch(TestEngine.class,argv);
+		//Application.launch(TestEngineSimple.class,argv);
 	}
 	
 	

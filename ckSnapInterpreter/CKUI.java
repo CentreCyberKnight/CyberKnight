@@ -280,11 +280,10 @@ public class CKUI extends Application
 /*		CKSequentialAction start = new CKSequentialAction();
 		start.add()
 	*/
-	/*	FIXME FX update
-	 * q.addTrigger(new CKTrigger(new TrueSatisfies(), 
+	q.addTrigger(new CKTrigger(new TrueSatisfies(), 
 				new CKSimpleGUIAction("Dad","Lets race to get to the fridge"),
 				TriggerResult.INIT_ONLY));
-		*/
+	
 		//Win actions
 		q.addTrigger(new CKTrigger(winSatisfies1,
 				new CKSimpleGUIAction("Baby","GAGA!!"),TriggerResult.SATISFIED_END_QUEST));	

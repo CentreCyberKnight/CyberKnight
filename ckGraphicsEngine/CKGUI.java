@@ -119,7 +119,7 @@ public class CKGUI
 	{
 		int margin = 10;
 		int col=226;
-		g.setFill(new javafx.scene.paint.Color(col,col,col,222));
+		g.setFill(javafx.scene.paint.Color.rgb(col,col,col,.75));
 		Rectangle rect = new Rectangle(margin, height-200,
 				width-(2*margin), 200-margin);
 		//g.fillRect(rect.x,rect.y,rect.width,rect.height);

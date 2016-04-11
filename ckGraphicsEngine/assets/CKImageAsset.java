@@ -20,6 +20,7 @@ import ckCommonUtils.CKURL;
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckGraphicsEngine.assets.TileType;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.WritableImage;
 
 import static ckGraphicsEngine.CKGraphicsConstants.*;
 
@@ -186,14 +187,8 @@ public class CKImageAsset extends CKGraphicsAsset
 		}
 		}
 		image = new BufferedImage(width*frames,height*rows,BufferedImage.TYPE_INT_ARGB);
-		try
-		{
-			System.err.println("FX IMAGE failed to load!!!"+new CKURL(filename));
-		} catch (MalformedURLException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		fxImage = new WritableImage(width*frames,height*rows);
+		
 		//now fill in the tile with something...
 		int val = Color.black.getRGB();
 		for (int i=0;i<width;i++)
@@ -298,8 +293,11 @@ public class CKImageAsset extends CKGraphicsAsset
 		int calcy=height *(row %rows);
 		x = x +x_offset;
 		y = y +y_offset;
-		g.drawImage(fxImage, x, y,width,height,
-				calcx,calcy,width,height);
+		g.drawImage(fxImage,
+				calcx,calcy,width,height,
+				
+				 x, y,width,height
+				);
 		
 		//System.out.println("tiles at "+x+","+y);
 	}
@@ -368,8 +366,9 @@ public class CKImageAsset extends CKGraphicsAsset
 	{
 		int true_width = width*frames;
 		int calcy=height *(row %rows);
-		g.drawImage(fxImage, x,y,x+true_width,y+height,
-				0,calcy,true_width,calcy+height);
+		g.drawImage(fxImage,0,calcy,true_width,height,
+				x,y,true_width,height
+				);
 	}
 
 
@@ -380,8 +379,9 @@ public class CKImageAsset extends CKGraphicsAsset
 		int pos = frame %frames;
 		int calcx = width*pos;
 		int true_height=height *rows;
-		g.drawImage(fxImage, x,y,x+width,y+true_height,
-				calcx,0,calcx+width,true_height);
+		g.drawImage(fxImage, 
+				calcx,0,width,true_height,
+				x,y,width,true_height);
 	}
 	
 	

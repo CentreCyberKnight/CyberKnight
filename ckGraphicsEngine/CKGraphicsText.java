@@ -125,8 +125,13 @@ public class CKGraphicsText
 //
 	public Rectangle drawText(GraphicsContext g, Rectangle clip)
 	{
+		g.setFill(javafx.scene.paint.Color.BLACK);
 		
-		g.fillText(message, clip.x, clip.y,clip.width);
+	
+		g.setFont(javafx.scene.text.Font.font(40));
+		
+		
+		g.fillText(message, clip.x, clip.y+50,clip.width);
 		
 		int height = (int) (g.getFont().getSize()*2);
 		

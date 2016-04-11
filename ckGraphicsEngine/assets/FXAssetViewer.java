@@ -101,32 +101,24 @@ public class FXAssetViewer extends FXGamePanelTimer
 		Point bounds = new Point();
 		asset.getDrawBounds(presentFrame, presentRow, offset, bounds);
 		
-		/*asset.drawToGraphics(g,leftMargin -offset.x, 
+		asset.drawToGraphics(g,leftMargin -offset.x, 
 				topMargin-offset.y +CKGraphicsConstants.BASE_HEIGHT/2,
 				presentFrame,presentRow, null);//this);
-				*/
+		
 		int width = Math.max(asset.getWidth(presentRow),CKGraphicsConstants.BASE_WIDTH);
 		int height = asset.getHeight(presentRow)+CKGraphicsConstants.BASE_HEIGHT/2;
 		//int width = Math.max(asset.getWidth(presentRow),CKGraphicsConstants.BASE_WIDTH);
 		
 
 		
-		g.setFill(Color.WHITE);
-		g.fillText("Description  "+asset.getDescription(), 0,0);
-		g.fillText("Present Frame"+ presentFrame, 0, 100+25);
-		g.fillText("Present Row  "+ presentRow, leftMargin*2 +width, topMargin+50);
-		g.fillText("Width/Height  "+ asset.getWidth(presentRow)+" / "+
-				asset.getHeight(presentRow), leftMargin*2 +width, topMargin+75);
-			
 		
-		/*
 		g.setFill(Color.WHITE);
 		g.fillText("Description  "+asset.getDescription(), leftMargin*2 +width, topMargin);
 		g.fillText("Present Frame"+ presentFrame, leftMargin*2 +width, topMargin+25);
 		g.fillText("Present Row  "+ presentRow, leftMargin*2 +width, topMargin+50);
 		g.fillText("Width/Height  "+ asset.getWidth(presentRow)+" / "+
 				asset.getHeight(presentRow), leftMargin*2 +width, topMargin+75);
-				*/
+		
 		//g.drawString("panel height "+ 
 		//		Math.max(asset.getHeight(0)+50+CKGraphicsConstants.BASE_HEIGHT/2,
 		//				  125),leftMargin*2 +width, topMargin+100);
