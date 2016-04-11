@@ -12,6 +12,7 @@ import java.util.Vector;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
@@ -441,7 +442,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 	}
 
 	@Override
-	public void drawOffScreenBuffer(Graphics g,double width,double height)
+	public void drawOffScreenBuffer(GraphicsContext g,double width,double height)
 	{
 		if(scene!=null)
 			{

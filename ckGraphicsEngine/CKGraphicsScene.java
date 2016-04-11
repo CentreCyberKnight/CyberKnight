@@ -47,6 +47,7 @@ import ckGraphicsEngine.layers.CKGraphicsLayer;
 import ckGraphicsEngine.layers.CKGridGraphicsLayer;
 
 import ckGraphicsEngine.sceneAction.CKSceneAction;
+import javafx.scene.canvas.GraphicsContext;
 
 
 public class CKGraphicsScene implements CKGraphicsSceneInterface, ImageObserver
@@ -241,7 +242,9 @@ public class CKGraphicsScene implements CKGraphicsSceneInterface, ImageObserver
 			//println("drawing background "+layer.getDescription());
 		}
 	}
+
 	
+
 	
 	final private void drawInteractives(Graphics g)
 	{
@@ -269,6 +272,47 @@ public class CKGraphicsScene implements CKGraphicsSceneInterface, ImageObserver
 			layer.drawLayerToGraphics(g, presentFrame, this, trans);
 		}
 	}
+	
+
+	final private void drawBackgrounds(GraphicsContext g)
+	{
+		Iterator<CKGraphicsLayer> iter=backgrounds.iterator();
+		while(iter.hasNext())
+		{	
+			CKGraphicsLayer layer = iter.next();
+			layer.drawLayerToGraphics(g, presentFrame, this, trans);
+			//println("drawing background "+layer.getDescription());
+		}
+	}
+	
+	final private void drawInteractives(GraphicsContext g)
+	{
+		//println("drawing interactives"+interactives.size());
+		int rowlen = trans.getMapRows();
+		for(int row =0;row<rowlen;row++)
+		{
+			Iterator<CKGraphicsLayer>iter=interactives.iterator();
+			while(iter.hasNext())
+			{
+				CKGraphicsLayer layer = iter.next();
+				//System.out.println("drawing row"+row);
+				layer.drawLayerRowToGraphics(g, presentFrame, row, this, trans);	
+			}
+		
+		}	
+	}
+	
+	
+	final private void drawEnvironments(GraphicsContext g)
+	{
+		Iterator<CKGraphicsLayer> iter=environments.iterator();
+		while(iter.hasNext())
+		{	
+			CKGraphicsLayer layer = iter.next();
+			layer.drawLayerToGraphics(g, presentFrame, this, trans);
+		}
+	}
+	
 	
 	
 	@SuppressWarnings("unused")
@@ -314,7 +358,24 @@ public class CKGraphicsScene implements CKGraphicsSceneInterface, ImageObserver
 		drawEnvironments(g);
 								
 	}
-
+	/* (non-Javadoc)
+	 * @see ckGraphicsEngine.CKGraphicsSceneInterface#drawOffScreenBuffer(ckGraphicsEngine.CKGraphicsLayer)
+	 */
+	public void drawOffScreenBuffer(GraphicsContext g,int width,int height)
+	{
+//		println("Drawing the off screen buffers");
+		trans.setScreenDimensions(width,height);
+		camera.recenterCamera();
+		
+		resetLayers();
+		//draw backgrounds
+		drawBackgrounds(g);
+		//draw interactives
+		drawInteractives(g);
+		//draw environments
+		drawEnvironments(g);
+								
+	}
 	public CKCameraInstance getCamera()
 	{
 		return camera;

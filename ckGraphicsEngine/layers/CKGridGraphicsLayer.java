@@ -17,6 +17,7 @@ import ckGameEngine.CKGridItem;
 import ckGraphicsEngine.CKCoordinateTranslator;
 import ckGraphicsEngine.assets.CKAssetInstance;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
+import javafx.scene.canvas.GraphicsContext;
 
 public class CKGridGraphicsLayer extends CKGraphicsLayer
 {
@@ -154,6 +155,28 @@ public class CKGridGraphicsLayer extends CKGraphicsLayer
 	}
 	
 	
+	protected void drawGrid(GraphicsContext g, int frame, 
+			ImageObserver observer, CKCoordinateTranslator translator,
+			int x1,int x2,int y1,int y2)
+	{
+		if(x1<0) 					{x1=0;}
+		if(y1<0) 					{y1=0;}
+		if(x2>getMapWidth()) 		{x2=getMapWidth()-1;}
+		if(y2>getMapHeight()) 		{y2=getMapHeight()-1;}
+		
+		for(int y=y1;y<=y2;y++)
+		{
+			for(int x=x1;x<=x2;x++)
+			{	
+				grid.drawPosition(x,y,frame,observer,translator,g);
+			}
+		}	
+		
+		
+		
+		
+	}
+	
 	
 @Override
 public void drawLayerToGraphics(Graphics g, int frame, 
@@ -198,6 +221,53 @@ public void drawLayerTileToGraphics(Graphics g, int frame, int x, int y,
 	if(!isVisible()) return;
 	grid.drawPosition(x,y,frame,observer,translator,g);
 }
+
+
+
+@Override
+public void drawLayerToGraphics(GraphicsContext g, int frame, 
+	ImageObserver observer, CKCoordinateTranslator translator)
+{
+//System.out.println("Entering LayertoGraphics");
+if(!isVisible()) return;
+Point mapMin = new Point();
+Point mapMax = new Point();
+translator.fillVisibleTileBounds(mapMin,mapMax);
+//System.out.println("Translation points Min:"+mapMin+" Max:"+mapMax );
+drawGrid(g,frame,observer,translator,mapMin.x,mapMax.x,mapMin.y,mapMax.y);
+}
+
+
+@Override
+public void drawLayerRowToGraphics(GraphicsContext g, int frame, int y,
+	ImageObserver observer, CKCoordinateTranslator translator)
+{
+if(!isVisible()) return;
+if (y >= getMapHeight()) return; //asking beyond the bounds
+
+Point mapMin = new Point();
+Point mapMax = new Point();
+translator.fillVisibleTileBounds(mapMin,mapMax);
+//reset to be inside the bounds
+
+
+mapMin.x = Math.max(0, mapMin.x);
+mapMax.x = Math.min(mapMax.x, getMapWidth()-1);
+
+drawGrid(g,frame,observer,translator,mapMin.x,mapMax.x,y,y);
+
+
+}
+
+
+@Override
+public void drawLayerTileToGraphics(GraphicsContext g, int frame, int x, int y,
+	ImageObserver observer, CKCoordinateTranslator translator)
+{
+if(!isVisible()) return;
+grid.drawPosition(x,y,frame,observer,translator,g);
+}
+
 
 
 @Override

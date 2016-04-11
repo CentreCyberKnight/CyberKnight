@@ -19,6 +19,7 @@ import java.net.MalformedURLException;
 import ckCommonUtils.CKURL;
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckGraphicsEngine.assets.TileType;
+import javafx.scene.canvas.GraphicsContext;
 
 import static ckGraphicsEngine.CKGraphicsConstants.*;
 
@@ -47,6 +48,7 @@ public class CKImageAsset extends CKGraphicsAsset
 	private String filename;
 	
 	private BufferedImage image;
+	private javafx.scene.image.Image fxImage;
 	
 	private String license="Please choose";
 	private String contributer="must update";
@@ -153,6 +155,8 @@ public class CKImageAsset extends CKGraphicsAsset
 				
 	}
 	
+	
+	//FIXME FX stuff reading image in both formats for now.
 	protected void readImage()
 	{
 		//super(width*frames,height,BufferedImage.TYPE_4BYTE_ABGR);
@@ -167,6 +171,10 @@ public class CKImageAsset extends CKGraphicsAsset
 			//lets set the width and height to something appropriate?
 			height = getRawImageHeight()/rows;
 			width = getRawImageWidth()/frames;
+			
+			//FX fix
+			fxImage =new  javafx.scene.image.Image(url.getInputStream());
+			
 			calculateOffsets();
 			
 			return;
@@ -178,7 +186,14 @@ public class CKImageAsset extends CKGraphicsAsset
 		}
 		}
 		image = new BufferedImage(width*frames,height*rows,BufferedImage.TYPE_INT_ARGB);
-
+		try
+		{
+			System.err.println("FX IMAGE failed to load!!!"+new CKURL(filename));
+		} catch (MalformedURLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//now fill in the tile with something...
 		int val = Color.black.getRGB();
 		for (int i=0;i<width;i++)
@@ -232,7 +247,17 @@ public class CKImageAsset extends CKGraphicsAsset
 	{
 		return drawType;
 	}
-
+	
+	
+	@Override
+	public void getDrawBounds(int frame, int row, Point off, Point bounds)
+	{
+		off.x=x_offset;
+		off.y=y_offset;
+		bounds.x=off.x+width;
+		bounds.y=off.y+height;
+		
+	}
 
 	
 	/**
@@ -256,15 +281,31 @@ public class CKImageAsset extends CKGraphicsAsset
 		//System.out.println("tiles at "+x+","+y);
 	}
 
-	@Override
-	public void getDrawBounds(int frame, int row, Point off, Point bounds)
+	
+	/**
+	 * draws the graphics to the screen based on the frame number of the animation. 
+	 * @param g  graphics to draw the tile to.
+	 * @param x  location to place tile
+	 * @param y  location to place tile
+	 * @param row which row to display
+	 * @param frame  what frame is the game in, if there is more than one tile this will tell us which tile to find
+	 * @param observer
+	 */
+	public void drawToGraphics(GraphicsContext g,int x,int y, int frame,int row,ImageObserver observer)
 	{
-		off.x=x_offset;
-		off.y=y_offset;
-		bounds.x=off.x+width;
-		bounds.y=off.y+height;
+		int pos = frame %frames;
+		int calcx = width*pos;
+		int calcy=height *(row %rows);
+		x = x +x_offset;
+		y = y +y_offset;
+		g.drawImage(fxImage, x, y,width,height,
+				calcx,calcy,width,height);
 		
+		//System.out.println("tiles at "+x+","+y);
 	}
+
+	
+	
 	
 	
 	
@@ -274,6 +315,13 @@ public class CKImageAsset extends CKGraphicsAsset
 			ImageObserver observer)
 	{
 		g.drawImage((Image)image, screenx,screeny,observer);
+	}
+	
+	@Override
+	public void drawPreviewToGraphics(GraphicsContext g, int screenx, int screeny,
+			ImageObserver observer)
+	{
+		g.drawImage(fxImage, screenx,screeny);
 	}
 
 	public void scaleToGraphics(Graphics g,int x, int y, int frame, int row, ImageObserver observer, double scale)
@@ -314,6 +362,27 @@ public class CKImageAsset extends CKGraphicsAsset
 				calcx,0,calcx+width,true_height,observer);
 	}
 	
+	@Override
+	public void drawPreviewRowToGraphics(GraphicsContext g, int x, int y,
+			int row, ImageObserver observer)
+	{
+		int true_width = width*frames;
+		int calcy=height *(row %rows);
+		g.drawImage(fxImage, x,y,x+true_width,y+height,
+				0,calcy,true_width,calcy+height);
+	}
+
+
+	@Override
+	public void drawPreviewFrameToGraphics(GraphicsContext g, int x, int y,
+			int frame, ImageObserver observer)
+	{
+		int pos = frame %frames;
+		int calcx = width*pos;
+		int true_height=height *rows;
+		g.drawImage(fxImage, x,y,x+width,y+true_height,
+				calcx,0,calcx+width,true_height);
+	}
 	
 	
 	

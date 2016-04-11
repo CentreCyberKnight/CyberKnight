@@ -12,6 +12,10 @@ import java.awt.font.TextLayout;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 
+import com.sun.javafx.tk.FontMetrics;
+
+import javafx.scene.canvas.GraphicsContext;
+
 public class CKGraphicsText
 {
 	
@@ -67,7 +71,7 @@ public class CKGraphicsText
 	}
 	
 	
-	
+
 	public Rectangle drawText(Graphics g, Rectangle clip)
 	{
 		AttributedCharacterIterator characterIterator = aString.getIterator();
@@ -113,6 +117,67 @@ public class CKGraphicsText
 	//    System.out.println("GraphicsText:"+new Rectangle(clip.x,clip.y,clip.width,y-clip.y)+
 	//    		"xmar:"+xmargin+" ymar"+ymargin+" string"+message);		
 	    return new Rectangle(clip.x,clip.y,clip.width,y-clip.y);		
+	}
+	
+	
+//FIXME FX need to do line wrap here, might move this out of canvas drawing
+//and into something that is part of the GUI...
+//
+	public Rectangle drawText(GraphicsContext g, Rectangle clip)
+	{
+		
+		g.fillText(message, clip.x, clip.y,clip.width);
+		
+		int height = (int) (g.getFont().getSize()*2);
+		
+		return new Rectangle(clip.x,clip.y,clip.width,height);
+		
+		/*
+		AttributedCharacterIterator characterIterator = aString.getIterator();
+		//Graphics2D g2d = (Graphics2D) g;
+		
+		FontMetrics fm = new FontMetrics(g.getFont());
+	   FontRenderContext fontRenderContext = g.getFontRenderContext();
+	    LineBreakMeasurer measurer = new LineBreakMeasurer(characterIterator,
+	        fontRenderContext);
+
+	    int width = clip.width-xmargin*2;
+	    if(width<xmargin)
+	    {
+	    	return new Rectangle(clip.x,clip.y,0,0);
+	    }
+	    final int startX = xmargin+clip.x;
+	    int y = ymargin+clip.y;
+
+	    while (measurer.getPosition() < characterIterator.getEndIndex())
+	    {
+	    	int next = measurer.nextOffset(width);
+	    	int limit = next;
+	    	
+	    	
+	    	   for (int i = measurer.getPosition()+1; i < next-1; ++i) 
+	    	   {
+	    	      if (message.charAt(i) == '\n') 
+	    	      {
+	    	         limit = i;
+	    	         //System.out.println(message+"\nfound a slash-n at limit "+limit+"next"+next +"starting "+measurer.getPosition());
+	    	         break;
+	    	      }
+	    	   }
+	    	   //System.out.println("exiting text loop " );
+	    	   
+	    	
+	    		    	
+	      TextLayout layout = measurer.nextLayout(width, limit, false);
+	      float dx = layout.isLeftToRight() ? 0 : (width - layout.getAdvance());
+	      y+=layout.getAscent();
+	      layout.draw(g, startX + dx, y);
+	      y += layout.getDescent() + layout.getLeading();
+	    }
+	//    System.out.println("GraphicsText:"+new Rectangle(clip.x,clip.y,clip.width,y-clip.y)+
+	//    		"xmar:"+xmargin+" ymar"+ymargin+" string"+message);		
+	    return new Rectangle(clip.x,clip.y,clip.width,y-clip.y);
+	    */		
 	}
 	
 }

@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import ckCommonUtils.CKURL;
 import ckDatabase.XMLDirectories;
 import ckGraphicsEngine.UnknownAnimationError;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * CKGraphicsAsset is a class that encapsulated the drawing of data to a graphics context. Most of these classes ustilize a 
@@ -94,6 +95,7 @@ public abstract class CKGraphicsAsset
 	 */
 	abstract public void drawPreviewToGraphics(Graphics g,int screenx,int screeny,ImageObserver observer);
 	
+	abstract public void drawPreviewToGraphics(GraphicsContext g,int screenx,int screeny,ImageObserver observer);
 	
 	/**Draws the asset to the graphics.  This is for the actual game
 	 * @param g              graphics to draw the asset to
@@ -106,6 +108,20 @@ public abstract class CKGraphicsAsset
 	 */
 	abstract public void drawToGraphics (Graphics g,int screenx,int screeny,
             int frame,int row,ImageObserver observer);
+	
+	
+	/**Draws the asset to the graphics.  This is for the actual game
+	 * @param g              graphics to draw the asset to
+	 * @param screenx        x coordinate to start drawing at
+	 * @param screeny        y coordinate to start drawing at
+	 * @param observer       An observer to detect when the image is drawn.
+	 * @param frame          Which Frame of the asset should be drawn to the graphics
+	 * @param row            Which Row of the asset should be drawn to the graphics
+	 * @param observer       An observer to detect when the image is drawn
+	 */
+	abstract public void drawToGraphics (GraphicsContext g,int screenx,int screeny,
+            int frame,int row,ImageObserver observer);
+
 
 	/**Draws a preview of the asset's Row to graphics, this should be used for debugging and building purposes
 	 * @param g              graphics to draw the asset to
@@ -117,7 +133,8 @@ public abstract class CKGraphicsAsset
 	 */
 	abstract public void drawPreviewRowToGraphics (Graphics g,int screenx,int screeny,
             int row,ImageObserver observer);
-	
+	abstract public void drawPreviewRowToGraphics (GraphicsContext g,int screenx,int screeny,
+            int row,ImageObserver observer);
 	
 
 	/**Draws a preview of the asset's Row to graphics, this should be used for debugging and building purposes
@@ -129,6 +146,8 @@ public abstract class CKGraphicsAsset
 	 * @param observer       An observer to detect when the image is drawn
 	 */
 	abstract public void drawPreviewFrameToGraphics (Graphics g,int screenx,int screeny,
+            int frame,ImageObserver observer);
+	abstract public void drawPreviewFrameToGraphics (GraphicsContext g,int screenx,int screeny,
             int frame,ImageObserver observer);
 	
 	

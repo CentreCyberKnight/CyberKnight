@@ -1,6 +1,6 @@
 package ckGraphicsEngine;
 
-import java.awt.Color;
+
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -18,6 +18,7 @@ import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 public abstract class FXGamePanelTimer extends Canvas
@@ -28,12 +29,12 @@ public abstract class FXGamePanelTimer extends Canvas
 	 */
 
 	private double fps;          //how many frames should be displayed per second.
-	private Graphics graphics;
-	private Image screenBuffer; //buffers what should be drawn to the screen to avoid flickering effect.
+	private GraphicsContext graphics;
+	//private Image screenBuffer; //buffers what should be drawn to the screen to avoid flickering effect.
 	AnimationTimer timer;
 	private void initialize(double f_per_s,int drops)
 	{
-		screenBuffer=null;
+		//screenBuffer=null;
 	
 		@SuppressWarnings("rawtypes")
 		ScheduledService time = new ScheduledService(){
@@ -85,11 +86,11 @@ public abstract class FXGamePanelTimer extends Canvas
 
 
 	public abstract void calcState();
-	public abstract void drawOffScreenBuffer(Graphics g,double d,double e);
+	public abstract void drawOffScreenBuffer(GraphicsContext g,double d,double e);
 	
 	private void bufferToScreen()
-	{
-		GraphicsContext g;
+	{//not using any buffering, it will go directly to it.
+	/*	GraphicsContext g;
 		try
 		{
 			g=this.getGraphicsContext2D();
@@ -105,7 +106,7 @@ public abstract class FXGamePanelTimer extends Canvas
 			System.out.println("Graphics content error "+e);
 			
 		}	
-		
+		*/
 	}
 	
 	/**
@@ -130,9 +131,10 @@ public abstract class FXGamePanelTimer extends Canvas
 	
 private boolean prepGraphics(boolean force)
 {
-	double width = getWindowWidth();
-	double height=getWindowHeight();
 	
+	 double width = getWindowWidth();
+	double height=getWindowHeight();
+/*
 	if(screenBuffer==null || force||
 			screenBuffer.getWidth(null)<width ||
 			screenBuffer.getHeight(null)<height)
@@ -148,8 +150,14 @@ private boolean prepGraphics(boolean force)
 		}
 		graphics = screenBuffer.getGraphics();
 	}
-	graphics.setColor(Color.BLACK);
-	graphics.fillRect(0,0,screenBuffer.getWidth(null),screenBuffer.getHeight(null));
+	*/
+	
+	//graphics is already a buffer in javafx.
+	
+	//System.out.println("resetting width to"+width+" and height to "+height);
+	graphics = this.getGraphicsContext2D();
+	graphics.setFill(Color.BLACK);
+	graphics.fillRect(0,0,width,height);
 	return true;	
 }
 	

@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import ckCommonUtils.CKPosition;
 import ckGraphicsEngine.CKCoordinateTranslator;
 import ckGraphicsEngine.CKGraphicsEngine.RelationalLinkType;
+import javafx.scene.canvas.GraphicsContext;
 //{PUSH,PULL,RELATIVE,NONE};
 
 public class CKAssetInstance implements Comparable<CKAssetInstance>
@@ -189,6 +190,30 @@ public void drawToGraphics (Graphics g,int frame,
 
 
 public void drawToGraphics (Graphics g,int frame, int row,
+		ImageObserver observer,CKCoordinateTranslator translator)
+{
+	if(isVisible)
+	{
+		frame=(int) (frame*animationSpeed);
+		Point screenP = translator.convertMapToScreen(position);
+		asset.drawToGraphics(g,screenP.x,screenP.y,frame,row,observer);
+	}
+}
+
+
+public void drawToGraphics (GraphicsContext g,int frame,
+		ImageObserver observer,CKCoordinateTranslator translator)
+{
+	if(isVisible)
+	{
+		frame=(int) (frame*animationSpeed);
+		Point screenP = translator.convertMapToScreen(position);
+		asset.drawToGraphics(g,screenP.x,screenP.y,frame,0,observer);
+	}
+}
+
+
+public void drawToGraphics (GraphicsContext g,int frame, int row,
 		ImageObserver observer,CKCoordinateTranslator translator)
 {
 	if(isVisible)

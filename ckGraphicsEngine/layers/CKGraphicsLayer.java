@@ -28,6 +28,7 @@ import ckGraphicsEngine.CKCoordinateTranslator;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.assets.CKAssetInstance;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
+import javafx.scene.canvas.GraphicsContext;
 
 abstract public class CKGraphicsLayer 
 		implements Comparable<CKGraphicsLayer>,CKXMLAsset<CKGraphicsLayer>
@@ -117,7 +118,6 @@ abstract public class CKGraphicsLayer
 	abstract public void drawLayerToGraphics (Graphics g,int frame,
 			ImageObserver observer,CKCoordinateTranslator translator);
 	
-
 	abstract public void drawLayerRowToGraphics (Graphics g,int frame, int y,
 			ImageObserver observer,CKCoordinateTranslator translator);
 	
@@ -125,6 +125,19 @@ abstract public class CKGraphicsLayer
 	abstract public void drawLayerTileToGraphics (Graphics g,int frame, 
 			int x,int y,
 			ImageObserver observer,CKCoordinateTranslator translator);
+
+	
+	abstract public void drawLayerToGraphics (GraphicsContext g,int frame,
+			ImageObserver observer,CKCoordinateTranslator translator);
+	
+	abstract public void drawLayerRowToGraphics (GraphicsContext g,int frame, int y,
+			ImageObserver observer,CKCoordinateTranslator translator);
+	
+	
+	abstract public void drawLayerTileToGraphics (GraphicsContext g,int frame, 
+			int x,int y,
+			ImageObserver observer,CKCoordinateTranslator translator);
+
 	
 	abstract public void changeHeight(int x,int y, double heightDiff);
 	

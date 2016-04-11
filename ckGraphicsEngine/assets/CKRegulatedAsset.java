@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.ImageObserver;
 import ckDatabase.CKGraphicsAssetFactoryXML;
+import javafx.scene.canvas.GraphicsContext;
+
 import static ckGraphicsEngine.CKGraphicsConstants.*;
 
 /**
@@ -104,6 +106,15 @@ public class CKRegulatedAsset extends CKGraphicsAsset
 		asset.drawToGraphics(g,screenx,screeny,frame,row,observer);
 	}
 
+	
+	@Override
+	public void drawToGraphics(GraphicsContext g, int screenx, int screeny,
+			int frame,int row, ImageObserver observer)
+	{
+		frame=recalcFrame(frame);
+		asset.drawToGraphics(g,screenx,screeny,frame,row,observer);
+	}
+
 
 
 	@Override
@@ -127,6 +138,33 @@ public class CKRegulatedAsset extends CKGraphicsAsset
 
 	@Override
 	public void drawPreviewFrameToGraphics(Graphics g, int screenx, int screeny,
+			int frame, ImageObserver observer)
+	{
+		frame=recalcFrame(frame);
+		asset.drawPreviewFrameToGraphics(g,screenx,screeny,frame,observer);	
+	}
+
+	@Override
+	public void drawPreviewToGraphics(GraphicsContext g, int screenx, int screeny,
+			ImageObserver observer)
+	{
+		
+		asset.drawPreviewToGraphics(g, screenx, screeny,observer);
+	}
+
+
+
+	@Override
+	public void drawPreviewRowToGraphics(GraphicsContext g, int screenx, int screeny,
+			int row, ImageObserver observer)
+	{
+		asset.drawPreviewRowToGraphics(g, screenx, screeny,row, observer);
+	}
+
+
+
+	@Override
+	public void drawPreviewFrameToGraphics(GraphicsContext g, int screenx, int screeny,
 			int frame, ImageObserver observer)
 	{
 		frame=recalcFrame(frame);

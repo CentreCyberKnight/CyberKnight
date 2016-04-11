@@ -16,6 +16,7 @@ import ckTrigger.CKSharedTriggerList;
 import ckTrigger.CKTriggerList;
 import ckTrigger.CKTriggerNode;
 import ckTrigger.TriggerResult;
+import javafx.scene.canvas.GraphicsContext;
 
 abstract public class CKAbstractGridItem 
 {
@@ -434,6 +435,18 @@ abstract public class CKAbstractGridItem
 	abstract public void setAssetID(String assetID);
 
 	public void drawItem(int frame, ImageObserver observer, CKCoordinateTranslator translator, Graphics g)
+	{
+		Point screenP = translator.convertMapToScreen(getPos());
+		this.getTerrainAsset().drawToGraphics(g, screenP.x, screenP.y,frame,0, observer);
+		if(next!=null)
+		{
+			next.drawItem(frame,observer,translator,g);
+		}
+		
+	}
+	
+	public void drawItem(int frame, ImageObserver observer,
+			CKCoordinateTranslator translator, GraphicsContext g)
 	{
 		Point screenP = translator.convertMapToScreen(getPos());
 		this.getTerrainAsset().drawToGraphics(g, screenP.x, screenP.y,frame,0, observer);

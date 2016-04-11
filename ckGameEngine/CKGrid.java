@@ -32,6 +32,8 @@ import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.UnknownAnimationError;
 import ckGraphicsEngine.layers.CKGridGraphicsLayer;
+import javafx.scene.canvas.GraphicsContext;
+
 import static ckCommonUtils.CKPropertyStrings.*;
 
 public class CKGrid implements CKXMLAsset<CKGrid>
@@ -1079,6 +1081,14 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 		getPosition(x, y).drawItem(frame, observer, translator, g);
 	}
 
+	
+	public void drawPosition(int x, int y, int frame, ImageObserver observer,
+			CKCoordinateTranslator translator, GraphicsContext g)
+	{
+		getPosition(x, y).drawItem(frame, observer, translator, g);
+	}
+
+	
 	@Override
 	public void writeToStream(OutputStream out)
 	{
