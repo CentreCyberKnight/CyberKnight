@@ -6,6 +6,7 @@ import ckCommonUtils.CKPosition;
 import ckCommonUtils.LogListener;
 import ckGameEngine.CKGrid;
 import ckGraphicsEngine.CKGraphicsEngine.SelectAreaType;
+import ckGraphicsEngine.assets.CKGraphicsAsset;
 
 
 public interface CKGraphicsEngine
@@ -45,6 +46,10 @@ public interface CKGraphicsEngine
  */
 	int createInstance(int tid, String AID, CKPosition pos, int startFrame,
 			int layerDepth) throws LoadAssetError;  
+	
+	
+	int createUniqueInstance(int tid, CKGraphicsAsset asset, CKPosition pos,
+			int startFrame, int layerDepth);
 /**
  *  destroys the instance with IID
  * @param tid transaction id
@@ -302,6 +307,8 @@ public interface CKGraphicsEngine
 			Collection<CKPosition> possibles,
 			CKSelectedPositionsListeners callback,
 			Collection<CKPosition> offsets);
+
+	
 
 
 }

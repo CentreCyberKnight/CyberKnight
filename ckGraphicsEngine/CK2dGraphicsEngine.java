@@ -178,7 +178,14 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 			throws LoadAssetError
 	{
 		CKGraphicsAsset asset = afactory.getGraphicsAsset(AID);
-		
+		return createUniqueInstance(tid,asset,pos,startFrame,layerDepth);
+	}
+	
+	@Override
+	public int createUniqueInstance(int tid, CKGraphicsAsset asset,
+			CKPosition pos, int startFrame, int layerDepth)
+	{
+	
 		CKAssetInstance inst=null;
 		if(asset instanceof CKSpriteAsset)
 		{
@@ -861,6 +868,9 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 		actions.add(new CKNullAction(startTime,endTime));
 		
 	}
+
+
+
 	
 	
 	

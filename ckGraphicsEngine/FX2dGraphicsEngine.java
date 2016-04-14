@@ -202,6 +202,16 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 	{
 		CKGraphicsAsset asset = afactory.getGraphicsAsset(AID);
 		
+		return createUniqueInstance(tid,asset,pos,startFrame,layerDepth);
+	}
+	
+	
+	@Override
+	public int createUniqueInstance(int tid, CKGraphicsAsset asset,
+			CKPosition pos, int startFrame, int layerDepth)
+	{
+		
+		
 		CKAssetInstance inst=null;
 		if(asset instanceof CKSpriteAsset)
 		{
