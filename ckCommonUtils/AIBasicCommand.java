@@ -1,15 +1,12 @@
 package ckCommonUtils;
 
-import java.util.function.BiFunction;
-
 import ckDatabase.AimDescriptionFactory;
 import ckGameEngine.AimDescription;
 import ckGameEngine.CKGameObjectsFacade;
-import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellResult;
-import ckGameEngine.Direction;
 import ckGameEngine.DescisionGrid.CharacterActionDescription;
 import ckGameEngine.DescisionGrid.DecisionNode;
+import ckGameEngine.Direction;
 import ckPythonInterpreter.CKEditorPCController;
 
 public class AIBasicCommand implements AICommand

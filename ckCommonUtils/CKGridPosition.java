@@ -1,6 +1,7 @@
 package ckCommonUtils;
 
-import ckGameEngine.*;
+import ckGameEngine.PlaceHolder;
+import ckGameEngine.Tile;
 public class CKGridPosition extends CKPosition 
 {
 	

@@ -45,7 +45,6 @@ import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.layers.CKDynamicLayer;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
 import ckGraphicsEngine.layers.CKGridGraphicsLayer;
-
 import ckGraphicsEngine.sceneAction.CKSceneAction;
 import javafx.scene.canvas.GraphicsContext;
 

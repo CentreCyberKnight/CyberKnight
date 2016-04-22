@@ -2,15 +2,13 @@ package ckSnapInterpreter;
 
 import java.util.Vector;
 
-import netscape.javascript.JSException;
+import ckGameEngine.CKArtifact;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import ckGameEngine.CKArtifact;
-import ckGameEngine.CKTeam;
+import netscape.javascript.JSException;
 
 public class CKAllArtifactsPane extends HBox {
 	

@@ -22,7 +22,6 @@ import ckGameEngine.CKGridItemSet;
 import ckGameEngine.CKSpellCast;
 import ckGameEngine.Quest;
 import ckGraphicsEngine.BadInstanceIDError;
-import ckGraphicsEngine.CK2dGraphicsEngine;
 import ckGraphicsEngine.CKGraphicsEngine.RelationalLinkType;
 import ckGraphicsEngine.CircularDependanceError;
 import ckGraphicsEngine.FX2dGraphicsEngine;

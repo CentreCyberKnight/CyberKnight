@@ -9,7 +9,6 @@ import javax.swing.tree.MutableTreeNode;
 
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.Quest;
-import ckGraphicsEngine.CK2dGraphicsEngine;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 
 public class CKStartSoundEffectNode extends CKGUINode

@@ -1,4 +1,11 @@
 package ckDatabase;
+import static ckCommonUtils.CKPropertyStrings.CH_FIRE;
+import static ckCommonUtils.CKPropertyStrings.CH_MARK;
+import static ckCommonUtils.CKPropertyStrings.CH_VOICE;
+import static ckCommonUtils.CKPropertyStrings.P_ANY;
+import static ckCommonUtils.CKPropertyStrings.P_ILLUMINATE;
+import static ckCommonUtils.CKPropertyStrings.P_TALK;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -14,11 +21,6 @@ import ckSatisfies.SpellSatisfies;
 import ckTrigger.CKSharedTrigger;
 import ckTrigger.CKTrigger;
 import ckTrigger.TriggerResult;
-
-import static ckCommonUtils.CKPropertyStrings.*;
-import static ckCommonUtils.CKPropertyStrings.CH_VOICE;
-import static ckCommonUtils.CKPropertyStrings.P_ILLUMINATE;
-import static ckCommonUtils.CKPropertyStrings.P_TALK;
 
 /**A CKTriggerFactory that uses a DB to solve the problems.
  * 

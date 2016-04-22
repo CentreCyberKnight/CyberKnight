@@ -9,18 +9,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.image.Image;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKPropertyStrings;
 import ckDatabase.CKActorControllerFactory;
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckEditor.CKGridActorPropertiesEditor;
 import ckEditor.CKXMLAssetPropertiesEditor;
-import ckEditor.treegui.ActorNode;
 import ckGraphicsEngine.BadInstanceIDError;
-import ckGraphicsEngine.CK2dGraphicsEngine;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.LoadAssetError;
@@ -29,8 +24,9 @@ import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.assets.CKNullAsset;
 import ckGraphicsEngine.assets.CKSpriteAsset;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
-import ckPythonInterpreter.CKPlayerObjectsFacade;
-import ckTrigger.CKSharedTriggerList;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.image.Image;
 
 public class CKGridActor extends CKGridItem
 {

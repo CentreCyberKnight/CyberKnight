@@ -8,8 +8,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-
-
 import ckEditor.treegui.CKTreeGui;
 import ckGameEngine.QuestData;
 import ckTrigger.CKSharedTriggerList;

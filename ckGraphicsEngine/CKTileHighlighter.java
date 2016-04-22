@@ -1,7 +1,6 @@
 package ckGraphicsEngine;
 
 import java.awt.Point;
-import java.awt.event.MouseEvent;
 
 import ckGraphicsEngine.assets.CKAssetInstance;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
@@ -40,16 +39,13 @@ public class CKTileHighlighter extends CKSceneMouseListener
 		getScene().addInstanceToLayer(instance_front,f_layer);
 	}
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseMotionAdapter#mouseMoved(java.awt.event.MouseEvent)
-	 */
-	@Override
-	public void mouseMoved(MouseEvent e)
-	{
+		@Override
+		public void handleMouseMoved(javafx.scene.input.MouseEvent e)
+		{
 		
 		//TODO is there a synchonization problem
 		
-    	Point p = e.getPoint();
+    	Point p = getPoint(e);
     	    	
     	Point mapCoords = getScene().getTrans().convertScreenToMap(p);
 
@@ -78,6 +74,23 @@ public class CKTileHighlighter extends CKSceneMouseListener
     		}
     	}
   	}
+
+	@Override
+	public void handleMouseClicked(javafx.scene.input.MouseEvent e)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+
+
+	@Override
+	public void handleMouseExited(javafx.scene.input.MouseEvent e)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 
 	
 	

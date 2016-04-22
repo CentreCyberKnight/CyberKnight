@@ -7,6 +7,7 @@ import java.awt.image.ImageObserver;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -17,7 +18,7 @@ public class CKTextAsset extends CKGraphicsAsset
 	String text;
 	Font font;
 	Color color;
-	protected CKTextAsset(String text, Font font,Color color)
+	public CKTextAsset(String text, Font font,Color color)
 	{
 		super("'textAsset"+text+color, "Temp Text Asset");
 		this.text = text;
@@ -25,6 +26,7 @@ public class CKTextAsset extends CKGraphicsAsset
 		this.color = color;
 	}
 
+	
 	/**
 	 * @return the text
 	 */
@@ -100,10 +102,12 @@ public class CKTextAsset extends CKGraphicsAsset
 	public void drawToGraphics(GraphicsContext g, int screenx, int screeny,
 			int frame, int row, ImageObserver observer)
 	{
-		g.setStroke(color);
+		Paint fill = g.getFill();
+		g.setFill(color);
 		g.setFont(font);
 		g.setTextAlign(TextAlignment.CENTER);
-		g.strokeText(text, screenx, screeny);
+		g.fillText(text, screenx, screeny);
+		g.setFill(fill);
 	}
 
 	@Override

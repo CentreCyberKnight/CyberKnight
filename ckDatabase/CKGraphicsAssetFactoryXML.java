@@ -1,4 +1,6 @@
 package ckDatabase;
+import static ckCommonUtils.CKDatabaseTools.DBAT;
+
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -7,14 +9,15 @@ import java.beans.XMLEncoder;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JFrame;
-
 
 import ckCommonUtils.CKURL;
 import ckGraphicsEngine.assets.CKAssetViewer;
@@ -26,8 +29,6 @@ import ckGraphicsEngine.assets.CKRegulatedAsset;
 import ckGraphicsEngine.assets.CKSharedAsset;
 import ckGraphicsEngine.assets.CKSpriteAsset;
 import ckGraphicsEngine.assets.TileType;
-
-import static ckCommonUtils.CKDatabaseTools.*;
 
 /**A CK GraphicsAsset fFactory that uses XML files store data
  * 

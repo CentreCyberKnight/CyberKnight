@@ -5,7 +5,14 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.LayoutManager;
 import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.Vector;
+
 import javax.swing.JPanel;
+
+import ckCommonUtils.FXSwingBridge;
 
 //TODO stop thread when jcomponent is removed/disposed
 
@@ -36,6 +43,10 @@ public abstract class CKGamePanelTimer extends JPanel implements Runnable
 		running=false;
 		paused=false;
 		minSleep=1;
+		
+		FXMouseTranslationService service = new FXMouseTranslationService();
+		this.addMouseListener(service);
+		this.addMouseMotionListener(service);
 	}
 	
 	
@@ -64,6 +75,92 @@ public abstract class CKGamePanelTimer extends JPanel implements Runnable
 		initialize(framesPerSecond,maxDropped);
 	}
 
+	
+	private Vector<CKGraphicMouseInterface>mouseListeners=new Vector<CKGraphicMouseInterface>();
+
+	public void addMouseListener(CKGraphicMouseInterface list)
+	{
+		mouseListeners.add(list);
+	}
+	
+	public void removeMouseListener(CKGraphicMouseInterface list)
+	{
+		mouseListeners.remove(list);
+	}
+
+
+	private class FXMouseTranslationService implements MouseMotionListener,MouseListener
+	{
+
+		@Override
+		public void mouseClicked(MouseEvent e)
+		{
+			javafx.scene.input.MouseEvent click = 
+					FXSwingBridge.SwingMouseEventToFX(e,
+							javafx.scene.input.MouseEvent.MOUSE_CLICKED);
+			
+			for(CKGraphicMouseInterface list:mouseListeners)
+			{
+				list.handleMouseClicked(click);
+			}
+			
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent arg0)
+		{
+		
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e)
+		{
+			javafx.scene.input.MouseEvent click = 
+					FXSwingBridge.SwingMouseEventToFX(e,
+							javafx.scene.input.MouseEvent.MOUSE_ENTERED);
+			
+			for(CKGraphicMouseInterface list:mouseListeners)
+			{
+				list.handleMouseExited(click);
+			}
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent arg0)
+		{
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent arg0)
+		{
+			
+		}
+
+		@Override
+		public void mouseDragged(MouseEvent arg0)
+		{
+			
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e)
+		{
+			javafx.scene.input.MouseEvent click = 
+					FXSwingBridge.SwingMouseEventToFX(e,
+							javafx.scene.input.MouseEvent.MOUSE_MOVED);
+			
+			for(CKGraphicMouseInterface list:mouseListeners)
+			{
+				list.handleMouseMoved(click);
+			}
+		}
+		
+	}
+	
 	
 	
 	public abstract void calcState();

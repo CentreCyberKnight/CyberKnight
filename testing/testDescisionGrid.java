@@ -1,35 +1,27 @@
 package testing;
 
-import static org.junit.Assert.*;
+import static ckCommonUtils.CKPropertyStrings.P_END_TURN;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Set;
-
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKPropertyStrings;
 import ckDatabase.AimDescriptionFactory;
-import ckDatabase.CKGridFactory;
 import ckGameEngine.AimDescription;
 import ckGameEngine.CKAbstractGridItem;
 import ckGameEngine.CKGrid;
 import ckGameEngine.CKGrid.GridNode;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKGridItem;
-import ckGameEngine.CKSpellCast;
 import ckGameEngine.DescisionGrid;
-import ckGameEngine.Direction;
 import ckGameEngine.DescisionGrid.CharacterActionDescription;
 import ckGameEngine.DescisionGrid.DecisionNode;
-import ckGameEngine.Grid;
-import static ckCommonUtils.CKPropertyStrings.*;
+import ckGameEngine.Direction;
 
 
 public class testDescisionGrid

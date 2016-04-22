@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.JPanel;
+
 import ckCommonUtils.CKEntitySelectedListener;
 import ckEditor.treegui.CKGUINode;
 import ckEditor.treegui.CKHiddenNode;

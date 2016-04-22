@@ -2,7 +2,6 @@ package ckPythonInterpreter;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,12 +10,11 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.text.EditorKit;
 
-import jsyntaxpane.DefaultSyntaxKit;
-
 import ckCommonUtils.DisabledPanel;
+import ckGameEngine.ActorController;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
-import ckGameEngine.ActorController;
+import jsyntaxpane.DefaultSyntaxKit;
 
 public class CKCharacterEquippedView extends JPanel
 {

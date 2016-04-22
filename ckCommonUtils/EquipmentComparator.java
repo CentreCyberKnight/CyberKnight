@@ -1,5 +1,16 @@
 package ckCommonUtils;
-import static ckCommonUtils.CKPropertyStrings.*;
+import static ckCommonUtils.CKPropertyStrings.P_ARMOR;
+import static ckCommonUtils.CKPropertyStrings.P_MAGIC;
+import static ckCommonUtils.CKPropertyStrings.P_MISC1;
+import static ckCommonUtils.CKPropertyStrings.P_MISC2;
+import static ckCommonUtils.CKPropertyStrings.P_MISC3;
+import static ckCommonUtils.CKPropertyStrings.P_MISC4;
+import static ckCommonUtils.CKPropertyStrings.P_MISC5;
+import static ckCommonUtils.CKPropertyStrings.P_MISC6;
+import static ckCommonUtils.CKPropertyStrings.P_OFFHAND_WEAPON;
+import static ckCommonUtils.CKPropertyStrings.P_SHIRT;
+import static ckCommonUtils.CKPropertyStrings.P_SHOES;
+import static ckCommonUtils.CKPropertyStrings.P_SWORD;
 
 import java.util.Comparator;
 import java.util.HashMap;

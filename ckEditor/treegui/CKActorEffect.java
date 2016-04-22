@@ -9,13 +9,9 @@ import javax.swing.JFrame;
 import javax.swing.tree.MutableTreeNode;
 
 import ckCommonUtils.CKPosition;
-import ckGameEngine.CKAbstractGridItem;
 import ckGameEngine.CKGameObjectsFacade;
-import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellCast;
-import ckGameEngine.Quest;
 import ckGraphicsEngine.BadInstanceIDError;
-import ckGraphicsEngine.CK2dGraphicsEngine;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.LoadAssetError;
 import ckGraphicsEngine.layers.CKGraphicsLayer;

@@ -1,7 +1,11 @@
 package testing;
 
-import static org.junit.Assert.*;
-import static ckCommonUtils.CKPropertyStrings.*;
+import static ckCommonUtils.CKPropertyStrings.CH_MARK;
+import static ckCommonUtils.CKPropertyStrings.CH_MOVE;
+import static ckCommonUtils.CKPropertyStrings.CH_WORLD;
+import static ckCommonUtils.CKPropertyStrings.P_JUMP_OVER;
+import static ckCommonUtils.CKPropertyStrings.P_ON_STEP;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;

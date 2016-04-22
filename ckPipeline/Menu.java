@@ -1,11 +1,23 @@
 package ckPipeline;
-import javax.swing.*;
-import ckCommonUtils.*;
-import java.util.*;
-import java.io.*;
-import java.nio.file.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+import ckCommonUtils.CKProperties;
 public class Menu extends JPanel {
 	//This is the menu which houses the actions which are being created
 	private ArrayList<Opts> actions;

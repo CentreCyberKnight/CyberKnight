@@ -10,11 +10,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 import ckCommonUtils.CKEntitySelectedListener;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKTabPane;
@@ -25,7 +27,11 @@ import ckDatabase.CKGraphicsLayerFactoryXML;
 import ckEditor.DataPickers.CKAssetPicker;
 import ckEditor.DataPickers.CKXMLAssetPicker;
 import ckGameEngine.CKGrid;
-import ckGraphicsEngine.*;
+import ckGraphicsEngine.CKGraphicsScene;
+import ckGraphicsEngine.CKLayerControlPanel;
+import ckGraphicsEngine.CKSceneSlider;
+import ckGraphicsEngine.CKSceneViewer;
+import ckGraphicsEngine.CKTileHighlighter;
 import ckGraphicsEngine.assets.CKAssetInstance;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
@@ -175,8 +181,8 @@ public class CKLayerEditor extends JPanel
 		CKAssetInstance hfront = new CKAssetInstance(new CKPosition(),front,2);
 		CKAssetInstance hback = new CKAssetInstance(new CKPosition(),back,3);
 	
-		sceneViewer.addMouseMotionListener(new CKTileHighlighter(scene,hfront,hback));
-		sceneViewer.addMouseMotionListener(new CKSceneSlider(scene));
+		sceneViewer.addMouseListener(new CKTileHighlighter(scene,hfront,hback));
+		sceneViewer.addMouseListener(new CKSceneSlider(scene));
 		sceneViewer.addMouseListener(new PlaceSelectedAssetListener());
 	}
 

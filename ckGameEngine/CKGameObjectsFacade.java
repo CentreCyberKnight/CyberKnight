@@ -1,27 +1,24 @@
 package ckGameEngine;
 
 import java.util.HashMap;
-import java.util.HashSet;
-
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import ckCommonUtils.CKThreadCompletedListener;
 import ckEditor.CKTeamArtifactEditor;
-import ckGameEngine.Quest;
 import ckGameEngine.actions.CKGameActionListenerInterface;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckPythonInterpreter.CKPythonConsoleExtended;
 import ckPythonInterpreter.CKPythonEditorPane;
 import ckPythonInterpreter.CKTeamView;
 import ckTrigger.CKTriggerListNode;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 
 public class CKGameObjectsFacade
 {

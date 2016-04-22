@@ -1,5 +1,17 @@
 package ckGameEngine;
-import static ckCommonUtils.CKPropertyStrings.* ;
+import static ckCommonUtils.CKPropertyStrings.CH_ACCURACY;
+import static ckCommonUtils.CKPropertyStrings.CH_ATTACK_BONUS;
+import static ckCommonUtils.CKPropertyStrings.CH_DEFENSE;
+import static ckCommonUtils.CKPropertyStrings.CH_DEFENSE_EFFECTIVENESS;
+import static ckCommonUtils.CKPropertyStrings.CH_EQUIP_SLOTS;
+import static ckCommonUtils.CKPropertyStrings.CH_EVADE;
+import static ckCommonUtils.CKPropertyStrings.CH_MOVE;
+import static ckCommonUtils.CKPropertyStrings.CP_PER_ROUND;
+import static ckCommonUtils.CKPropertyStrings.MAX_CP;
+import static ckCommonUtils.CKPropertyStrings.MAX_DAMAGE;
+import static ckCommonUtils.CKPropertyStrings.P_FORWARD;
+import static ckCommonUtils.CKPropertyStrings.RECHARGE_CP;
+import static ckCommonUtils.CKPropertyStrings.SPEED;
 
 public class CKAbilityFactory
 {

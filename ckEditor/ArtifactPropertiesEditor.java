@@ -25,7 +25,6 @@ import ckCommonUtils.CKEntitySelectedListener;
 import ckDatabase.CKArtifactFactory;
 import ckDatabase.CKGraphicsAssetFactory;
 import ckDatabase.CKGraphicsAssetFactoryXML;
-import ckEditor.CKAssetButton;
 import ckEditor.DataPickers.CKAssetPicker;
 import ckEditor.treegui.BookList;
 import ckEditor.treegui.CKTreeGui;

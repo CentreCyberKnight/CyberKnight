@@ -9,7 +9,19 @@ import javax.swing.JSeparator;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import ckEditor.treegui.CKTreeGui;
-import ckSatisfies.*;
+import ckSatisfies.ActorCPSatisfies;
+import ckSatisfies.AndSatisfies;
+import ckSatisfies.BookSatisfies;
+import ckSatisfies.ContestedActionSatisfies;
+import ckSatisfies.DeadSatisfies;
+import ckSatisfies.FalseSatisfies;
+import ckSatisfies.NotSatisfies;
+import ckSatisfies.OrSatisfies;
+import ckSatisfies.PositionReachedSatisfies;
+import ckSatisfies.Satisfies;
+import ckSatisfies.SpellSatisfies;
+import ckSatisfies.TrueSatisfies;
+import ckSatisfies.TurnsTakenSatisfies;
 
 public class CKSatistfiesAddMenu
 {

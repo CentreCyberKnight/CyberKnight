@@ -1,15 +1,15 @@
 package ckGameEngine;
 
+import static ckCommonUtils.CKPropertyStrings.CH_EQUIP_SLOTS;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.Vector;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Vector;
 
 import ckTrigger.CKTriggerListNode;
-
-import static ckCommonUtils.CKPropertyStrings.*;
 
 @Deprecated
 public class CKCharacter

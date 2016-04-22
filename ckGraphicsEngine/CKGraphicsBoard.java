@@ -1,6 +1,9 @@
 package ckGraphicsEngine;
 
 
+import static ckGraphicsEngine.CKGraphicsConstants.BASE_HEIGHT;
+import static ckGraphicsEngine.CKGraphicsConstants.BASE_WIDTH;
+
 //import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -13,7 +16,6 @@ import java.awt.image.ImageObserver;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.assets.CKImageAsset;
 import ckGraphicsEngine.assets.CKNullAsset;
-import static ckGraphicsEngine.CKGraphicsConstants.*;
 
 public class CKGraphicsBoard implements MouseMotionListener 
 {//might need to alter this is we want things inside of the component

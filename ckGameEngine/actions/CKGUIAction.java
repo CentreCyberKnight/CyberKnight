@@ -16,10 +16,10 @@ import javax.swing.SpinnerNumberModel;
 import ckCommonUtils.CKEntitySelectedListener;
 import ckDatabase.CKDialogMessageFactory;
 import ckDatabase.CKDialogMessageFactoryExample;
-import ckGraphicsEngine.CKDialogChoice;
-import ckGraphicsEngine.CKDialogMessage;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKSpellCast;
+import ckGraphicsEngine.CKDialogChoice;
+import ckGraphicsEngine.CKDialogMessage;
 
 /**
  * @author dragonlord

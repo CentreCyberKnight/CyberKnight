@@ -1,13 +1,14 @@
 package ckSatisfies;
 
+import static ckCommonUtils.CKPropertyStrings.CH_ACCURACY;
+import static ckCommonUtils.CKPropertyStrings.CH_EVADE;
+
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,7 +23,6 @@ import ckGameEngine.CKBook;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellCast;
 import ckGameEngine.QuestData;
-import static ckCommonUtils.CKPropertyStrings.*;
 
 public class ContestedActionSatisfies extends Satisfies
 {

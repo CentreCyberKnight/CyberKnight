@@ -22,7 +22,6 @@ import javax.swing.JToolBar;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.EditorKit;
 
-import jsyntaxpane.DefaultSyntaxKit;
 import ckCommonUtils.DisabledPanel;
 import ckCommonUtils.EquipmentComparator;
 import ckDatabase.CKGraphicsAssetFactory;
@@ -31,7 +30,6 @@ import ckEditor.CKAssetButton;
 import ckEditor.CKAssetLabel;
 import ckEditor.CKBookView;
 import ckEditor.CKTeamArtifactEditor;
-import ckEditor.treegui.CKTreeGui;
 import ckGameEngine.ActorController;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKBook;
@@ -40,6 +38,7 @@ import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKPage;
 import ckGameEngine.CKStatsChangeListener;
+import jsyntaxpane.DefaultSyntaxKit;
 
 
 

@@ -2,9 +2,10 @@ package ckEditor.DialogEditor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import ckEditor.DialogEditor.GraphElements.NateEdgeFactory;
+
 import javax.swing.JMenuItem;
 
+import ckEditor.DialogEditor.GraphElements.NateEdgeFactory;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 

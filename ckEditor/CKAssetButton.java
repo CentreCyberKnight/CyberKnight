@@ -2,8 +2,6 @@ package ckEditor;
 
 import java.awt.Dimension;
 
-import javafx.scene.control.Button;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 

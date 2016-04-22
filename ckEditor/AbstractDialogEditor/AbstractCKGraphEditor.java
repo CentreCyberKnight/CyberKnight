@@ -20,7 +20,6 @@ import javax.swing.event.ChangeListener;
 
 import org.apache.commons.collections15.Transformer;
 
-
 import ckCommonUtils.CKEntitySelectedListener;
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;
 import edu.uci.ics.jung.algorithms.shortestpath.DijkstraDistance;

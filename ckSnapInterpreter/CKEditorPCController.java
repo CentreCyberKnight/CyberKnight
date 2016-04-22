@@ -1,5 +1,23 @@
 package ckSnapInterpreter;
 
+import static ckCommonUtils.CKPropertyStrings.CH_AIM;
+import static ckCommonUtils.CKPropertyStrings.CH_EARTH;
+import static ckCommonUtils.CKPropertyStrings.CH_FIRE;
+import static ckCommonUtils.CKPropertyStrings.CH_MOVE;
+import static ckCommonUtils.CKPropertyStrings.CH_SCRY;
+import static ckCommonUtils.CKPropertyStrings.CH_VOICE;
+import static ckCommonUtils.CKPropertyStrings.CH_WATER;
+import static ckCommonUtils.CKPropertyStrings.CH_WIND;
+import static ckCommonUtils.CKPropertyStrings.P_END_TURN;
+import static ckCommonUtils.CKPropertyStrings.P_FRONT;
+import static ckCommonUtils.CKPropertyStrings.P_INT;
+import static ckCommonUtils.CKPropertyStrings.P_MOVETO;
+import static ckCommonUtils.CKPropertyStrings.P_SELF;
+import static ckCommonUtils.CKPropertyStrings.P_STAR;
+import static ckCommonUtils.CKPropertyStrings.P_STRING;
+import static ckCommonUtils.CKPropertyStrings.P_TALK;
+import static ckCommonUtils.CKPropertyStrings.P_TARGET;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -8,16 +26,15 @@ import ckCommonUtils.CKPosition;
 import ckGameEngine.CKAbstractGridItem;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKBook;
+import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGrid;
 import ckGameEngine.CKGrid.GridNode;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKGridItemSet;
 import ckGameEngine.CKSpellCast;
-import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.Direction;
 import ckGraphicsEngine.CKSelection;
 import ckPythonInterpreter.CKPlayerObjectsFacade;
-import static ckCommonUtils.CKPropertyStrings.*;
 
 public class CKEditorPCController
 {

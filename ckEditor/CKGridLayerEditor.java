@@ -48,13 +48,17 @@ import ckGameEngine.CKAbstractGridItem;
 import ckGameEngine.CKGrid;
 import ckGameEngine.CKGridItem;
 import ckGameEngine.CKSharedGridItem;
-import ckGraphicsEngine.*;
+import ckGraphicsEngine.CKGraphicsScene;
+import ckGraphicsEngine.CKSceneSlider;
+import ckGraphicsEngine.CKSceneViewer;
+import ckGraphicsEngine.CKTileHighlighter;
 import ckGraphicsEngine.assets.CKAssetInstance;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
 import ckGraphicsEngine.layers.CKStaticMatrixLayer;
 
-public class CKGridLayerEditor extends CKXMLAssetPropertiesEditor<CKGrid> implements MouseWheelListener,DocumentListener 
+public class CKGridLayerEditor extends CKXMLAssetPropertiesEditor<CKGrid> 
+implements MouseWheelListener,DocumentListener 
 {
 	/**
 	 * 
@@ -65,6 +69,7 @@ public class CKGridLayerEditor extends CKXMLAssetPropertiesEditor<CKGrid> implem
 	JPanel controls;
 	
 	CKSceneViewer sceneViewer;//center
+	
 	CKXMLFilteredAssetPicker<CKGridItem,CKGridItemFactory> assetPicker;
 	
 	JPanel card;
@@ -373,11 +378,14 @@ public class CKGridLayerEditor extends CKXMLAssetPropertiesEditor<CKGrid> implem
 		CKAssetInstance hfront = new CKAssetInstance(new CKPosition(),front,2);
 		CKAssetInstance hback = new CKAssetInstance(new CKPosition(),back,3);
 	
-		sceneViewer.addMouseMotionListener(new CKTileHighlighter(scene,hfront,hback,8002,8003));
+		sceneViewer.addMouseListener(new CKTileHighlighter(scene,hfront,hback,8002,8003));
 		
 		CKSceneSlider slider = new CKSceneSlider(scene);
-		sceneViewer.addMouseMotionListener(slider);
+		//sceneViewer.addMouseMotionListener(slider);
 		sceneViewer.addMouseListener(slider);
+		
+		
+		
 		sceneViewer.addMouseListener(new PlaceSelectedAssetListener());
 		sceneViewer.addMouseWheelListener(this);
 		sceneViewer.addMouseMotionListener(new ShowCoordsListener());

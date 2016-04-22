@@ -1,6 +1,19 @@
 package ckSnapInterpreter;
 
-import static ckCommonUtils.CKPropertyStrings.*;
+import static ckCommonUtils.CKPropertyStrings.CH_ACCURACY;
+import static ckCommonUtils.CKPropertyStrings.CH_ATTACK_BONUS;
+import static ckCommonUtils.CKPropertyStrings.CH_DEFENSE;
+import static ckCommonUtils.CKPropertyStrings.CH_DEFENSE_EFFECTIVENESS;
+import static ckCommonUtils.CKPropertyStrings.CH_EVADE;
+import static ckCommonUtils.CKPropertyStrings.CH_MOVE;
+import static ckCommonUtils.CKPropertyStrings.MAX_CP;
+import static ckCommonUtils.CKPropertyStrings.MAX_DAMAGE;
+import static ckCommonUtils.CKPropertyStrings.P_FORWARD;
+import static ckCommonUtils.CKPropertyStrings.P_FRONT;
+import static ckCommonUtils.CKPropertyStrings.P_LEFT;
+import static ckCommonUtils.CKPropertyStrings.P_RIGHT;
+import static ckCommonUtils.CKPropertyStrings.P_SHORT_TARGET;
+import static ckCommonUtils.CKPropertyStrings.RECHARGE_CP;
 
 import java.util.Vector;
 
@@ -21,7 +34,6 @@ import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckSatisfies.PositionReachedSatisfies;
 import ckSatisfies.Satisfies;
 import ckSatisfies.TrueSatisfies;
-import ckSnapInterpreter.CKDrawerTab;
 import ckTrigger.CKTrigger;
 import ckTrigger.CKTriggerList;
 import ckTrigger.TriggerResult;
@@ -37,7 +49,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -280,6 +291,7 @@ public class CKUI extends Application
 /*		CKSequentialAction start = new CKSequentialAction();
 		start.add()
 	*/
+		
 	q.addTrigger(new CKTrigger(new TrueSatisfies(), 
 				new CKSimpleGUIAction("Dad","Lets race to get to the fridge"),
 				TriggerResult.INIT_ONLY));

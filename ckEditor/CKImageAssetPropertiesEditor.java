@@ -1,7 +1,6 @@
 package ckEditor;
 
 import java.awt.FlowLayout;
-import ckGraphicsEngine.assets.TileType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -27,6 +26,7 @@ import ckCommonUtils.CKURL;
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckDatabase.XMLDirectories;
 import ckGraphicsEngine.assets.CKImageAsset;
+import ckGraphicsEngine.assets.TileType;
 
 public class CKImageAssetPropertiesEditor extends JPanel implements ChangeListener,ActionListener,DocumentListener
 {

@@ -16,14 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 
 import ckCommonUtils.CKEntitySelectedListener;
-import ckCommonUtils.CKXMLAsset;
-import ckDatabase.CKGraphicsAssetFactory;
-import ckDatabase.CKGraphicsAssetFactoryXML;
-import ckDatabase.CKXMLFactory;
-import ckEditor.DataPickers.CKFilteredAssetPicker;
 import ckEditor.DataPickers.CKXMLFilteredAssetPicker;
-import ckGraphicsEngine.CKGraphicsPreviewGenerator;
-import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckSound.CKSound;
 import ckSound.CKSoundFactory;
 

@@ -2,18 +2,13 @@ package ckSnapInterpreter;
 
 
 import ckDatabase.CKArtifactFactory;
-import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKGameObjectsFacade;
-import ckGraphicsEngine.assets.CKGraphicsAsset;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;

@@ -1,5 +1,9 @@
 package ckPythonInterpreterTest;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,11 +18,8 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
-import java.awt.*;
-
-import org.python.core.PyException;
 import org.python.core.Py;
-import org.python.util.InteractiveConsole;
+import org.python.core.PyException;
 
 public class CKExceptionFrame extends JFrame
 {

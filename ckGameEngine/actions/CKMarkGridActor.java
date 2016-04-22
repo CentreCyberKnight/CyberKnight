@@ -18,12 +18,10 @@ import javax.swing.JSpinner;
 import javax.swing.JTree;
 import javax.swing.SpinnerNumberModel;
 
-import ckDatabase.CKGridItemFactory;
 import ckEditor.treegui.CKGuiRoot;
 import ckEditor.treegui.CKTreeGui;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellCast;
-import ckSatisfies.BookSatisfies;
 import ckSatisfies.NumericalCostType;
 
 /**

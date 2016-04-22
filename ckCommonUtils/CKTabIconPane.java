@@ -13,8 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import ckEditor.Artifact.window;
-
 
 
 public class CKTabIconPane extends JTabbedPane implements ActionListener

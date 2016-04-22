@@ -2,6 +2,7 @@ package ckEditor.treegui;
 
 import static ckCommonUtils.CKPropertyStrings.CH_EQUIP_SLOTS;
 import static ckCommonUtils.CKPropertyStrings.P_SHOES;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.XMLDecoder;
@@ -10,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.swing.JMenuItem;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;

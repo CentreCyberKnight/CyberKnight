@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckGraphicsEngine.UnknownAnimationError;
 import javafx.scene.canvas.GraphicsContext;

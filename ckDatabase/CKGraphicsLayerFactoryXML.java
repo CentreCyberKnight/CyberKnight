@@ -10,7 +10,6 @@ import java.util.Vector;
 
 import javax.swing.JFrame;
 
-
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKURL;
 import ckGraphicsEngine.layers.CKGraphicsLayer;

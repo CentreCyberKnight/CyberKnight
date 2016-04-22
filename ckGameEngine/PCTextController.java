@@ -1,7 +1,8 @@
 package ckGameEngine;
 
-import ckGameEngine.CKGameObjectsFacade;
-import static ckGameEngine.CKGameObjectsFacade.*;
+import static ckGameEngine.CKGameObjectsFacade.disableTextInput;
+import static ckGameEngine.CKGameObjectsFacade.enableTextInput;
+import static ckGameEngine.CKGameObjectsFacade.getQuest;
 
 @Deprecated
 public class PCTextController extends ActorController

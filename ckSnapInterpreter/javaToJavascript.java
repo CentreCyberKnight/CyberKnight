@@ -1,12 +1,12 @@
 package ckSnapInterpreter;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.scene.web.WebView;
-import javafx.scene.web.WebEngine;
 import javafx.scene.layout.GridPane;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import javafx.geometry.Insets;
 import netscape.javascript.JSObject;
 
 public class javaToJavascript extends Application // implements EventHandler<Action

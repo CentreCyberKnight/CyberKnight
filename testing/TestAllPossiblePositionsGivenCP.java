@@ -1,14 +1,11 @@
 package testing;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import ckCommonUtils.CKAreaPositions;
-import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKPropertyStrings;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGrid;

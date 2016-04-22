@@ -1,6 +1,7 @@
 package ckGameEngine;
 
-import ckCommonUtils.*;
+import ckCommonUtils.CKGridPosition;
+import ckCommonUtils.CKPosition;
 
 /**
  * Grid Class

@@ -9,10 +9,12 @@
 
 package ckEditor.DialogEditor;
 
-import edu.uci.ics.jung.visualization.VisualizationViewer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JMenuItem;
+
+import edu.uci.ics.jung.visualization.VisualizationViewer;
 
 /**
  * A class to implement the deletion of an edge from within a 

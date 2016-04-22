@@ -19,7 +19,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import ckEditor.CKXMLAssetPropertiesEditor;
-import ckEditor.AbstractDialogEditor.EdgeLink;
 import ckEditor.treegui.CKSingleParent;
 import ckEditor.treegui.CKTreeGui;
 

@@ -1,6 +1,8 @@
 package ckGameEngine;
 
-import static ckCommonUtils.CKPropertyStrings.*;
+import static ckCommonUtils.CKPropertyStrings.CH_WORLD;
+import static ckCommonUtils.CKPropertyStrings.P_ON_CRUSH;
+import static ckCommonUtils.CKPropertyStrings.P_ON_STEP;
 
 import java.awt.Graphics;
 import java.awt.Point;

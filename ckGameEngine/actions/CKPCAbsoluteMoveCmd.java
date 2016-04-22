@@ -17,10 +17,10 @@ import javax.swing.SpinnerListModel;
 import javax.swing.SpinnerNumberModel;
 
 import ckCommonUtils.CKGridPosition;
+import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGrid;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellCast;
-import ckGameEngine.CKGameObjectsFacade;
 
 /**
  * @author dragonlord

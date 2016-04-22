@@ -12,8 +12,6 @@ import java.awt.font.TextLayout;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 
-import com.sun.javafx.tk.FontMetrics;
-
 import javafx.scene.canvas.GraphicsContext;
 
 public class CKGraphicsText

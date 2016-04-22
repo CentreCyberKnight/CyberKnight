@@ -1,7 +1,6 @@
 package ckGraphicsEngine;
 
 import java.awt.Color;
-
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -11,8 +10,6 @@ import java.util.Vector;
 import ckCommonUtils.CKScriptTools;
 import ckCommonUtils.LogListener;
 import javafx.scene.canvas.GraphicsContext;
-
-import static org.junit.Assert.*;
 
 public class CKGUI
 {

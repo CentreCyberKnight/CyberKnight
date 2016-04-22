@@ -16,7 +16,6 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.SpinnerNumberModel;
 
-import ckCommonUtils.CKScriptTools;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.QuestData;
 import ckGraphicsEngine.CKGraphicsEngine;

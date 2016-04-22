@@ -1,7 +1,8 @@
 package testing;
 
-import static org.junit.Assert.*;
-
+import static ckCommonUtils.CKPropertyStrings.P_FRONT;
+import static ckCommonUtils.CKPropertyStrings.P_SWIPE;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -10,7 +11,6 @@ import ckCommonUtils.CKPosition;
 import ckDatabase.AimDescriptionFactory;
 import ckGameEngine.AimDescription;
 import ckGameEngine.Direction;
-import static ckCommonUtils.CKPropertyStrings.*;
 
 public class AimDescriptionTest
 {

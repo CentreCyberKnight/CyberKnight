@@ -8,7 +8,6 @@ import javax.swing.JMenuItem;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import ckEditor.treegui.CKActorEffect;
-import ckEditor.treegui.CKCasterEffect;
 import ckEditor.treegui.CKTreeGui;
 
 public class CKActorEffectAddMenu

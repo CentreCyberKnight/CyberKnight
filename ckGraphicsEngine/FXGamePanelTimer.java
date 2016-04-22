@@ -1,22 +1,10 @@
 package ckGraphicsEngine;
 
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.time.LocalDateTime;
-
-import java.util.concurrent.Semaphore;
-
-
-import com.sun.xml.internal.bind.v2.runtime.IllegalAnnotationException;
-
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;

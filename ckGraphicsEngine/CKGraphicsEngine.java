@@ -5,7 +5,6 @@ import java.util.Collection;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.LogListener;
 import ckGameEngine.CKGrid;
-import ckGraphicsEngine.CKGraphicsEngine.SelectAreaType;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 
 

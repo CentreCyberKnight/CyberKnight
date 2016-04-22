@@ -8,10 +8,8 @@ import ckGameEngine.ActorController;
 import ckGameEngine.ActorNullController;
 import ckGameEngine.ActorSnapController;
 import ckGameEngine.ActorTurnController;
-import ckGameEngine.OngoingEffectController;
-import ckGameEngine.ActorAIController.FireCommand;
-import ckGameEngine.ActorAIController.SwingCommand;
 import ckGameEngine.DescisionGrid.CharacterActionDescription;
+import ckGameEngine.OngoingEffectController;
 
 
 public class CKActorControllerFactory extends CKXMLFactory<ActorController>

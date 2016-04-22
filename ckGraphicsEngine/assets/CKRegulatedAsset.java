@@ -1,12 +1,13 @@
 package ckGraphicsEngine.assets;
 
+import static ckGraphicsEngine.CKGraphicsConstants.FRAME_RATE;
+
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.ImageObserver;
+
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import javafx.scene.canvas.GraphicsContext;
-
-import static ckGraphicsEngine.CKGraphicsConstants.*;
 
 /**
  * This is a decorator class to insure that the asset is played at 

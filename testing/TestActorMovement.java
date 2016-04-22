@@ -1,7 +1,10 @@
 package testing;
 
-import static org.junit.Assert.*;
-import static ckCommonUtils.CKPropertyStrings.*;
+import static ckCommonUtils.CKPropertyStrings.CH_MOVE;
+import static ckCommonUtils.CKPropertyStrings.P_FORWARD;
+import static ckCommonUtils.CKPropertyStrings.P_LEFT;
+import static ckCommonUtils.CKPropertyStrings.P_RIGHT;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +20,6 @@ import ckSatisfies.NumericalCostType;
 import ckSatisfies.SpellSatisfies;
 import ckTrigger.CKSharedTriggerList;
 import ckTrigger.CKTrigger;
-import ckTrigger.CKTriggerList;
 
 public class TestActorMovement
 {

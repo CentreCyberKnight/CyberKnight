@@ -3,7 +3,7 @@
  */
 package ckGameEngine.actions;
 
-import java.awt.Component; 
+import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -15,18 +15,17 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.JTree;
+
 import ckCommonUtils.CKEntitySelectedListener;
 import ckDatabase.CKGraphicsAssetFactory;
 import ckDatabase.CKGraphicsAssetFactoryXML;
+import ckGameEngine.CKGameObjectsFacade;
+import ckGameEngine.CKSpellCast;
 import ckGraphicsEngine.CKDialogChoice;
 import ckGraphicsEngine.CKDialogMessage;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
-import ckGameEngine.CKGameObjectsFacade;
-import ckGameEngine.CKSpellCast;
-import ckGameEngine.QuestData;
 
 /**
  * @author dragonlord

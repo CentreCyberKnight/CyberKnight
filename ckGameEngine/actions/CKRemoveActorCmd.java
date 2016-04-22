@@ -4,8 +4,8 @@
 package ckGameEngine.actions;
 
 import ckGameEngine.CKAbstractGridItem;
-import ckGameEngine.CKSpellCast;
 import ckGameEngine.CKGameObjectsFacade;
+import ckGameEngine.CKSpellCast;
 
 /**
  * @author dragonlord

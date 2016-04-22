@@ -6,14 +6,11 @@ import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.Map;
 
-import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTree;
-import javax.swing.SpinnerNumberModel;
 
 import ckGameEngine.CKDeltaBook.DELTA_TYPES;
 

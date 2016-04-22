@@ -1,6 +1,5 @@
 package ckPythonInterpreter;
 
-import ckPythonInterpreter.CKAlgViz;
 import ckJythonTools.JythonFactory;
 
 

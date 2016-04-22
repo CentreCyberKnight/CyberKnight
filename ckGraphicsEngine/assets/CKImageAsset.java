@@ -1,28 +1,26 @@
 package ckGraphicsEngine.assets;
 
-import java.awt.image.BufferedImage;
+import static ckGraphicsEngine.CKGraphicsConstants.BASE_HEIGHT;
+import static ckGraphicsEngine.CKGraphicsConstants.BASE_WIDTH;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
-
-import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.awt.Color;
 import java.beans.XMLEncoder;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import ckCommonUtils.CKURL;
 import ckDatabase.CKGraphicsAssetFactoryXML;
-import ckGraphicsEngine.assets.TileType;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.WritableImage;
-
-import static ckGraphicsEngine.CKGraphicsConstants.*;
 
 
 

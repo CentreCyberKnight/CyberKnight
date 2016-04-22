@@ -1,7 +1,7 @@
 package ckGraphicsEngine.sceneAction;
 
-import ckGraphicsEngine.CKGraphicsSceneInterface;
 import ckGraphicsEngine.CKGraphicsEngine.RelationalLinkType;
+import ckGraphicsEngine.CKGraphicsSceneInterface;
 import ckGraphicsEngine.assets.CKAssetInstance;
 
 public class CKLinkInstanceAction extends CKSceneAction

@@ -3,13 +3,8 @@ package ckGraphicsEngine.assets;
 
 
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Point;
 
-import javax.swing.JFrame;
-
-import ckDatabase.CKGraphicsAssetFactoryXML;
-import ckGraphicsEngine.CKGamePanelTimer;
 import ckGraphicsEngine.CKGraphicsConstants;
 import ckGraphicsEngine.FXGamePanelTimer;
 import javafx.scene.canvas.GraphicsContext;

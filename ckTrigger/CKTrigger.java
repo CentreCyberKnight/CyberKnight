@@ -16,13 +16,16 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.tree.MutableTreeNode;
 
-import ckSatisfies.*;
 import ckCommonUtils.CKXMLAsset;
 import ckEditor.CKGUINodePropertiesEditor;
 import ckEditor.CKXMLAssetPropertiesEditor;
 import ckEditor.treegui.CKTreeGui;
 import ckGameEngine.CKSpellCast;
-import ckGameEngine.actions.*;
+import ckGameEngine.actions.CKGameAction;
+import ckGameEngine.actions.CKMoveActorCmd;
+import ckGameEngine.actions.CKNullAction;
+import ckSatisfies.FalseSatisfies;
+import ckSatisfies.Satisfies;
 
 public class CKTrigger extends CKTriggerNode implements CKXMLAsset<CKTrigger>
 {

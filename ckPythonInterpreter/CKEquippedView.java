@@ -1,5 +1,7 @@
 package ckPythonInterpreter;
 
+import static ckCommonUtils.CKPropertyStrings.CH_EQUIP_SLOTS;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Vector;
@@ -14,7 +16,6 @@ import ckGameEngine.CKChapter;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKPage;
 import ckGameEngine.CKStatsChangeListener;
-import static ckCommonUtils.CKPropertyStrings.*;
 
 public class CKEquippedView extends JPanel implements CKStatsChangeListener
 {

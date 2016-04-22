@@ -1,24 +1,20 @@
 package ckGameEngine;
 
+import static ckCommonUtils.InterpolationTools.calcLinearIterpolation;
+import static ckCommonUtils.InterpolationTools.calcPercentBetween;
+import static ckCommonUtils.StreamOperators.forXYBoundedDonut;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
 import ckCommonUtils.AICommand;
 import ckCommonUtils.CKPosition;
-import ckCommonUtils.Command;
-import ckCommonUtils.InterpolationTools;
 import ckDatabase.AimDescriptionFactory;
 import ckGameEngine.CKGrid.GridNode;
-import ckGameEngine.DescisionGrid.CharacterActionDescription;
-import ckGameEngine.DescisionGrid.CharacterActionReport;
-import ckGameEngine.DescisionGrid.DecisionNode;
-import static ckCommonUtils.StreamOperators.*;
-import static ckCommonUtils.InterpolationTools.*;
 public class DescisionGrid
 {
 

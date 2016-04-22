@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKWorkSupervisorListener;
+import ckCommonUtils.FXSwingBridge;
 import ckCommonUtils.LogListener;
 import ckDatabase.CKGraphicsAssetFactory;
 import ckDatabase.CKGraphicsAssetFactoryXML;
@@ -40,12 +41,10 @@ import ckGraphicsEngine.test.CKfpsTest;
 import ckSound.CKSound;
 import ckSound.CKSoundFactory;
 import ckSound.CKSoundLoopAction;
-import ckSound.CKSoundPlayAction;
 import ckSound.CKSoundStopAction;
 
 //public class CK2dGraphicsEngine extends CKGamePanelTimer implements
 //CKGraphicsEngine
-
 public class CK2dGraphicsEngine extends CKfpsTest implements
 CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 {
@@ -149,7 +148,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 	@Override
 	public void endTransaction(int tid, boolean block)
 	{
-		//TODO need to handle state machine for transactions...
+	
 		
 		if(block)
 		{
@@ -521,9 +520,13 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 			System.out.println("Recieved Mouse click event");
 			if(gui.handleMouseEvent(e)) 	{ return;		}
 				 //check this to see if I should continue
+			
+			javafx.scene.input.MouseEvent click = 
+					FXSwingBridge.SwingMouseEventToFX(e,
+							javafx.scene.input.MouseEvent.MOUSE_CLICKED);
 			for(CKGraphicMouseInterface listener:mouseListeners)
 			{
-				listener.handleMouseClicked(e);
+				listener.handleMouseClicked(click);
 			}
 		}
 
@@ -535,11 +538,13 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 		{
 			//System.out.println("Mouse Moved");
 			//nothing yet
-			// TODO Auto-generated method stub
 //			super.mouseMoved(e);
+			javafx.scene.input.MouseEvent click = 
+					FXSwingBridge.SwingMouseEventToFX(e,
+							javafx.scene.input.MouseEvent.MOUSE_MOVED);
 			for(CKGraphicMouseInterface listener:mouseListeners)
 			{
-				listener.handleMouseMoved(e);
+				listener.handleMouseMoved(click);
 			}
 
 		}
@@ -584,24 +589,24 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 			
 			
 			CKPosition pos1 = new CKPosition(5,5,0,0);
-			CKPosition pos2 = new CKPosition(1,1,0,0);
-			CKPosition pos3 = new CKPosition(8,8,0,-1);
+			//CKPosition pos2 = new CKPosition(1,1,0,0);
+			//CKPosition pos3 = new CKPosition(8,8,0,-1);
 			
 			//sprite
 			int spriteID = engine.createInstance(tid,personAssetId,pos1,30,CKGraphicsLayer.SPRITE_LAYER);
 
 			//move camera
-			CKPosition cam1 = new CKPosition(10,1,0,0);
-			CKPosition cam2 = new CKPosition(1,10,0,0);
+			//CKPosition cam1 = new CKPosition(10,1,0,0);
+			//CKPosition cam2 = new CKPosition(1,10,0,0);
 			
 			//int arrives = engine.cameraPointAt(tid, cam1, 30,30);
 			int arrives =30;
 			
 			//arrives = engine.cameraPointAt(tid, cam2, arrives,30);
 			//spin			
-			int fastspin = engine.createInstance(tid,spinAssetID,pos2,arrives,CKGraphicsLayer.SPRITE_LAYER);
+		//	int fastspin = engine.createInstance(tid,spinAssetID,pos2,arrives,CKGraphicsLayer.SPRITE_LAYER);
 			//regulated spin
-			int spinIID = engine.createInstance(tid,slowSpinAsset,pos3,arrives+30,CKGraphicsLayer.SPRITE_LAYER);
+			//int spinIID = engine.createInstance(tid,slowSpinAsset,pos3,arrives+30,CKGraphicsLayer.SPRITE_LAYER);
 			//walkforward
 			arrives = arrives+30;
 			engine.cameraFollowInstance(tid, spriteID, arrives+30, 0);
@@ -715,7 +720,6 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 	@Override
 	public void loadDialogMessage(CKDialogMessage mess)
 	{
-		//should this be in a transaction TODO
 		gui.addDialogMessage(mess);
 		
 	}
@@ -754,7 +758,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 			try
 			{
 				//System.out.println("Going to sleep!!");
-				wait(); //TODO need to figure out who will call this...
+				wait(); 
 				//System.out.println("Waking UP!!");
 			}
 			catch (InterruptedException e) {}

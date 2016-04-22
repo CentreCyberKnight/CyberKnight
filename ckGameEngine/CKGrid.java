@@ -1,5 +1,13 @@
 package ckGameEngine;
 
+import static ckCommonUtils.CKPropertyStrings.P_END_TURN;
+import static ckCommonUtils.CKPropertyStrings.P_FORWARD;
+import static ckCommonUtils.CKPropertyStrings.P_JUMP_DOWN;
+import static ckCommonUtils.CKPropertyStrings.P_JUMP_OVER;
+import static ckCommonUtils.CKPropertyStrings.P_JUMP_UP;
+import static ckCommonUtils.CKPropertyStrings.P_LEFT;
+import static ckCommonUtils.CKPropertyStrings.P_RIGHT;
+
 import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -19,22 +27,17 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import ckCommonUtils.CKAreaPositions;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKXMLAsset;
-import ckDatabase.CKGridActorFactory;
 import ckEditor.CKGridLayerEditor;
 import ckGameEngine.CKGridActorOverLay.GridActorOverLayPersistenceDelegate;
 import ckGraphicsEngine.BadInstanceIDError;
-import ckGraphicsEngine.CK2dGraphicsEngine;
 import ckGraphicsEngine.CKCoordinateTranslator;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.UnknownAnimationError;
 import ckGraphicsEngine.layers.CKGridGraphicsLayer;
 import javafx.scene.canvas.GraphicsContext;
-
-import static ckCommonUtils.CKPropertyStrings.*;
 
 public class CKGrid implements CKXMLAsset<CKGrid>
 {

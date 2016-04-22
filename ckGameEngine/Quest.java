@@ -934,25 +934,16 @@ public void addActor(String actor, PC pc)
 package ckGameEngine;
 
 
-import java.awt.Dimension;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Vector;
 
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
-
 import javax.swing.JFrame;
 
-import ckCommonUtils.CKPosition;
 import ckDatabase.CKQuestFactory;
 import ckGameEngine.actions.CKGameActionListenerInterface;
-import ckGameEngine.CKGameObjectsFacade;
-import ckGraphicsEngine.CK2dGraphicsEngine;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.LoadAssetError;
 import ckTrigger.TriggerResult;

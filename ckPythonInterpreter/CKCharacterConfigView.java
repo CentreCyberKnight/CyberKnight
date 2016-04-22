@@ -11,6 +11,7 @@ import java.util.Vector;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
 import ckCommonUtils.DisabledPanel;
 import ckCommonUtils.EquipmentComparator;
 import ckDatabase.CKGraphicsAssetFactory;

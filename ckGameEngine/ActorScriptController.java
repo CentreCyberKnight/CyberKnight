@@ -1,13 +1,14 @@
 package ckGameEngine;
 
+import static ckGameEngine.CKGameObjectsFacade.getConsole;
+import static ckGameEngine.CKGameObjectsFacade.getQuest;
+import static org.junit.Assert.fail;
+
 import java.util.Iterator;
-import static org.junit.Assert.*;
 import java.util.Vector;
 
 import ckCommonUtils.CKScriptTools;
-import ckGameEngine.CKGameObjectsFacade;
 import ckPythonInterpreter.CKPlayerObjectsFacade;
-import static ckGameEngine.CKGameObjectsFacade.*;
 
 public class ActorScriptController extends ActorController
 {

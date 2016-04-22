@@ -1,5 +1,5 @@
 package ckGameEngine;
-import ckCommonUtils.*;
+import ckCommonUtils.CKGridPosition;
 
 /**
  * @author CyberKnight Graphics Team

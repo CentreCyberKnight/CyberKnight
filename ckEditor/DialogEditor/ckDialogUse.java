@@ -3,6 +3,7 @@ package ckEditor.DialogEditor;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+
 import org.apache.commons.collections15.Transformer;
 
 import ckEditor.DialogEditor.GraphElements.NateEdgeFactory;

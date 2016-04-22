@@ -1,5 +1,28 @@
 package ckGameEngine;
 
+import static ckCommonUtils.CKPropertyStrings.CH_ACCURACY;
+import static ckCommonUtils.CKPropertyStrings.CH_ATTACK_BONUS;
+import static ckCommonUtils.CKPropertyStrings.CH_DEFENSE;
+import static ckCommonUtils.CKPropertyStrings.CH_DEFENSE_EFFECTIVENESS;
+import static ckCommonUtils.CKPropertyStrings.CH_EARTH;
+import static ckCommonUtils.CKPropertyStrings.CH_EVADE;
+import static ckCommonUtils.CKPropertyStrings.CH_FIRE;
+import static ckCommonUtils.CKPropertyStrings.CH_MOVE;
+import static ckCommonUtils.CKPropertyStrings.CH_VOICE;
+import static ckCommonUtils.CKPropertyStrings.CP_PER_ROUND;
+import static ckCommonUtils.CKPropertyStrings.MAX_CP;
+import static ckCommonUtils.CKPropertyStrings.MAX_DAMAGE;
+import static ckCommonUtils.CKPropertyStrings.P_BOLT;
+import static ckCommonUtils.CKPropertyStrings.P_END_TURN;
+import static ckCommonUtils.CKPropertyStrings.P_FORWARD;
+import static ckCommonUtils.CKPropertyStrings.P_LEFT;
+import static ckCommonUtils.CKPropertyStrings.P_RIGHT;
+import static ckCommonUtils.CKPropertyStrings.P_SLASH;
+import static ckCommonUtils.CKPropertyStrings.P_TALK_CLICK;
+import static ckCommonUtils.CKPropertyStrings.RECHARGE_CP;
+import static ckCommonUtils.CKPropertyStrings.SPEED;
+import static ckGameEngine.CKGameObjectsFacade.getQuest;
+
 import java.util.Vector;
 import java.util.stream.Collectors;
 
@@ -9,7 +32,6 @@ import ckCommonUtils.CKPropertyStrings;
 import ckDatabase.CKGridActorFactory;
 import ckDatabase.CKTeamFactory;
 import ckEditor.treegui.ActorNode;
-import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGrid.GridNode;
 import ckGameEngine.DescisionGrid.CharacterActionDescription;
 import ckGameEngine.DescisionGrid.CharacterActionReport;
@@ -23,8 +45,6 @@ import ckSnapInterpreter.CKArtifactQuestRunner;
 import ckTrigger.CKTrigger;
 import ckTrigger.CKTriggerList;
 import ckTrigger.TriggerResult;
-import static ckCommonUtils.CKPropertyStrings.*;
-import static ckGameEngine.CKGameObjectsFacade.*;
 
 public class ActorAIController extends ActorController
 {

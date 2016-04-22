@@ -1,16 +1,16 @@
 package ckGraphicsEngine.assets;
 
-import java.io.BufferedOutputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.ImageObserver;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.XMLEncoder;
+import java.io.BufferedOutputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckGraphicsEngine.UnknownAnimationError;

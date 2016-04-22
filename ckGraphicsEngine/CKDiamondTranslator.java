@@ -2,11 +2,13 @@ package ckGraphicsEngine;
 
 
 
+import static ckGraphicsEngine.CKGraphicsConstants.BASE_HEIGHT;
+import static ckGraphicsEngine.CKGraphicsConstants.BASE_WIDTH;
+import static ckGraphicsEngine.CKGraphicsConstants.HEIGHT_MULTIPLIER;
+import static ckGraphicsEngine.CKGraphicsConstants.TOP_SCREEN_MARGIN;
+
 import java.awt.Dimension;
 import java.awt.Point;
-
-
-import static ckGraphicsEngine.CKGraphicsConstants.*;
 
 
 public class CKDiamondTranslator extends CKCoordinateTranslator

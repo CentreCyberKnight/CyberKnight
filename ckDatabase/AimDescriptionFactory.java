@@ -1,9 +1,17 @@
 package ckDatabase;
+import static ckCommonUtils.CKPropertyStrings.P_FAR_TARGET;
+import static ckCommonUtils.CKPropertyStrings.P_FRONT;
+import static ckCommonUtils.CKPropertyStrings.P_MID_TARGET;
+import static ckCommonUtils.CKPropertyStrings.P_SELF;
+import static ckCommonUtils.CKPropertyStrings.P_SHORT_TARGET;
+import static ckCommonUtils.CKPropertyStrings.P_STAR;
+import static ckCommonUtils.CKPropertyStrings.P_SWIPE;
+
 import java.util.HashMap;
+
 import ckCommonUtils.CKPosition;
 import ckGameEngine.AimDescription;
 import ckGameEngine.Direction;
-import static ckCommonUtils.CKPropertyStrings.*;
 
 /**A CK Asset fFactory 
  * 

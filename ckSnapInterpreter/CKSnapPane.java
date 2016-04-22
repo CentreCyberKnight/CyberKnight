@@ -2,20 +2,17 @@ package ckSnapInterpreter;
 
 import org.w3c.dom.Document;
 
+import ckGameEngine.CKGameObjectsFacade;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker;
 import javafx.concurrent.Worker.State;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
-import ckGameEngine.CKGameObjectsFacade;
-import ckGameEngine.CKTeam;
 
 public class CKSnapPane extends Pane {
 

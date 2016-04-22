@@ -3,14 +3,16 @@ package ckEditor.DataPickers;
 import java.awt.BorderLayout;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
+
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import ckCommonUtils.CKEntitySelectedListener;
-import ckDatabase.CKSceneFactory;
 import ckDatabase.CKQuestFactory;
+import ckDatabase.CKSceneFactory;
 import ckEditor.treegui.CKTreeGui;
 import ckGameEngine.QuestData;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;

@@ -7,10 +7,10 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-//import javax.swing.JEditorPane;
-import javax.swing.JFrame;
 //import javax.swing.JScrollPane;
 import javax.swing.JButton;
+//import javax.swing.JEditorPane;
+import javax.swing.JFrame;
 import javax.swing.JTextField;
 //import javax.swing.JTextPane;
 import javax.swing.JToolBar;
@@ -19,7 +19,6 @@ import javax.swing.text.EditorKit;
 
 import ckPythonInterpreter.CKPythonEditorPane;
 //import ckPythonInterpreterTest.CKPythonSuiteTest.ButtonHandler;
-
 import jsyntaxpane.DefaultSyntaxKit;
 
 public class CKPythonEditorPaneTest 

@@ -2,7 +2,6 @@ package ckPythonInterpreter;
 
 
 import ckJythonTools.JythonFactory;
-import ckPythonInterpreter.CKPythonEditorPane;
 
 public class CKUniqueEditor
 {

@@ -1,8 +1,9 @@
 package ckGameEngine;
 
-import ckGameEngine.CKGameObjectsFacade;
+import static ckGameEngine.CKGameObjectsFacade.getConsole;
+import static ckGameEngine.CKGameObjectsFacade.getQuest;
+
 import ckPythonInterpreter.CKPlayerObjectsFacade;
-import static ckGameEngine.CKGameObjectsFacade.*;
 
 public class ActorSnapController extends ActorController
 {

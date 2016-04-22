@@ -6,6 +6,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import ckCommonUtils.CKXMLAsset;
 import ckEditor.treegui.CKGUINode;
 import ckEditor.treegui.CKTreeGui;

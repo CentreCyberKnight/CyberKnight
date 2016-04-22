@@ -1,20 +1,17 @@
 package ckSnapInterpreter;
 
-import netscape.javascript.JSException;
+import static ckCommonUtils.CKPropertyStrings.MAX_CP;
 
-import ckGameEngine.CKTeam;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import static ckCommonUtils.CKPropertyStrings.*;
+import netscape.javascript.JSException;
 
 public class CKPlayerPane extends GridPane {
 

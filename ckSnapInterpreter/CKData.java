@@ -5,7 +5,6 @@ import static ckCommonUtils.CKPropertyStrings.CH_EQUIP_SLOTS;
 import static ckCommonUtils.CKPropertyStrings.CH_FIRE;
 import static ckCommonUtils.CKPropertyStrings.CH_MOVE;
 import static ckCommonUtils.CKPropertyStrings.CH_VOICE;
-import static ckCommonUtils.CKPropertyStrings.MAX_CP;
 import static ckCommonUtils.CKPropertyStrings.P_ARMOR;
 import static ckCommonUtils.CKPropertyStrings.P_FORWARD;
 import static ckCommonUtils.CKPropertyStrings.P_IGNITE;
@@ -17,49 +16,22 @@ import static ckCommonUtils.CKPropertyStrings.P_SING;
 import static ckCommonUtils.CKPropertyStrings.P_SLASH;
 import static ckCommonUtils.CKPropertyStrings.P_SWORD;
 import static ckCommonUtils.CKPropertyStrings.P_TALK;
-import static ckCommonUtils.CKPropertyStrings.SPEED;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
-
-import netscape.javascript.JSObject;
-import javafx.beans.value.ChangeListener;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
-import javafx.stage.Stage;
-import ckCommonUtils.CKPosition;
 import ckDatabase.CKArtifactFactory;
-import ckDatabase.CKGridActorFactory;
-import ckDatabase.CKTeamFactory;
-import ckEditor.treegui.ActorNode;
 import ckEditor.treegui.BookList;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKBook;
 import ckGameEngine.CKChapter;
-import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKPage;
 import ckGameEngine.CKSpell;
 import ckGameEngine.CKTeam;
 import ckGameEngine.Direction;
-import ckGameEngine.Quest;
-import ckGameEngine.QuestData;
-import ckGameEngine.actions.CKSimpleGUIAction;
 import ckPythonInterpreter.CKTeamView;
-import ckPythonInterpreterTest.CKArtifactQuestRunner;
-import ckSatisfies.PositionReachedSatisfies;
-import ckSatisfies.Satisfies;
-import ckSatisfies.TrueSatisfies;
-import ckTrigger.CKTrigger;
-import ckTrigger.CKTriggerList;
-import ckTrigger.TriggerResult;
+import javafx.stage.Stage;
 
 public class CKData {
 
