@@ -249,8 +249,8 @@ public class CKTrigger extends CKTriggerNode implements CKXMLAsset<CKTrigger>
 			panel[1].add(nameText[1]);		
 
 			resultBox = new JComboBox[2];
-			resultBox[0]=new JComboBox(TriggerResult.values());
-			resultBox[1]=new JComboBox(TriggerResult.values());
+			resultBox[0]=new JComboBox<TriggerResult>(TriggerResult.values());
+			resultBox[1]=new JComboBox<TriggerResult>(TriggerResult.values());
 			panel[0].add(resultBox[0]);
 			panel[1].add(resultBox[1]);
 			

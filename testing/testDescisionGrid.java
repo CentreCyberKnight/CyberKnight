@@ -71,8 +71,8 @@ public class testDescisionGrid
 		=(cad,node)->
 		{
 			CKPosition pos = node.position;
-			double x = node.position.getX();
-			double y = node.position.getY();
+			//double x = node.position.getX();
+			//double y = node.position.getY();
 			
 			
 			AimDescriptionFactory factory = AimDescriptionFactory.getInstance();
@@ -183,8 +183,8 @@ public class testDescisionGrid
 		=(cad,node)->
 		{
 			CKPosition pos = node.position;
-			double x = node.position.getX();
-			double y = node.position.getY();
+			//double x = node.position.getX();
+			//double y = node.position.getY();
 			
 			
 			AimDescriptionFactory factory = AimDescriptionFactory.getInstance();
@@ -260,7 +260,7 @@ public class testDescisionGrid
 		=(cad,node)->
 		{
 			CKPosition pos = node.position;
-			double x = node.position.getX();
+			//double x = node.position.getX();
 			double y = node.position.getY();
 			
 			
