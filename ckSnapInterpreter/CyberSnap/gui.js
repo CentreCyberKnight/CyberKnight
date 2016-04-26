@@ -212,30 +212,17 @@ IDE_Morph.prototype.init = function (isAutoFill) {
 
     this.globalVariables = new VariableFrame();
     this.currentSprite = new SpriteMorph(this.globalVariables);
-    //however many sprites that are currently on the screen
-   // this.sprites = new List([this.currentSprite]);
 	
 	//used to indicate if it is time to call snapCompletes()
 	this.end = false;
-	
-    //this.sprites = new List([this.currentSprite]); // this.currentSprite]);
-   // this.allSprites = new List([this.currentSprite]); //this.currentSprite]);
-    
-    
-    this.sprites = new List([]); // this.currentSprite]);
+        
+    this.sprites = new List([]); 
     this.allSprites = new List([]);
+    //artifact dictionary
+    // key: artifact name, value: list of sprites
+	this.artifactDictionary = {};
 
-    
-    //creating a list for checking to see what sprite goes with
-    // what artifact
-	this.checkList = new List();
-	//initializing 100 spots to true
-	// one for each sprite
-	for(var i = 1; i <= 100; i++) {
-		this.checkList.put(true, i);
-	}
-	this.checkList.put(null, 1);
-    this.currentCategory = 'control';
+    this.currentCategory = 'move';
     this.currentTab = 'scripts';
     this.projectName = '';
     this.projectNotes = '';
@@ -270,6 +257,7 @@ IDE_Morph.prototype.init = function (isAutoFill) {
     
     // override inherited properites:
     this.color = this.backgroundColor;
+    this.setArtifact();
     
 };
 
@@ -499,7 +487,7 @@ IDE_Morph.prototype.buildPanes = function () {
     this.createCorralBar();
     this.createCorral();
     //added this in to create the artifact icon in the spriteBar
-    this.setArtifact();
+   // this.setArtifact();
 };
 
 IDE_Morph.prototype.createLogo = function () {
@@ -1019,251 +1007,7 @@ IDE_Morph.prototype.createStage = function () {
     this.add(this.stage);
 };
 
-/*
-IDE_Morph.prototype.createSpriteBar = function () {
-    // assumes that the categories pane has already been created
-    var rotationStyleButtons = [],
-        thumbSize = new Point(45, 45),
-        nameField,
-        padlock,
-        thumbnail,
-        tabCorner = 15,
-        tabColors = this.tabColors,
-        tabBar = new AlignmentMorph('row', -tabCorner * 2),
-        tab,
-        symbols = ['\u2192', '\u21BB', '\u2194'],
-        labels = ['don\'t rotate', 'can rotate', 'only face left/right'],
-        myself = this;
 
-    if (this.spriteBar) {
-        this.spriteBar.destroy();
-    }
-
-    this.spriteBar = new Morph();
-    this.spriteBar.color = this.frameColor;
-    this.add(this.spriteBar);
-    
-
-    function addRotationStyleButton(rotationStyle) {
-        var colors = myself.rotationStyleColors,
-            button;
-
-        button = new ToggleButtonMorph(
-            colors,
-            myself, // the IDE is the target
-            function () {
-                if (myself.currentSprite instanceof SpriteMorph) {
-                    myself.currentSprite.rotationStyle = rotationStyle;
-                    myself.currentSprite.changed();
-                    myself.currentSprite.drawNew();
-                    myself.currentSprite.changed();
-                }
-                rotationStyleButtons.forEach(function (each) {
-                    each.refresh();
-                });
-            },
-            symbols[rotationStyle], // label
-            function () {  // query
-                return myself.currentSprite instanceof SpriteMorph
-                    && myself.currentSprite.rotationStyle === rotationStyle;
-            },
-            null, // environment
-            localize(labels[rotationStyle])
-        );
-
-        button.corner = 8;
-        button.labelMinExtent = new Point(11, 11);
-        button.padding = 0;
-        button.labelShadowOffset = new Point(-1, -1);
-        button.labelShadowColor = colors[1];
-        button.labelColor = myself.buttonLabelColor;
-        button.fixLayout();
-        button.refresh();
-        rotationStyleButtons.push(button);
-        button.setPosition(myself.spriteBar.position().add(2));
-        button.setTop(button.top()
-            + ((rotationStyleButtons.length - 1) * (button.height() + 2))
-            );
-        myself.spriteBar.add(button);
-        if (myself.currentSprite instanceof StageMorph) {
-            button.hide();
-        }
-        return button;
-    }
-
-    addRotationStyleButton(1);
-    addRotationStyleButton(2);
-    addRotationStyleButton(0);
-    this.rotationStyleButtons = rotationStyleButtons;
-
-    thumbnail = new Morph();
-    thumbnail.setExtent(thumbSize);
-    thumbnail.image = this.currentSprite.thumbnail(thumbSize);
-    thumbnail.setPosition(
-        rotationStyleButtons[0].topRight().add(new Point(5, 3))
-    );
-    this.spriteBar.add(thumbnail);
-
-    thumbnail.fps = 3;
-
-    thumbnail.step = function () {
-        if (thumbnail.version !== myself.currentSprite.version) {
-            thumbnail.image = myself.currentSprite.thumbnail(thumbSize);
-            thumbnail.changed();
-            thumbnail.version = myself.currentSprite.version;
-        }
-    };
-
-    nameField = new InputFieldMorph(this.currentSprite.name);
-    nameField.setWidth(100); // fixed dimensions
-    nameField.contrast = 90;
-    nameField.setPosition(thumbnail.topRight().add(new Point(10, 3)));
-    this.spriteBar.add(nameField);
-    nameField.drawNew();
-    nameField.accept = function () {
-        var newName = nameField.getValue();
-        myself.currentSprite.setName(
-            myself.newSpriteName(newName, myself.currentSprite)
-        );
-        nameField.setContents(myself.currentSprite.name);
-    };
-    this.spriteBar.reactToEdit = nameField.accept;
-    
-    
-        //sprite button DONE BY ME
-    newbutton = new PushButtonMorph(
-    this,
-    "addNewSprite",
-    new SymbolMorph("turtle", 14)
-    );
-    newbutton.corner = 12;
-
-    newbutton.padding = 0;
-    newbutton.contrast = this.buttonContrast;
-    newbutton.drawNew();
-    newbutton.hint = "add a new Turtle sprite";
-    newbutton.fixLayout();
-    newbutton.setPosition(
-        nameField.topRight().add(new Point(15, 3))
-    );
-    this.spriteBar.add(newbutton);
-
-    // padlock
-    padlock = new ToggleMorph(
-        'checkbox',
-        null,
-        function () {
-            myself.currentSprite.isDraggable =
-                !myself.currentSprite.isDraggable;
-        },
-        localize('draggable'),
-        function () {
-            return myself.currentSprite.isDraggable;
-        }
-    );
-    padlock.label.isBold = false;
-    padlock.label.setColor(this.buttonLabelColor);
-    padlock.color = tabColors[2];
-    padlock.highlightColor = tabColors[0];
-    padlock.pressColor = tabColors[1];
-
-    padlock.tick.shadowOffset = MorphicPreferences.isFlat ?
-            new Point() : new Point(-1, -1);
-    padlock.tick.shadowColor = new Color(); // black
-    padlock.tick.color = this.buttonLabelColor;
-    padlock.tick.isBold = false;
-    padlock.tick.drawNew();
-
-    padlock.setPosition(nameField.bottomLeft().add(2));
-    padlock.drawNew();
-    this.spriteBar.add(padlock);
-    if (this.currentSprite instanceof StageMorph) {
-        padlock.hide();
-    }
-
-    // tab bar
-    tabBar.tabTo = function (tabString) {
-        var active;
-        myself.currentTab = tabString;
-        this.children.forEach(function (each) {
-            each.refresh();
-            if (each.state) {active = each; }
-        });
-        active.refresh(); // needed when programmatically tabbing
-        myself.createSpriteEditor();
-        myself.fixLayout('tabEditor');
-    };
-
-    tab = new TabMorph(
-        tabColors,
-        null, // target
-        function () {tabBar.tabTo('scripts'); },
-        localize('Scripts'), // label
-        function () {  // query
-            return myself.currentTab === 'scripts';
-        }
-    );
-    tab.padding = 3;
-    tab.corner = tabCorner;
-    tab.edge = 1;
-    tab.labelShadowOffset = new Point(-1, -1);
-    tab.labelShadowColor = tabColors[1];
-    tab.labelColor = this.buttonLabelColor;
-    tab.drawNew();
-    tab.fixLayout();
-    tabBar.add(tab);
-
-    tab = new TabMorph(
-        tabColors,
-        null, // target
-        function () {tabBar.tabTo('2'); },
-        localize('Artifact 1'), // label
-        function () {  // query
-            return myself.currentTab === '2';
-        }
-    );
-    tab.padding = 3;
-    tab.corner = tabCorner;
-    tab.edge = 1;
-    tab.labelShadowOffset = new Point(-1, -1);
-    tab.labelShadowColor = tabColors[1];
-    tab.labelColor = this.buttonLabelColor;
-    tab.drawNew();
-    tab.fixLayout();
-    tabBar.add(tab);
-
-    tab = new TabMorph(
-        tabColors,
-        null, // target
-        function () {tabBar.tabTo('sounds'); },
-        localize('Sounds'), // label
-        function () {  // query
-            return myself.currentTab === 'sounds';
-        }
-    );
-    tab.padding = 3;
-    tab.corner = tabCorner;
-    tab.edge = 1;
-    tab.labelShadowOffset = new Point(-1, -1);
-    tab.labelShadowColor = tabColors[1];
-    tab.labelColor = this.buttonLabelColor;
-    tab.drawNew();
-    tab.fixLayout();
-    tabBar.add(tab);
-
-    tabBar.fixLayout();
-    tabBar.children.forEach(function (each) {
-        each.refresh();
-    });
-    this.spriteBar.tabBar = tabBar;
-    this.spriteBar.add(this.spriteBar.tabBar);
-
-    this.spriteBar.fixLayout = function () {
-        this.tabBar.setLeft(this.left());
-        this.tabBar.setBottom(this.bottom());
-    };
-};
-*/
 //hides primitive blocks for a particular sprite
 //will hand it a book eventually
 //right now handing it a whole category to get rid of
@@ -1301,29 +1045,18 @@ IDE_Morph.prototype.fireTEST = function() {
 	document.getElementById('world').dispatchEvent(event);
 };
 
+//CyberKnight Modifications ///////////////////////////////////////////////////////////
+
 
 //executes scripts
 //parameters are the artifact name & location of spell Vector
 IDE_Morph.prototype.executeScript = function() {
-	//var lcArtifact;
-	//var num = 1;
 	var morph;
-	/*
-	lcArtifact = this.checkList.at(num);
-	while (lcArtifact != artifact) {
-		num++;
-		lcArtifact = this.checkList.at(num);
-	}
-	*/ 
-	java.print("THIS IS IN JAVASCRIPT EX");
-	java.print("Goal " + artifactName);
-	java.print("Goal " + spellName);
 	var i = 0;
 	var found = false;
+	
 	while ((i<=ide.allSprites.length()) && (found == false)) 
 		{
-			java.print(ide.allSprites.at(i).artifact);
-			java.print(ide.allSprites.at(i).name);
 			if ((artifactName == ide.allSprites.at(i).artifact) 
 			&& (spellName == ide.allSprites.at(i).name))
 				{
@@ -1333,18 +1066,16 @@ IDE_Morph.prototype.executeScript = function() {
 			i++;
 		}	
 	var morph = sprite.scripts.children[0];
-	//console.log(morph);
 	var event = new CustomEvent("CK", {detail : morph.blockSpec});
-	document.getElementById('world').dispatchEvent(event);
-	java.print("Leaving JAVASCRIPT");
-
-	
+	document.getElementById('world').dispatchEvent(event);	
 };
 
+//loads spells to the screen after a file has been loaded
+//   THIS NEEDS TO BE FIXED! 
 IDE_Morph.prototype.ckViewSpells = function(){
 	var list = new List([]);
 	var lcArtifact;	//used when traversing the checkList
-	var i = 2;
+	var i = 0;
 	
 	//find where our sprites are in the list
 	lcArtifact = ide.allSprites.at(i).artifact;
@@ -1364,135 +1095,106 @@ IDE_Morph.prototype.ckViewSpells = function(){
 };
 
 //sets up the stage for an artifact
+// called whenever the user changes artifacts 
 IDE_Morph.prototype.setCyberSnap = function(){
-	var list = new List([]);
+	var list;
 	var acc = 0;
-	var num = 2;	//used when traversing the checkList
 	var sprite;		//place holder for sprites
-	var lcArtifact;	//used when traversing the checkList
 	var name = artifact.getName();
 	var methods = artifact.spellCount();	//number of methods
 	
-	
-	//setting the artifact icon
-	this.img = 'data:image/png;base64,'+ artifact.getSnapImage();
-	//this.setArtifact();
-	//first check to see if we already have sprites for an artifact
-	if (this.checkList.contains(name)) {
-		//find where our sprites are in the list
-		lcArtifact = this.checkList.at(num);
-		while (lcArtifact != name) {
-			num++;
-			lcArtifact = this.checkList.at(num);
-		}
-		//once found, add our sprites to the list
-		for (var i = 0; i < methods; i++) {
-			sprite = this.allSprites.at(num);
-			list.add(sprite)
-			num++;
-		}
-	}
-	
-	//finding sprites that are not connected to an artifact
-	else {
+	if (typeof this.artifactDictionary[name] === "undefined")
+	{
+		//creates new sprites for each spell and adds them to a list
+		list = new List([]);
+		this.sprites = new List([]);
 		while (acc != methods) {
-			//where true means sprite is not being used
-			if (this.checkList.at(num) === true) {
-				this.addNewSprite();
-				list.add(this.currentSprite);
-				this.currentSprite.artifact = name;
-				this.currentSprite.indexNum = num;
-				this.currentSprite.spellNum = acc;
-				var block = new HatBlockMorph();	//hat block 
-				block.setSelector('receiveID');
-				block.setSpec(name + ": Button " + acc);	//setting name
-				this.currentSprite.scripts.addChild(block);
-				this.checkList.put(name, num);
-				this.selectSprite(this.currentSprite);
-				num++;
-				acc++;
-			}
-			else
-				num++;
+			this.addNewSprite(name, acc);
+			list.add(this.currentSprite);
+			this.selectSprite(this.currentSprite);
+			acc++;
 		}
+		this.artifactDictionary[name] = list;
 	}
-		
-		//setting the picture and name for each sprite
-		var picture;
-		var spellArray = artifact.getSpellImageArray();
-		var spellNames = artifact.getSpellNamesArray();
-		for (var i = 1; i <= spellArray.length; i++) {
-			sprite = list.at(i);
-			picture = spellArray[i-1]
-			sprite.setPic('data:image/png;base64,' + picture);
-			sprite.name = spellNames[i-1];
-		}
-		
-	
-	
+	else 
+	{
+		list = this.artifactDictionary[name];
+	}	
 	//updating what sprites are on the screen
 	this.sprites = list;
 	//updating current sprite to the first on the screen
 	this.currentSprite = this.sprites.at(1);
-	
-	
+		
+	//setting the picture and name for each sprite
+	var picture;
+	var spellArray = artifact.getSpellImageArray();
+	var spellNames = artifact.getSpellNamesArray();
+	for (var i = 1; i <= spellArray.length; i++) {
+		sprite = list.at(i);
+		picture = spellArray[i-1]
+		sprite.setPic('data:image/png;base64,' + picture);
+		sprite.name = spellNames[i-1];
+	}
+	//setting the artifact icon
+	this.img = 'data:image/png;base64,'+ artifact.getSnapImage();
+		
 	//fixing layout and creating all necessary panels
 	this.buildCKPanes();
 	this.fixLayout();
 	
 };
 
-//Creates the artifact icon
-//took png processing from how Snap added their logo
+//creates the artifact icon
+//used png processing from how Snap added their logo
 IDE_Morph.prototype.setArtifact = function() {
-	//added parts of IDE_Morph.prototype.createLogo
-    //trying to add a picture to the corner
-	var thumbnail;
-	var myself = this;
-	
-    thumbnail = new Morph();
-    thumbnail.texture = this.img; 
-    thumbnail.drawNew = function () {
-        this.image = newCanvas(this.extent());
-        var context = this.image.getContext('2d'), 
-            gradient = context.createLinearGradient(
-                0,
-                0,
-                this.width(),
-                0
-            );
-        //can add gradient effect with these below
-       // gradient.addColorStop(0, 'black');
-       // gradient.addColorStop(0.5, myself.frameColor.toString());
-        context.fillStyle = MorphicPreferences.isFlat ?
-                myself.frameColor.toString() : gradient;
-        context.fillRect(0, 0, this.width(), this.height());
-        if (this.texture) {
-            this.drawTexture(this.texture);
-        }
-    };
-
-    thumbnail.drawCachedTexture = function () {
-        var context = this.image.getContext('2d');
-        context.drawImage(
-            this.cachedTexture,
-            5,
-            Math.round((this.height() - this.cachedTexture.height) / 2)
-        );
-        this.changed();
-    };
-    //changes physical position
-    thumbnail.setPosition(
-            this.spriteBar.position().add(new Point(30, 10))
-        );
-    //changes size of picture
-    thumbnail.setExtent(new Point(100, 75));
-    this.spriteBar.add(thumbnail);
+    if (this.img !== null)
+    	{
+    		var thumbnail;
+    		var myself = this;
+    	
+        	thumbnail = new Morph();
+		    thumbnail.texture = this.img; 
+		    thumbnail.drawNew = function () {
+		        this.image = newCanvas(this.extent());
+		        var context = this.image.getContext('2d'), 
+		            gradient = context.createLinearGradient(
+		                0,
+		                0,
+		                this.width(),
+		                0
+		            );
+		        //can add gradient effect with these below
+		       // gradient.addColorStop(0, 'black');
+		       // gradient.addColorStop(0.5, myself.frameColor.toString());
+		        context.fillStyle = MorphicPreferences.isFlat ?
+		                myself.frameColor.toString() : gradient;
+		        context.fillRect(0, 0, this.width(), this.height());
+		        if (this.texture) {
+		            this.drawTexture(this.texture);
+		        }
+		    };
+		
+		    thumbnail.drawCachedTexture = function () {
+		        var context = this.image.getContext('2d');
+		        context.drawImage(
+		            this.cachedTexture,
+		            5,
+		            Math.round((this.height() - this.cachedTexture.height) / 2)
+		        );
+		        this.changed();
+		    };
+		    //changes physical position
+		    thumbnail.setPosition(
+		            this.spriteBar.position().add(new Point(30, 10))
+		        );
+		    //changes size of picture
+		    thumbnail.setExtent(new Point(100, 75));
+		    this.spriteBar.add(thumbnail);
+    	}
 	
 };
 
 //used to refresh panel
-//original buildPanes cleared the stage
 IDE_Morph.prototype.buildCKPanes = function () {
     this.createLogo();
     this.createControlBar();
@@ -1504,8 +1206,11 @@ IDE_Morph.prototype.buildCKPanes = function () {
     this.createCorral();
     //added this in to create the artifact icon in the spriteBar
     this.setArtifact();
-    //java.print("buildCKPanes");
 };
+
+//End of CyberKnight///////////////////////////////////////////////////////////
+
+
 
 IDE_Morph.prototype.createSpriteBar = function () {
     // assumes that the categories pane has already been created
@@ -2111,7 +1816,7 @@ IDE_Morph.prototype.fixLayout = function (situation) {
     Morph.prototype.trackChanges = false;
     
     //ensures that the artifact is always present
-    //this.setArtifact();
+    this.setArtifact();
 
     if (situation !== 'refreshPalette') {
         // controlBar
@@ -2520,20 +2225,13 @@ IDE_Morph.prototype.removeSetting = function (key) {
 
 // IDE_Morph sprite list access
 
-IDE_Morph.prototype.addNewSprite = function () {
+IDE_Morph.prototype.addNewSprite = function (name, acc) {
     var sprite = new SpriteMorph(this.globalVariables),
         rnd = Process.prototype.reportRandom;
 
     sprite.name = this.newSpriteName(sprite.name);
     sprite.setCenter(this.stage.center());
     this.stage.add(sprite);
-
-    // randomize sprite properties
-    sprite.setHue(rnd.call(this, 0, 100));
-    sprite.setBrightness(rnd.call(this, 50, 100));
-    sprite.turn(rnd.call(this, 1, 360));
-    sprite.setXPosition(rnd.call(this, -220, 220));
-    sprite.setYPosition(rnd.call(this, -160, 160));
 
     this.sprites.add(sprite);
     //updating world sprites
@@ -2542,6 +2240,15 @@ IDE_Morph.prototype.addNewSprite = function () {
     //added the sprite to where the artifacts are
     this.spriteBar.addSprite(sprite);
     this.selectSprite(sprite);
+    
+    this.currentSprite.artifact = name;
+	this.currentSprite.spellNum = acc;
+	
+    //adds hat block
+    var block = new HatBlockMorph();	//hat block 
+	block.setSelector('receiveID');
+	block.setSpec(name + ": Button " + acc);	//setting name
+	sprite.scripts.addChild(block);
 };
 
 IDE_Morph.prototype.paintNewSprite = function () {

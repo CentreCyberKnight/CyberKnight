@@ -9381,6 +9381,7 @@ HandMorph.prototype.init = function (aWorld) {
 
 HandMorph.prototype.changed = function () {
     var b;
+
     if (this.world !== null) {
         b = this.fullBounds();
         if (!b.extent().eq(new Point())) {
@@ -9651,6 +9652,8 @@ HandMorph.prototype.processMouseUp = function () {
     this.mouseButton = null;
 };
 
+//possibly place to get rid of double click to execute events???
+// ask Dr. B exact problem again
 HandMorph.prototype.processDoubleClick = function () {
     var morph = this.morphAtPointer();
 
