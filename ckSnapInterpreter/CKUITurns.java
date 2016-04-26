@@ -2,9 +2,14 @@ package ckSnapInterpreter;
 
 import static ckCommonUtils.CKPropertyStrings.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Vector;
 
 import ckCommonUtils.CKPosition;
+import ckDatabase.CKConnection;
 import ckEditor.treegui.ActorNode;
 import ckGameEngine.CKBook;
 import ckGameEngine.CKChapter;
@@ -258,6 +263,25 @@ public class CKUITurns extends Application
 		 public void run()
 		 {
 			 System.out.println("STARTING GAME LOOP");
+			 //Load the last SNAP configuration
+			 File f = new File(CKConnection.getCKSettingsDirectory(),"snapConfig.xml");
+			 if(f.exists())
+			 {
+			 byte[] encoded;
+			 try
+			 {
+				 encoded = Files.readAllBytes(Paths.get(f.toURI()));
+				 String xml = new String(encoded);
+				 //Load to snap!!!
+				 //FIXME
+			} catch (IOException e)
+			 {
+				e.printStackTrace();
+			 }
+			 }
+				 
+			 
+			 
 			 try
 			 {
 				 quest.gameLoop();

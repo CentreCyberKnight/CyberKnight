@@ -2,6 +2,11 @@ package ckSnapInterpreter;
 
 import static ckGameEngine.CKGameObjectsFacade.getQuest;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Iterator;
 
 import netscape.javascript.JSObject;
@@ -14,6 +19,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.web.WebEngine;
+import ckDatabase.CKConnection;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKSpell;
 import ckGameEngine.Quest;
@@ -71,7 +77,22 @@ public class CKControlSpellsPane extends HBox {
 		    					return; //this button should not work for you....		    					
 		    				}
 
-		    				
+		    				//store the snap configuration to disk
+		    				 File f = new File(CKConnection.getCKSettingsDirectory(),"snapConfig.xml");
+		    				 
+		    				 //GET STRING FROM SNAP
+		    				 String xml = "";
+		    				 
+		    				 try(  PrintWriter out = new PrintWriter(f)  ){
+		    					    out.println(xml );
+		    					} catch (FileNotFoundException e1)
+								{
+									e1.printStackTrace();
+								}
+
+		    				 
+		    				 
+		    				 
 		    				CKPlayerObjectsFacade.setArtifact(data.getArtifact());
 		    				CKGameObjectsFacade.setCurrentPlayer(data.getPlayer());
 		    				CKPlayerObjectsFacade.calcCPTurnLimit();
