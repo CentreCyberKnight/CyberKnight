@@ -77,12 +77,19 @@ public class CKControlSpellsPane extends HBox {
 		    					return; //this button should not work for you....		    					
 		    				}
 
+		    				
+		    				WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
+		    	    		JSObject jsobj = (JSObject) webEngine.executeScript("window");
+		    	    		
 		    				//store the snap configuration to disk
 		    				 File f = new File(CKConnection.getCKSettingsDirectory(),"snapConfig.xml");
 		    				 
 		    				 //GET STRING FROM SNAP
 		    				 String xml = "";
-		    				 
+			    	    		
+			   				 jsobj.setMember("exportXML", xml);
+			   				 webEngine.executeScript("ide.ckExportXML()");
+			   				 
 		    				 try(  PrintWriter out = new PrintWriter(f)  ){
 		    					    out.println(xml );
 		    					} catch (FileNotFoundException e1)
@@ -96,14 +103,11 @@ public class CKControlSpellsPane extends HBox {
 		    				CKPlayerObjectsFacade.setArtifact(data.getArtifact());
 		    				CKGameObjectsFacade.setCurrentPlayer(data.getPlayer());
 		    				CKPlayerObjectsFacade.calcCPTurnLimit();
-		    				
-		    				WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
-		    	    		JSObject jsobj = (JSObject) webEngine.executeScript("window");
+
 		    	    		jsobj.setMember("artifactName", data.getArtifact().getName());
 		    	    		jsobj.setMember("spellName", s.getName());
 		    	    		jsobj.setMember("java", new CKjsDebugger());
-		    	    		webEngine.executeScript("ide.executeScript()");
-		    				
+		    	    		webEngine.executeScript("ide.executeScript()");		    				
 		    			}
 		    		});
 					

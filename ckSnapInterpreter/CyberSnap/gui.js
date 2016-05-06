@@ -1070,30 +1070,6 @@ IDE_Morph.prototype.executeScript = function() {
 	document.getElementById('world').dispatchEvent(event);	
 };
 
-//loads spells to the screen after a file has been loaded
-//   THIS NEEDS TO BE FIXED! 
-IDE_Morph.prototype.ckViewSpells = function(){
-	var list = new List([]);
-	var lcArtifact;	//used when traversing the checkList
-	var i = 0;
-	
-	//find where our sprites are in the list
-	lcArtifact = ide.allSprites.at(i).artifact;
-	
-	for(i; i < ide.allSprites.length(); i++) {
-		if (lcArtifact == ide.allSprites.at(2).artifact){
-			sprite = this.allSprites.at(i);
-			list.add(sprite);
-		}
-		lcArtifact = ide.allSprites.at(i).artifact;
-	}
-
-	//updating what sprites are on the screen
-	this.sprites = list;
-	//updating current sprite to the first on the screen
-	this.currentSprite = this.sprites.at(1);
-};
-
 //sets up the stage for an artifact
 // called whenever the user changes artifacts 
 IDE_Morph.prototype.setCyberSnap = function(){
@@ -1206,6 +1182,91 @@ IDE_Morph.prototype.buildCKPanes = function () {
     this.createCorral();
     //added this in to create the artifact icon in the spriteBar
     this.setArtifact();
+};
+
+//exports project information to Java using 'exportXML' jsObject
+IDE_Morph.prototype.ckExportXML = function () {
+	var menu, str, media, dta;
+	this.serializer.isCollectingMedia = true;
+	if (Process.prototype.isCatchingErrors) {
+		try {
+			str = this.serializer.serialize(this.stage);
+			media = this.serializer.mediaXML(name);
+			exportXML = str + media;
+			//console.log(exportXML);
+		} catch (err) {
+			this.serializer.isCollectingMedia = false;
+			this.showMessage('Export failed: ' + err);
+		}
+	} else {
+		str = this.serializer.serialize(this.stage);
+		media = this.serializer.mediaXML(name);
+		exportXML = '<snapdata>'
+			+ str
+			+ media
+			+ '</snapdata>';
+	}
+
+	this.serializer.isCollectingMedia = false;
+	this.serializer.flushMedia();
+};
+
+//imports an xml string 
+IDE_Morph.prototype.ckImportXML = function () {
+	//importXML is a jsObject 
+	this.spriteBar.tabBar.tabTo('scripts');
+    StageMorph.prototype.hiddenPrimitives = {};
+    StageMorph.prototype.codeMappings = {};
+    StageMorph.prototype.codeHeaders = {};
+    StageMorph.prototype.enableCodeMapping = false;
+    StageMorph.prototype.enableInheritance = false;
+    if (Process.prototype.isCatchingErrors) {
+        try {
+            this.serializer.openProject(
+                this.serializer.load(importXML, this),
+                this
+            );
+        } catch (err) {
+            this.showMessage('Load failed: ' + err);
+        }
+    } else {
+        this.serializer.openProject(
+            this.serializer.load(importXML, this),
+            this
+        );
+    }
+    this.stopFastTracking();
+};
+
+//finds most recent spells and loads it to the screen after importing a file
+IDE_Morph.prototype.ckViewArtifact = function(artifact){
+//	updating what spells are on the screen
+	this.sprites = this.artifactDictionary[artifact];
+	this.currentSprite = this.sprites.at(1);
+};
+
+//creates this.artifactDictionary after an xml file is imported
+//FIX ME - syntactical errors
+IDE_Morph.prototype.createArtifactDictionary = function(){
+	var i = 0;
+	var spell;
+	for (i; i < this.allSprites; i++)
+	{
+		spell = this.allSprites.at(i);
+		console.log(spell.artifact);
+		/*
+	//check if artifactDictionary has an artifact
+	if (this.artifactDictionary.hasOwnProperty(spell.artifact)):
+		{
+			//if so add the new spell to the artifact's list
+			this.artifactDictionary[spell.artifact].add(spell);
+		}
+	//have never seen this artifact	
+	else:
+		//create new key value pair
+		this.artifactDictionary[spell.artifact] = new List([spell]);
+		 */
+	}	
 };
 
 //End of CyberKnight///////////////////////////////////////////////////////////
@@ -1582,39 +1643,7 @@ IDE_Morph.prototype.createSpriteEditor = function () {
         this.add(this.spriteEditor);
         this.spriteEditor.scrollX(this.spriteEditor.padding);
         this.spriteEditor.scrollY(this.spriteEditor.padding);
-        //don't need these tabs
-        /*
-    } else if (this.currentTab === 'costumes') {
-        scripts.isDraggable = false;
-        scripts.color = this.groupColor;
-        scripts.cachedTexture = this.scriptsPaneTexture;
 
-        this.spriteEditor = new ScrollFrameMorph(
-            scripts,
-            null,
-            this.sliderColor
-        );
-        this.spriteEditor.padding = 10;
-        this.spriteEditor.growth = 50;
-        this.spriteEditor.isDraggable = false;
-        this.spriteEditor.acceptsDrops = false;
-        this.spriteEditor.contents.acceptsDrops = true;
-
-        scripts.scrollFrame = this.spriteEditor;
-        this.add(this.spriteEditor);
-        this.spriteEditor.scrollX(this.spriteEditor.padding);
-        this.spriteEditor.scrollY(this.spriteEditor.padding);
-    } else if (this.currentTab === 'sounds') {
-        this.spriteEditor = new JukeboxMorph(
-            this.currentSprite,
-            this.sliderColor
-        );
-        this.spriteEditor.color = this.groupColor;
-        this.add(this.spriteEditor);
-        this.spriteEditor.updateSelection();
-        this.spriteEditor.acceptDrops = false;
-        this.spriteEditor.contents.acceptsDrops = false;
-        */
     } else {
         this.spriteEditor = new Morph();
         this.spriteEditor.color = this.groupColor;
@@ -4436,65 +4465,6 @@ IDE_Morph.prototype.exportProjectNoMedia = function (name) {
     this.serializer.isCollectingMedia = false;
     this.serializer.flushMedia();
 };
-
-IDE_Morph.prototype.ckExportXML = function (name) {
-    var menu, str, media, dta;
-    this.serializer.isCollectingMedia = true;
-    if (name) {
-        this.setProjectName(name);
-        if (Process.prototype.isCatchingErrors) {
-            try {
-                str1 = this.serializer.serialize(this.stage);
-                media1 = this.serializer.mediaXML(name);
-                dta1 = str1 + media1;
-                javaProcess.setText(dta1);
-            } catch (err) {
-                this.serializer.isCollectingMedia = false;
-                this.showMessage('Export failed: ' + err);
-            }
-        } else {
-        	str1 = this.serializer.serialize(this.stage);
-            media1 = this.serializer.mediaXML(name);
-            dta1 = '<snapdata>'
-            + str1
-            + media1
-            + '</snapdata>';
-            javaProcess.setText(dta1);
-        }
-    }
-    this.serializer.isCollectingMedia = false;
-    this.serializer.flushMedia();
-    // this.hasChangedMedia = false;
-};
-
-IDE_Morph.prototype.ckImportXML = function () {
-	//str = '<project name="hello you" app="Snap! 4.0, http://snap.berkeley.edu" version="1"><notes></notes><thumbnail>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAAB4CAYAAAB1ovlvAAADCUlEQ…nrCAiw42hLKCDAEM5YR0CAHUdbQgEBhnDGOgIC7DjaEgr8Atdp/Kj2NnoRAAAAAElFTkSuQmCC</thumbnail><stage name="Stage" width="480" height="360" costume="0" tempo="60" threadsafe="false" lines="round" codify="false" scheduled="false" id="1"><pentrails>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAOhUlEQ…ABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQIHLFxAWmhEwHPAAAAAElFTkSuQmCC</pentrails><costumes><list id="2"></list></costumes><sounds><list id="3"></list></sounds><variables></variables><blocks></blocks><scripts></scripts><sprites><sprite name="Sprite" idx="1" x="0" y="0" heading="90" scale="1" rotation="1" draggable="true" costume="0" color="80,80,80" pen="tip" id="8"><costumes><list id="9"></list></costumes><sounds><list id="10"></list></sounds><variables></variables><blocks></blocks><scripts><script x="90" y="59"><block s="forward"><l>10</l></block></script></scripts></sprite></sprites></stage><hidden></hidden><headers></headers><code></code><blocks></blocks><variables></variables></project>'
-	//str = javaProcess.getText();
-	str = '<project name="helloWorld" app="Snap! 4.0, http://snap.berkeley.edu" version="1"><notes></notes><thumbnail>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAAB4CAYAAAB1ovlvAAABFUlEQVR42u3bP0rDYBgH4HSoOCgW&#xD;6eA1/HOF0g6uDs0VHESXgiewdCtS6QU8gTjnAIHcIsfIa1pBLN2EfnF4HngJZPzxI3m/4csyAAAA&#xD;AAAAAAAAAAAAAAAAAAAAAACAfy0ieu18SoLUxRu9zBdRFEUjDZJpmubj/HIS2XQdw6v2CQm+dv26&#xD;ruP0br4t3maO8lX7OobS4ZDFmz7Onn9K93vsfRzc/cNTnN3O9spXlqW9j7RO8uW2fBfXY3sf6fXz&#xD;tzjOXze/3oE0SO9773sXBF0cRnpVVdn76K6AUgAAAAAAAAAAAPgzt97ouoA3UgAAAAAAAAAAAAAA&#xD;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADY8QV1W24WuSOMJwAAAABJRU5ErkJggg==</thumbnail><stage name="Stage" width="1" height="360" costume="0" tempo="60" threadsafe="false" lines="round" codify="false" scheduled="false" id="1"><pentrails>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAFoCAYAAACWmZGvAAAAFklEQVR42mNgGAWjYBSMglEwCkYu&#xD;AAAHCAABO09vxAAAAABJRU5ErkJggg==</pentrails><costumes><list id="2"></list></costumes><sounds><list id="3"></list></sounds><variables></variables><blocks></blocks><scripts></scripts><sprites><sprite name="Sprite" idx="0" x="0" y="0" heading="90" scale="1" rotation="1" draggable="true" artifact = "" indexNum = "0" pic = "" spellNum = "0" costume="0" color="80,80,80" pen="tip" id="8"><costumes><list id="9"></list></costumes><sounds><list id="10"></list></sounds><variables></variables><blocks></blocks><scripts></scripts></sprite><sprite name="Go Forth" idx="0" x="185" y="-53" heading="224" scale="1" rotation="1" draggable="true" artifact = "Combat Boots" indexNum = "2" pic = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAoCAYAAAB0HkOaAAACRUlEQVR42mNgoACsCg1lPl5k4XeiyLzkSJk1L8NAguMFFtYnCs3unig0fw90UMHtXE/2AXHIiXxzveOFZueADvkPwscLzV+eKDBP+8/AwEhXhxwttpIHWrwL5hAk/BKIE+nmkDPlxvzHCy3mAC39hcUx/4GOfHqs0DKQ5g7ZX+/AAUqsQEs/Y3UIFJ8ssrh8qtjU7n89AxOt3MII9HXI8SLzp/gcgkhDZgeACdyINtFTYmEOtOQaMQ6BRtc/IL0N6CAFqjrkdL6JOtDgi0Q7BIH/AvHuIznWUlRxyKFKW1GggTvJcAgihArMNwITtRBFDgGVqscLzCYBDf1JtmMgGKR/6vkCBwHyck6CA8fJQrMcoCFvKHQIDH8E5sRasqoNoGZ/YKl6n0oOgWT5QvPXJwstCkkqpU8WmekDNd+kpkOQ8GsgziLKIcCEJk1SFiYPfzhVYBqNP0SyzYRPFJith5YR/2mM7wPLIE9QMwRrnQN0RBuhop7K+OSZYnOb//X1iGrjSr0WG6j6B0o+x6HpOwUWgkL5AzAnfT8JKQTR5fadLrHSQaSTIktnYM55AKyNPwPxdaDDdgAVzTpZYFYNZMcCy5oUChzzBRgdLqcKLT2O51v4nSo0DQM1M4DmZgOLjlIgu+5YvpkP3DFABfZH861MQYn3TLGxyP4CA4GLJXrc23JV2EE1L7Q6IDuxIieH//8ZGEHpBNgCYAHFCKh1SFILEZjV1ajlGIrBqGNGHTPqmFHHjDpm1DGjjhl1zKhjRh1DmWMAdQdnnGV2t3kAAAAASUVORK5CYII=" spellNum = "0" costume="0" color="0,173.4,162.996" pen="tip" id="14"><costumes><list id="15"></list></costumes><sounds><list id="16"></list></sounds><variables></variables><blocks></blocks><scripts><script x="10" y="10"><block s="receiveID"></block></script></scripts></sprite><sprite name="LeftTurn" idx="0" x="182" y="-108" heading="91" scale="1" rotation="1" draggable="true" artifact = "Combat Boots" indexNum = "3" pic = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAoCAYAAAB0HkOaAAACn0lEQVR42u2YS2gTQRjHY40vqujBevAoIlLBB7EzG+shJ++CAQ+CL1RqTbMzia21lMWLBwUP6sFHkYogoujBg5ceBB+7s6EghYKHCuJFDypoi9jax/r/skkM2iDZhM4q+eDPzM7O7vx25pvvmyQS+ZftqZVYrrr4bmXyfq0gL7rb17sms5TgnwFzWx+IaN8CiCHoG+RBtxYcYvh4bIkr2EEMPlOAyMuVxs0FBXEl26Qkv6qEMVEOUpyZkezWZlvEV4xarUvhS1HLijTV30kTiSh8Yh8GVND0PCCkt9BD6AH63gP0XdTvuMIYdAQbQNs1RxhXoEuu4BdwfR73z6Ffvy15L8osrtMoO+00O4H7R+Zz0lXKbKMHv1aA+Ksw+BzKOZSzytdMQdMF/SC5kk+hnMIHTOIDJsu3bFSleCuW5pESbDYoSC3yQcztaxzT6ADIGx0QJZhnqR0tLmKGI/iETpA8DDkdrZtukDzMcCa2Fp58ERcftcMUdxD8JYmG99phStG2J7Yas/Rc+VtTLwzZy+yudRSo8slQNwzZ6MnEStzcjzTwutKDDs2gyTuRt0450uiiaIrAJVCXqGfQfhoZvhv1M2g/i1zWh48cqhqGjPJMzty5AZ2eYNA/lg0vvoGnF3meL+rvlWQ13U8mFxflQRRUAdcXCKbkR9htjmSXEbq//AYzUG3Ow6z11ARDNpbauCwn+QHkmlfuL+eu+jxDS1czTNmRYhtm5DElPbx4sFoY8qW6wZCNZPc0+2ccfj3AzIi6wpCRw9qZ+OYAM5OuO0zgk6PJUqGBobgUGhhs7Y7QwNgSZ92wwORk27HwOLBgR8PjwIIfDpMDH2rANGAaMP8djC3iezHoGH7Xv0P5AafGTyjHcT76Tv9WRBpWwX4C/TtpABvsCKcAAAAASUVORK5CYII=" spellNum = "1" costume="0" color="136.67999999999998,170.85000000000002,0" pen="tip" id="21"><costumes><list id="22"></list></costumes><sounds><list id="23"></list></sounds><variables></variables><blocks></blocks><scripts><script x="10" y="10"><block s="receiveID"></block></script></scripts></sprite><sprite name="UTurn" idx="0" x="-109" y="79" heading="340" scale="1" rotation="1" draggable="true" artifact = "Combat Boots" indexNum = "4" pic = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAoCAYAAAB0HkOaAAACy0lEQVR42u2YTWgTQRTHU/ATFaniR6sifkNEoaTZ2Xy0ehK9CHryot4E08bsTGL1Fvy4efaoF/HgyYMIHoTaJPsx27WiVFREUEFtS6W1ihq0jf9NQg+228xurC6SgZddZufN/vbNe2/mJRBotEb73xpnUtGgZAryE/KDU6kI+Y77r5yRL7oif9YpmTAYGUffGOSjoZBRrkgjuB9G/wfIO9y/hbyCPIcMYo5HmNs0qKTheR+n8n1c73Em34H+7VlhqiClvy0zQEqlQNO/AJkVpje7f4FvYAazwUW+gdFoZKl/LJMILvcNjHUutNJPy7TKNzC5ZMcaQeWreaV9q5qMbrMgD2lku3Gmcwdn8Z39qdguI02CFg3t0Vh7m5oKh1VFiiBZHoXeC2EYI0XWicDoinTZbWY3kmQjMq0lDFPoibXWAuGVDH3JLQxcYAP0+sUt0wN6ARjdI4zOZFMYZiAd3SxkGUYuuoUZgNXxEVwYxoRTCi7TBbcwhe62VujqjjD9TD6MmxQ8PQnn6oJjZgWj6S4koVGpm9u6mAPLcMQ6FVroBGMpoRbAaI4w+DkA+VR3nlDIlEkjB+1d3wkmZ8MwWXWEeZk8tBjrf6V6kPIGwsg3SKbWMplnw+sxvjCnz1QHGV5AYPZJXG88zuxdVgumN4H3KCRf04HNysBRtzCIjtc8I20RSnqVhJoTiibAHEfnuLhVpBE47T7hDAwYnKH7hGBwyluCzuuCMEUcrk+4CW01E12LD3ggvlEqHS148FQgeq5h61gxrzBl/6Gx3Sgn3jv7ifzMTu1uk54nGPQ2aUiA5ZCdaZEhk4U3eanHPMHYLX863gzFW7+F8Rj6TnotDj3DTB9BK5XhtJ/Mle7nFabsP+loJwYO2ZM8OR9vrqdsrhvGtoRKyTEVR4u6a/guaTXq65vYlN/g5XaA2El2ouqbk41/ORqt0f5U+wUfJTUGGIl0HwAAAABJRU5ErkJggg==" spellNum = "2" costume="0" color="96.49199999999999,219.29999999999998,0" pen="tip" id="28"><costumes><list id="29"></list></costumes><sounds><list id="30"></list></sounds><variables></variables><blocks></blocks><scripts><script x="10" y="10"><block s="receiveID"></block></script></scripts></sprite><sprite name="Bash" idx="1" x="28" y="74" heading="52" scale="1" rotation="1" draggable="true" artifact = "Mom&apos;s Spoon" indexNum = "5" pic = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAoCAYAAAB0HkOaAAAFZklEQVR42s2XC2wURRjHp4VCpWlAChhEXlpLKU8FjYRgK3eUh1RJtCY8bncPTaNBElE0aihzHK8+dvdig22akBANr26B2JZSUbRGBQUR2t21gmAwQkwDBoK8LfTzP9er6ZkelHZ78iVfZm92d77f/ueb+eYY66TJqvk0i4Z5CusHcc5jI93PUQ8PUDRzS1RgEGiOrFuZ2dlGj3Zux0i6+bqiml9EB+aDhkdlzfpS0qy52QaFAXl182GA1uJedVRgFucfS0TAMlm1foEK7tYpE62s2UsA+pek2dGZpmzD6CFr9RKCNsmaeUYpqJ8mpmyRbiej7zM4oX8Di5YpAXuioll1ocCNUOQFRf/pVUkzr4o+j2qvjpD8CZ7Ck4NySv/o4yDM0X4AKIbfagGyz0mqdazl2iJAvbm06ERvkUOAnCar9nxJt97Gc/kCXFp3MMk5aYhiFNXyQJWzrQBtHQm8XyQxrr+TVPMYVGyE/y5yStKPDxGrzhlV+Kn4RZo9AXmzHGqcbg8Gfqvtb4B8JRVa43NKD8d1foPLs4cpgYZ52Fv8UKECA5/EKroVASDcdasZsOfxXsBbdGJgl1V4Za31gKI2zMOgBRi0BkFMyH8OgW52AOgq3ntf2XQq3vEVlJP3a1+Pbk3GvEuSaq8Xyxhgl24DcwP+kaewYazIsW5b2mKl4KuXItj526tjXwtC6/aTt6tnXTKvZg1FkF1QprkdgItyeGJjSu3jilb/VDfswNRD0WwFAa7LLTAXkEMlogwEg6vWoZd1u78n/8fRithbUKvQ34i2USo0nxeqOnmEGImARxHgiliy2Njci/O/TQTc1hDMAQHT+jznFOtdjwIaMBci1wrkAnuqQ1NGMQimhr5UlbS6FEJyButVwJ6P/suA+nrBevP+SJulKAX/rfadMim/7hlU6u8B8tKC4vCAXtVOg1L7xfFCCZzq190nvASo8pak1w1p78sUXhuPXMqTdbNG1K5uhcngtT3vVFPkgPUslCkWexL7v81bdGQgYF4TBzB2L5ik/ZySze1eXRoEK9ARGO7AQGkraTa7VyyN04HU9yhpFKcHx66g0RmcekYvOvafcT5KTc2lSaNW0EjAXIGXQKFP0JcedTVSOY0AQPkYTqfRUtB9tE9AdiLnKJbb1KsrOQOQFwFx8V8YTr+hb8NoTndXZPM+p758Dz1Ed3N2afOsyA0E3QmApjYwJtRZDqDkO45VepjiWgdcU03D/ZX0RHisO4BlGtNFk7yUeqfl0rQxPlqA9l0ANAPkBiC2iSTu2NRU0jBeQyMEEK4fX1lFWXkG9fVX0zheQbMK91JC2AuTSuOYe9tjbObOwSxr6wDmKtsc2g9iWei/OwBmAaQOKs2BbxSKdVjpVZW0DIGTAfOGr4pKhANqYQRVYpjLmMLc5R8yt1EA/4HN2DGZzSjPZDMNTAWPRSJnwOeKjS8llyZ0WBlh/t00CQBbAHMEbTN8P9QaH0HLWACMg9fArzF32WW0hwDzDsuAUrDxPhrEOruviAoOgHL433AS7aoqMnKraEJ4pd0Uz1w7FkGZSgCchVPIzzD3dueOpP4KmgqAmyGYJl5NE/F7STgQpu25ikQ2fedwABTDm4MwLuMg2m/YDCM9+ExnLL+CEv17KJ1XkQ8AtWj/BMB1XyVdEoktFFv7KQ3GvfA/+QLGZWxE3pQA4kJQscyPE3A9LHjtxCEdIFkA2uzbTavW7KWhER92bU8BzCyWVdoHq2lba644ZssMug8w3txKShcJvXoPPRLx4dlFvUHfcsQQyezaleQojAjur6IpOaUUJ6ZvdQWN6ugBH0dIZyvyun2UZLQ5F3OD+jtdSP8Br5XOGmCYLWQAAAAASUVORK5CYII=" spellNum = "0" costume="0" color="0,88.74000000000001,153" pen="tip" id="35"><costumes><list id="36"></list></costumes><sounds><list id="37"></list></sounds><variables></variables><blocks></blocks><scripts><script x="10" y="10"><block s="receiveID"></block></script></scripts></sprite></sprites></stage><hidden></hidden><headers></headers><code></code><blocks></blocks><variables></variables></project><media name="helloWorld" app="Snap! 4.0, http://snap.berkeley.edu" version="1"></media>';
-	this.spriteBar.tabBar.tabTo('scripts');
-    StageMorph.prototype.hiddenPrimitives = {};
-    StageMorph.prototype.codeMappings = {};
-    StageMorph.prototype.codeHeaders = {};
-    StageMorph.prototype.enableCodeMapping = false;
-    StageMorph.prototype.enableInheritance = false;
-    if (Process.prototype.isCatchingErrors) {
-        try {
-            this.serializer.openProject(
-                this.serializer.load(str, this),
-                this
-            );
-        } catch (err) {
-            this.showMessage('Load failed: ' + err);
-        }
-    } else {
-        this.serializer.openProject(
-            this.serializer.load(str, this),
-            this
-        );
-    }
-    this.stopFastTracking();
-};
-
 
 
 IDE_Morph.prototype.cloudAcknowledge = function () {

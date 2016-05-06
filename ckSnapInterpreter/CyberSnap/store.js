@@ -1202,7 +1202,6 @@ SnapSerializer.prototype.loadValue = function (model) {
         if (model.attributes.spellNum) {
         	v.spellNum = model.attributes.spellNum;
         }
-        ide.checkList.put(v.artifact, v.indexNum);
         ide.allSprites.add(v);
         myself.project.stage.add(v);
         v.scale = parseFloat(model.attributes.scale || '1');
@@ -1373,9 +1372,20 @@ SnapSerializer.prototype.openProject = function (project, ide) {
         return x.idx - y.idx;
     });
 
-    ide.sprites = new List(sprites);
-    sprite = sprites[2] || project.stage;
-    ide.ckViewSpells();
+    //ide.sprites = new List(sprites);
+    //sprite = sprites[2] || project.stage;
+    //ide.allSprites = new List(sprites);
+    
+    
+    //create artifact dictionary
+    ide.createArtifactDictionary();
+    
+    // TO DO: either
+    // 	1. create xml info about which was most current artifact
+    //	2. create jsObj to indicate which was most current artifact
+    //not important for testing but possibly needs to be done in the future
+    //ide.sprites = ide.ckViewArtifact(artifact);
+    
     if (sizeOf(this.mediaDict) > 0) {
         ide.hasChangedMedia = false;
         this.mediaDict = {};

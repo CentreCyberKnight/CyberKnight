@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Vector;
 
+import netscape.javascript.JSObject;
 import ckCommonUtils.CKPosition;
 import ckDatabase.CKConnection;
 import ckEditor.treegui.ActorNode;
@@ -263,25 +264,9 @@ public class CKUITurns extends Application
 		 public void run()
 		 {
 			 System.out.println("STARTING GAME LOOP");
-			 //Load the last SNAP configuration
-			 File f = new File(CKConnection.getCKSettingsDirectory(),"snapConfig.xml");
-			 if(f.exists())
-			 {
-			 byte[] encoded;
-			 try
-			 {
-				 encoded = Files.readAllBytes(Paths.get(f.toURI()));
-				 String xml = new String(encoded);
-				 //Load to snap!!!
-				 //FIXME
-			} catch (IOException e)
-			 {
-				e.printStackTrace();
-			 }
-			 }
+
 				 
-			 
-			 
+						 
 			 try
 			 {
 				 quest.gameLoop();
