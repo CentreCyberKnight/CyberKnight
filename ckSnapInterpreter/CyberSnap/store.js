@@ -1379,6 +1379,9 @@ SnapSerializer.prototype.openProject = function (project, ide) {
     
     //create artifact dictionary
     ide.createArtifactDictionary();
+    //MKB set sprite in dictionary...
+    sprite = ide.currentSprite;
+    
     
     // TO DO: either
     // 	1. create xml info about which was most current artifact

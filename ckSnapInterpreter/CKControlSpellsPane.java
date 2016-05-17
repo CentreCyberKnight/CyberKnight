@@ -81,22 +81,20 @@ public class CKControlSpellsPane extends HBox {
 		    				WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
 		    	    		JSObject jsobj = (JSObject) webEngine.executeScript("window");
 		    	    		
-		    				//store the snap configuration to disk
+		    	    		//store the snap configuration to disk
 		    				 File f = new File(CKConnection.getCKSettingsDirectory(),"snapConfig.xml");
-		    				 
-		    				 //GET STRING FROM SNAP
-		    				 String xml = "";
+		    				 XMLStore xml = new XMLStore(f);
 			    	    		
 			   				 jsobj.setMember("exportXML", xml);
 			   				 webEngine.executeScript("ide.ckExportXML()");
 			   				 
-		    				 try(  PrintWriter out = new PrintWriter(f)  ){
+		    				 /*try(  PrintWriter out = new PrintWriter(f)  ){
 		    					    out.println(xml );
 		    					} catch (FileNotFoundException e1)
 								{
 									e1.printStackTrace();
 								}
-
+*/
 		    				 
 		    				 
 		    				 
@@ -121,6 +119,28 @@ public class CKControlSpellsPane extends HBox {
 		}
 	}
 
+	static public class XMLStore
+	{
+		File toF;
+		
+		public XMLStore(File f)
+		{
+			toF = f;			
+		}
+		
+		public void store(String xml)
+		{
+			
+			try(PrintWriter out = new PrintWriter(toF)  )
+			{
+			    out.println(xml );
+			} catch (FileNotFoundException e1)
+			{
+				e1.printStackTrace();
+			}
+			
+		
+		}
+	}
+	}
 	
-	
-}

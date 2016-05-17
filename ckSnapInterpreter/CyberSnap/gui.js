@@ -1192,8 +1192,8 @@ IDE_Morph.prototype.ckExportXML = function () {
 		try {
 			str = this.serializer.serialize(this.stage);
 			media = this.serializer.mediaXML(name);
-			exportXML = str + media;
-			//console.log(exportXML);
+			S = str + media;
+			exportXML.store(S);
 		} catch (err) {
 			this.serializer.isCollectingMedia = false;
 			this.showMessage('Export failed: ' + err);
@@ -1201,10 +1201,11 @@ IDE_Morph.prototype.ckExportXML = function () {
 	} else {
 		str = this.serializer.serialize(this.stage);
 		media = this.serializer.mediaXML(name);
-		exportXML = '<snapdata>'
+		S = '<snapdata>'
 			+ str
 			+ media
 			+ '</snapdata>';
+		exportXML.store(S);	
 	}
 
 	this.serializer.isCollectingMedia = false;
@@ -1220,14 +1221,28 @@ IDE_Morph.prototype.ckImportXML = function () {
     StageMorph.prototype.codeHeaders = {};
     StageMorph.prototype.enableCodeMapping = false;
     StageMorph.prototype.enableInheritance = false;
+   
     if (Process.prototype.isCatchingErrors) {
         try {
+	     
+    
             this.serializer.openProject(
                 this.serializer.load(importXML, this),
                 this
             );
+    
         } catch (err) {
-            this.showMessage('Load failed: ' + err);
+        var vDebug = ""; 
+	    for (var prop in err) 
+    	{  
+       		vDebug += "property: "+ prop+ " value: ["+ err[prop]+ "]\n"; 
+    	} 
+    	vDebug += "toString(): " + " value: [" + err.toString() + "]"; 
+        
+        
+        
+        
+            this.showMessage('Load failed at Import: ' + vDebug);
         }
     } else {
         this.serializer.openProject(
@@ -1246,26 +1261,36 @@ IDE_Morph.prototype.ckViewArtifact = function(artifact){
 };
 
 //creates this.artifactDictionary after an xml file is imported
-//FIX ME - syntactical errors
+
 IDE_Morph.prototype.createArtifactDictionary = function(){
 	var i = 0;
 	var spell;
-	for (i; i < this.allSprites; i++)
+	
+	for (i; i < this.allSprites.length(); i++)
 	{
-		spell = this.allSprites.at(i);
-		console.log(spell.artifact);
-		/*
-	//check if artifactDictionary has an artifact
-	if (this.artifactDictionary.hasOwnProperty(spell.artifact)):
+		spell = this.allSprites.at(i);		
+		artifact = spell.artifact;
+		
+		if( ! (artifact===undefined) && artifact.length > 0)
 		{
-			//if so add the new spell to the artifact's list
-			this.artifactDictionary[spell.artifact].add(spell);
-		}
-	//have never seen this artifact	
-	else:
-		//create new key value pair
-		this.artifactDictionary[spell.artifact] = new List([spell]);
-		 */
+		
+		this.currentSprite = spell;
+	
+		//check if artifactDictionary has an artifact
+		if (this.artifactDictionary.hasOwnProperty(artifact))
+			{
+				this.artifactDictionary[artifact].add(spell);
+			}	
+		else   	//have never seen this artifact	
+			{
+			this.artifactDictionary[artifact] = new List([spell]);
+			}
+		 }
+/*		 else
+		 {
+		 	//console.log("unalble to store spell:"+artifact,spell)
+		 }
+	*/	 
 	}	
 };
 

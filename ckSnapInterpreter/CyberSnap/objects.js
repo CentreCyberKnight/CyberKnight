@@ -5176,7 +5176,7 @@ StageMorph.prototype.IdEvent = function (ID) {
        }
     });
     hats.forEach(function (block) {
-    	console.log("starting",block);
+    	//console.log("starting",block);
         procs.push(myself.threads.startProcess(block, myself.isThreadSafe,
         			false,function(e){console.log("Process finished!!");}));
         			

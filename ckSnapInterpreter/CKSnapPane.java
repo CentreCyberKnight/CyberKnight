@@ -2,6 +2,7 @@ package ckSnapInterpreter;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -47,6 +48,14 @@ public class CKSnapPane extends Pane {
 		webEngine.setOnError(e -> {
 			System.err.println("JAVASCRIPT ERROR" + e.getMessage());
 		});
+		
+		
+		webEngine.setOnAlert(e -> {
+			System.err.println("JAVASCRIPT ERROR" + e.getData());
+		});
+		
+		
+		
 		webEngine
 				.getLoadWorker()
 				.exceptionProperty()
@@ -79,6 +88,15 @@ public class CKSnapPane extends Pane {
 				.addListener((obs, oldValue, newValue) -> {
 					if (newValue == State.SUCCEEDED) {
 
+						
+						//remote
+						//webEngine.executeScript("if (!document.getElementById('FirebugLite')){E = document['createElement' + 'NS'] && document.documentElement.namespaceURI;E = E ? document['createElement' + 'NS'](E, 'script') : document['createElement']('script');E['setAttribute']('id', 'FirebugLite');E['setAttribute']('src', 'https://getfirebug.com/' + 'firebug-lite.js' + '#startOpened');E['setAttribute']('FirebugLite', '4');(document['getElementsByTagName']('head')[0] || document['getElementsByTagName']('body')[0]).appendChild(E);E = new Image;E['setAttribute']('src', 'https://getfirebug.com/' + '#startOpened');}");
+						//local
+//						URL firebug = getClass().getResource("firebug-lite.js");
+						String firebug = "../firebug-lite.js";
+//						System.out.println(firebug);
+						//webEngine.executeScript("if (!document.getElementById('FirebugLite')){E = document['createElement' + 'NS'] && document.documentElement.namespaceURI;E = E ? document['createElement' + 'NS'](E, 'script') : document['createElement']('script');E['setAttribute']('id', 'FirebugLite');E['setAttribute']('src','"+firebug +"' + '#startOpened');E['setAttribute']('FirebugLite', '4');(document['getElementsByTagName']('head')[0] || document['getElementsByTagName']('body')[0]).appendChild(E);E = new Image;E['setAttribute']('src', 'https://getfirebug.com/' + '#startOpened');}");
+						
 						// Load the last SNAP configuration
 						File f = new File(
 								CKConnection.getCKSettingsDirectory(),
@@ -86,6 +104,8 @@ public class CKSnapPane extends Pane {
 						if (f.exists()) {
 							byte[] encoded;
 							try {
+
+								
 								encoded = Files.readAllBytes(Paths.get(f
 										.toURI()));
 								String xml = new String(encoded);
@@ -93,6 +113,7 @@ public class CKSnapPane extends Pane {
 								JSObject jsobj = (JSObject) webEngine
 										.executeScript("window");
 								jsobj.setMember("importXML", xml);
+								//System.out.println("Loading XML"+xml);
 								webEngine.executeScript("ide.ckImportXML()");
 							} catch (IOException e) {
 								e.printStackTrace();
@@ -115,17 +136,6 @@ public class CKSnapPane extends Pane {
 		BrowserWindow.setPrefSize(690, 820);
 		webEngine.load(getClass().getResource("CyberSnap/snap.html")
 				.toExternalForm());
-
-		webEngine.documentProperty().addListener(
-				new ChangeListener<Document>() {
-					@Override
-					public void changed(
-							ObservableValue<? extends Document> prop,
-							Document oldDoc, Document newDoc) {
-						webEngine
-								.executeScript("if (!document.getElementById('FirebugLite')){E = document['createElement' + 'NS'] && document.documentElement.namespaceURI;E = E ? document['createElement' + 'NS'](E, 'script') : document['createElement']('script');E['setAttribute']('id', 'FirebugLite');E['setAttribute']('src', 'https://getfirebug.com/' + 'firebug-lite.js' + '#startOpened');E['setAttribute']('FirebugLite', '4');(document['getElementsByTagName']('head')[0] || document['getElementsByTagName']('body')[0]).appendChild(E);E = new Image;E['setAttribute']('src', 'https://getfirebug.com/' + '#startOpened');}");
-					}
-				});
 
 		JSObject jsobj = (JSObject) webEngine.executeScript("window");
 		jsobj.setMember("javaMove", new CKSpellObject("move"));

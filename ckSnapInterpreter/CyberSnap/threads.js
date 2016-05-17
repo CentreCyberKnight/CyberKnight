@@ -238,7 +238,6 @@ ThreadManager.prototype.isPaused = function () {
 
 ThreadManager.prototype.resumeAll = function (stage) {
     this.processes.forEach(function (proc) {
-    	console.log("RESUMING_______________________",proc);
         proc.resume();
     });
     if (stage) {
@@ -268,7 +267,6 @@ ThreadManager.prototype.removeTerminatedProcesses = function () {
     this.processes.forEach(function (proc) {
         if ((!proc.isRunning() && !proc.errorFlag) || proc.isDead) {
         
-        	//console.log("DYING",proc,proc.isRunning(),proc.errorFlag,proc.isDead);
             if (proc.topBlock instanceof BlockMorph) {
                 proc.topBlock.removeHighlight();
             }
@@ -482,7 +480,6 @@ Process.prototype.runStep = function () {
 };
 
 Process.prototype.stop = function () {
-	console.log("STOPPING Process",this);
     this.readyToYield = true;
     this.readyToTerminate = true;
     this.errorFlag = false;

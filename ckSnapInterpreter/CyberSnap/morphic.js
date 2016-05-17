@@ -10347,8 +10347,6 @@ WorldMorph.prototype.initEventListeners = function () {
 		function (event) {
 			myself.currentID = event.ID;
 			if (myself.keyboardReceiver) {
-				console.log("EVENT",event);
-				console.log(myself);
 				myself.keyboardReceiver.processIdDispatch(event);
 			}
 		},
