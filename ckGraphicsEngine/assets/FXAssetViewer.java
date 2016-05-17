@@ -13,10 +13,7 @@ import javafx.scene.paint.Color;
 public class FXAssetViewer extends FXGamePanelTimer
 {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4936612248019644031L;
+
 	CKGraphicsAsset asset;
 	int presentRow;
 	int presentFrame;

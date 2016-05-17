@@ -17,6 +17,10 @@ import javax.swing.text.StyledDocument;
 
 import ckCommonUtils.CKProperties;
 public class Start extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7122613110426253640L;
 	//This is the menu shown when selecting a character
 	private String character,base;
 	private JComboBox<String> chars;

@@ -23,7 +23,7 @@ public class ImageAssetInformationPanel extends JPanel
 	 */
 	private static final long serialVersionUID = 4021261155525158097L;
 	
-	JComboBox imageTypes;
+	JComboBox<TileType> imageTypes;
 	JLabel assettype_label;
 	JLabel imagetype_label;
 	JLabel width_label;

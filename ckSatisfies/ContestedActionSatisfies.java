@@ -32,9 +32,9 @@ public class ContestedActionSatisfies extends Satisfies
 	 */
 	private static final long serialVersionUID = -3642344006960003239L;
 	private String targetChapter;
-	private String targetPage;
+	//private String targetPage;
 	private String sourceChapter;
-	private String sourcePage;
+	//private String sourcePage;
 	private double base;
 
 	public ContestedActionSatisfies(String tChapter,

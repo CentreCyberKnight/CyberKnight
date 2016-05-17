@@ -177,7 +177,7 @@ private boolean prepGraphics(boolean force)
 public void setFps(double fps)
 {
 	this.fps = fps;
-	long framePeriod = (long) (1000000000L/this.fps);//nano seconds
+	//long framePeriod = (long) (1000000000L/this.fps);//nano seconds
 	
 }
 

@@ -139,6 +139,7 @@ public class CKPCFocusCameraCmd extends CKQuestAction
 	static JPanel []panel;
 	static JComboBox<String> []nameBox;
 	
+	@SuppressWarnings("unchecked")
 	static private void initPanel(boolean force)
 	{
 		if(panel==null || force)

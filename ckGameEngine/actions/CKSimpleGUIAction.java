@@ -251,6 +251,7 @@ implements CKEntitySelectedListener<CKDialogChoice>, ItemListener
 	static JCheckBox []isPic;
 	static JCheckBox []isKeyMessage;
 	
+	@SuppressWarnings("unchecked")
 	static private void initPanel(boolean force)
 	{
 		if(panel==null || force)

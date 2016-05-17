@@ -63,6 +63,7 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 		return factory;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private CKGraphicsAssetFactoryXML()
 	{
 		super();
@@ -249,6 +250,7 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 	 * Initializes the usage map for assets.  This should only be called when the accessing files,
 	 * Not web pages or JAR files.
 	 */
+	@SuppressWarnings("unchecked")
 	protected void readUsages()
 	{
 		if(usageMap==null)

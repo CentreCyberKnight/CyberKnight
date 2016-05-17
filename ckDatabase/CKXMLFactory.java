@@ -220,6 +220,7 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 	 * Initializes the usage map for assets.  This should only be called when the accessing files,
 	 * Not web pages or JAR files.
 	 */
+	@SuppressWarnings("unchecked")
 	protected void readUsages()
 	{
 		if(usageMap==null)

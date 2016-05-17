@@ -118,7 +118,7 @@ public class CKTabIconPane extends JTabbedPane implements ActionListener
 		CKTabIconPane p = new CKTabIconPane(new LabelMaker(),true,true);
 		
 		Icon actorIcon = new ImageIcon("ckEditor/images/tools/actor.png");
-		Icon targetIcon = new ImageIcon("ckEditor/images/tools/aim.png");
+		//Icon targetIcon = new ImageIcon("ckEditor/images/tools/aim.png");
 		Icon left_arrowIcon = new ImageIcon("ckEditor/images/tools/left_arrow.png");
 		p.addTab(new JLabel("p1"), left_arrowIcon, "Left");
 		p.addTab(new JLabel("p2"), null, "aim");

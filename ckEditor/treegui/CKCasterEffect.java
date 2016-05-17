@@ -134,6 +134,7 @@ public class CKCasterEffect extends CKGUINode
 		
 		@SuppressWarnings("resource")
 		XMLDecoder d = new XMLDecoder(pipeIn);
+		@SuppressWarnings("unused")
 		CKStartSoundEffectNode e2 = (CKStartSoundEffectNode) d.readObject();
 		//System.out.println("stored name" +e2.getName());
 		

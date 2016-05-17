@@ -18,6 +18,10 @@ import ckGraphicsEngine.assets.CKStillAssetViewer;
 public class CKAssetCellViewer extends JPanel implements ChangeListener
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6906571879625333208L;
 	SpinnerNumberModel rowSpin;
 	SpinnerNumberModel frameSpin;
 	CKStillAssetViewer view;

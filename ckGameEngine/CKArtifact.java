@@ -443,7 +443,7 @@ public class CKArtifact implements CKXMLAsset<CKArtifact>
 
 	static class ArtifactPersistenceDelegate extends DefaultPersistenceDelegate
 	{
-	    protected void initialize(Class type, Object oldInstance,
+	    protected void initialize(Class<?> type, Object oldInstance,
 	                              Object newInstance, Encoder out) 
 	    {
 	        super.initialize(type, oldInstance,  newInstance, out);
@@ -509,6 +509,7 @@ public class CKArtifact implements CKXMLAsset<CKArtifact>
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public CKXMLAssetPropertiesEditor<CKArtifact> getXMLPropertiesEditor()
 	{

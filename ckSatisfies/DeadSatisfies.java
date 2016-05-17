@@ -120,6 +120,7 @@ public class DeadSatisfies extends Satisfies {
 	static JPanel []panel;
 	static JComboBox<String> []nameBox;
 	
+	@SuppressWarnings("unchecked")
 	static private void initPanel(boolean force)
 	{
 		if(panel==null || force)

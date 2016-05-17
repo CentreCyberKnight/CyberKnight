@@ -375,6 +375,7 @@ public class CKTeam implements CKXMLAsset<CKTeam>
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public CKXMLAssetPropertiesEditor<CKTeam> getXMLPropertiesEditor()
 	{

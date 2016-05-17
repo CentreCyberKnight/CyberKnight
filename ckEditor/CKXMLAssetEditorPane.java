@@ -1,11 +1,12 @@
 package ckEditor;
 
-import java.awt.Dimension;
+import java.awt.FlowLayout;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -33,7 +34,7 @@ public class CKXMLAssetEditorPane<T extends CKXMLAsset<T>,F extends CKXMLFactory
 	private JComponent assetPanel; 
 	
 	private JLabel idLabel;
-		
+	private JTextField idField;
 	
 
 	public CKXMLAssetEditorPane(T asset,F fact)
@@ -55,9 +56,18 @@ public class CKXMLAssetEditorPane<T extends CKXMLAsset<T>,F extends CKXMLFactory
 		getMultiSplitLayout().setModel(modelRoot);
 
 		
-		idLabel =new JLabel("FileName: "+afactory.getBaseDir()+asset.getAID());
-		idLabel.setPreferredSize(new Dimension(100,30));
-		add(idLabel,"assetid");
+		idLabel =new JLabel("FileName: "+afactory.getBaseDir());
+		//idLabel.setPreferredSize(new Dimension(100,30));
+		idField = new JTextField(asset.getAID());
+		idField.setColumns(40);
+		
+		JPanel assetPane = new JPanel(new FlowLayout()); 
+		//assetPane.setBackground(Color.RED);
+		assetPane.add(idLabel);
+		assetPane.add(idField);
+		add(assetPane,"assetid");
+		
+		
 		
 		
 		
@@ -79,6 +89,8 @@ public class CKXMLAssetEditorPane<T extends CKXMLAsset<T>,F extends CKXMLFactory
 		}
 			
 	}
+	
+	
 	
 	public boolean showAssetPanel()
 	{
@@ -134,11 +146,13 @@ public class CKXMLAssetEditorPane<T extends CKXMLAsset<T>,F extends CKXMLFactory
 	
 	public void saveAsset()
 	{
+		asset.setAID(idField.getText());
 		properties.storeState();//just to be sure it saved everything
 		afactory.writeAssetToXMLDirectory(asset);
 		usages.saveUsages(); //must make sure there is an asset ID.
-		idLabel.setText("FileName: "+asset.getAID());
 
+//		idLabel =new JLabel("FileName: "+afactory.getBaseDir());
+		idField.setText(asset.getAID());
 		//System.err.println("You've more written the database for grid item yet");
 	}
 	

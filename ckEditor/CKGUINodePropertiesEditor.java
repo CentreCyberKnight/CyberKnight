@@ -94,6 +94,7 @@ extends CKXMLAssetPropertiesEditor<T> implements ChangeListener
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public T getAsset()
 	{

@@ -17,6 +17,7 @@ public class JoinedIterator<E> implements Iterator<E>
 	Iterator<Iterator<E>> currentIterator;
 	Iterator<E> current;
 	
+	@SafeVarargs
 	public JoinedIterator(Iterator<E> ... iterators)
 	{
 		iters=new ArrayList<Iterator<E>>(iterators.length); 

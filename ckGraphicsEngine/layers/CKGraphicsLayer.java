@@ -186,7 +186,7 @@ abstract public class CKGraphicsLayer
 
 	class LayerPersistenceDelegate extends DefaultPersistenceDelegate
 	{
-	    protected void initialize(Class type, Object oldInstance,
+	    protected void initialize(Class<?> type, Object oldInstance,
 	                              Object newInstance, Encoder out) 
 	    {
 	        super.initialize(type, oldInstance,  newInstance, out);

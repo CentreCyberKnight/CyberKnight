@@ -10,6 +10,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 public class Interface2 extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8346313694409185139L;
 	//This is the actual GUI Window
 	private JPanel content,bottom;
 	private JButton finish,add;

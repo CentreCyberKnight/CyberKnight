@@ -50,7 +50,7 @@ public class CKSnapPane extends Pane {
 		*/
 		 webEngine.getLoadWorker().stateProperty().addListener(
 		            new ChangeListener<State>() {
-		              @Override public void changed(ObservableValue ov, State oldState, State newState) {
+		              @Override public void changed(@SuppressWarnings("rawtypes") ObservableValue ov, State oldState, State newState) {
 
 		                    System.out.println("called"+newState);
 		                  

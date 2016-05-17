@@ -2,6 +2,10 @@ package ckEditor.treegui;
 
 public class CKGUINodeLabel extends CKGUINode
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2655760277866843278L;
 	String label;
 	
 	

@@ -367,9 +367,9 @@ public class CKDialogGraph extends DirectedSparseMultigraph<NateNode, NateLink> 
 	public static void main(String[] args) 
 	{
 		String output = null;
-		try
+		try(Scanner scanner = new Scanner(new File("DialogTest.xml")))
 		{
-			output = new Scanner(new File("DialogTest.xml")).useDelimiter("\\Z").next();
+			output = scanner.useDelimiter("\\Z").next();
 		} catch (FileNotFoundException e)
 		{
 			// TODO Auto-generated catch block

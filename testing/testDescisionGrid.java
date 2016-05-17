@@ -261,7 +261,7 @@ public class testDescisionGrid
 		{
 			CKPosition pos = node.position;
 			//double x = node.position.getX();
-			double y = node.position.getY();
+			//double y = node.position.getY();
 			
 			
 			AimDescriptionFactory factory = AimDescriptionFactory.getInstance();

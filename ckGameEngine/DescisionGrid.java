@@ -660,8 +660,8 @@ public class DescisionGrid
 			{
 				CKPosition oPos = invP.add(pos);
 				//make sure that oPos is on the grid.
-				double x = oPos.getX();
-				double y = oPos.getY();
+				//double x = oPos.getX();
+				//double y = oPos.getY();
 				if(grid.legalPosition(oPos))
 				{
 					DecisionNode node = getNode(oPos, dir);

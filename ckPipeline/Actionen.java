@@ -15,6 +15,10 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 public class Actionen extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8378414014384169388L;
 	//This is the Action and its graphical components
 	private String actName,file;
 	protected JButton remove;

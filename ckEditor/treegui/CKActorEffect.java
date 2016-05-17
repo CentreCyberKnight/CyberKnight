@@ -258,6 +258,7 @@ public class CKActorEffect extends CKGUINode
 		
 		@SuppressWarnings("resource")
 		XMLDecoder d = new XMLDecoder(pipeIn);
+		@SuppressWarnings("unused")
 		CKActorEffect e2 = (CKActorEffect) d.readObject();
 		//System.out.println("stored name" +e2.getName());
 		

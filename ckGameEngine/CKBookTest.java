@@ -207,7 +207,7 @@ public class CKBookTest
 		//test reverse ordering
 		assertEquals("B not equal",B,b);
 		
-		CKChapter c=new CKChapter("Fire",0);
+		//CKChapter c=new CKChapter("Fire",0);
 		CKBook s1 = new CKBook();
 		s1.addChapter(A);
 		s1.addChapter(B);

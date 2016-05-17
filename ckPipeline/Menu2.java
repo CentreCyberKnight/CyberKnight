@@ -14,6 +14,10 @@ import javax.swing.JPanel;
 
 import ckCommonUtils.CKProperties;
 public class Menu2 extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4293286934559959885L;
 	private ArrayList<Actionen> actions;
 	private GridBagLayout layout;
 	private String[] bvhs;

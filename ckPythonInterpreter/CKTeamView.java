@@ -42,6 +42,10 @@ import ckGameEngine.Direction;
 
 public class CKTeamView extends JPanel
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8336607668630824437L;
 	//HashMap <String,CKCharacterEquippedView> indexMap;
 	HashMap <String,CKCharacterView> indexMap;
 	JTabbedPane tabs;

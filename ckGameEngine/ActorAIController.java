@@ -169,7 +169,7 @@ public class ActorAIController extends ActorController
 		if(parent!=null) { getCmds(parent); }
 		//now do my action
 		String action = node.getAction();
-		int cp = node.getActionCost();
+		//int cp = node.getActionCost();
 		
 
 		//System.err.println("MoveTO "+action+" "+cp+":"+node.getPos()+node.getDir());

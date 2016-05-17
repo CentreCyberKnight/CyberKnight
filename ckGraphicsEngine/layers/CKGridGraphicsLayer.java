@@ -29,6 +29,7 @@ public class CKGridGraphicsLayer extends CKGraphicsLayer
     int mapHeight;
 	*/
 	private CKGrid grid;
+	@SuppressWarnings("unused")
 	private String gridID;
 	private HashMap<Integer,CKGraphicsAsset> instanceMap = new HashMap<Integer,CKGraphicsAsset>();
 	

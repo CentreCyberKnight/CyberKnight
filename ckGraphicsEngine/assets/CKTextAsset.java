@@ -181,7 +181,7 @@ public class CKTextAsset extends CKGraphicsAsset
 		temp.setFont(font);
 		
 		Bounds layout = temp.getLayoutBounds();
-		double width = layout.getWidth();
+		//double width = layout.getWidth();
 		
 		off.x=(int) layout.getMinX();
 		off.y=(int) layout.getMinY();

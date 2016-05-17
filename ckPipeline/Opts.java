@@ -13,6 +13,10 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 public class Opts extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5382794636842199305L;
 	//This is the Opts, and its graphical objects
 	private String actName,file;
 	protected JButton remove;

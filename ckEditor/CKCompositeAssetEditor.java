@@ -32,7 +32,7 @@ public class CKCompositeAssetEditor extends CKAssetEditorPane
 	 */
 	private static final long serialVersionUID = -8502775289068923594L;
 	private CKCompositeAsset asset;
-	private CKGraphicsAssetFactory afactory;
+	//private CKGraphicsAssetFactory afactory;
 	private EditorState state;
 	private CKAssetPicker aggPicker;
 	private CKCompositeAssetPropertiesEditor properties;
@@ -45,7 +45,7 @@ public class CKCompositeAssetEditor extends CKAssetEditorPane
 			super(asset);
 
 			this.asset=asset;
-			afactory = CKGraphicsAssetFactoryXML.getInstance();;
+			//afactory = CKGraphicsAssetFactoryXML.getInstance();;
 			
 			String layoutDef = 
 				    "(COLUMN (ROW (LEAF name=viewer weight=1.0) state (COLUMN  properties usages) )" +

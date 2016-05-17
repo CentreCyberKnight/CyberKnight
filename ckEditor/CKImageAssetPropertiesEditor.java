@@ -31,6 +31,10 @@ import ckGraphicsEngine.assets.TileType;
 public class CKImageAssetPropertiesEditor extends JPanel implements ChangeListener,ActionListener,DocumentListener
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8072899742639301497L;
 	CKImageAsset asset;
 	JTextField name;
 	JTextField filename;

@@ -71,14 +71,14 @@ public class CKSoundFactory extends CKXMLFactory<CKSound>
 		
 		
 		
-		createTestDB();
+		createTestDB();/*
 		CKSoundFactory factory = CKSoundFactory.getInstance();
 		CKSound cktest = factory.getAsset("Rainforest");//read from database
 		
 		
 		CKSoundFactory factory2 = CKSoundFactory.getInstance();
 		CKSound cktest2 = factory2.getAsset("Buzz");//read from database
-		
+		*/
 		//play clip from database
 		//cktest.play();
 		//cktest.playAtPercent(0.10);

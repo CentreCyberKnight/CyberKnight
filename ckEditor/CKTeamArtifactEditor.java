@@ -3,7 +3,6 @@ package ckEditor;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -248,7 +247,7 @@ public class CKTeamArtifactEditor extends JPanel implements ChangeListener
 		
 		frame.pack();
 		frame.setVisible(true);
-		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
 

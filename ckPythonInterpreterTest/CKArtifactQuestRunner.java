@@ -124,7 +124,7 @@ public class CKArtifactQuestRunner implements DocumentListener
 		 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 
-		 String cmd = "move('left',1)\n";				 
+		// String cmd = "move('left',1)\n";				 
 		 
 		 //editor.setText(cmd);
 		 if(newThread)
@@ -287,7 +287,8 @@ public class CKArtifactQuestRunner implements DocumentListener
 	 
 
 	 
-	 	private class ButtonHandler implements ActionListener
+	 	@SuppressWarnings("unused")
+		private class ButtonHandler implements ActionListener
 	 	{
 	 		public void actionPerformed(ActionEvent event)
 	 		{

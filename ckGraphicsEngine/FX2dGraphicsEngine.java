@@ -667,7 +667,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 			engine.move(tid,spriteID,arrives+30,p1,p2,10);
 			
 			
-			int textId = engine.createUniqueInstance(tid, fade, p2.add(new CKPosition(.5,.5,3)),
+			engine.createUniqueInstance(tid, fade, p2.add(new CKPosition(.5,.5,3)),
 					0, CKGraphicsLayer.SPRITE_LAYER);
 			
 			CKPosition posS = new CKPosition (6,6);

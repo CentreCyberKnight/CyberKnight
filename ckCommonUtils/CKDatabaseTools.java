@@ -10,7 +10,6 @@ import java.sql.Statement;
  * @author bradshaw
  *
  */
-@SuppressWarnings("unused")
 final public class CKDatabaseTools
 {
 	final public static String getTableStringField(String table,

@@ -6,7 +6,7 @@ import static ckCommonUtils.CKPropertyStrings.P_ANY;
 import static ckCommonUtils.CKPropertyStrings.P_ILLUMINATE;
 import static ckCommonUtils.CKPropertyStrings.P_TALK;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
@@ -67,19 +67,22 @@ public class CKTriggerFactory extends  CKXMLFactory<CKTrigger>
 			
 			Satisfies s = new SpellSatisfies( CH_VOICE  ,P_TALK , 1,NumericalCostType.TRUE);
 			CKGameAction a =null;
-			try
+			try (
+					Scanner scanner = new Scanner(new FileInputStream("DialogTest.xml"));
+					)
 			{
 								
-				String output = new Scanner(new File("DialogTest.xml")).useDelimiter("\\Z").next();
+				String output = scanner.useDelimiter("\\Z").next();
 				System.out.println("here is my XML"+output);
 				a= new CKDialogAction(output);
+				
 				
 				
 			} catch (FileNotFoundException e)
 			{
 				e.printStackTrace();
 				a = new CKSimpleGUIAction( "Mom","Didn't Work!!" );
-			}
+			} 
 
 			
 			
