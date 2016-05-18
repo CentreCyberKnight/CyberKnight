@@ -146,6 +146,7 @@ public class CKSnapPane extends Pane {
 				return;
 			}
 			try {
+				System.out.println("artifact+"+artifact);
 				jsobj.setMember("artifact", artifact);
 				webEngine.executeScript("ide.setCyberSnap()");
 			} catch (JSException e) {

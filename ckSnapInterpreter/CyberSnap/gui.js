@@ -1101,6 +1101,7 @@ IDE_Morph.prototype.setCyberSnap = function(){
 	//updating current sprite to the first on the screen
 	this.currentSprite = this.sprites.at(1);
 		
+	//can this be moved?	
 	//setting the picture and name for each sprite
 	var picture;
 	var spellArray = artifact.getSpellImageArray();
@@ -1113,7 +1114,7 @@ IDE_Morph.prototype.setCyberSnap = function(){
 	}
 	//setting the artifact icon
 	this.img = 'data:image/png;base64,'+ artifact.getSnapImage();
-		
+	
 	//fixing layout and creating all necessary panels
 	this.buildCKPanes();
 	this.fixLayout();
@@ -1263,10 +1264,10 @@ IDE_Morph.prototype.ckViewArtifact = function(artifact){
 //creates this.artifactDictionary after an xml file is imported
 
 IDE_Morph.prototype.createArtifactDictionary = function(){
-	var i = 0;
+	var i = 1;
 	var spell;
 	
-	for (i; i < this.allSprites.length(); i++)
+	for (i; i < this.allSprites.length()+1; i++)
 	{
 		spell = this.allSprites.at(i);		
 		artifact = spell.artifact;
@@ -1275,7 +1276,9 @@ IDE_Morph.prototype.createArtifactDictionary = function(){
 		{
 		
 		this.currentSprite = spell;
-	
+		block = spell.scripts.children[0];
+		block.setSpec(artifact + ": Button " + spell.spellNum);	//setting name
+		
 		//check if artifactDictionary has an artifact
 		if (this.artifactDictionary.hasOwnProperty(artifact))
 			{

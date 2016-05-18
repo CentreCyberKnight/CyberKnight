@@ -460,7 +460,7 @@ SnapSerializer.prototype.rawLoadProjectModel = function (xmlNode) {
     model.sprites.childrenNamed('sprite').forEach(function (model) {
         myself.loadValue(model);
     });
-
+	
     // restore nesting associations
     myself.project.stage.children.forEach(function (sprite) {
         var anchor;
@@ -478,7 +478,7 @@ SnapSerializer.prototype.rawLoadProjectModel = function (xmlNode) {
             delete sprite.nestingInfo;
         }
     });
-
+	
     /* Global Variables */
 
     if (model.globalVariables) {
@@ -1105,7 +1105,6 @@ SnapSerializer.prototype.loadValue = function (model) {
     // private
     var v, items, el, center, image, name, audio, option,
         myself = this;
-
     function record() {
         if (Object.prototype.hasOwnProperty.call(
                 model.attributes,
@@ -1365,13 +1364,14 @@ SnapSerializer.prototype.openProject = function (project, ide) {
     }
     ide.add(project.stage);
     ide.stage = project.stage;
+    /* not used?
     sprites = ide.stage.children.filter(function (child) {
         return child instanceof SpriteMorph;
     });
     sprites.sort(function (x, y) {
         return x.idx - y.idx;
     });
-
+*/
     //ide.sprites = new List(sprites);
     //sprite = sprites[2] || project.stage;
     //ide.allSprites = new List(sprites);
