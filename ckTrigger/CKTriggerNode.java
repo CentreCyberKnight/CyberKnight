@@ -137,7 +137,7 @@ import ckSatisfies.Satisfies;
 
 					return TriggerResult.SATISFIED_ONCE;
 				}
-			}		
+			}	//FIXME this should always run the action, but we have bad actions...	
 			else if (act)// why does this if need to be here?
 			{
 				if(action instanceof CKTriggerListNode)

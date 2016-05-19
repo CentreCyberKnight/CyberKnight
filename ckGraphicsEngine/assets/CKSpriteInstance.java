@@ -3,6 +3,7 @@ package ckGraphicsEngine.assets;
 import java.awt.Graphics;
 import java.awt.image.ImageObserver;
 
+import javafx.scene.canvas.GraphicsContext;
 import ckCommonUtils.CKPosition;
 import ckGraphicsEngine.CKCoordinateTranslator;
 import ckGraphicsEngine.UnknownAnimationError;
@@ -28,6 +29,18 @@ public void drawToGraphics (Graphics g,int frame,
 
 	
 	
+/* (non-Javadoc)
+ * @see ckGraphicsEngine.assets.CKAssetInstance#drawToGraphics(javafx.scene.canvas.GraphicsContext, int, java.awt.image.ImageObserver, ckGraphicsEngine.CKCoordinateTranslator)
+ */
+@Override
+public void drawToGraphics(GraphicsContext g, int frame,
+		ImageObserver observer, CKCoordinateTranslator translator)
+{
+	drawToGraphics (g,frame,presentRow,observer,translator);
+}
+
+
+
 public void setAnimation(String animation) throws UnknownAnimationError 
 {
 	presentRow = ((CKSpriteAsset) asset).getRowIndex(animation);
