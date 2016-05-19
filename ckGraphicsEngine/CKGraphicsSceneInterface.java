@@ -12,6 +12,7 @@ import ckGraphicsEngine.assets.CKAssetInstance;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
 import ckGraphicsEngine.sceneAction.CKSceneAction;
+import javafx.scene.canvas.GraphicsContext;
 
 public interface CKGraphicsSceneInterface extends CKXMLAsset<CKGraphicsSceneInterface>
 {
@@ -19,6 +20,7 @@ public interface CKGraphicsSceneInterface extends CKXMLAsset<CKGraphicsSceneInte
 	
 	public abstract void calcState();
 	public abstract void drawOffScreenBuffer(Graphics g,int width,int height);
+	public abstract void drawOffScreenBuffer(GraphicsContext g,int width,int height);
 	
 	
 	/**

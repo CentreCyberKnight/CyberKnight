@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -11,8 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import org.jdesktop.swingx.MultiSplitLayout;
 
+import org.jdesktop.swingx.MultiSplitLayout;
 
 import ckCommonUtils.CKEntitySelectedListener;
 import ckDatabase.CKGraphicsAssetFactory;
@@ -31,7 +32,7 @@ public class CKCompositeAssetEditor extends CKAssetEditorPane
 	 */
 	private static final long serialVersionUID = -8502775289068923594L;
 	private CKCompositeAsset asset;
-	private CKGraphicsAssetFactory afactory;
+	//private CKGraphicsAssetFactory afactory;
 	private EditorState state;
 	private CKAssetPicker aggPicker;
 	private CKCompositeAssetPropertiesEditor properties;
@@ -44,7 +45,7 @@ public class CKCompositeAssetEditor extends CKAssetEditorPane
 			super(asset);
 
 			this.asset=asset;
-			afactory = CKGraphicsAssetFactoryXML.getInstance();;
+			//afactory = CKGraphicsAssetFactoryXML.getInstance();;
 			
 			String layoutDef = 
 				    "(COLUMN (ROW (LEAF name=viewer weight=1.0) state (COLUMN  properties usages) )" +

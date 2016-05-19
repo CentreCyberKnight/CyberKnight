@@ -1,11 +1,23 @@
 package ckPipeline;
-import javax.swing.*;
-import ckCommonUtils.*;
-import java.util.*;
-import java.io.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import javax.swing.JPanel;
+
+import ckCommonUtils.CKProperties;
 public class Menu2 extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4293286934559959885L;
 	private ArrayList<Actionen> actions;
 	private GridBagLayout layout;
 	private String[] bvhs;

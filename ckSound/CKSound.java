@@ -2,7 +2,6 @@
 
  
 
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,6 +9,7 @@ import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.OutputStream;
+
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
@@ -17,7 +17,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
@@ -25,10 +24,8 @@ import javax.swing.event.ChangeListener;
 
 import ckCommonUtils.CKURL;
 import ckCommonUtils.CKXMLAsset;
-
 import ckDatabase.XMLDirectories;
 import ckEditor.CKSoundPropertiesEditor;
-import ckEditor.CKXMLAssetPropertiesEditor;
 
 
 	public class CKSound implements CKXMLAsset<CKSound> 

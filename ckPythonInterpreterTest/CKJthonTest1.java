@@ -1,10 +1,15 @@
 package ckPythonInterpreterTest;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import org.python.core.PyException;
+import org.python.core.PyInteger;
+import org.python.core.PyObject;
 // File: SimpleEmbedded.java
 import org.python.util.PythonInterpreter;
-import org.python.core.*;
-import java.io.*;
 
 public class CKJthonTest1 
 {

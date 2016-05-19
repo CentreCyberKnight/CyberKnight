@@ -1,14 +1,11 @@
 package testing;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import ckCommonUtils.CKAreaPositions;
-import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKPropertyStrings;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGrid;
@@ -63,8 +60,8 @@ public class TestAllPossiblePositionsGivenCP
                 int expectedLowestMoveCost = 1; // need a real value here
                 assertLowestMoveCost(actor1, Direction.NORTHEAST, expectedLowestMoveCost);
                  
-                int maxCP = 1; // the max CP 
-                int expectedNumOfPositions = 4; // expected number of reachable positions
+                //int maxCP = 1; // the max CP 
+                //int expectedNumOfPositions = 4; // expected number of reachable positions
                 //CKAreaPositions positions = grid.allPositionsReachable(actor1, maxCP);
                 //assertEquals(positions.getArea().length, expectedNumOfPositions);
                 fail("This has not been rewritten!!");

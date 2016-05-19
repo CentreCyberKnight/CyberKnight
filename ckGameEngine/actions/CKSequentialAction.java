@@ -12,8 +12,8 @@ public class CKSequentialAction extends CKCompoundGameAction
 	 */
 	private static final long serialVersionUID = 1369167558151858392L;
 	//Vector<CKGameAction> actions;
-	//Iterator<CKGameAction> iter;
-	Iterator<Object> iter;
+	Iterator<CKGameAction> iter;
+	//Iterator<Object> iter;
 	CKSpellCast cast;
 	
 	public CKSequentialAction()
@@ -32,6 +32,7 @@ public class CKSequentialAction extends CKCompoundGameAction
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void doAction(CKGameActionListenerInterface L,CKSpellCast cast)
 	{//TODO will cause errors if this is called twice!
@@ -45,7 +46,7 @@ public class CKSequentialAction extends CKCompoundGameAction
 	{
 		if(iter.hasNext())
 		{
-			CKGameAction act = (CKGameAction) iter.next();
+			CKGameAction act = iter.next();
 			CKGameObjectsFacade.getQuest().startTransaction();
 			act.doAction(this,cast,true);//not sure if this is needed
 			//act.doAction(this,cast);

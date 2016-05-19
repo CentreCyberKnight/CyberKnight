@@ -2,17 +2,14 @@ package ckPythonInterpreter;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import ckDatabase.CKGraphicsAssetFactory;
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckEditor.CKAssetLabel;
-import ckEditor.CKBookView;
 import ckGameEngine.CKGridActor;
 
 public class CKCharacterShortView extends JPanel

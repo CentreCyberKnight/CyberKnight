@@ -118,8 +118,9 @@ public class DeadSatisfies extends Satisfies {
 	}
 	
 	static JPanel []panel;
-	static JComboBox []nameBox;
+	static JComboBox<String> []nameBox;
 	
+	@SuppressWarnings("unchecked")
 	static private void initPanel(boolean force)
 	{
 		if(panel==null || force)
@@ -129,8 +130,8 @@ public class DeadSatisfies extends Satisfies {
 			panel[1]=new JPanel();			
 
 			nameBox = new JComboBox[2];
-			nameBox[0] = new JComboBox();
-			nameBox[1] = new JComboBox();
+			nameBox[0] = new JComboBox<String>();
+			nameBox[1] = new JComboBox<String>();
 			panel[0].add(new JLabel("When "));
 			panel[0].add(nameBox[0]);		
 			panel[0].add(new JLabel(" is dead"));

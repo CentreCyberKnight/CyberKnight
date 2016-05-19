@@ -16,7 +16,6 @@ import javax.swing.event.DocumentListener;
 import org.jdesktop.swingx.MultiSplitLayout;
 import org.jdesktop.swingx.MultiSplitPane;
 
-
 import ckCommonUtils.CKEntitySelectedListener;
 import ckDatabase.CKGraphicsLayerFactory;
 import ckDatabase.CKGraphicsLayerFactoryXML;

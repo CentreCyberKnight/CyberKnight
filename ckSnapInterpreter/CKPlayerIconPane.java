@@ -1,18 +1,13 @@
 package ckSnapInterpreter;
 
-import netscape.javascript.JSException;
 import ckGameEngine.CKGridActor;
-import ckGameEngine.CKTeam;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 public class CKPlayerIconPane extends HBox  {

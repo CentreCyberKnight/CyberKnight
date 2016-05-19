@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.beans.XMLEncoder;
 import java.io.OutputStream;
+
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -14,6 +15,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.border.TitledBorder;
+
 import org.apache.commons.collections15.Factory;
 
 import ckCommonUtils.CKXMLAsset;

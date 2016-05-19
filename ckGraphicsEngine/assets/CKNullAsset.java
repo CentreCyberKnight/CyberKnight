@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.ImageObserver;
 
+import javafx.scene.canvas.GraphicsContext;
+
 
 final public class CKNullAsset extends CKGraphicsAsset
 {
@@ -95,6 +97,46 @@ final public class CKNullAsset extends CKGraphicsAsset
 		off.y=0;
 		bounds.x=0;
 		bounds.y=0;
+		
+	}
+
+
+
+	@Override
+	public void drawToGraphics(GraphicsContext g, int screenx, int screeny,
+			int frame, int row, ImageObserver observer)
+	{
+		// 	do nothing
+		
+	}
+
+
+
+	@Override
+	public void drawPreviewToGraphics(GraphicsContext g, int screenx,
+			int screeny, ImageObserver observer)
+	{
+		// do Nothing
+		
+	}
+
+
+
+	@Override
+	public void drawPreviewRowToGraphics(GraphicsContext g, int screenx,
+			int screeny, int row, ImageObserver observer)
+	{
+		// do Nothing
+		
+	}
+
+
+
+	@Override
+	public void drawPreviewFrameToGraphics(GraphicsContext g, int screenx,
+			int screeny, int frame, ImageObserver observer)
+	{
+		// do nothing
 		
 	}
 

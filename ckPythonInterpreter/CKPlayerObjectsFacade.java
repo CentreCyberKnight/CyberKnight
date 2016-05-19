@@ -1,10 +1,11 @@
 package ckPythonInterpreter;
 
 
+import static ckCommonUtils.CKPropertyStrings.CP_PER_ROUND;
+
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKBook;
 import ckGameEngine.CKGameObjectsFacade;
-import static ckCommonUtils.CKPropertyStrings.*;
 
 public class CKPlayerObjectsFacade
 {

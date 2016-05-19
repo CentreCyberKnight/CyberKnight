@@ -3,14 +3,15 @@
  */
 package ckGameEngine.actions;
 
+import static ckCommonUtils.CKPropertyStrings.P_PULL;
+import static ckCommonUtils.CKPropertyStrings.P_SHOVE;
+
 import ckGameEngine.CKAbstractGridItem;
+import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGrid;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellCast;
 import ckGameEngine.Direction;
-import ckGameEngine.CKGameObjectsFacade;
-
-import static ckCommonUtils.CKPropertyStrings.*;
 
 
 /**

@@ -18,13 +18,11 @@ import ckCommonUtils.CKEntitySelectedListener;
 import ckDatabase.CKActorControllerFactory;
 import ckEditor.DataPickers.CKXMLFilteredAssetPicker;
 import ckEditor.treegui.CKTreeGui;
-
 import ckGameEngine.ActorController;
 import ckGameEngine.CKBook;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKGridItem;
 import ckGameEngine.Direction;
-import ckGameEngine.ActorNullController;
 
 public class CKGridActorPropertiesEditor 
 extends CKXMLAssetPropertiesEditor<CKGridItem> implements ChangeListener

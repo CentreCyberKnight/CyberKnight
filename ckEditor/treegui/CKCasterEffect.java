@@ -10,7 +10,6 @@ import javax.swing.tree.MutableTreeNode;
 import ckCommonUtils.CKPosition;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.Quest;
-import ckGraphicsEngine.CK2dGraphicsEngine;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.LoadAssetError;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
@@ -135,6 +134,7 @@ public class CKCasterEffect extends CKGUINode
 		
 		@SuppressWarnings("resource")
 		XMLDecoder d = new XMLDecoder(pipeIn);
+		@SuppressWarnings("unused")
 		CKStartSoundEffectNode e2 = (CKStartSoundEffectNode) d.readObject();
 		//System.out.println("stored name" +e2.getName());
 		

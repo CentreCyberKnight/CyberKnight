@@ -1,10 +1,19 @@
 package ckDatabase;
-import java.sql.*;
+import static ckCommonUtils.CKDatabaseTools.DBAT;
+import static ckCommonUtils.CKDatabaseTools.DBCascade;
+import static ckCommonUtils.CKDatabaseTools.DBcreateTableHeader;
+import static ckCommonUtils.CKDatabaseTools.DBmakeCHARVARType;
+import static ckCommonUtils.CKDatabaseTools.DBmakeFKIdType;
+import static ckCommonUtils.CKDatabaseTools.DBmakePKIdType;
+import static ckCommonUtils.CKDatabaseTools.DBmakeTextType;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import org.python.core.PyException;
 
-
 import ckPythonInterpreterTest.CKExceptionFrame;
-import static ckCommonUtils.CKDatabaseTools.*;
 
 /**
  * 

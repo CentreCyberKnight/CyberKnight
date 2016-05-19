@@ -1,7 +1,8 @@
 package ckSatisfies;
 
-import java.awt.Color;
+import static ckCommonUtils.CKPropertyStrings.P_ANY;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -18,8 +19,6 @@ import javax.swing.SpinnerNumberModel;
 import ckEditor.treegui.CKGuiRoot;
 import ckEditor.treegui.CKTreeGui;
 import ckGameEngine.CKSpellCast;
-
-import static ckCommonUtils.CKPropertyStrings.*;
 
 public class SpellSatisfies extends Satisfies implements ItemListener
 {

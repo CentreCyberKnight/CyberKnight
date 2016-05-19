@@ -3,7 +3,9 @@ package ckGraphicsEngine.assets;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.ImageObserver;
+
 import ckDatabase.CKGraphicsAssetFactoryXML;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * Shared Asset allows us to create an asset out of a single row of another asset.  This class is useful in creating composite assets
@@ -78,6 +80,15 @@ public class CKSharedAsset extends CKGraphicsAsset
 		//ignores row parameter
 		asset.drawToGraphics(g,screenx,screeny,frame,this.row,observer);
 	}
+	
+	
+	@Override
+	public void drawToGraphics(GraphicsContext g, int screenx, int screeny,
+			int frame,int row, ImageObserver observer)
+	{
+		//ignores row parameter
+		asset.drawToGraphics(g,screenx,screeny,frame,this.row,observer);
+	}
 
 
 
@@ -101,6 +112,33 @@ public class CKSharedAsset extends CKGraphicsAsset
 
 	@Override
 	public void drawPreviewFrameToGraphics(Graphics g, int screenx, int screeny,
+			int frame, ImageObserver observer)
+	{
+		asset.drawToGraphics(g,screenx,screeny,frame,row,observer);	
+	}
+
+
+
+	@Override
+	public void drawPreviewToGraphics(GraphicsContext g, int screenx, int screeny,
+			ImageObserver observer)
+	{
+		asset.drawPreviewRowToGraphics(g, screenx, screeny,this.row, observer);
+	}
+
+
+
+	@Override
+	public void drawPreviewRowToGraphics(GraphicsContext g, int screenx, int screeny,
+			int row, ImageObserver observer)
+	{
+		asset.drawPreviewRowToGraphics(g, screenx, screeny,this.row, observer);
+	}
+
+
+
+	@Override
+	public void drawPreviewFrameToGraphics(GraphicsContext g, int screenx, int screeny,
 			int frame, ImageObserver observer)
 	{
 		asset.drawToGraphics(g,screenx,screeny,frame,row,observer);	

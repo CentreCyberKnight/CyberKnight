@@ -1,5 +1,22 @@
 package ckPythonInterpreter;
 
+import static ckCommonUtils.CKPropertyStrings.CH_EARTH;
+import static ckCommonUtils.CKPropertyStrings.CH_EQUIP_SLOTS;
+import static ckCommonUtils.CKPropertyStrings.CH_FIRE;
+import static ckCommonUtils.CKPropertyStrings.CH_MOVE;
+import static ckCommonUtils.CKPropertyStrings.CH_VOICE;
+import static ckCommonUtils.CKPropertyStrings.P_ARMOR;
+import static ckCommonUtils.CKPropertyStrings.P_FORWARD;
+import static ckCommonUtils.CKPropertyStrings.P_IGNITE;
+import static ckCommonUtils.CKPropertyStrings.P_LEFT;
+import static ckCommonUtils.CKPropertyStrings.P_OFFHAND_WEAPON;
+import static ckCommonUtils.CKPropertyStrings.P_RIGHT;
+import static ckCommonUtils.CKPropertyStrings.P_SHOES;
+import static ckCommonUtils.CKPropertyStrings.P_SING;
+import static ckCommonUtils.CKPropertyStrings.P_SLASH;
+import static ckCommonUtils.CKPropertyStrings.P_SWORD;
+import static ckCommonUtils.CKPropertyStrings.P_TALK;
+
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Container;
@@ -14,7 +31,6 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ChangeListener;
 
 import ckEditor.treegui.BookList;
-import ckGameEngine.ActorController;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKBook;
 import ckGameEngine.CKChapter;
@@ -23,10 +39,13 @@ import ckGameEngine.CKPage;
 import ckGameEngine.CKSpell;
 import ckGameEngine.CKTeam;
 import ckGameEngine.Direction;
-import static ckCommonUtils.CKPropertyStrings.*;
 
 public class CKTeamView extends JPanel
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8336607668630824437L;
 	//HashMap <String,CKCharacterEquippedView> indexMap;
 	HashMap <String,CKCharacterView> indexMap;
 	JTabbedPane tabs;

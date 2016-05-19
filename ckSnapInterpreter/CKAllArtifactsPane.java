@@ -2,19 +2,21 @@ package ckSnapInterpreter;
 
 import java.util.Vector;
 
-import netscape.javascript.JSException;
+
 import javafx.application.Platform;
+
+import ckGameEngine.CKArtifact;
+
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import ckGameEngine.CKArtifact;
+
 import ckGameEngine.CKBook;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKStatsChangeListener;
-import ckGameEngine.CKTeam;
+
 
 public class CKAllArtifactsPane extends HBox implements CKStatsChangeListener
 {

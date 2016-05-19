@@ -29,7 +29,6 @@ import ckEditor.CKXMLAssetPropertiesEditor;
 import ckEditor.DataPickers.CKXMLFilteredAssetPicker;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.QuestData;
-import ckGraphicsEngine.CK2dGraphicsEngine;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 
 

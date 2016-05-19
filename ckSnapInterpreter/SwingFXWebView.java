@@ -1,5 +1,13 @@
 package ckSnapInterpreter;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 //git ~ anjackson / SwingFXWebView.java
 //creates a JavaFX panel that can be placed in a Swing panel
 //used to load CyberSnap
@@ -7,18 +15,6 @@ package ckSnapInterpreter;
 import com.sun.javafx.application.PlatformImpl;
 
 import ckGameEngine.CKGameObjectsFacade;
-
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.time.Duration;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
@@ -28,12 +24,6 @@ import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-
 import netscape.javascript.JSObject;
   
 /** 

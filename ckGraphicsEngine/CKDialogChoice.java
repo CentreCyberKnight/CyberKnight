@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import javafx.scene.canvas.GraphicsContext;
+
 
 
 public class CKDialogChoice
@@ -54,6 +56,12 @@ public class CKDialogChoice
 	}
 
 	public Rectangle drawText(Graphics g, Rectangle clip)
+	{
+		bounds= text.drawText(g, clip);
+		return bounds;
+	}
+	
+	public Rectangle drawText(GraphicsContext g, Rectangle clip)
 	{
 		bounds= text.drawText(g, clip);
 		return bounds;

@@ -13,7 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-
 import ckCommonUtils.CKEntitySelectedListener;
 import ckCommonUtils.CKXMLAsset.ViewEnum;
 import ckDatabase.CKGraphicsLayerFactory;

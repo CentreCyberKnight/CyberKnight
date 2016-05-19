@@ -1,7 +1,6 @@
 package ckGraphicsEngine.assets;
 
 import java.awt.Graphics;
-
 import java.awt.image.ImageObserver;
 
 import ckCommonUtils.CKPosition;

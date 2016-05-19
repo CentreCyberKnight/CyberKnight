@@ -1,12 +1,9 @@
 package ckGraphicsEngine.sceneAction;
 
 import java.awt.Point;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Vector;
-
-import org.python.modules.math;
 
 import ckCommonUtils.CKAreaPositions;
 import ckCommonUtils.CKPosition;
@@ -15,16 +12,17 @@ import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGraphicsEngine.CKCoordinateTranslator;
 import ckGraphicsEngine.CKGraphicMouseInterface;
+import ckGraphicsEngine.CKGraphicsEngine.SelectAreaType;
 import ckGraphicsEngine.CKGraphicsSceneInterface;
 import ckGraphicsEngine.CKSelectedPositionsListeners;
-import ckGraphicsEngine.CKGraphicsEngine.SelectAreaType;
 import ckGraphicsEngine.assets.CKAssetInstance;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.assets.CKSpriteAsset;
 import ckGraphicsEngine.assets.CKSpriteInstance;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
 
-public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterface
+public class CKAimAction extends CKSceneAction
+implements CKGraphicMouseInterface
 {
 	CKPosition origin;
 	//float min;
@@ -284,8 +282,9 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 
 
 
+		
 	@Override
-	public void handleMouseClicked(MouseEvent e)
+	public void handleMouseClicked(javafx.scene.input.MouseEvent e)
 	{
 		//TODO handle each side of click and have cancel option?
 		System.out.println("Aim Action Mouse clicked"+e);
@@ -328,11 +327,17 @@ public class CKAimAction extends CKSceneAction implements CKGraphicMouseInterfac
 
 
 	@Override
-	public void handleMouseMoved(MouseEvent e)
+	public void handleMouseMoved(javafx.scene.input.MouseEvent e)
+	
 	{
-		//System.out.println("Aim Action Mouse Moved"+e.getPoint());
+		mouseP= getPoint(e);		
+	}
+
+	@Override
+	public void handleMouseExited(javafx.scene.input.MouseEvent e)
+	{
+		// TODO Auto-generated method stub
 		
-		mouseP= e.getPoint();		
 	}
 	
 	

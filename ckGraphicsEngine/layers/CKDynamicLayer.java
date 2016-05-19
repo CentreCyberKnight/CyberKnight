@@ -11,6 +11,7 @@ import ckCommonUtils.CKPosition;
 import ckGraphicsEngine.CKCoordinateTranslator;
 import ckGraphicsEngine.assets.CKAssetInstance;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
+import javafx.scene.canvas.GraphicsContext;
 
 public class CKDynamicLayer extends CKGraphicsLayer
 {
@@ -101,6 +102,64 @@ public class CKDynamicLayer extends CKGraphicsLayer
 
 	}
 
+	
+	@Override
+	public void drawLayerToGraphics(GraphicsContext g, int frame,
+			ImageObserver observer, CKCoordinateTranslator translator)
+	{
+		if(!isVisible()) return;
+		Iterator<CKAssetInstance> iter=sprites.iterator();
+		while(iter.hasNext())
+		{
+			CKAssetInstance instance = iter.next();
+			instance.drawToGraphics(g, frame,observer,translator);
+		}
+
+	}
+
+	@Override
+	public void drawLayerRowToGraphics(GraphicsContext g, int frame, int y,
+			ImageObserver observer, CKCoordinateTranslator translator)
+	{
+		if(!isVisible()) return;
+		//System.out.println("looking for sprite"+sprites.size());
+
+		Iterator<CKAssetInstance> iter=sprites.iterator();
+		while(iter.hasNext())
+		{
+			CKAssetInstance instance = iter.next();
+			int spriteY = (int) Math.ceil(instance.getPosition().getY());
+			//System.out.println("looking at sprite at "+spriteY+ "for"+y);
+			if(spriteY==y)
+			{
+				//System.out.println("looking at sprite at "+spriteY+ "for"+y);
+				instance.drawToGraphics(g, frame, observer,translator);
+			}
+		}
+		
+
+	}
+
+	@Override
+	public void drawLayerTileToGraphics(GraphicsContext g, int frame, int x, int y,
+			ImageObserver observer, CKCoordinateTranslator translator)
+	{
+		if(!isVisible()) return;
+		Iterator<CKAssetInstance> iter=sprites.iterator();
+		while(iter.hasNext())
+		{
+			CKAssetInstance instance = iter.next();
+			int spriteY = (int) Math.ceil(instance.getPosition().getY());
+			int spriteX = (int) instance.getPosition().getX();
+			if(spriteY==y && spriteX==x)
+			{
+				instance.drawToGraphics(g, frame,observer,translator);
+			}
+		}
+
+
+	}
+	
 	/**
 	 * @param args
 	 */

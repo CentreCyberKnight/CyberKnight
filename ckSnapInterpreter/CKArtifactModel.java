@@ -1,11 +1,10 @@
 package ckSnapInterpreter;
 
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
-import netscape.javascript.JSObject;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKSpell;
+import javafx.scene.web.WebEngine;
+import netscape.javascript.JSObject;
 
 public class CKArtifactModel {
 	

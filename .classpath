@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path=""/>
-	<classpathentry exported="true" kind="lib" path="libs/junit-4.11.jar"/>
 	<classpathentry kind="lib" path="libs/jsyntaxpane-0.9.5.jar"/>
 	<classpathentry kind="lib" path="libs/algviz.jar" sourcepath="libs/algviz.jar"/>
 	<classpathentry kind="lib" path="libs/algviz-xml-bindings.jar"/>

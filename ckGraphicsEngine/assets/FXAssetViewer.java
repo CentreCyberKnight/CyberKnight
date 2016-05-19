@@ -1,25 +1,19 @@
 package ckGraphicsEngine.assets;
 
 
-import java.awt.Color;
+
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Point;
 
-import javax.swing.JFrame;
-
-import ckDatabase.CKGraphicsAssetFactoryXML;
-import ckGraphicsEngine.CKGamePanelTimer;
 import ckGraphicsEngine.CKGraphicsConstants;
 import ckGraphicsEngine.FXGamePanelTimer;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class FXAssetViewer extends FXGamePanelTimer
 {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4936612248019644031L;
+
 	CKGraphicsAsset asset;
 	int presentRow;
 	int presentFrame;
@@ -86,7 +80,7 @@ public class FXAssetViewer extends FXGamePanelTimer
 	}
 
 	@Override
-	public void drawOffScreenBuffer(Graphics g,double screenWidth,double screenHeight)
+	public void drawOffScreenBuffer(GraphicsContext g,double screenWidth,double screenHeight)
 	{
 		//could draw the stats up..
 		int leftMargin = 25;
@@ -102,19 +96,21 @@ public class FXAssetViewer extends FXGamePanelTimer
 		asset.drawToGraphics(g,leftMargin -offset.x, 
 				topMargin-offset.y +CKGraphicsConstants.BASE_HEIGHT/2,
 				presentFrame,presentRow, null);//this);
+		
 		int width = Math.max(asset.getWidth(presentRow),CKGraphicsConstants.BASE_WIDTH);
 		int height = asset.getHeight(presentRow)+CKGraphicsConstants.BASE_HEIGHT/2;
 		//int width = Math.max(asset.getWidth(presentRow),CKGraphicsConstants.BASE_WIDTH);
 		
-	
+
 		
 		
-		g.setColor(Color.WHITE);
-		g.drawString("Description  "+asset.getDescription(), leftMargin*2 +width, topMargin);
-		g.drawString("Present Frame"+ presentFrame, leftMargin*2 +width, topMargin+25);
-		g.drawString("Present Row  "+ presentRow, leftMargin*2 +width, topMargin+50);
-		g.drawString("Width/Height  "+ asset.getWidth(presentRow)+" / "+
+		g.setFill(Color.WHITE);
+		g.fillText("Description  "+asset.getDescription(), leftMargin*2 +width, topMargin);
+		g.fillText("Present Frame"+ presentFrame, leftMargin*2 +width, topMargin+25);
+		g.fillText("Present Row  "+ presentRow, leftMargin*2 +width, topMargin+50);
+		g.fillText("Width/Height  "+ asset.getWidth(presentRow)+" / "+
 				asset.getHeight(presentRow), leftMargin*2 +width, topMargin+75);
+		
 		//g.drawString("panel height "+ 
 		//		Math.max(asset.getHeight(0)+50+CKGraphicsConstants.BASE_HEIGHT/2,
 		//				  125),leftMargin*2 +width, topMargin+100);

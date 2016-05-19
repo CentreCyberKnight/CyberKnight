@@ -14,12 +14,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTree;
 
-import ckSatisfies.*;
 import ckCommonUtils.CKEntitySelectedListener;
 import ckDatabase.CKTriggerFactory;
 import ckEditor.DataPickers.CKXMLFilteredAssetPicker;
 import ckGameEngine.CKSpellCast;
-import ckGameEngine.actions.*;
+import ckGameEngine.actions.CKGameAction;
+import ckGameEngine.actions.CKGameActionListenerInterface;
+import ckSatisfies.Satisfies;
 
 
 public class CKSharedTrigger extends CKTriggerNode implements ActionListener

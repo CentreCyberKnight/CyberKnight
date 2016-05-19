@@ -1,15 +1,18 @@
 	package ckTrigger;
 	
 	import javax.swing.Icon;
-	import javax.swing.ImageIcon;
-	import javax.swing.JMenu;
-	import javax.swing.JMenuItem;
-	import ckSatisfies.*;
-	import ckEditor.CKSatistfiesAddMenu;
-	import ckEditor.treegui.CKGUINode;
-	import ckEditor.treegui.CKTreeGui;
-	import ckGameEngine.CKSpellCast;
-	import ckGameEngine.actions.*;
+import javax.swing.ImageIcon;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+
+import ckEditor.CKSatistfiesAddMenu;
+import ckEditor.treegui.CKGUINode;
+import ckEditor.treegui.CKTreeGui;
+import ckGameEngine.CKSpellCast;
+import ckGameEngine.actions.CKGameAction;
+import ckGameEngine.actions.CKGameActionAddMenu;
+import ckGameEngine.actions.CKGameActionListenerInterface;
+import ckSatisfies.Satisfies;
 	
 	abstract public class CKTriggerNode extends CKGUINode 
 	{

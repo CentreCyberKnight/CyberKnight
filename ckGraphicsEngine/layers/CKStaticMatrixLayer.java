@@ -13,6 +13,7 @@ import ckGraphicsEngine.CKCoordinateTranslator;
 import ckGraphicsEngine.assets.CKAssetInstance;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.assets.CKNullAsset;
+import javafx.scene.canvas.GraphicsContext;
 
 public class CKStaticMatrixLayer extends CKGraphicsLayer
 {
@@ -202,6 +203,72 @@ public void drawLayerTileToGraphics(Graphics g, int frame, int x, int y,
 	//System.out.format("drawing(%d,%d) at (%s,%d)\n",x,y,screenP.x,screenP.y);
 	node.img.drawToGraphics(g, screenP.x, screenP.y,frame,0, observer);
 }
+
+
+@Override
+public void drawLayerToGraphics(GraphicsContext g, int frame, 
+		ImageObserver observer, CKCoordinateTranslator translator)
+{
+	//System.out.println("Entering LayertoGraphics");
+	if(!isVisible()) return;
+	Point mapMin = new Point();
+	Point mapMax = new Point();
+	translator.fillVisibleTileBounds(mapMin,mapMax);
+	//System.out.println("Translation points Min:"+mapMin+" Max:"+mapMax );
+	for(int y=mapMin.y;y<=mapMax.y;y++)
+	{
+		for(int x=mapMin.x;x<=mapMax.x;x++)
+		{	
+			//System.out.println("drawing tile("+x+","+y+")");
+			CKTileNode node = tileMatrix[x][y];
+			Point screenP = translator.convertMapToScreen(x,y,node.height);
+			//System.out.println("drawing tile("+x+","+y+")");
+			//System.out.format("drawing%s(%d,%d) at (%s,%d)\n",node.img.getDescription(),x,y,screenP.x,screenP.y);
+			node.img.drawToGraphics(g, screenP.x, screenP.y,frame,0, observer);
+		}
+	}
+//	System.out.println("Exiting LayetoGraphics");
+}
+
+
+@Override
+public void drawLayerRowToGraphics(GraphicsContext g, int frame, int y,
+		ImageObserver observer, CKCoordinateTranslator translator)
+{
+	if(!isVisible()) return;
+	if (y >= tileMatrix[0].length) return; //asking beyond the bounds
+	
+	Point mapMin = new Point();
+	Point mapMax = new Point();
+	translator.fillVisibleTileBounds(mapMin,mapMax);
+	//reset to be inside the bounds
+	
+	
+	mapMin.x = Math.max(0, mapMin.x);
+	mapMax.x = Math.min(mapMax.x, tileMatrix.length-1);
+	
+	for(int x= mapMin.x;x<=mapMax.x;x++)
+	{	
+		CKTileNode node = tileMatrix[x][y];
+		Point screenP = translator.convertMapToScreen(x,y,node.height);
+		//System.out.format("drawing(%d,%d) at (%s,%d)\n",x,y,screenP.x,screenP.y);
+		node.img.drawToGraphics(g, screenP.x, screenP.y,frame,0, observer);
+	}
+	
+}
+
+
+@Override
+public void drawLayerTileToGraphics(GraphicsContext g, int frame, int x, int y,
+		ImageObserver observer, CKCoordinateTranslator translator)
+{
+	if(!isVisible()) return;
+	CKTileNode node = tileMatrix[x][y];
+	Point screenP = translator.convertMapToScreen(x,y,node.height);
+	//System.out.format("drawing(%d,%d) at (%s,%d)\n",x,y,screenP.x,screenP.y);
+	node.img.drawToGraphics(g, screenP.x, screenP.y,frame,0, observer);
+}
+
 
 
 @Override

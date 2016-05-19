@@ -5,9 +5,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
+
 import ckCommonUtils.CKEntitySelectedListener;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.assets.CKNullAsset;
+import javafx.scene.canvas.GraphicsContext;
 
 public class CKDialogMessage 
 {
@@ -77,6 +79,33 @@ public class CKDialogMessage
 		return new Rectangle(clip.x,clip.y,	awidth+2*xmargin,clip.height);
 	}
 	
+	//FIXME FX STUFF
+	protected Rectangle drawAsset(GraphicsContext g,  Rectangle clip,ImageObserver observer)
+	{
+		//TODO should return rectangle...
+		//Might want to generalize this to do either side or the center
+		Point UL = new Point();
+		Point LR = new Point();
+		
+		asset.getDrawBounds(0, 0, UL, LR);
+		int awidth  = LR.x-UL.x;
+		int aheight = LR.y-UL.y;
+		
+		int x = xmargin-UL.x +clip.x;
+		int y = (clip.height-aheight)/2 - UL.y+clip.y;
+		if(awidth >0)
+		{
+			asset.drawToGraphics(g, x, y, frame++, 0, observer);
+		}
+		else
+		{
+			awidth = 0-awidth;
+		}
+		return new Rectangle(clip.x,clip.y,	awidth+2*xmargin,clip.height);
+	}
+	
+	
+	
 	
 	
 	/**Will create the rectangle formed by the difference of subtracting the smaller from the larger.  Assumes that one of the edges will match
@@ -123,6 +152,13 @@ public class CKDialogMessage
 		Rectangle bounds = drawAsset(g,drawableArea,observer);
 		return message.drawText(g, createDiffRect(drawableArea,bounds));
 	}
+	
+	public Rectangle drawMessage(GraphicsContext g, Rectangle drawableArea,ImageObserver observer)
+	{		
+		Rectangle bounds = drawAsset(g,drawableArea,observer);
+		return message.drawText(g, createDiffRect(drawableArea,bounds));
+	}
+	
 	
 	
 	/**

@@ -18,12 +18,10 @@ import javax.swing.JSpinner;
 import javax.swing.JTree;
 import javax.swing.SpinnerNumberModel;
 
-import ckDatabase.CKGridItemFactory;
 import ckEditor.treegui.CKGuiRoot;
 import ckEditor.treegui.CKTreeGui;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellCast;
-import ckSatisfies.BookSatisfies;
 import ckSatisfies.NumericalCostType;
 
 /**
@@ -46,6 +44,114 @@ public class CKMarkGridActor extends CKGameAction implements ItemListener
 	private static final long serialVersionUID = -1112825497910646743L;
 
 	public CKMarkGridActor() {}
+
+
+	/**
+	 * @return the chapter
+	 */
+	public String getChapter()
+	{
+		return chapter;
+	}
+
+
+	/**
+	 * @param chapter the chapter to set
+	 */
+	public void setChapter(String chapter)
+	{
+		this.chapter = chapter;
+	}
+
+
+	/**
+	 * @return the page
+	 */
+	public String getPage()
+	{
+		return page;
+	}
+
+
+	/**
+	 * @param page the page to set
+	 */
+	public void setPage(String page)
+	{
+		this.page = page;
+	}
+
+
+	/**
+	 * @return the cost
+	 */
+	public int getCost()
+	{
+		return cost;
+	}
+
+
+	/**
+	 * @param cost the cost to set
+	 */
+	public void setCost(int cost)
+	{
+		this.cost = cost;
+	}
+
+
+	/**
+	 * @return the actorName
+	 */
+	public String getActorName()
+	{
+		return actorName;
+	}
+
+
+	/**
+	 * @param actorName the actorName to set
+	 */
+	public void setActorName(String actorName)
+	{
+		this.actorName = actorName;
+	}
+
+
+	/**
+	 * @return the useCast
+	 */
+	public boolean isUseCast()
+	{
+		return useCast;
+	}
+
+
+	/**
+	 * @param useCast the useCast to set
+	 */
+	public void setUseCast(boolean useCast)
+	{
+		this.useCast = useCast;
+	}
+
+
+	/**
+	 * @return the pickActor
+	 */
+	public boolean isPickActor()
+	{
+		return pickActor;
+	}
+
+
+	/**
+	 * @param pickActor the pickActor to set
+	 */
+	public void setPickActor(boolean pickActor)
+	{
+		this.pickActor = pickActor;
+	}
 
 
 	/* (non-Javadoc)
@@ -92,11 +198,11 @@ public class CKMarkGridActor extends CKGameAction implements ItemListener
 		{
 			if(page.length()==0)
 			{	
-				actor.addChapter(cast.getPage(),cast.getCp());
+				actor.addChapter(chapter,cost);
 			}
 			else
 			{
-				actor.addPage(cast.getPage(),cast.getCp(),cast.getKey());
+				actor.addPage(chapter,cost,page);
 			}
 		}
 		notifyListener();

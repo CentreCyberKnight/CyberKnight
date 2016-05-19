@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.JPanel;
+
 import ckCommonUtils.CKEntitySelectedListener;
 import ckEditor.treegui.CKGUINode;
 import ckEditor.treegui.CKHiddenNode;
@@ -22,13 +23,13 @@ public class AbstractGraph extends DirectedSparseMultigraph<VertexNode, EdgeLink
 	private static final long serialVersionUID = -674253551462995178L;
 	
 	private CKHiddenNode hiddenNode;
-	private Object startNode;
+	//private Object startNode;
 	
 
 	public AbstractGraph()
 	{
 		this.hiddenNode=new CKHiddenNode();
-		this.startNode=null;
+		//this.startNode=null;
 	}
 	
 

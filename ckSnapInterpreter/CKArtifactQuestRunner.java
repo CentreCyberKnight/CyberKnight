@@ -1,9 +1,10 @@
 package ckSnapInterpreter;
 
-import static ckCommonUtils.CKPropertyStrings.*;
+import static ckCommonUtils.CKPropertyStrings.CH_EQUIP_SLOTS;
 import static ckCommonUtils.CKPropertyStrings.CH_FIRE;
 import static ckCommonUtils.CKPropertyStrings.CH_MOVE;
-import static ckCommonUtils.CKPropertyStrings.CH_EARTH;
+import static ckCommonUtils.CKPropertyStrings.CH_VOICE;
+import static ckCommonUtils.CKPropertyStrings.MAX_CP;
 import static ckCommonUtils.CKPropertyStrings.P_ARMOR;
 import static ckCommonUtils.CKPropertyStrings.P_FORWARD;
 import static ckCommonUtils.CKPropertyStrings.P_IGNITE;
@@ -12,12 +13,10 @@ import static ckCommonUtils.CKPropertyStrings.P_OFFHAND_WEAPON;
 import static ckCommonUtils.CKPropertyStrings.P_RIGHT;
 import static ckCommonUtils.CKPropertyStrings.P_SHOES;
 import static ckCommonUtils.CKPropertyStrings.P_SING;
-import static ckCommonUtils.CKPropertyStrings.P_SLASH;
 import static ckCommonUtils.CKPropertyStrings.P_SWORD;
-import static ckCommonUtils.CKPropertyStrings.P_TALK;
+import static ckCommonUtils.CKPropertyStrings.SPEED;
 
 import java.awt.BorderLayout;
-
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -28,10 +27,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Vector;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -42,7 +41,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.EditorKit;
 
-import jsyntaxpane.DefaultSyntaxKit;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKThreadCompletedListener;
 import ckDatabase.CKArtifactFactory;
@@ -50,21 +48,19 @@ import ckDatabase.CKGridActorFactory;
 import ckDatabase.CKTeamFactory;
 import ckEditor.CKTeamArtifactEditor;
 import ckEditor.treegui.ActorNode;
-import ckEditor.treegui.BookList;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKBook;
 import ckGameEngine.CKChapter;
+import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKPage;
-import ckGameEngine.CKSpell;
 import ckGameEngine.CKTeam;
 import ckGameEngine.Direction;
 import ckGameEngine.Quest;
-import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.QuestData;
 import ckGameEngine.actions.CKSimpleGUIAction;
-import ckPythonInterpreter.CKPythonEditorPane;
 import ckPythonInterpreter.CKPythonConsoleExtended;
+import ckPythonInterpreter.CKPythonEditorPane;
 import ckPythonInterpreter.CKTeamView;
 import ckSatisfies.PositionReachedSatisfies;
 import ckSatisfies.Satisfies;
@@ -72,6 +68,7 @@ import ckSatisfies.TrueSatisfies;
 import ckTrigger.CKTrigger;
 import ckTrigger.CKTriggerList;
 import ckTrigger.TriggerResult;
+import jsyntaxpane.DefaultSyntaxKit;
 
 public class CKArtifactQuestRunner implements DocumentListener 
 { 

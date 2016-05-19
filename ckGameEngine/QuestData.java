@@ -33,28 +33,27 @@ import javax.swing.tree.MutableTreeNode;
 
 import ckCommonUtils.CKEntitySelectedListener;
 import ckCommonUtils.CKXMLAsset;
-import ckDatabase.CKSceneFactory;
 import ckDatabase.CKQuestFactory;
+import ckDatabase.CKSceneFactory;
 import ckEditor.CKGUINodePropertiesEditor;
 import ckEditor.CKGraphicsChangedListener;
 import ckEditor.CKPositionSetter;
 import ckEditor.CKPositionSetterListener;
 import ckEditor.CKXMLAssetPropertiesEditor;
 import ckEditor.DataPickers.CKScenePicker;
-import ckEditor.treegui.CKTeamList;
 import ckEditor.treegui.ActorNode;
 import ckEditor.treegui.BookList;
 import ckEditor.treegui.CKGUINode;
+import ckEditor.treegui.CKTeamList;
 import ckEditor.treegui.CKTeamNode;
 import ckEditor.treegui.CKTreeGui;
-import ckGameEngine.CKGameObjectsFacade;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.CKGraphicsScene;
 import ckGraphicsEngine.CKGraphicsSceneInterface;
 import ckPythonInterpreterTest.CKArtifactQuestRunner;
 import ckTrigger.CKTriggerList;
-import ckTrigger.CKTriggerNode;
 import ckTrigger.CKTriggerListNode;
+import ckTrigger.CKTriggerNode;
 
 
 public class QuestData extends CKGUINode implements CKXMLAsset<QuestData>

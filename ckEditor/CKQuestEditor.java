@@ -1,13 +1,10 @@
 package ckEditor;
 
 
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Vector;
@@ -17,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.event.ChangeListener;
+
 import org.jdesktop.swingx.MultiSplitLayout;
 import org.jdesktop.swingx.MultiSplitPane;
 
@@ -31,7 +29,11 @@ import ckGameEngine.CKAbstractGridItem;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.QuestData;
-import ckGraphicsEngine.*;
+import ckGraphicsEngine.CKGraphicMouseInterface;
+import ckGraphicsEngine.CKGraphicsSceneInterface;
+import ckGraphicsEngine.CKSceneSlider;
+import ckGraphicsEngine.CKTileHighlighter;
+import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.assets.CKAssetInstance;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 
@@ -173,21 +175,23 @@ public class CKQuestEditor extends CKXMLAssetPropertiesEditor<QuestData> impleme
 				
 		CKAssetInstance hfront = new CKAssetInstance(new CKPosition(),front,2);
 		CKAssetInstance hback = new CKAssetInstance(new CKPosition(),back,3);
-		assert false;
-		/*
-		sceneViewer.addMouseMotionListener(new CKTileHighlighter(scene,hfront,hback,8002,8003));
+
+	
+		sceneViewer.addMouseListener(new CKTileHighlighter(scene,hfront,hback,8002,8003));
+
 		
 		CKSceneSlider slider = new CKSceneSlider(scene);
-		sceneViewer.addMouseMotionListener(slider);
+		//sceneViewer.addMouseMotionListener(slider);
 		sceneViewer.addMouseListener(slider);
 		//sceneViewer.addMouseListener(new PlaceSelectedAssetListener());
 		
 		
-		sceneViewer.addMouseMotionListener(pHelper);
+		//sceneViewer.addMouseMotionListener(pHelper);
 		sceneViewer.addMouseListener(pHelper);
 		
-		sceneViewer.addMouseMotionListener(new ShowCoordsListener());
-		*/
+
+		sceneViewer.addMouseListener(new ShowCoordsListener());
+	
 	}
 	
 	
@@ -195,12 +199,12 @@ public class CKQuestEditor extends CKXMLAssetPropertiesEditor<QuestData> impleme
 
 	
 	
-	class ShowCoordsListener extends MouseAdapter
+	class ShowCoordsListener implements CKGraphicMouseInterface
 	{
-
 		@Override
-		public void mouseMoved(MouseEvent e) {
-			Point p=e.getPoint();
+		public void handleMouseMoved(javafx.scene.input.MouseEvent e)
+		{
+			Point p=new Point((int)e.getSceneX(),(int)e.getSceneY());
 			Point coords=scene.getTrans().convertScreenToMap(p);
 			if( scene.getTrans().confineToMapCoords(coords))
 			{
@@ -214,10 +218,26 @@ public class CKQuestEditor extends CKXMLAssetPropertiesEditor<QuestData> impleme
 			}
 			
 		}
+
+		@Override
+		public void handleMouseClicked(javafx.scene.input.MouseEvent e)
+		{
+			// TODO Auto-generated method stub
+			
+		}
+
+	
+
+		@Override
+		public void handleMouseExited(javafx.scene.input.MouseEvent e)
+		{
+			// TODO Auto-generated method stub
+			
+		}
 		
 	}
 	
-	class PickPositionHelper extends MouseAdapter implements CKPositionSetter
+	class PickPositionHelper  implements CKPositionSetter,CKGraphicMouseInterface
 	{
 
 		CKPositionSetterListener listener = null;
@@ -258,15 +278,13 @@ public class CKQuestEditor extends CKXMLAssetPropertiesEditor<QuestData> impleme
 			
 		}
 		
-		/* (non-Javadoc)
-		 * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
-		 */
 		@Override
-		public void mouseClicked(MouseEvent e)
+		public void handleMouseClicked(javafx.scene.input.MouseEvent e)
 		{
+		
 			if(listener ==null) { return; }
 
-			Point p = e.getPoint();
+			Point p = new Point ((int)e.getSceneX(),(int)e.getSceneY());
 			Point coords=scene.getTrans().convertScreenToMap(p);
 			if( scene.getTrans().confineToMapCoords(coords))
 			{ //clicked off of grid - abort to previous value?
@@ -302,15 +320,12 @@ public class CKQuestEditor extends CKXMLAssetPropertiesEditor<QuestData> impleme
 
 
 
-		/* (non-Javadoc)
-		 * @see java.awt.event.MouseAdapter#mouseMoved(java.awt.event.MouseEvent)
-		 */
 		@Override
-		public void mouseMoved(MouseEvent e)
+		public void handleMouseMoved(javafx.scene.input.MouseEvent e)
 		{
 			if(listener!=null)
 			{
-				placeItem(e.getPoint());
+				placeItem(new Point((int)e.getSceneX(),(int)e.getSceneY()));
 			}
 		}
 
@@ -330,6 +345,15 @@ public class CKQuestEditor extends CKXMLAssetPropertiesEditor<QuestData> impleme
 			listener=l;
 			placeItem = item;
 			leaveAfterDone = leave;			
+		}
+
+		
+		
+
+		@Override
+		public void handleMouseExited(javafx.scene.input.MouseEvent e)
+		{
+		//pass
 		}
 		
 		

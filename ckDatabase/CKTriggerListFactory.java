@@ -34,6 +34,7 @@ public class CKTriggerListFactory extends  CKXMLFactory<CKTriggerList>
 		
 		
 		
+		@SuppressWarnings("unused")
 		private static void createTestDB()
 		{
 			

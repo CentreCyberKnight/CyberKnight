@@ -3,14 +3,16 @@
  */
 package ckGameEngine.actions;
 
-import java.awt.Color;
+import static org.junit.Assert.fail;
 
-import static org.junit.Assert.*;
+import java.awt.Color;
 import java.awt.Component;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTree;
+
 import ckGameEngine.CKSpellCast;
 
 /**

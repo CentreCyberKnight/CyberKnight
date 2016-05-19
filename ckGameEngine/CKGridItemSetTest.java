@@ -1,6 +1,6 @@
 package ckGameEngine;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 

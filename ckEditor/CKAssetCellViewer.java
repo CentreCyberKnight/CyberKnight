@@ -2,6 +2,7 @@ package ckEditor;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,6 +18,10 @@ import ckGraphicsEngine.assets.CKStillAssetViewer;
 public class CKAssetCellViewer extends JPanel implements ChangeListener
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6906571879625333208L;
 	SpinnerNumberModel rowSpin;
 	SpinnerNumberModel frameSpin;
 	CKStillAssetViewer view;

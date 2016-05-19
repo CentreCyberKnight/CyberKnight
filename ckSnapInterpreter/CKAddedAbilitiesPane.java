@@ -1,3 +1,4 @@
+
 package ckSnapInterpreter;
 
 import java.util.Iterator;
@@ -84,4 +85,5 @@ public class CKAddedAbilitiesPane extends VBox {
 		this.getChildren().addAll(addedAbs);
 		this.setAlignment(Pos.CENTER);
 	}
+
 }

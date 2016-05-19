@@ -6,8 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import ckEditor.treegui.CKTreeGui;
-
 public class CKActorAddMenu
 {
 	public static JMenuItem getMenu(CKTreeGui tree)

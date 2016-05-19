@@ -18,7 +18,6 @@ import ckCommonUtils.CKXMLAsset;
 import ckCommonUtils.LogListener;
 import ckEditor.CKXMLAssetPropertiesEditor;
 import ckGraphicsEngine.BadInstanceIDError;
-import ckGameEngine.CKGameObjectsFacade;
 
 public abstract  class ActorController implements CKXMLAsset<ActorController>
 {

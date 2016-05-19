@@ -5,8 +5,10 @@ import java.awt.Point;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckGraphicsEngine.UnknownAnimationError;
+import javafx.scene.canvas.GraphicsContext;
 
 public class CKSpriteAsset extends CKCompositeAsset
 {
@@ -208,9 +210,31 @@ public class CKSpriteAsset extends CKCompositeAsset
 			screeny+=node.asset.getHeight(0);			
 		}
 	}
+	
+	@Override
+	public void drawPreviewToGraphics(GraphicsContext g, int screenx, int screeny,
+			ImageObserver observer)
+	{
+		for(SpriteNode node:list)
+		{
+			node.asset.drawPreviewRowToGraphics(g, screenx, screeny, 0, observer);
+			screeny+=node.asset.getHeight(0);			
+		}
+	}
 
 	@Override
 	public void drawToGraphics(Graphics g, int screenx, int screeny, int frame,
+			int row, ImageObserver observer)
+	{
+		if( list.size() > 0)
+		{
+			int r = row % list.size();
+			list.get(r).asset.drawToGraphics(g, screenx, screeny, frame,0,observer);
+		}
+	}
+	
+	@Override
+	public void drawToGraphics(GraphicsContext g, int screenx, int screeny, int frame,
 			int row, ImageObserver observer)
 	{
 		if( list.size() > 0)
@@ -264,6 +288,29 @@ public class CKSpriteAsset extends CKCompositeAsset
 			screeny+=node.asset.getHeight(0);			
 		}
 	}
+	
+	/* (non-Javadoc)
+	 * @see ckGraphicsEngine.assets.CKGraphicsAsset#drawPreviewRowToGraphics(java.awt.Graphics, int, int, int, java.awt.image.ImageObserver)
+	 */
+	@Override
+	public void drawPreviewRowToGraphics(GraphicsContext g, int screenx, int screeny,
+			int row, ImageObserver observer)
+	{
+		int r = row % list.size();
+		list.get(r).asset.drawPreviewRowToGraphics(g, screenx, screeny, 0,observer);
+	}
+
+	@Override
+	public void drawPreviewFrameToGraphics(GraphicsContext g, int screenx, int screeny,
+			int frame, ImageObserver observer)
+	{
+		for(SpriteNode node:list)
+		{
+			node.asset.drawToGraphics(g, screenx, screeny, frame,0, observer);
+			screeny+=node.asset.getHeight(0);			
+		}
+	}
+
 
 	@Override
 	public int getFrames(int row)

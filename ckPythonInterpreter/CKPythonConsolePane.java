@@ -1,21 +1,20 @@
 package ckPythonInterpreter;
 
 
-import javax.swing.JTextPane;
-//import javax.swing.SwingUtilities;
-import javax.swing.text.Document;
-
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+//import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
+import javax.swing.JTextPane;
+//import javax.swing.SwingUtilities;
+import javax.swing.text.Document;
+
 //import org.omg.CORBA_2_3.portable.InputStream;
 import org.python.util.InteractiveConsole;
-
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-//import java.awt.event.KeyListener;
 
 
 public class CKPythonConsolePane extends JTextPane

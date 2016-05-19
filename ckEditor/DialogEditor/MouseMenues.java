@@ -9,14 +9,15 @@ package ckEditor.DialogEditor;
  */
 
 
-import edu.uci.ics.jung.visualization.VisualizationViewer;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
+
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+
+import edu.uci.ics.jung.visualization.VisualizationViewer;
 
 /**
  * A collection of classes used to assemble popup mouse menus for the custom

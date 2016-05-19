@@ -1,6 +1,6 @@
 package ckGameEngine;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -63,7 +63,7 @@ public class DirectionUnitTest
 		CKPosition p0 = new CKPosition(0,0,0,0);
 		CKPosition p1 = new CKPosition(1,1.5,0,0);
 		CKPosition p2 = new CKPosition(1,.0001,0,0);
-		CKPosition p3 = new CKPosition(30,20,0,0);
+		//CKPosition p3 = new CKPosition(30,20,0,0);
 		CKPosition p4 = new CKPosition(-12,10,0,0);
 		CKPosition p5 = new CKPosition(-24,-34,0,0);
 		

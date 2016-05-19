@@ -13,6 +13,7 @@ import java.awt.Point;
 import java.awt.image.ImageObserver;
 
 import ckDatabase.CKGraphicsAssetFactoryXML;
+import javafx.scene.canvas.GraphicsContext;
 
 public class CKSelectAsset extends CKGraphicsAsset {
 	CKGraphicsAsset asset = CKNullAsset.getNullAsset();
@@ -135,7 +136,26 @@ public class CKSelectAsset extends CKGraphicsAsset {
 			
 			}
 	}
+	
+	@Override
+	public void drawPreviewToGraphics(GraphicsContext g, int screenx, int screeny, ImageObserver observer) 
+	{
+		//draw whole animation
+		for (int i=0;i<numFramesAction;i++){
+			coordinateNode cNode = calculateRow_Frame(i);
+			asset.drawToGraphics(g,screenx,screeny,cNode.getTheFrame(),cNode.getTheRow(),observer);
+			screenx = screenx + asset.getWidth(0);
+			
+			}
+	}
 
+	@Override
+	public void drawToGraphics(GraphicsContext g, int screenx, int screeny, int frame, int row, ImageObserver observer) 
+	{
+		coordinateNode cNode = calculateRow_Frame(frame);
+		asset.drawToGraphics(g,screenx,screeny,cNode.getTheFrame(),cNode.getTheRow(),observer);
+	}
+	
 	@Override
 	public void drawToGraphics(Graphics g, int screenx, int screeny, int frame, int row, ImageObserver observer) {
 		// TODO Auto-generated method stub
@@ -161,6 +181,28 @@ public class CKSelectAsset extends CKGraphicsAsset {
 
 	@Override
 	public void drawPreviewFrameToGraphics(Graphics g, int screenx, int screeny, int frame, ImageObserver observer) {
+		// TODO Auto-generated method stub
+		coordinateNode cNode = calculateRow_Frame(frame);
+		asset.drawToGraphics(g, screenx, screeny, cNode.getTheFrame(),cNode.getTheRow(), observer);
+
+	}
+
+	@Override
+	public void drawPreviewRowToGraphics(GraphicsContext g, int screenx, int screeny, int row, ImageObserver observer) {
+		// TODO Auto-generated method stub
+		//is this one useless for this type of asset?
+		//draw whole asset one at a time
+		//also no frame
+		for (int i=0;i<numFramesAction;i++){
+			coordinateNode cNode = calculateRow_Frame(i);
+			asset.drawToGraphics(g,screenx,screeny,cNode.getTheFrame(),cNode.getTheRow(),observer);
+			screenx = screenx + asset.getWidth(0);
+			}
+
+	}
+
+	@Override
+	public void drawPreviewFrameToGraphics(GraphicsContext g, int screenx, int screeny, int frame, ImageObserver observer) {
 		// TODO Auto-generated method stub
 		coordinateNode cNode = calculateRow_Frame(frame);
 		asset.drawToGraphics(g, screenx, screeny, cNode.getTheFrame(),cNode.getTheRow(), observer);

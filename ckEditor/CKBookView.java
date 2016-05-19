@@ -1,11 +1,7 @@
 package ckEditor;
 
-import java.awt.Dimension;
 import java.util.Enumeration;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.tree.TreePath;
 
 import ckEditor.treegui.CKGUINode;
@@ -13,7 +9,6 @@ import ckEditor.treegui.CKTreeGui;
 import ckGameEngine.CKBook;
 import ckGameEngine.CKDeltaBook;
 import ckGameEngine.CKDeltaPage;
-import ckGameEngine.CKStatsChangeListener;
 
 
 /**

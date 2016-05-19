@@ -4,11 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
+
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import ckCommonUtils.CKEntitySelectedListener;
 import ckDatabase.CKGraphicsLayerFactory;
 import ckDatabase.CKGraphicsLayerFactoryXML;

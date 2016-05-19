@@ -1,23 +1,13 @@
 package ckGraphicsEngine;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.time.LocalDateTime;
-
-import java.util.concurrent.Semaphore;
-
-
-import com.sun.xml.internal.bind.v2.runtime.IllegalAnnotationException;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 public abstract class FXGamePanelTimer extends Canvas
@@ -28,13 +18,15 @@ public abstract class FXGamePanelTimer extends Canvas
 	 */
 
 	private double fps;          //how many frames should be displayed per second.
-	private Graphics graphics;
-	private Image screenBuffer; //buffers what should be drawn to the screen to avoid flickering effect.
+	private GraphicsContext graphics;
+	//private Canvas canvas;
+	
+	//private Image screenBuffer; //buffers what should be drawn to the screen to avoid flickering effect.
 	AnimationTimer timer;
 	private void initialize(double f_per_s,int drops)
 	{
-		screenBuffer=null;
-	
+		//screenBuffer=null;
+		//canvas=new Canvas();
 		@SuppressWarnings("rawtypes")
 		ScheduledService time = new ScheduledService(){
 			protected Task createTask() {
@@ -85,11 +77,11 @@ public abstract class FXGamePanelTimer extends Canvas
 
 
 	public abstract void calcState();
-	public abstract void drawOffScreenBuffer(Graphics g,double d,double e);
+	public abstract void drawOffScreenBuffer(GraphicsContext g,double d,double e);
 	
 	private void bufferToScreen()
-	{
-		GraphicsContext g;
+	{//not using any buffering, it will go directly to it.
+	/*	GraphicsContext g;
 		try
 		{
 			g=this.getGraphicsContext2D();
@@ -105,6 +97,20 @@ public abstract class FXGamePanelTimer extends Canvas
 			System.out.println("Graphics content error "+e);
 			
 		}	
+		*/
+		
+	/*double width = getWindowWidth();
+		double height=getWindowHeight();
+			
+		graphics = this.getGraphicsContext2D();
+		graphics.setFill(Color.RED);
+		graphics.fillRect(0,0,width,height);*/
+		
+		/* try two
+		this.getGraphicsContext2D()
+		.drawImage(canvas.snapshot(new SnapshotParameters(),null),0,0);
+		*/
+		
 		
 	}
 	
@@ -130,9 +136,10 @@ public abstract class FXGamePanelTimer extends Canvas
 	
 private boolean prepGraphics(boolean force)
 {
-	double width = getWindowWidth();
-	double height=getWindowHeight();
 	
+	 double width = getWindowWidth();
+	double height=getWindowHeight();
+/*
 	if(screenBuffer==null || force||
 			screenBuffer.getWidth(null)<width ||
 			screenBuffer.getHeight(null)<height)
@@ -148,8 +155,21 @@ private boolean prepGraphics(boolean force)
 		}
 		graphics = screenBuffer.getGraphics();
 	}
-	graphics.setColor(Color.BLACK);
-	graphics.fillRect(0,0,screenBuffer.getWidth(null),screenBuffer.getHeight(null));
+	*/
+	
+	//graphics is already a buffer in javafx.
+	
+	//System.out.println("resetting width to"+width+" and height to "+height);
+	/*canvas.setWidth(width);
+	canvas.setHeight(height);
+
+	graphics = canvas.getGraphicsContext2D();
+	
+	*/
+	
+	graphics = this.getGraphicsContext2D();
+	graphics.setFill(Color.BLACK);
+	graphics.fillRect(0,0,width,height);
 	return true;	
 }
 	
@@ -157,7 +177,7 @@ private boolean prepGraphics(boolean force)
 public void setFps(double fps)
 {
 	this.fps = fps;
-	long framePeriod = (long) (1000000000L/this.fps);//nano seconds
+	//long framePeriod = (long) (1000000000L/this.fps);//nano seconds
 	
 }
 

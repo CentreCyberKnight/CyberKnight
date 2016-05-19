@@ -3,6 +3,11 @@
  */
 package ckGameEngine.actions;
 
+import static ckCommonUtils.CKPropertyStrings.CH_ATTACK_BONUS;
+import static ckCommonUtils.CKPropertyStrings.CH_DEFENSE;
+import static ckCommonUtils.CKPropertyStrings.CH_DEFENSE_EFFECTIVENESS;
+import static ckCommonUtils.CKPropertyStrings.MAX_DAMAGE;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ItemListener;
@@ -24,8 +29,6 @@ import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellCast;
 import ckGameEngine.CKSpellResult;
-import ckSatisfies.ContestedActionSatisfies;
-import static ckCommonUtils.CKPropertyStrings.*;
 
 
 /**

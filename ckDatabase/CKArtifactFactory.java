@@ -1,10 +1,10 @@
 package ckDatabase;
 
 import static ckCommonUtils.CKPropertyStrings.CH_AIM;
+import static ckCommonUtils.CKPropertyStrings.CH_EARTH;
 import static ckCommonUtils.CKPropertyStrings.CH_EQUIP_SLOTS;
 import static ckCommonUtils.CKPropertyStrings.CH_FIRE;
 import static ckCommonUtils.CKPropertyStrings.CH_MOVE;
-import static ckCommonUtils.CKPropertyStrings.CH_EARTH;
 import static ckCommonUtils.CKPropertyStrings.CH_VOICE;
 import static ckCommonUtils.CKPropertyStrings.P_BASH;
 import static ckCommonUtils.CKPropertyStrings.P_FORWARD;
@@ -20,6 +20,7 @@ import static ckCommonUtils.CKPropertyStrings.P_SWORD;
 import static ckCommonUtils.CKPropertyStrings.P_TALK;
 import static ckCommonUtils.CKPropertyStrings.P_TARGET;
 import static ckCommonUtils.CKPropertyStrings.SPEED;
+
 import ckEditor.treegui.BookList;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKBook;

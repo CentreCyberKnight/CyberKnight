@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTree;
+
 import ckCommonUtils.CKEntitySelectedListener;
 import ckCommonUtils.CKPosition;
 import ckDatabase.CKActorControllerFactory;
@@ -23,10 +24,10 @@ import ckDatabase.CKGridActorFactory;
 import ckDatabase.CKTeamFactory;
 import ckEditor.DataPickers.CKXMLFilteredAssetPicker;
 import ckGameEngine.ActorController;
+import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKGridItem;
 import ckGameEngine.CKSpellCast;
-import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKTeam;
 import ckGameEngine.Direction;
 

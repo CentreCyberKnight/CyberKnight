@@ -21,7 +21,7 @@ import javax.swing.event.ChangeListener;
 
 import ckCommonUtils.CKEntitySelectedListener;
 import ckDatabase.CKArtifactFactory;
-import ckEditor.Artifact.window;
+//import ckEditor.Artifact.window;
 import ckEditor.DataPickers.CKXMLAssetPicker;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKDeltaBook;
@@ -247,7 +247,7 @@ public class CKTeamArtifactEditor extends JPanel implements ChangeListener
 		
 		frame.pack();
 		frame.setVisible(true);
-		frame.setDefaultCloseOperation(window.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
 

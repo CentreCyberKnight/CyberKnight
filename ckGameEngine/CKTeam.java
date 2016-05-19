@@ -16,7 +16,6 @@ import ckCommonUtils.CKXMLAsset;
 import ckDatabase.CKTeamFactory;
 import ckEditor.CKTeamPropertiesEditor;
 import ckEditor.CKXMLAssetPropertiesEditor;
-import ckEditor.treegui.CKGUINode;
 
 public class CKTeam implements CKXMLAsset<CKTeam>
 {
@@ -376,6 +375,7 @@ public class CKTeam implements CKXMLAsset<CKTeam>
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public CKXMLAssetPropertiesEditor<CKTeam> getXMLPropertiesEditor()
 	{

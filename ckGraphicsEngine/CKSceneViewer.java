@@ -1,8 +1,7 @@
 package ckGraphicsEngine;
 
 //TODO rename this to Scene viewer...
-
-import static ckGraphicsEngine.CKGraphicsConstants.*;
+import static ckGraphicsEngine.CKGraphicsConstants.FRAME_RATE;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -10,9 +9,7 @@ import java.awt.Graphics;
 import javax.swing.JFrame;
 
 import ckDatabase.CKSceneFactory;
-
 import ckGameEngine.CKGrid;
-import ckGraphicsEngine.CKGamePanelTimer;
 
 public class CKSceneViewer extends CKGamePanelTimer 
 {
@@ -89,5 +86,7 @@ public class CKSceneViewer extends CKGamePanelTimer
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
+
+	
 
 }

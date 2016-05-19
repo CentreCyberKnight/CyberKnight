@@ -32,6 +32,7 @@ import javax.swing.JPopupMenu;
 
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.collections15.functors.ChainedTransformer;
+
 import ckEditor.DialogEditor.GraphElements.NateEdgeFactory;
 import ckEditor.DialogEditor.GraphElements.NateVertexFactory;
 import ckEditor.treegui.CKHiddenNode;
@@ -53,7 +54,6 @@ import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.EditingModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
-import edu.uci.ics.jung.visualization.renderers.VertexLabelAsShapeRenderer;
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 
 public class CKDialogGraph extends DirectedSparseMultigraph<NateNode, NateLink> {
@@ -367,9 +367,9 @@ public class CKDialogGraph extends DirectedSparseMultigraph<NateNode, NateLink> 
 	public static void main(String[] args) 
 	{
 		String output = null;
-		try
+		try(Scanner scanner = new Scanner(new File("DialogTest.xml")))
 		{
-			output = new Scanner(new File("DialogTest.xml")).useDelimiter("\\Z").next();
+			output = scanner.useDelimiter("\\Z").next();
 		} catch (FileNotFoundException e)
 		{
 			// TODO Auto-generated catch block

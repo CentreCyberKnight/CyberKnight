@@ -1,28 +1,23 @@
 package ckPythonInterpreter;
 
-import javax.swing.JEditorPane;
-
-import javax.swing.JScrollPane;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter;
-import javax.swing.text.Highlighter;
-//import jsyntaxpane.DefaultSyntaxKit;
-//import jsyntaxpane.actions.ActionUtils;
-import jsyntaxpane.syntaxkits.PythonSyntaxKit;
-
 //import java.awt.Color;
 //import java.awt.Font;
 //import java.awt.FontMetrics;
 import java.awt.Color;
 import java.awt.Graphics;
-//import java.util.Stack;
-//import java.util.regex.Matcher;
-//import java.util.regex.Pattern;
-import ckPythonInterpreter.CKPythonSyntaxParser;
-import java.lang.String;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 //import java.awt.FontMetrics;
+
+import javax.swing.JEditorPane;
+import javax.swing.JScrollPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
+
+//import jsyntaxpane.DefaultSyntaxKit;
+//import jsyntaxpane.actions.ActionUtils;
+import jsyntaxpane.syntaxkits.PythonSyntaxKit;
 
 public class CKPythonEditorPane extends JEditorPane
 {

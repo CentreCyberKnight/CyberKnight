@@ -25,12 +25,12 @@ import ckEditor.AbstractDialogEditor.DialogEditorFrame;
 import ckEditor.AbstractDialogEditor.DialogVertex;
 import ckEditor.AbstractDialogEditor.EdgeLink;
 import ckEditor.AbstractDialogEditor.VertexNode;
-import ckGraphicsEngine.CKDialogChoice;
-import ckGraphicsEngine.CKDialogChoiceMessage;
-import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellCast;
+import ckGraphicsEngine.CKDialogChoice;
+import ckGraphicsEngine.CKDialogChoiceMessage;
+import ckGraphicsEngine.assets.CKGraphicsAsset;
 
 /**
  * @author dragonlord

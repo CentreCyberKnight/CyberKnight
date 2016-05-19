@@ -1,12 +1,7 @@
 package ckCommonUtils;
-//import static ckCommonUtils.CKDatabaseTools.DBAT;
-import static ckCommonUtils.CKDebugPrinting.*;
-
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 /**
  * This class is user to store static functions that are useful in creating and using databases associated with Cyberknight
  * to use this in another class place this at the top of your java file
@@ -15,7 +10,6 @@ import java.util.ArrayList;
  * @author bradshaw
  *
  */
-@SuppressWarnings("unused")
 final public class CKDatabaseTools
 {
 	final public static String getTableStringField(String table,

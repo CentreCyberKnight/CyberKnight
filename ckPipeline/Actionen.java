@@ -1,14 +1,24 @@
 package ckPipeline;
-import java.util.*;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-
-import java.awt.event.*;
-import java.awt.*;
 public class Actionen extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8378414014384169388L;
 	//This is the Action and its graphical components
 	private String actName,file;
 	protected JButton remove;

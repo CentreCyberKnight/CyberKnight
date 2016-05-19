@@ -2,13 +2,14 @@ package ckGraphicsEngine;
 
 
 
+import static ckGraphicsEngine.CKGraphicsConstants.BASE_HEIGHT;
+import static ckGraphicsEngine.CKGraphicsConstants.BASE_WIDTH;
+import static ckGraphicsEngine.CKGraphicsConstants.HEIGHT_MULTIPLIER;
+
 import java.awt.Dimension;
 import java.awt.Point;
 
 import ckGraphicsEngine.assets.CKImageAsset;
-
-
-import static ckGraphicsEngine.CKGraphicsConstants.*;
 
 
 public class CKRectangularTranslator extends CKCoordinateTranslator

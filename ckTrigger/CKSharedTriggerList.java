@@ -1,11 +1,13 @@
 package ckTrigger;
 
 import java.awt.Component;
+
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTree;
+
 import ckDatabase.CKTriggerListFactory;
 import ckEditor.treegui.CKTreeGui;
 import ckGameEngine.CKSpellCast;

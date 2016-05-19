@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;

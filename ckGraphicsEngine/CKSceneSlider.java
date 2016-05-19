@@ -3,12 +3,14 @@ package ckGraphicsEngine;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 
 import javax.swing.Timer;
 
+import javafx.scene.input.MouseEvent;
 
-public class CKSceneSlider extends CKSceneMouseListener implements ActionListener
+
+public class CKSceneSlider extends CKSceneMouseListener
+implements ActionListener
 {
 	
 	private int delay; 
@@ -26,14 +28,12 @@ public class CKSceneSlider extends CKSceneMouseListener implements ActionListene
    	
    	
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseMotionAdapter#mouseMoved(java.awt.event.MouseEvent)
-	 */
+	
 	@Override
-	public void mouseMoved(MouseEvent e)
+	public void handleMouseMoved(javafx.scene.input.MouseEvent e)
 	{
 		
-    	Point p = e.getPoint();
+    	Point p = new Point ((int)e.getSceneX(),(int)e.getSceneY());
 
        	xshift = 0;
        	yshift=0;
@@ -81,16 +81,13 @@ public class CKSceneSlider extends CKSceneMouseListener implements ActionListene
 	
 
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseAdapter#mouseExited(java.awt.event.MouseEvent)
-	 */
 	@Override
-	public void mouseExited(MouseEvent e)
+	public void handleMouseExited(MouseEvent e)
 	{
-		t.stop();
+		t.stop();		
 	}
 
-
+	
 
 
 	@Override
@@ -107,6 +104,22 @@ public class CKSceneSlider extends CKSceneMouseListener implements ActionListene
 
 		
 	}
+
+
+
+
+	@Override
+	public void handleMouseClicked(javafx.scene.input.MouseEvent e)
+	{
+		//pass
+	}
+
+
+
+
+
+
+
 
 	
 	

@@ -1,30 +1,11 @@
 package ckSnapInterpreter;
 
 import javafx.application.Application;
-import javafx.scene.control.Button;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.web.WebView;
-import javafx.scene.web.WebEngine;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Rectangle2D;
-import javafx.geometry.Side;
-import netscape.javascript.JSObject;
-import javafx.animation.*;
-import javafx.event.*;
-import javafx.geometry.Pos;
-import javafx.scene.shape.*;
-import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.text.Text;
-import javafx.util.Duration;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 
 

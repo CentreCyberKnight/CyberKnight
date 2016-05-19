@@ -2,8 +2,6 @@ package ckGameEngine;
 
 import java.util.stream.Stream;
 
-import org.python.modules.math;
-
 import ckCommonUtils.CKPosition;
 
 public enum Direction {

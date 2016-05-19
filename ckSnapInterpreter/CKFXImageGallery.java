@@ -2,10 +2,10 @@ package ckSnapInterpreter;
 
 import java.util.ArrayList;
 
-import javafx.scene.image.Image;
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
+import javafx.scene.image.Image;
 
 
 public class CKFXImageGallery extends ArrayList<CKFXImage> {

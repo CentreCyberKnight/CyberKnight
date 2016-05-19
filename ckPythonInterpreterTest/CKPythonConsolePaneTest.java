@@ -1,7 +1,6 @@
 package ckPythonInterpreterTest;
 
 import java.awt.BorderLayout;
-import ckPythonInterpreter.CKPythonConsolePane;
 import java.awt.Container;
 
 //import javax.swing.JEditorPane;
@@ -11,6 +10,8 @@ import javax.swing.JScrollPane;
 //import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 //import javax.swing.text.EditorKit;
+
+import ckPythonInterpreter.CKPythonConsolePane;
 
 //import jsyntaxpane.DefaultSyntaxKit;
 //import jsyntaxpane.syntaxkits.PythonSyntaxKit;

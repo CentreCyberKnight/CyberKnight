@@ -1,19 +1,20 @@
 package ckGraphicsEngine.assets;
 
-import java.io.BufferedOutputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.ImageObserver;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.XMLEncoder;
+import java.io.BufferedOutputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckGraphicsEngine.UnknownAnimationError;
+import javafx.scene.canvas.GraphicsContext;
 
 
 
@@ -54,7 +55,7 @@ public class CKLayeredAsset extends CKCompositeAsset
 
 	class LayeredAssetPersistenceDelegate extends DefaultPersistenceDelegate
 	{
-	    protected void initialize(Class type, Object oldInstance,
+	    protected void initialize(Class<?> type, Object oldInstance,
 	                              Object newInstance, Encoder out) 
 	    {
 	        super.initialize(type, oldInstance,  newInstance, out);
@@ -113,6 +114,18 @@ public class CKLayeredAsset extends CKCompositeAsset
 					observer);
 		}
 	}
+	
+	@Override
+	public void drawToGraphics(GraphicsContext g, int screenx, int screeny, int frame,
+			int row, ImageObserver observer)
+	{
+		for (int i = assets.size() - 1; i >= 0; i--)
+		{
+
+			assets.get(i).drawToGraphics(g, screenx, screeny, frame, 0,
+					observer);
+		}
+	}
 
 	// draw all of the layers laid out.
 	@Override
@@ -127,6 +140,18 @@ public class CKLayeredAsset extends CKCompositeAsset
 		}
 	}
 
+	@Override
+	public void drawPreviewToGraphics(GraphicsContext g, int screenx, int screeny,
+			ImageObserver observer)
+	{
+		for (int i = 0; i < assets.size(); i++)
+		{
+			CKGraphicsAsset img = assets.get(i);
+			img.drawPreviewToGraphics(g, screenx, screeny, observer);// MKB
+			screeny += img.getHeight(0);
+		}
+	}
+	
 	private CKGraphicsAsset getAsset(int row)
 	{
 		try
@@ -160,6 +185,28 @@ public class CKLayeredAsset extends CKCompositeAsset
 		}
 
 	}
+	
+	@Override
+	public void drawPreviewRowToGraphics(GraphicsContext g, int screenx, int screeny,
+			int row, ImageObserver observer)
+	{
+		getAsset(row)
+				.drawPreviewRowToGraphics(g, screenx, screeny, 0, observer);
+	}
+
+	@Override
+	public void drawPreviewFrameToGraphics(GraphicsContext g, int screenx,
+			int screeny, int frame, ImageObserver observer)
+	{
+
+		for (CKGraphicsAsset img : assets)
+		{
+			img.drawToGraphics(g, screenx, screeny, frame, 0, observer);
+			screeny = img.getHeight(0);
+		}
+
+	}
+
 
 	@Override
 	public int getFrames(int row)

@@ -8,11 +8,14 @@ import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.InputStream;
+
 import org.apache.commons.collections15.Transformer;
 
-import ckEditor.DialogEditor.GraphElements.*;
+import ckEditor.DialogEditor.GraphElements.NateEdgeFactory;
+import ckEditor.DialogEditor.GraphElements.NateVertexFactory;
 import ckEditor.treegui.CKSingleParent;
-import edu.uci.ics.jung.algorithms.layout.*;
+import edu.uci.ics.jung.algorithms.layout.CircleLayout;
+import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.io.GraphIOException;

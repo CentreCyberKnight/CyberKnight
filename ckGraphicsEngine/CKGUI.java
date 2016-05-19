@@ -1,7 +1,6 @@
 package ckGraphicsEngine;
 
 import java.awt.Color;
-
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -10,7 +9,7 @@ import java.util.Vector;
 
 import ckCommonUtils.CKScriptTools;
 import ckCommonUtils.LogListener;
-import static org.junit.Assert.*;
+import javafx.scene.canvas.GraphicsContext;
 
 public class CKGUI
 {
@@ -113,6 +112,21 @@ public class CKGUI
 	
 	}
 	
+	protected void drawSingleMessage(GraphicsContext g,int width,int height)
+	{
+		int margin = 10;
+		int col=226;
+		g.setFill(javafx.scene.paint.Color.rgb(col,col,col,.75));
+		Rectangle rect = new Rectangle(margin, height-200,
+				width-(2*margin), 200-margin);
+		//g.fillRect(rect.x,rect.y,rect.width,rect.height);
+		g.fillRect(rect.x, rect.y, rect.width, rect.height);
+		
+		//pass this as a parameter to avoid a race condition!
+		mess.drawMessage(g,rect, null);		
+	
+	}
+	
 	
 	
 	public synchronized void  drawOffScreenBuffer(Graphics g,int width,int height)
@@ -135,6 +149,29 @@ public class CKGUI
 			//do nothing
 		}
 	}
+	
+	public synchronized void  drawOffScreenBuffer(GraphicsContext g,int width,int height)
+	{
+		
+		/*  handle in calc, remove next time you go through here.
+		if(mess == null && ! newMessages.isEmpty())
+		{
+			mess = newMessages.firstElement();
+			newMessages.remove(0);
+			oldMessages.add(mess);
+		}
+		*/
+		if(mess != null)
+		{
+			drawSingleMessage(g,width,height);
+		}
+		else
+		{
+			//do nothing
+		}
+	}
+	
+	
 	
 	/**
 	 * Returns true if the mouse event is handled at this layer in the engine 

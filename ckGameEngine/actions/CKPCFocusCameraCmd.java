@@ -17,11 +17,11 @@ import javax.swing.JSpinner;
 import javax.swing.JTree;
 import javax.swing.SpinnerListModel;
 
+import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellCast;
 import ckGameEngine.Quest;
 import ckGraphicsEngine.BadInstanceIDError;
-import ckGameEngine.CKGameObjectsFacade;
 import ckGraphicsEngine.CircularDependanceError;
 
 /**
@@ -139,6 +139,7 @@ public class CKPCFocusCameraCmd extends CKQuestAction
 	static JPanel []panel;
 	static JComboBox<String> []nameBox;
 	
+	@SuppressWarnings("unchecked")
 	static private void initPanel(boolean force)
 	{
 		if(panel==null || force)

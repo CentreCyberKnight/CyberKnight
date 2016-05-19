@@ -1,5 +1,7 @@
 package ckGraphicsEngine;
 
+import static ckCommonUtils.CKDebugPrinting.println;
+
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ItemEvent;
@@ -15,7 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import ckGraphicsEngine.layers.CKGraphicsLayer;
-import static ckCommonUtils.CKDebugPrinting.*;
 
 /**
  * 

@@ -17,6 +17,7 @@ import ckGraphicsEngine.assets.CKAssetInstance;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.assets.CKImageAsset;
 import ckGraphicsEngine.assets.CKNullAsset;
+import javafx.scene.canvas.GraphicsContext;
 
 public class CKTiledLayer extends CKGraphicsLayer
 {
@@ -203,6 +204,53 @@ public class CKTiledLayer extends CKGraphicsLayer
 
 	@Override
 	public void drawLayerTileToGraphics(Graphics g, int frame, int x, int y,
+			ImageObserver observer, CKCoordinateTranslator translator)
+	{
+		drawLayerToGraphics(g,frame,observer,translator);
+	}
+
+	
+	
+
+	@Override
+	public void drawLayerToGraphics(GraphicsContext g, int frame,
+			ImageObserver observer, CKCoordinateTranslator translator)
+	{
+		
+			Point p = offset.calcOffset(pos, translator, frame);
+			int assetWidth = asset.getWidth(0);
+			int assetHeight = asset.getHeight(0);
+			
+			int startX = (p.x % assetWidth) - assetWidth;
+			int startY = (p.y % assetHeight) - assetHeight;
+			
+			int width = translator.getScreenWidth()+assetWidth;
+			int height = translator.getScreenHeight()+ assetHeight;
+			
+			
+//			System.out.println("Here is Point"+p+" Here is the width/height"+width+","+height);
+
+			
+			for(int x = startX;x<width;x+=assetWidth)
+			{
+				for(int y = startY;y<height;y+=assetHeight)
+				{
+					asset.drawToGraphics(g,x,y, frame, 0, observer);
+					
+				}
+			}
+
+	}
+
+	@Override
+	public void drawLayerRowToGraphics(GraphicsContext g, int frame, int y,
+			ImageObserver observer, CKCoordinateTranslator translator)
+	{
+		drawLayerToGraphics(g,frame,observer,translator);
+	}
+
+	@Override
+	public void drawLayerTileToGraphics(GraphicsContext g, int frame, int x, int y,
 			ImageObserver observer, CKCoordinateTranslator translator)
 	{
 		drawLayerToGraphics(g,frame,observer,translator);

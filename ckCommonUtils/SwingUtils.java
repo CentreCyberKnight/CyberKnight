@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.swing.JComponent;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
@@ -357,7 +358,7 @@ public final class SwingUtils {
     * @param property the property to query
     * @return the UIDefault property, or null if not found
     */
-   public static Object getUIDefaultOfClass(Class clazz, String property) {
+   public static Object getUIDefaultOfClass(Class<?> clazz, String property) {
       Object retVal = null;
       UIDefaults defaults = getUIDefaultsOfClass(clazz);
       List<Object> listKeys = Collections.list(defaults.keys());
@@ -403,7 +404,7 @@ public final class SwingUtils {
          if (method.getName().matches("^(is|get).*") &&
                method.getParameterTypes().length == 0) {
             try {
-               Class returnType = method.getReturnType();
+               Class<?> returnType = method.getReturnType();
                if (returnType != void.class &&
                      !returnType.getName().startsWith("[") &&
                      !setExclude.contains(method.getName())) {
@@ -431,7 +432,7 @@ public final class SwingUtils {
     * determined
     * @return The nearest Swing class in the inheritance tree
     */
-   public static <T extends JComponent> Class getJClass(T component) {
+   public static <T extends JComponent> Class<?> getJClass(T component) {
       Class<?> clazz = component.getClass();
       while (!clazz.getName().matches("javax.swing.J[^.]*$")) {
          clazz = clazz.getSuperclass();

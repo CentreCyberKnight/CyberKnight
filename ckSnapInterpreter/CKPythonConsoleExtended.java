@@ -8,25 +8,19 @@ import java.io.IOException;
 import java.io.Reader;
 //import java.lang.Math;
 
-
-
-
-
-
-import javafx.application.Platform;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
-import jconsole.JConsole;
-import ckCommonUtils.CKThreadCompletedListener;
-import ckGameEngine.CKGameObjectsFacade;
-import ckPythonInterpreter.CKUniqueEditor;
-import ckPythonInterpreter.CKPythonDebuggerInterface;
-import netscape.javascript.JSObject;
-
 import org.python.core.PyException;
-import org.python.util.InteractiveConsole;
 import org.python.core.PySystemState;
 import org.python.core.ThreadState;
+import org.python.util.InteractiveConsole;
+
+import ckCommonUtils.CKThreadCompletedListener;
+import ckGameEngine.CKGameObjectsFacade;
+import ckPythonInterpreter.CKPythonDebuggerInterface;
+import ckPythonInterpreter.CKUniqueEditor;
+import javafx.application.Platform;
+import javafx.scene.web.WebEngine;
+import jconsole.JConsole;
+import netscape.javascript.JSObject;
 
 
 

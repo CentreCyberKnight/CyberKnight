@@ -1,7 +1,6 @@
 package testing;
 
-import static org.junit.Assert.*;
-import static ckCommonUtils.CKPropertyStrings.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,10 +10,8 @@ import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGrid;
 import ckGameEngine.CKGrid.GridNode;
 import ckGameEngine.CKGridActor;
-import ckGameEngine.CKSpellCast;
 import ckGameEngine.Direction;
 import ckGameEngine.actions.CKMoveActorCmd;
-import ckGameEngine.actions.CKShoveActorCmd;
 import ckSatisfies.NumericalCostType;
 import ckSatisfies.SpellSatisfies;
 import ckTrigger.CKTrigger;

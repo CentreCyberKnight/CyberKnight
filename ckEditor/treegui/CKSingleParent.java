@@ -3,10 +3,8 @@ package ckEditor.treegui;
 import javax.swing.JFrame;
 import javax.swing.tree.MutableTreeNode;
 
-import ckSatisfies.*;
-import ckEditor.treegui.CKGUINode;
-import ckEditor.treegui.CKTreeGui;
-import ckGameEngine.actions.*;
+import ckGameEngine.actions.CKNullAction;
+import ckSatisfies.TrueSatisfies;
 
 public class CKSingleParent extends CKGUINode
 

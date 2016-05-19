@@ -3,14 +3,19 @@
  */
 package ckGameEngine.actions;
 
+import static ckCommonUtils.CKPropertyStrings.P_FORWARD;
+import static ckCommonUtils.CKPropertyStrings.P_JUMP_DOWN;
+import static ckCommonUtils.CKPropertyStrings.P_JUMP_OVER;
+import static ckCommonUtils.CKPropertyStrings.P_JUMP_UP;
+import static ckCommonUtils.CKPropertyStrings.P_LEFT;
+import static ckCommonUtils.CKPropertyStrings.P_RIGHT;
+
 import ckCommonUtils.CKPosition;
+import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGrid;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellCast;
 import ckGameEngine.Direction;
-import ckGameEngine.CKGameObjectsFacade;
-
-import static ckCommonUtils.CKPropertyStrings.*;
 
 
 /**

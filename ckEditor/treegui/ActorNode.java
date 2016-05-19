@@ -1,6 +1,8 @@
 package ckEditor.treegui;
 
-import static ckCommonUtils.CKPropertyStrings.*;
+import static ckCommonUtils.CKPropertyStrings.CH_AIM;
+import static ckCommonUtils.CKPropertyStrings.CH_EARTH;
+import static ckCommonUtils.CKPropertyStrings.P_FRONT;
 import static ckCommonUtils.CKPropertyStrings.P_STAR;
 import static ckCommonUtils.CKPropertyStrings.P_TARGET;
 
@@ -35,6 +37,7 @@ import ckDatabase.CKGridActorFactory;
 import ckDatabase.CKTeamFactory;
 import ckEditor.CKPositionSetterListener;
 import ckEditor.DataPickers.CKXMLFilteredAssetPicker;
+import ckGameEngine.ActorController;
 import ckGameEngine.CKBook;
 import ckGameEngine.CKChapter;
 import ckGameEngine.CKGameObjectsFacade;
@@ -43,7 +46,6 @@ import ckGameEngine.CKGridItem;
 import ckGameEngine.CKPage;
 import ckGameEngine.Direction;
 import ckGameEngine.Grid;
-import ckGameEngine.ActorController;
 import ckGameEngine.actions.CKNullAction;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckSatisfies.TrueSatisfies;

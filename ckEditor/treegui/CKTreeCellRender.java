@@ -8,6 +8,11 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 public class CKTreeCellRender extends DefaultTreeCellRenderer
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7275157444483936906L;
+
 	/* (non-Javadoc)
 	 * @see javax.swing.tree.DefaultTreeCellRenderer#getTreeCellRendererComponent(javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, int, boolean)
 	 */

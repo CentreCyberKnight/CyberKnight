@@ -2,7 +2,6 @@ package ckEditor.treegui;
 
 import java.awt.Component;
 
-
 import javax.swing.AbstractCellEditor;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;

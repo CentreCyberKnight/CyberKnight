@@ -1,7 +1,6 @@
 package ckGameEngine;
 
-import ckGameEngine.CKGameObjectsFacade;
-import static ckGameEngine.CKGameObjectsFacade.*;
+import static ckGameEngine.CKGameObjectsFacade.getQuest;
 
 @Deprecated
 public class PCKeyboardController extends ActorController

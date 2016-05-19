@@ -11,8 +11,6 @@ import javax.swing.JTextPane;
 //import javax.swing.text.DocumentFilter;
 //import javax.swing.text.AbstractDocument;
 
-
-
 import jconsole.streams.ConsoleInputStream;
 import jconsole.streams.ConsoleOutputStream;
 

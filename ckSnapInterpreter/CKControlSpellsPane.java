@@ -1,15 +1,13 @@
 package ckSnapInterpreter;
 
-import static ckGameEngine.CKGameObjectsFacade.getQuest;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Iterator;
 
-import netscape.javascript.JSObject;
+import ckGameEngine.CKGameObjectsFacade;
+import ckGameEngine.CKSpell;
+import ckPythonInterpreter.CKPlayerObjectsFacade;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -19,11 +17,10 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.web.WebEngine;
+
 import ckDatabase.CKConnection;
-import ckGameEngine.CKGameObjectsFacade;
-import ckGameEngine.CKSpell;
-import ckGameEngine.Quest;
-import ckPythonInterpreter.CKPlayerObjectsFacade;
+import netscape.javascript.JSObject;
+
 
 public class CKControlSpellsPane extends HBox {
 

@@ -1,8 +1,7 @@
 package ckGraphicsEngine;
 
-import java.awt.event.MouseAdapter;
-
-public class CKSceneMouseListener extends MouseAdapter
+public abstract class CKSceneMouseListener 
+implements CKGraphicMouseInterface
 {
 	private CKGraphicsSceneInterface scene;
 	

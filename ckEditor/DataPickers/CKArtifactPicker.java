@@ -1,6 +1,7 @@
 package ckEditor.DataPickers;
 
 import java.util.Iterator;
+
 import javax.swing.JComponent;
 
 import ckEditor.CKArtifactShortView;

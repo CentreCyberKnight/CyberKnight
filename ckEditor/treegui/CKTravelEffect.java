@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import ckCommonUtils.CKPosition;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGraphicsEngine.BadInstanceIDError;
-import ckGraphicsEngine.CK2dGraphicsEngine;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.LoadAssetError;
 import ckGraphicsEngine.layers.CKGraphicsLayer;

@@ -2,15 +2,9 @@ package ckSnapInterpreter;
 
 import static ckCommonUtils.CKPropertyStrings.*;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Vector;
 
-import netscape.javascript.JSObject;
 import ckCommonUtils.CKPosition;
-import ckDatabase.CKConnection;
 import ckEditor.treegui.ActorNode;
 import ckGameEngine.CKBook;
 import ckGameEngine.CKChapter;
@@ -35,7 +29,6 @@ import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
@@ -43,7 +36,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.Duration;

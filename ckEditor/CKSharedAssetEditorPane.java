@@ -3,6 +3,7 @@ package ckEditor;
 import javax.swing.JFrame;
 
 import org.jdesktop.swingx.MultiSplitLayout;
+
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckEditor.DataPickers.CKAssetUsagePicker;
 import ckGraphicsEngine.assets.CKAssetViewer;

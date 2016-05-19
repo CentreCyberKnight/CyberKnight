@@ -26,7 +26,6 @@ import ckEditor.treegui.CKTreeGui;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKSpellCast;
 import ckGameEngine.Quest;
-import ckGraphicsEngine.CK2dGraphicsEngine;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckSound.CKSound;
 import ckSound.CKSoundFactory;

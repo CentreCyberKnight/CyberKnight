@@ -2,18 +2,11 @@ package ckGraphicsEngine;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Vector;
-
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKWorkSupervisorListener;
@@ -26,9 +19,12 @@ import ckDatabase.CKGraphicsLayerFactoryXML;
 import ckDatabase.CKSceneFactory;
 import ckGameEngine.CKGrid;
 import ckGraphicsEngine.assets.CKAssetInstance;
+import ckGraphicsEngine.assets.CKFadeAsset;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
+import ckGraphicsEngine.assets.CKShadowAsset;
 import ckGraphicsEngine.assets.CKSpriteAsset;
 import ckGraphicsEngine.assets.CKSpriteInstance;
+import ckGraphicsEngine.assets.CKTextAsset;
 import ckGraphicsEngine.assets.FXAssetViewer;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
 import ckGraphicsEngine.sceneAction.CKAddAssetAction;
@@ -45,6 +41,12 @@ import ckSound.CKSound;
 import ckSound.CKSoundFactory;
 import ckSound.CKSoundLoopAction;
 import ckSound.CKSoundStopAction;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 //public class CK2dGraphicsEngine extends CKGamePanelTimer implements
 //CKGraphicsEngine
@@ -98,29 +100,46 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 		
 		scene=null;
 		//new MouseMessengerListener();
-		this.setOnMouseClicked(	(e)->{
+		
+	
+		
+		this.setOnMouseClicked(	(event)->{
 			
-			MouseEvent click = FXSwingBridge.FXMouseEventToSwing(e);
-					//System.out.println("Recieved Mouse click event");
-					if(gui.handleMouseEvent(click)) 	{ return;		}
-				 //check this to see if I should continue
+			//still convert for the GUI...
+			MouseEvent click = FXSwingBridge.FXMouseEventToSwing(event);
+		
+			
+			if(gui.handleMouseEvent(click)) 	{ return;		}
+				
+					
+					
 			for(CKGraphicMouseInterface listener:mouseListeners)
 			{
-				listener.handleMouseClicked(click);
+				listener.handleMouseClicked(event);
 			}
 				});
-		this.setOnMouseMoved(	(e)->{
-			
+		this.setOnMouseMoved(	(event)->{
+			/*
 			MouseEvent click = FXSwingBridge.FXMouseEventToSwing(e);
 			//System.out.println("Recieved Mouse Moved event" +e.getX()+","+e.getY());
-				
+				*/
 				for(CKGraphicMouseInterface listener:mouseListeners)
 				{
-					listener.handleMouseMoved(click);
+					listener.handleMouseMoved(event);
 				}
 		}
 				
 				);
+		
+		this.setOnMouseExited( (event)->{
+			
+			for(CKGraphicMouseInterface listener:mouseListeners)
+			{
+				listener.handleMouseExited(event);
+			}
+			
+		
+		});
 		//addMouseListener(lis);
 		//addMouseMotionListener(lis);
 	}
@@ -200,6 +219,16 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 			throws LoadAssetError
 	{
 		CKGraphicsAsset asset = afactory.getGraphicsAsset(AID);
+		
+		return createUniqueInstance(tid,asset,pos,startFrame,layerDepth);
+	}
+	
+	
+	@Override
+	public int createUniqueInstance(int tid, CKGraphicsAsset asset,
+			CKPosition pos, int startFrame, int layerDepth)
+	{
+		
 		
 		CKAssetInstance inst=null;
 		if(asset instanceof CKSpriteAsset)
@@ -441,7 +470,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 	}
 
 	@Override
-	public void drawOffScreenBuffer(Graphics g,double width,double height)
+	public void drawOffScreenBuffer(GraphicsContext g,double width,double height)
 	{
 		if(scene!=null)
 			{
@@ -524,12 +553,12 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 	
 	
 	
-	private class MouseMessengerListener extends MouseAdapter
+	/*private class MouseMessengerListener extends MouseAdapter
 	{
 
-		/* (non-Javadoc)
+		 (non-Javadoc)
 		 * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
-		 */
+		 
 		@Override
 		public void mouseClicked(MouseEvent e)
 		{
@@ -542,9 +571,9 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 			}
 		}
 
-		/* (non-Javadoc)
+		 (non-Javadoc)
 		 * @see java.awt.event.MouseAdapter#mouseMoved(java.awt.event.MouseEvent)
-		 */
+		 
 		@Override
 		public void mouseMoved(MouseEvent e)
 		{
@@ -561,7 +590,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 		
 	
 		
-	}
+	}*/
 	
 	
 	
@@ -571,6 +600,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 	public static void main(String argv[]) 
 	{
 		Application.launch(TestEngine.class,argv);
+		//Application.launch(TestEngineSimple.class,argv);
 	}
 	
 	
@@ -605,7 +635,12 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 			engine.loadAsset(tid, personAssetId);
 			engine.loadAsset(tid, spinAssetID);
 			engine.loadAsset(tid, slowSpinAsset);
+			CKTextAsset text = new CKTextAsset("HELP!",new Font(40),
+						javafx.scene.paint.Color.RED);
 			
+			CKFadeAsset fade = new CKFadeAsset(text,30,100);
+			
+			CKShadowAsset shadow = new CKShadowAsset("",personAssetId);
 			
 			CKPosition pos1 = new CKPosition(5,5,0,0);
 			CKPosition pos2 = new CKPosition(1,1,0,0);
@@ -631,7 +666,16 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 			CKPosition p2=new CKPosition(3,8,0,0);
 			engine.move(tid,spriteID,arrives+30,p1,p2,10);
 			
-	
+			
+			engine.createUniqueInstance(tid, fade, p2.add(new CKPosition(.5,.5,3)),
+					0, CKGraphicsLayer.SPRITE_LAYER);
+			
+			CKPosition posS = new CKPosition (6,6);
+			int shadowId = engine.createUniqueInstance(tid, shadow,
+					posS,
+					0, CKGraphicsLayer.SPRITE_LAYER);
+			
+			engine.move(tid,shadowId,arrives+30,posS,p2,10);
 			
 			
 			engine.endTransaction(0, false);

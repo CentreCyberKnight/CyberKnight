@@ -1,5 +1,14 @@
 package ckGameEngine;
 
+import static ckCommonUtils.CKPropertyStrings.CH_EQUIP_SLOTS;
+import static ckCommonUtils.CKPropertyStrings.CH_MOVE;
+import static ckCommonUtils.CKPropertyStrings.CH_VOICE;
+import static ckCommonUtils.CKPropertyStrings.P_FORWARD;
+import static ckCommonUtils.CKPropertyStrings.P_LEFT;
+import static ckCommonUtils.CKPropertyStrings.P_RIGHT;
+import static ckCommonUtils.CKPropertyStrings.P_SHOES;
+import static ckCommonUtils.CKPropertyStrings.P_TALK;
+
 import java.awt.image.BufferedImage;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
@@ -11,11 +20,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.Vector;
-
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
@@ -30,7 +35,8 @@ import ckEditor.CKXMLAssetPropertiesEditor;
 import ckEditor.treegui.BookList;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
-import static ckCommonUtils.CKPropertyStrings.*;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 
 public class CKArtifact implements CKXMLAsset<CKArtifact> 
 {
@@ -437,7 +443,7 @@ public class CKArtifact implements CKXMLAsset<CKArtifact>
 
 	static class ArtifactPersistenceDelegate extends DefaultPersistenceDelegate
 	{
-	    protected void initialize(Class type, Object oldInstance,
+	    protected void initialize(Class<?> type, Object oldInstance,
 	                              Object newInstance, Encoder out) 
 	    {
 	        super.initialize(type, oldInstance,  newInstance, out);
@@ -503,6 +509,7 @@ public class CKArtifact implements CKXMLAsset<CKArtifact>
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public CKXMLAssetPropertiesEditor<CKArtifact> getXMLPropertiesEditor()
 	{

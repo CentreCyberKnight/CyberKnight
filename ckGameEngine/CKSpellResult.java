@@ -1,17 +1,12 @@
 package ckGameEngine;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
-
-import ckCommonUtils.CKPosition;
 
 public class CKSpellResult
 {
@@ -19,13 +14,13 @@ public class CKSpellResult
 	
 	public final static String DAMAGE="damage"; 
 	
-	private class Tuple
+	 class Tuple
 	{
 		public CKAbstractGridItem target;
 		public String action;
 		public String resultType;
 		public double result;
-		public String resultDescription;
+		private String resultDescription;
 		
 		public Tuple(CKAbstractGridItem target, String action, String resultType,
 				double result,String resultDescription)
@@ -34,7 +29,7 @@ public class CKSpellResult
 			this.action = action;
 			this.resultType = resultType;
 			this.result = result;
-			this.resultDescription=resultDescription;
+			this.setResultDescription(resultDescription);
 		}
 		
 		
@@ -102,6 +97,18 @@ public class CKSpellResult
 		public void setResult(double result)
 		{
 			this.result = result;
+		}
+
+
+		public String getResultDescription()
+		{
+			return resultDescription;
+		}
+
+
+		public void setResultDescription(String resultDescription)
+		{
+			this.resultDescription = resultDescription;
 		}
 
 		

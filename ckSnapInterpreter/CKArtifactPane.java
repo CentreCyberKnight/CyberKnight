@@ -76,4 +76,5 @@ public class CKArtifactPane extends GridPane {
 		this.add(hnodes, 0, 1, 2, 1);
 		this.setAlignment(Pos.CENTER);
 	}
+
 }

@@ -328,7 +328,12 @@ public class CKAssetEditor extends JPanel implements
 		else // a instanceof CKNullAsset)
 		{
 				//return new CKAssetEditorPane(a);
-				return new CKAssetEditorPane(a){ public void storeState(){} };
+				return new CKAssetEditorPane(a){ /**
+					 * 
+					 */
+					private static final long serialVersionUID = 6151816455693982325L;
+
+				public void storeState(){} };
 		}
 
 	}

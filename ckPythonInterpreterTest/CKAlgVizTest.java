@@ -1,7 +1,6 @@
 package ckPythonInterpreterTest;
 
 import java.awt.BorderLayout;
-
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -18,10 +17,10 @@ import java.io.Reader;
 import java.net.URL;
 import java.util.Enumeration;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -36,11 +35,9 @@ import org.exolab.castor.xml.ValidationException;
 
 //import algviz.shadow.ShadowState;
 import algviz.visualizer.StateGraphView;
-
-import jsyntaxpane.DefaultSyntaxKit;
 import ckPythonInterpreter.CKAlgViz;
-import ckPythonInterpreter.CKPythonEditorPane;
 import ckPythonInterpreter.CKPythonConsoleExtended;
+import ckPythonInterpreter.CKPythonEditorPane;
 import ckPythonInterpreter.CKUniqueEditor;
 import edu.vt.cs.algviz.xml.Field;
 import edu.vt.cs.algviz.xml.FieldType;
@@ -49,6 +46,7 @@ import edu.vt.cs.algviz.xml.Message;
 import edu.vt.cs.algviz.xml.Messages;
 import edu.vt.cs.algviz.xml.Pointerto;
 import edu.vt.cs.algviz.xml.types.MemallocTypeType;
+import jsyntaxpane.DefaultSyntaxKit;
 
 
 public class CKAlgVizTest 

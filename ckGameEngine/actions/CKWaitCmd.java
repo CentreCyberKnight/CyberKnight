@@ -16,10 +16,9 @@ import javax.swing.JSpinner;
 import javax.swing.JTree;
 import javax.swing.SpinnerNumberModel;
 
+import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKSpellCast;
 import ckGameEngine.Quest;
-import ckGameEngine.CKGameObjectsFacade;
-import ckGraphicsEngine.CK2dGraphicsEngine;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 
 /**
