@@ -37,6 +37,8 @@ public class CKTeamPropertiesEditor extends CKXMLAssetPropertiesEditor<CKTeam> i
 	CKTreeGui   myStory;
 	
 	//FIXME add artifacts
+	//show/add characters-names?
+	//equip characters
 
 
 		

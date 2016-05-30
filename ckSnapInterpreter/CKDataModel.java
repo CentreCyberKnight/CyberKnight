@@ -1,6 +1,7 @@
 package ckSnapInterpreter;
 
 import java.util.ArrayList;
+
 import ckDatabase.CKArtifactFactory;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKBook;
@@ -8,6 +9,7 @@ import ckGameEngine.CKChapter;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpell;
 import ckGameEngine.CKTeam;
+import ckGameEngine.QuestData;
 
 public class CKDataModel {
 
@@ -44,6 +46,13 @@ public class CKDataModel {
 		spellObservers = new ArrayList<Observer<CKSpell>>();
 	}
 	
+	public CKDataModel(QuestData q)
+	{
+		this(null,null,null);
+		setTeam(q.getActorsFromTeam(q.getTeam()).get(0).getTeam());
+	
+	}
+
 	public Observable<CKGridActor> getActivePlayerProperty()
 	{
 		return activePlayer;

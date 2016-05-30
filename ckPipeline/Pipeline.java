@@ -31,10 +31,12 @@ public class Pipeline {
 		    System.err.println(x);
 		}
 		for(int z=0;z<chars.size();z++){
+			//Makes the daz script
 			WriteScript makeScript=new WriteScript(chars.get(z),bass);
 		}
 		
 		for(int zz=0;zz<chars.size();zz++){
+			//Runs the daz scripts
 			String ch=chars.get(zz).substring(0,chars.get(zz).length()-4)+".dsa";
 			File ab=new File(bass,"Scripts/"+ch);
 			String absol=ab.getAbsolutePath();
@@ -52,8 +54,10 @@ public class Pipeline {
 				//System.out.println("DAZ");
 			}
 		}
+		//Writes the ChadScript
 		Write w=new Write(bass);
 		ArrayList<TxtFile> files=w.getFiles();
+		//Calls the chadscripts
 		for(TxtFile fi:files){
 			//System.out.println(f.getFolder());
 			File fil=new File(fi.getFolder().toFile(),"done.txt");

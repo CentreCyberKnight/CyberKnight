@@ -51,6 +51,7 @@ import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.CKGraphicsScene;
 import ckGraphicsEngine.CKGraphicsSceneInterface;
 import ckPythonInterpreterTest.CKArtifactQuestRunner;
+import ckSnapInterpreter.CKQuestRunner;
 import ckTrigger.CKTriggerList;
 import ckTrigger.CKTriggerListNode;
 import ckTrigger.CKTriggerNode;
@@ -608,7 +609,20 @@ public class QuestData extends CKGUINode implements CKXMLAsset<QuestData>
 		public void actionPerformed(ActionEvent evt) 
 		{
 //			new CKQuestRunner2(q);
-			new CKArtifactQuestRunner(new Quest(q));
+			//new CKArtifactQuestRunner(new Quest(q));
+			
+	    	CKQuestFactory.getInstance().writeAssetToXMLDirectory(q);
+	    	String assetName = q.getAID();
+			new Thread() {
+	        @Override
+	        public void run() {
+	        	
+	            javafx.application.Application.launch(CKQuestRunner.class,assetName);
+	        }
+	    }.start();
+			
+			
+			
 			
 		}
 	}

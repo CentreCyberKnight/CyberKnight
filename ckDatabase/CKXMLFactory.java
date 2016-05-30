@@ -30,7 +30,7 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
  *
  
 
-	//TODO singleton with generics
+	
 	public static CKXMLFactory getInstance()
 	{
 		if(factory==null)

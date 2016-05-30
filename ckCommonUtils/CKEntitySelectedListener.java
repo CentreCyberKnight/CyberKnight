@@ -1,4 +1,5 @@
 package ckCommonUtils;
+@FunctionalInterface
 
 public interface CKEntitySelectedListener<T>
 {

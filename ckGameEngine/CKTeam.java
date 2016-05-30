@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 
 import ckCommonUtils.CKPropertyStrings;
 import ckCommonUtils.CKXMLAsset;
+import ckDatabase.CKArtifactFactory;
+import ckDatabase.CKGridActorFactory;
 import ckDatabase.CKTeamFactory;
 import ckEditor.CKTeamPropertiesEditor;
 import ckEditor.CKXMLAssetPropertiesEditor;
@@ -77,6 +79,7 @@ public class CKTeam implements CKXMLAsset<CKTeam>
 	
 	public void addCharacter(CKGridActor pc)
 	{
+		
 		characters.add(pc);
 		//pc.setTeam(this);
 		
@@ -385,8 +388,13 @@ public class CKTeam implements CKXMLAsset<CKTeam>
 	public static void main(String [] args)
 	{
 		
-		CKTeam team = CKTeamFactory.getInstance().getAsset("ArtifactTest");
-		System.out.println(team);
+		CKTeam team = new CKTeam();//CKTeamFactory.getInstance().getAsset("ArtifactTest");
+		//System.out.println(team);
+		team.addCharacter((CKGridActor) CKGridActorFactory.getInstance().getAsset("SpellTestDad"));
+		CKArtifact art = CKArtifactFactory.getInstance().getAsset("bareFeet");
+		team.addArtifact(art);
+		team.equipArtifact(art, "Dad", "shoes");
+		team.writeToStream(System.out);
 	}
 
 	public CKDeltaBook calcDeltaBook(CKGridActor actor, CKArtifact artifact)
