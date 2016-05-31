@@ -1317,6 +1317,9 @@ CyberKnight.selfSpells =
 ["move","forward",-1],
 ["move","left",1],
 ["move","right",1],
+["move","crawl",5],
+["move","turn right",5],
+["move","turn left",5],
 ]
 
 CyberKnight.aimSpells =
