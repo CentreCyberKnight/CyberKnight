@@ -116,6 +116,7 @@ public class CKTeamPropertiesEditorV2 extends CKXMLAssetPropertiesEditor<CKTeam>
 								public void entitySelected(CKArtifact entity)
 								{
 									addArtifact(entity,right);
+									asset.addArtifact(entity);
 									right.revalidate();
 									right.repaint();
 								}
@@ -144,15 +145,69 @@ public class CKTeamPropertiesEditorV2 extends CKXMLAssetPropertiesEditor<CKTeam>
 	
 	private void addArtifact(CKArtifact art,JPanel contain)
 	{
+		
+		JPanel pane = new JPanel(new FlowLayout());
 		CKArtifactShortView view = (CKArtifactShortView) art.getXMLAssetViewer();
-		contain.add(view);
+		pane.add(view);
+	
+		JTextField box = new JTextField(art.getEquippedBy());
+
+		box.setColumns(20);
+		box.getDocument().addDocumentListener(new DocumentListener()
+				{
+					
+					public void change()
+					{
+						String value = box.getText();
+						if(value.equals("") )
+						{
+							asset.unequipArtifact(art);
+						}
+						else
+						{
+							//not one of the better ways to do this...
+							//FIXME
+							asset.equipArtifact(art,value,"hand");
+						}
+						stateChanged(null);
+					}
+
+					@Override
+					public void changedUpdate(DocumentEvent arg0)
+					{
+						change();
+						
+					}
+
+					@Override
+					public void insertUpdate(DocumentEvent arg0)
+					{
+						change();
+						
+					}
+
+					@Override
+					public void removeUpdate(DocumentEvent arg0)
+					{
+						change();
+						
+					}
+				});
+		contain.add(box);
+		
+		
+		
+		contain.add(pane);
 		view.getEquipButton().addActionListener(
 				e->{
-					contain.remove(view);
+					asset.removeArtifact(art);
+					stateChanged(null);
+					contain.remove(pane);
 					contain.validate();
 					contain.repaint();
 				}
 				);
+		stateChanged(null);
 	}
 	
 
@@ -183,6 +238,7 @@ public class CKTeamPropertiesEditorV2 extends CKXMLAssetPropertiesEditor<CKTeam>
 		asset.setFunctions(functions.getText());
 		asset.setAbilities((CKBook) myAbilities.getRoot());
 		asset.setStory((CKBook) myStory.getRoot());
+		System.out.println("Storing Team");
 	}
 	
 	

@@ -37,8 +37,8 @@ public class CKPlayerObjectsFacade
 				CPTurnMax = limits.getChapter(CP_PER_ROUND).getValue();
 			}
 			else
-			{
-				CPTurnMax=0;
+			{//FIXME MKB  should be 0...
+				CPTurnMax=20;
 				
 			}
 
@@ -47,7 +47,7 @@ public class CKPlayerObjectsFacade
 						CKGameObjectsFacade.getCurrentPlayer().getCyberPoints());
 			CPTurnRemaining=CPTurnMax;
 
-			System.out.println("max CP is "+CPTurnMax);
+			System.out.println("max CP MMM is "+CPTurnMax);
 			
 		}
 		

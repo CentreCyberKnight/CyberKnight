@@ -1,6 +1,7 @@
 package ckSnapInterpreter;
 
 import ckDatabase.CKQuestFactory;
+import ckDatabase.CKTeamFactory;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellCast;
@@ -42,7 +43,7 @@ public class CKQuestRunner extends Application
 			
 		}
 		String asset = param.getRaw().get(0);
-		
+		CKTeamFactory.getInstance().clearCache();
 		QuestData q  = CKQuestFactory.getInstance().getAsset(asset);
 		quest = new Quest(q);
 		

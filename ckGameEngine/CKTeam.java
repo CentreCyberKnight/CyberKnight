@@ -17,6 +17,7 @@ import ckDatabase.CKArtifactFactory;
 import ckDatabase.CKGridActorFactory;
 import ckDatabase.CKTeamFactory;
 import ckEditor.CKTeamPropertiesEditor;
+import ckEditor.CKTeamPropertiesEditorV2;
 import ckEditor.CKXMLAssetPropertiesEditor;
 
 public class CKTeam implements CKXMLAsset<CKTeam>
@@ -173,7 +174,10 @@ public class CKTeam implements CKXMLAsset<CKTeam>
 			vec=new Vector<CKArtifact>();
 			equipMap.put(owner, vec);
 		}
-		vec.add(art);
+		if(! vec.contains(art))
+			{
+				vec.add(art);
+			}
 		
 	}
 	
@@ -225,11 +229,19 @@ public class CKTeam implements CKXMLAsset<CKTeam>
 			if(vec != null)
 			{
 				vec.remove(art);
+				if( vec.size() == 0)
+				{
+					equipMap.remove(owner);
+				}
 			}
 			art.setEquippedBy("");
 			if(notify)
 			{
-				this.getCharacter(owner).AbilityChanges();
+				CKGridActor actor = this.getCharacter(owner);
+				if(actor != null )
+				{
+					actor.AbilityChanges();
+				}
 			}
 			
 		}
@@ -255,6 +267,13 @@ public class CKTeam implements CKXMLAsset<CKTeam>
 	public void addArtifact(CKArtifact combatBoots)
 	{
 		artifacts.add(combatBoots);
+		
+	}
+	
+	public void removeArtifact(CKArtifact art)
+	{
+		unequipArtifact(art);
+		artifacts.remove(art);
 		
 	}
 
@@ -374,7 +393,7 @@ public class CKTeam implements CKXMLAsset<CKTeam>
 		}
 		else
 		{		
-			return new CKTeamPropertiesEditor(this,false);
+			return new CKTeamPropertiesEditorV2(this,false);
 		}
 	}
 
@@ -382,7 +401,7 @@ public class CKTeam implements CKXMLAsset<CKTeam>
 	@Override
 	public CKXMLAssetPropertiesEditor<CKTeam> getXMLPropertiesEditor()
 	{
-		return new CKTeamPropertiesEditor(this,true);
+		return new CKTeamPropertiesEditorV2(this,true);
 	}
 	
 	public static void main(String [] args)

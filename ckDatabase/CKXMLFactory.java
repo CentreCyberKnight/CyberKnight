@@ -52,6 +52,13 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 		assetMap = new HashMap<String,T>();
 	}
 
+
+	
+	public void clearCache()
+	{
+		assetMap.clear();
+		
+	}
 	
 	/**
 	 * 
