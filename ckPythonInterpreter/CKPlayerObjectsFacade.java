@@ -38,7 +38,7 @@ public class CKPlayerObjectsFacade
 			}
 			else
 			{//FIXME MKB  should be 0...
-				CPTurnMax=20;
+				CPTurnMax=0;
 				
 			}
 
