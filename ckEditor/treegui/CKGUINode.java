@@ -652,7 +652,7 @@ public class CKGUINode extends DefaultMutableTreeNode implements CKGUIEditable
 		return initializeJComboBox(box,name,actors);
 	}
 	
-	@Deprecated
+	
 	protected SpinnerNumberModel[] generatePositionModels()
 	{
 		SpinnerNumberModel[] model = new SpinnerNumberModel[2];

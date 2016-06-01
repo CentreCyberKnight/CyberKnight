@@ -1082,6 +1082,8 @@ IDE_Morph.prototype.setCyberSnap = function(){
 	if (typeof this.artifactDictionary[name] === "undefined")
 	{
 		//creates new sprites for each spell and adds them to a list
+		//MKB
+		console.log(name,methods);
 		list = new List([]);
 		this.sprites = new List([]);
 		while (acc != methods) {

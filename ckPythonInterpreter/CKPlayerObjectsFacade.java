@@ -37,7 +37,7 @@ public class CKPlayerObjectsFacade
 				CPTurnMax = limits.getChapter(CP_PER_ROUND).getValue();
 			}
 			else
-			{//FIXME MKB  should be 0...
+			{
 				CPTurnMax=0;
 				
 			}

@@ -22,8 +22,10 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.JTree;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
@@ -547,7 +549,7 @@ public class ActorNode extends CKGUINode implements CKPositionSetterListener
 	
 	static JPanel []panel;
 	static JTextField[] nameFields;
-	static JButton[] pickPosition;
+	//static JButton[] pickPosition;
 	static JLabel positionLabel[];
 //	static SpinnerNumberModel [][] positionSpinners; //x and y pos
 	static JComboBox<Direction> [] directionBox;
@@ -564,7 +566,7 @@ public class ActorNode extends CKGUINode implements CKPositionSetterListener
 	private AssetPostionSelector myPositionListener;
 	static  DirectionChangedListener directionListener;
 	static ControllerViewerPopupListener controllerListener;
-	
+	static SpinnerNumberModel [][] position; //x and y pos
 
 	
 	@SuppressWarnings("unchecked")
@@ -662,15 +664,29 @@ public class ActorNode extends CKGUINode implements CKPositionSetterListener
 			positionLabel[1] = new JLabel();
 			bot[0].add(positionLabel[0]);
 			bot[1].add(positionLabel[1]);
-			
+			/*
 			pickPosition = new JButton[2];
 			pickPosition[0] = new JButton("pick Position");
 			pickPosition[1] = new JButton("pick Position");
-				
+				*/
 			
-			bot[0].add(pickPosition[0]);
-			bot[1].add(pickPosition[1]);
+			position=new SpinnerNumberModel[2][2]; 
+			position[0] = generatePositionModels();
+			position[1] = generatePositionModels();
+			
+			for(int i =0;i<2;i++)
+			{
+				for(SpinnerNumberModel s:position[i])
+				{
+					JSpinner spin = new JSpinner(s);
+					bot[i].add(spin);
+				}
+			}
+	
 
+		/*	bot[0].add(pickPosition[0]);
+			bot[1].add(pickPosition[1]);
+*/
 
 			panel[0].add(bot[0]);
 			panel[1].add(bot[1]);
@@ -720,6 +736,8 @@ public class ActorNode extends CKGUINode implements CKPositionSetterListener
 		
 		String name = CKActorControllerFactory.getInstance().getAsset(controllerID).getName();
 		controllerName[index].setText(name);
+		
+		initializePositionModels(position[index],pos);		
 	
 		panel[index].validate();
 	}
@@ -735,7 +753,7 @@ public class ActorNode extends CKGUINode implements CKPositionSetterListener
 		
 		//first get rid of old listeners
 		pickActor[EDIT].removeActionListener(actorListener);
-		pickPosition[EDIT].removeActionListener(positionListener);
+		//pickPosition[EDIT].removeActionListener(positionListener);
 		directionBox[EDIT].removeItemListener(directionListener);
 		controllerButton[EDIT].removeActionListener(controllerListener);
 		
@@ -748,7 +766,7 @@ public class ActorNode extends CKGUINode implements CKPositionSetterListener
 		
 		positionListener = new AssetPostionSelector();
 		myPositionListener = positionListener;
-		pickPosition[EDIT].addActionListener(positionListener);
+		//pickPosition[EDIT].addActionListener(positionListener);
 		
 		directionListener = new DirectionChangedListener();
 		directionBox[EDIT].addItemListener(directionListener);
@@ -769,7 +787,7 @@ public class ActorNode extends CKGUINode implements CKPositionSetterListener
 		
 		name = nameFields[EDIT].getText();
 		direction = (Direction) directionBox[EDIT].getSelectedItem();
-		
+		readPositionModels(position[EDIT],pos);
 		//controllerID = controllerBox[EDIT].getSelectedIndex();
 		/*
 		String cont =((String) controllerBox[EDIT].getSelectedItem()  ); 
