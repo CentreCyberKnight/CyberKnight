@@ -35,26 +35,34 @@ public class ScryAction extends CKGameAction
 	public void switchHandler(CKSpellCast cast)
 	{
 		String action ="scry";//+cast.getKey().toLowerCase();
-		String resultType = cast.getKey().toLowerCase();  
-		switch (resultType)
+		String page = cast.getPage();
+		String key  = cast.getKey();
+		
+//		String resultType = cast.getKey().toLowerCase();  
+		switch (page)
 		{
 		case "height":
-			cast.addResult(cast.getItemTarget(),action,resultType,
+			cast.addResult(cast.getItemTarget(),action,page,
 					cast.getItemTarget().getTotalHeight());
 			break;
 		case "move":
-			cast.addResult(cast.getItemTarget(),action,resultType,cast.getItemTarget().getMoveCost());	
+			cast.addResult(cast.getItemTarget(),action,page,cast.getItemTarget().getMoveCost());	
 			break;
 		case "slide":
-			cast.addResult(cast.getItemTarget(),action,resultType,cast.getItemTarget().getSlideCost());
+			cast.addResult(cast.getItemTarget(),action,page,cast.getItemTarget().getSlideCost());
 			break;
 		case "name":
-			cast.addResult(cast.getItemTarget(),action+":name",cast.getItemTarget().getName(),1);
+			cast.addResult(cast.getItemTarget(),page,cast.getItemTarget().getName(),1);
 			break;
-		case "trap":
-			cast.addResult(cast.getItemTarget(),action,resultType,
+		/*case "trap":
+			cast.addResult(cast.getItemTarget(),action,page,
 			cast.getActorTarget().getAbilities().hasPage("trait", "trap"));
-			 			 break;
+			break;*/
+		case "trait":
+			cast.addResult(cast.getItemTarget(),action,key,
+			cast.getActorTarget().getAbilities().hasPage("trait", key));
+			break;
+			
 
 			
 		}
