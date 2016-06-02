@@ -136,10 +136,11 @@ public class QuestData extends CKGUINode implements CKXMLAsset<QuestData>
 	
 	public void addPositionSetter(CKPositionSetter l)
 	{
+		
 		pSetters.add(l);
 	}
 	
-	
+	//getting error every time
 	public void reqestPosition(CKPositionSetterListener l,CKAbstractGridItem item,boolean leave)
 	{
 		if(pSetters.size()>0)

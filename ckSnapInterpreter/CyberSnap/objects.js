@@ -1301,11 +1301,14 @@ CyberKnight.spells =
 ["fire","bolt",-1],
 ["fire","sunbeam",-1],
 ["fire","flash",8],
+["fire","purify",5],
 ["fire","heat up",-1],
 ["fire","Burn it down",-1],
 ["fire","soul burn",10],
 ["earth","slice",-1],
 ["earth","wall",-1],
+["earth","shove",-1],
+["earth","baby kick",-1],
 ["earth","dig",-1],
 ["earth","projectile",-1],
 ["earth","mud",10],
@@ -1317,9 +1320,10 @@ CyberKnight.selfSpells =
 ["move","forward",-1],
 ["move","left",1],
 ["move","right",1],
-["move","crawl",5],
-["move","turn right",5],
-["move","turn left",5],
+["move","crawl",3],
+["move","turn right",2],
+["move","turn left",2],
+["move","moveTo",5],
 ]
 
 CyberKnight.aimSpells =
