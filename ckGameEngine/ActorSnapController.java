@@ -26,16 +26,18 @@ public class ActorSnapController extends ActorController
 	}
 
 
-	volatile boolean done = false;
+	volatile boolean snapDone = false;
+	volatile boolean engineDone = false;
 		
 	public synchronized void waitForSnap()
 	{
-			done = false;
+			snapDone = false;
+			engineDone = false;
 			SnapRunner runner = new SnapRunner(this);
 			Platform.runLater(runner);
 			
 			
-			while(!done) //need this in case snap completes before we can wait for it.
+			while((!snapDone) || (!engineDone)) //need this in case snap completes before we can wait for it.
 			{	try {wait();}
 				catch (InterruptedException e) {}
 			}
@@ -45,12 +47,21 @@ public class ActorSnapController extends ActorController
 		
 		public synchronized void snapCompletes()
 		{
-			done=true;
+			snapDone=true;
 			System.out.println("SNAP COMPLETES");
 			
 			notify();
 		}
-	
+		public synchronized void engineCompletes(){
+			engineDone=true;
+			System.out.println("ENGINE COMPLETES");
+			
+			notify();
+		}
+		
+		public synchronized void engineStart(){
+			engineDone=false;
+		}
 	
 	public class SnapRunner extends Thread
 	{

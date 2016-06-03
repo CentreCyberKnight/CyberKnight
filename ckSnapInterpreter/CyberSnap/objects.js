@@ -1257,6 +1257,24 @@ CyberKnight.castSpell = function(catagory,spell,cp,target,key)
 	}	 
 }
 
+CyberKnight.castMoveToSpell = function()
+{
+	//need to change this debug info
+	//jsDebug.print("moveToTest");
+
+	var complete = javaMove.moveTo();
+	if(complete==null)
+	{
+		jsDebug.print("Move to failed--Needs to stop here!");
+	}
+	else if (!complete.isSet())
+	{	//alex debug
+		console.log("Pausing spell");
+		ide.stage.threads.pauseAll(ide.stage);
+	}	 
+}
+
+
 CyberKnight.castAimSpell = function(catagory,spell,cp,target,key)
 {
 	var tar =javaMove.aim(spell,cp);
@@ -1323,7 +1341,6 @@ CyberKnight.selfSpells =
 ["move","crawl",3],
 ["move","turn right",2],
 ["move","turn left",2],
-["move","moveTo",5],
 ]
 
 CyberKnight.aimSpells =
@@ -1336,6 +1353,12 @@ CyberKnight.aimSpells =
 ['aim','far target',6,'Distant'],
 ['aim','star',3,"Star"],
 ];
+
+CyberKnight.moveToSpells=
+[
+['move','moveTo',5]
+];
+
 
 CyberKnight.craftName = function(spell)
 {
@@ -1436,7 +1459,7 @@ CyberKnight.createAimSpellFunction = function(spell)
 CyberKnight.writeSelfSpellCommands = function()
 {
 	
-	//jsDebug.print("Does this work?);
+	//jsDebug.print("Does this work?");
 	
 	
 	for(var i=0;i<CyberKnight.selfSpells.length;i++)
@@ -1475,6 +1498,53 @@ CyberKnight.createSelfSpellFunction = function(spell)
 		};
 };
 
+/*
+moveTo SPELL STUFF
+*/
+
+CyberKnight.writeMoveToSpellCommands = function()
+{
+	
+	console.log("Does this work?");
+	
+	
+	for(var i=0;i<CyberKnight.moveToSpells.length;i++)
+	{
+	console.log("Does this work? 2");
+		var spell = CyberKnight.moveToSpells[i];
+		var name = CyberKnight.craftName(spell);
+		console.log("Does this work? 3",spell,name);
+		jsDebug.print("Loading "+spell+" named "+name);
+
+		
+		//first write block		
+		var cpSlot = "";
+		if(spell[2]==-1) { cpSlot = " for %n"; }
+
+		SpriteMorph.prototype.blocks[name] =
+		{
+			only: SpriteMorph,
+			type: 'command',
+			category: spell[0],
+			spec:spell[1]+cpSlot,
+		};
+		//then link the target	
+		
+		SpriteMorph.prototype[name] = CyberKnight.createMoveToSpellFunction(spell);
+	}
+	
+};
+
+
+CyberKnight.createMoveToSpellFunction = function(spell)
+{
+	return  function (cp)
+		{	
+			var CP = cp;
+			if(spell[2]>=0) { CP = spell[2]; }			
+			return CyberKnight.castMoveToSpell();
+		};
+};
 
 /**
 	puts blocks into the categories so we can see them.
@@ -1517,6 +1587,23 @@ CyberKnight.pushCategories = function(cat,blocks,block)
 		}	
 	}
 	
+	for(var i=0;i<CyberKnight.moveToSpells.length;i++)
+		{
+	
+			var spell = CyberKnight.moveToSpells[i];
+			jsDebug.print("Printing for "+cat+" A "+spell[0]+" A "+(spell[0]==cat));
+			jsDebug.print("Printing for "+cat+" A "+spell[0]);
+			jsDebug.print("it's being called");
+			console.log(spell);
+			if(spell[0]===cat)
+			{	
+				var name = CyberKnight.craftName(spell);
+				jsDebug.print("my name is "+name);
+				blocks.push(block(name));	
+			}
+				
+		}
+		
 	
 };
 
@@ -1524,6 +1611,7 @@ CyberKnight.pushCategories = function(cat,blocks,block)
 CyberKnight.writeSpellCommands();
 CyberKnight.writeAimSpellCommands();	
 CyberKnight.writeSelfSpellCommands();	
+CyberKnight.writeMoveToSpellCommands();	
 
 
 SpriteMorph.prototype.initBlockMigrations = function () {
@@ -1938,7 +2026,9 @@ SpriteMorph.prototype.blockForSelector = function (selector, setDefaults) {
     var migration, info, block, defaults, inputs, i;
     migration = this.blockMigrations[selector];
     info = this.blocks[migration ? migration.selector : selector];
-    if (!info) {return null; }
+    if (!info) {
+    console.log("null called");
+    return null; }
     block = info.type === 'command' ? new CommandBlockMorph()
         : info.type === 'hat' ? new HatBlockMorph()
             : info.type === 'ring' ? new RingMorph()
@@ -1988,8 +2078,10 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         if (StageMorph.prototype.hiddenPrimitives[selector]) {
             return null;
         }
+        console.log("line 2077 object.js");
         var newBlock = SpriteMorph.prototype.blockForSelector(selector, true);
         newBlock.isTemplate = true;
+        console.log("line 2080 object.js");
         return newBlock;
     }
 

@@ -16,6 +16,8 @@ import ckCommonUtils.CKAreaPositions;
 import ckCommonUtils.CKDelayedObject;
 import ckCommonUtils.CKPosition;
 import ckDatabase.AimDescriptionFactory;
+import ckGameEngine.ActorController;
+import ckGameEngine.ActorSnapController;
 import ckGameEngine.AimDescription;
 import ckGameEngine.CKAbstractGridItem;
 import ckGameEngine.CKArtifact;
@@ -176,11 +178,21 @@ public class CKSpellObject {
 						
 						//Quest w =CKGameObjectsFacade.getQuest();
 						//w.startTransaction();
+						//initalizes a turn controller to know when the engine is done
+						ActorSnapController snapController=null;
+						ActorController controller=CKGameObjectsFacade.getCurrentPlayer().getTurnController();
 						
+						if(controller instanceof ActorSnapController){
+							snapController=(ActorSnapController)controller;
+							snapController.engineStart();
+						}
 						cast.castSpell();
 						completed.setValue(true);
 						//w.endTransaction();
-
+						//tell engine its done
+						if(snapController instanceof ActorSnapController){
+							snapController.engineCompletes();
+						}
 						
 						Platform.runLater(new Runnable() {
 								public void run()
@@ -250,6 +262,12 @@ public class CKSpellObject {
 					
 					public void run()
 					{
+						ActorSnapController snapController=null;
+						ActorController controller=CKGameObjectsFacade.getCurrentPlayer().getTurnController();
+						if(controller instanceof ActorSnapController){
+							snapController=(ActorSnapController)controller;
+							snapController.engineStart();
+						}
 						CKSelection sel = new CKSelection();
 						//blocking call
 						CKPosition pos;
@@ -265,9 +283,14 @@ public class CKSpellObject {
 								//new ArrayList<CKPosition>(Arrays.asList(offsets)));//these will be offset in the underlying aim selector
 								new ArrayList<CKPosition>(Arrays.asList(aim.getOffsets(dir))));
 						}
+						
+
 						getCharacter().getTurnController().fireAimLogEvent(pos);
 
 						target.setValue(pos);
+						if(snapController instanceof ActorSnapController){
+							snapController.engineCompletes();
+						}
 						Platform.runLater(new Runnable() {
 							public void run()
 										{
@@ -334,7 +357,7 @@ public class CKSpellObject {
 
 	}
 	
-	public static boolean moveTo()
+	public CKDelayedObject<Boolean> moveTo()
 	{
 		CKBook book = getAbilties();
 		int ap = 0;
@@ -347,41 +370,80 @@ public class CKSpellObject {
 		if(attemptSpell(CH_MOVE,ap,P_MOVETO))
 		{
 			
-			int cp = (int) (ap *.75);
-			//get data
-			CKGrid grid = CKGameObjectsFacade.getQuest().getGrid();
-			GridNode[][][][] nodes= grid.allPositionsReachable(getCharacter(), cp, 1);	
-			//first aim at the areas
-			Collection<CKPosition> possibles = grid.getReachablePositions(nodes,1);
 			
-			ArrayList<CKPosition>offsets = new ArrayList<>(1);
-			offsets.add(new CKPosition(0,0));
-			CKSelection sel = new CKSelection();
-			CKPosition pos = sel.SelectTargetArea(getCharacter().getPos(),
-					possibles,offsets);
-			
+			//create delayed object so it doesn't crash
+			CKDelayedObject<Boolean> completed = new CKDelayedObject<>();
+			//create thread function
+			Thread tr=new Thread(){
+				
+				public void run()
+				{
+					ActorSnapController snapController=null;
+					
+					ActorController controller = CKGameObjectsFacade.getCurrentPlayer().getTurnController(); 
+					if(controller instanceof ActorSnapController){
+					snapController=(ActorSnapController)controller;
+					snapController.engineStart();
+					}
+					
+					
+					
+
+					
+					int ap=50;
+					int cp = (int) (ap *.75);
+					//get data
+					CKGrid grid = CKGameObjectsFacade.getQuest().getGrid();
+					GridNode[][][][] nodes= grid.allPositionsReachable(getCharacter(), cp, 1);	
+					//first aim at the areas
+					Collection<CKPosition> possibles = grid.getReachablePositions(nodes,1);
+					
+					ArrayList<CKPosition>offsets = new ArrayList<>(1);
+					offsets.add(new CKPosition(0,0));
+					CKSelection sel = new CKSelection();
+					CKPosition pos = sel.SelectTargetArea(getCharacter().getPos(),
+							possibles,offsets);
 			//now move to that position
-			for(Direction d:Direction.values())
-			{
-				GridNode node = nodes[(int) pos.getX()][(int) pos.getY()][d.ordinal()][0];
-				if(node.isVisited())
-				{	
-					moveTo(node);
-					break;
+			
+					for(Direction d:Direction.values())
+					{	
+						GridNode node = nodes[(int) pos.getX()][(int) pos.getY()][d.ordinal()][0];
+						if(node.isVisited())
+						{	
+							moveToRecursive(node);
+							break;
+						}
+						
+					}
+					completed.setValue(true);
+					if(snapController instanceof ActorSnapController){
+					snapController.engineCompletes();
+					}
+					Platform.runLater(new Runnable() {
+						public void run()
+						{
+							WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
+							webEngine.executeScript("ide.stage.threads.resumeAll(ide.stage)");
+						}
+				});
+					
 				}
-			}
-			return true;
+			};
+			//create thread
+			
+			tr.start();
+			return completed;
 			
 		}
-		return false;
+		return null;
 		
 	}
 	
-	private static void moveTo(GridNode node)//,CKPosition destination)
+	private static void moveToRecursive(GridNode node)//,CKPosition destination)
 	{
 		//need to do the last thing first!
 		GridNode parent = node.getParentNode(); 
-		if(parent!=null) { moveTo(parent); }
+		if(parent!=null) { moveToRecursive(parent); }
 		//now do my action
 		String action = node.getAction();
 		int cp = node.getActionCost();
