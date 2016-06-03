@@ -207,7 +207,7 @@ public class CKTrigger extends CKTriggerNode implements CKXMLAsset<CKTrigger>
 			trig.writeToStream(System.out);
 		} catch (IOException e)
 		{
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		}
 		
