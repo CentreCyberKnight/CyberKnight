@@ -34,6 +34,15 @@ public class CKGuiRoot extends CKGUINode
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+		return "CKGuiRoot";
+	}
+
 	public void saveQuests()
 	{
 		if(children==null)
