@@ -182,6 +182,12 @@ public class CKQuestRunner extends Application
 
 	class gameThread extends Thread
 	 {
+		
+		public gameThread()
+		{
+			this.setDaemon(true);
+		}
+		
 		 public void run()
 		 {
 			 
@@ -206,7 +212,7 @@ public class CKQuestRunner extends Application
     public static void main(String[] args)
     {
     	
-    	String input[] = {"javaFX","asset7364953977011982560"};
+    	String input[] = {"asset7364953977011982560"};
     	
         launch(input);
     	//launch(args);

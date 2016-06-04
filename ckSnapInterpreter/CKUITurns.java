@@ -183,6 +183,7 @@ public class CKUITurns extends Application
     			cast.castSpell();
 				}
 		};
+		t.setDaemon(true);
 		t.start();
     }
     
@@ -253,10 +254,16 @@ public class CKUITurns extends Application
 
 	class gameThread extends Thread
 	 {
+		
+		public gameThread()
+		{
+			this.setDaemon(true);
+		}
+		
 		 public void run()
 		 {
 			 System.out.println("STARTING GAME LOOP");
-
+			
 				 
 						 
 			 try
