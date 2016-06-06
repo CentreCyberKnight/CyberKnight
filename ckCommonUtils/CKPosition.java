@@ -52,7 +52,8 @@ public class CKPosition implements Comparable<CKPosition>,Cloneable
 	public static double planarDistance(CKPosition p1, CKPosition p2) {
 		double dx = p1.x-p2.x;
 		double dy = p1.y-p2.y;
-		return Math.sqrt(Math.pow(dx,2)+Math.pow(dy,2));	
+		double dz = p1.z-p2.z;
+		return Math.sqrt(Math.pow(dx,2)+Math.pow(dy,2)+Math.pow(dz,2));	
 	}
 
 	/**
