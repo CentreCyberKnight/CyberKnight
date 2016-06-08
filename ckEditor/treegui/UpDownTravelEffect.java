@@ -1,12 +1,10 @@
 package ckEditor.treegui;
 
 import ckCommonUtils.CKPosition;
-import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGraphicsEngine.BadInstanceIDError;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.LoadAssetError;
-import ckGraphicsEngine.assets.CKFadeAsset;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
 
 public class UpDownTravelEffect extends CKTravelEffect
@@ -27,12 +25,12 @@ public class UpDownTravelEffect extends CKTravelEffect
 	}
 
 
-
+	@Override
 	public int doTravelEffect(CKPosition startingPos, CKPosition endingPos,int startTime)
 	{
 		FX2dGraphicsEngine engine=CKGameObjectsFacade.getEngine();	
-		
-		CKPosition added=new CKPosition(0,0,5,0);
+		System.out.println("!!!!!!!MoveUP");
+		CKPosition added=new CKPosition(0,0,20,0);
 		CKPosition epos=startingPos.add(added);
 		int travelTime=startTime;
 		try

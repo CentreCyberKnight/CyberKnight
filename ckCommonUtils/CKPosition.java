@@ -163,6 +163,12 @@ public class CKPosition implements Comparable<CKPosition>,Cloneable
 				(int) ((ePos.depth-sPos.depth)*frac+sPos.depth));
 	}
 
+	//added method
+	//polynomial interpolate
+	/*public static CKPosition polyinterpolate(CKPosition sPos,CKPosition ePos){
+		
+	}*/
+	
 	public Object clone() {
 	    try
 	    {

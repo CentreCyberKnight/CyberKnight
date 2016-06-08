@@ -1305,7 +1305,7 @@ CyberKnight.castSelfSpell = function(catagory,spell,cp,key)
 }
 CyberKnight.spells =
 [
-["water","poison",-1],
+["move","MoveUp",5],
 ["wind","blow off balance",-1],
 ["wind", "shock",-1],
 ["water","make wet",-1],
@@ -1320,7 +1320,7 @@ CyberKnight.spells =
 ["fire","sunbeam",-1],
 ["fire","flash",8],
 ["fire","purify",5],
-["fire","heat up",-1],
+["fire","heat it up",-1],
 ["fire","Burn it down",-1],
 ["fire","soul burn",10],
 ["earth","slice",-1],
@@ -1331,6 +1331,7 @@ CyberKnight.spells =
 ["earth","projectile",-1],
 ["earth","mud",10],
 ["earth","stone skin",10],
+["water","poison",-1],
 ];
 
 CyberKnight.selfSpells = 
