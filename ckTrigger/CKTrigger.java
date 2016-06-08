@@ -197,7 +197,8 @@ public class CKTrigger extends CKTriggerNode implements CKXMLAsset<CKTrigger>
 		
 		trig.setName("I've been set");
 		trig.setAction(new CKMoveActorCmd());
-		
+		trig.writeToStream(System.out);
+		/*
 		PipedInputStream pipeIn = new PipedInputStream();
 		PipedOutputStream pipeOut;
 		try
@@ -218,6 +219,8 @@ public class CKTrigger extends CKTriggerNode implements CKXMLAsset<CKTrigger>
 		XMLDecoder d = new XMLDecoder(pipeIn);
 		CKTrigger t2 = (CKTrigger) d.readObject();
 		System.out.println("stored name" +t2.getName());
+		*/
+		
 		
 		
 	}

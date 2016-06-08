@@ -21,7 +21,7 @@ public class UpDownTravelEffect extends CKTravelEffect
 	}
 	
 	public UpDownTravelEffect(String description){
-		super(description);
+		super(description+":Up");
 	}
 
 
@@ -65,6 +65,17 @@ public class UpDownTravelEffect extends CKTravelEffect
 		}
 	
 		return travelTime;
+	}
+	
+	
+	@Override
+	public Object clone()
+	{
+		UpDownTravelEffect effect = new UpDownTravelEffect(this.getDescription());
+		effect.setSpeed(getSpeed());
+		effect.setGraphic((CKGraphicsAssetPickerNode) this.getGraphic().clone());
+		effect.setSound((CKSoundPickerNode) this.getSound().clone());
+		return effect;
 	}
 	
 }
