@@ -1,26 +1,13 @@
 package ckPipeline;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FilenameFilter;
-
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
-import javax.swing.JTextPane;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
-
-import ckCommonUtils.CKProperties;
+import javax.swing.*;
+import javax.swing.text.*;
+import ckCommonUtils.*;
+import java.util.*;
+import java.io.*;
+import java.awt.*;
+import java.awt.font.*;
+import java.awt.event.*;
 public class Start extends JPanel {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7122613110426253640L;
 	//This is the menu shown when selecting a character
 	private String character,base;
 	private JComboBox<String> chars;

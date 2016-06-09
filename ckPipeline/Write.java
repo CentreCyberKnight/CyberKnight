@@ -1,11 +1,7 @@
 package ckPipeline;
-import java.io.IOException;
-import java.nio.file.DirectoryIteratorException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.io.*;
+import java.nio.file.*;
+import java.util.*;
 public class Write {
 	
 	private String base;
@@ -19,6 +15,13 @@ public class Write {
 		getFolders();
 		doCharacters();
 		
+		/*
+		getFiles();
+		for (TxtFile txt: txts) 
+		{
+    		System.out.println("Write class's doCharater and getFiles functions: " + txt.getName());
+	    }
+		*/
 	}
 	public void getFolders(){
 		Path dir = Paths.get(base+"\\Output");
@@ -26,7 +29,10 @@ public class Write {
 		    for (Path file: stream) {
 		    	if(file.toFile().isDirectory()){
 		    		chars.add(file);
-		    		//System.out.println(file.toString()+"\\");
+		    		
+		    		/*
+		    		System.out.println("Write class's getFolders function: " + file.toString()+"\\");
+		    		*/
 		    	}}
 		} catch (IOException | DirectoryIteratorException x) {
 		    // IOException can never be thrown by the iteration.

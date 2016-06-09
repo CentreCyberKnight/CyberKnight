@@ -1,22 +1,11 @@
 package ckPipeline;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.util.*;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
+
+import java.awt.event.*;
+import java.awt.*;
 public class Opts extends JPanel{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5382794636842199305L;
 	//This is the Opts, and its graphical objects
 	private String actName,file;
 	protected JButton remove;

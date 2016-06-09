@@ -3,11 +3,6 @@ package ckEditor;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Enumeration;
@@ -15,42 +10,17 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import ckCommonUtils.CKEntitySelectedListener;
-import ckCommonUtils.CKPosition;
-import ckCommonUtils.CKTabPane;
 import ckDatabase.CKCampaignNodeFactory;
-import ckDatabase.CKGraphicsAssetFactory;
-import ckDatabase.CKGraphicsAssetFactoryXML;
-import ckDatabase.CKGraphicsLayerFactory;
-import ckDatabase.CKGraphicsLayerFactoryXML;
-import ckEditor.DataPickers.CKAssetPicker;
-import ckEditor.DataPickers.CKFilteredAssetPicker;
-import ckEditor.DataPickers.CKXMLAssetPicker;
 import ckEditor.treegui.CKGuiRoot;
 import ckEditor.treegui.CKTreeGui;
-import ckGameEngine.CKBook;
-import ckGameEngine.CKGrid;
 import ckGameEngine.CampaignNode;
-import ckGraphicsEngine.CKGraphicsScene;
-import ckGraphicsEngine.CKLayerControlPanel;
-import ckGraphicsEngine.CKSceneSlider;
-import ckGraphicsEngine.CKSceneViewer;
-import ckGraphicsEngine.CKTileHighlighter;
-import ckGraphicsEngine.assets.CKAssetInstance;
-import ckGraphicsEngine.assets.CKGraphicsAsset;
-import ckGraphicsEngine.layers.CKGraphicsLayer;
-import ckGraphicsEngine.layers.CKStaticMatrixLayer;
 
 public class CKCampaignEditor extends JPanel
 {
