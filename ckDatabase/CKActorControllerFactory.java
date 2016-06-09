@@ -122,7 +122,7 @@ public class CKActorControllerFactory extends CKXMLFactory<ActorController>
 					new CharacterActionDescription("FAR", CKPropertyStrings.P_SHORT_TARGET,	
 					fcosts, true, true, false, 0, (cad,node)->{return Far.doPrediction(cad,node);},Far);			
 			
-			add(swing);
+			//add(swing);
 			add(far);		
 		}
 		
