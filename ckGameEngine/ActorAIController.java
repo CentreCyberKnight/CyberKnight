@@ -261,7 +261,7 @@ public class ActorAIController extends ActorController
 		
 		
 		CKGridActor baby = new CKGridActor("babySprite",Direction.NORTHWEST);
-		baby.setPos(new CKPosition(5,4));
+		//baby.setPos(new CKPosition(5,4));
 
 		//need charaxcter abilities to store 
 		CKBook teamplay = new CKBook();

@@ -59,7 +59,7 @@ public class AIBasicCommand implements AICommand
 
 			//total damage - penalty for damage to support players.
 
-			utils[i] = res.avgResults("Damage",depth) - 3*res.avgResults("Damage",CKGameObjectsFacade.getCurrentPlayer().getTeam(),depth);
+			utils[i] = -res.avgResults("Damage",depth) + 3*res.avgResults("Damage",CKGameObjectsFacade.getCurrentPlayer().getTeam(),depth);
 			
 		}
 		System.out.print(cad.action+" "+"node"+node.position+" utils:");
