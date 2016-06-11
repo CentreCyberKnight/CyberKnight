@@ -422,6 +422,10 @@ public class DescisionGrid
 	public void updateGrid(Collection<CKPosition> targets,
 			Collection<CharacterActionDescription> actions)
 	{
+		Long start = System.currentTimeMillis();
+		Long time =  start;
+		Long time2 = start;
+		
 		dirtyOrigin.forEach(o->o.clear());
 		dirtySource.forEach(o->o.clear());
 		dirtyOrigin.clear();
@@ -429,9 +433,17 @@ public class DescisionGrid
 		
 		createTargetReachability(targets,actions);
 		
+		time2 = System.currentTimeMillis();
+		System.out.println("reachability + cleaning...."+ (time2-time));
+		time=time2;
+		
 		//dirtyOrigins.forEach(o->{System.out.println("Origin"+o.)
 		
 		dirtyOrigin.forEach(o->o.evalActions());
+		
+		time2 = System.currentTimeMillis();
+		System.out.println("eval...."+ (time2-time));
+		time=time2;
 		
 		//now create sources for all of these...
 		AimDescriptionFactory factory = AimDescriptionFactory.getInstance();
@@ -449,8 +461,10 @@ public class DescisionGrid
 					forXYBoundedDonut(x,y,min,max,grid.width, grid.height,
 							(xp,yp)->createSourceNode(xp,yp,node.direction,car));					
 				}));
+		
+	
 		//now collapse the None direction
-		//must create a shallow copy since I';ll be adding things to dirtysource 
+		//must create a shallow copy since I'll be adding things to dirtysource 
 		HashSet<DecisionNode> tempset= new HashSet<>(dirtySource);
 		
 		tempset.stream()
@@ -470,7 +484,8 @@ public class DescisionGrid
 					);
 					
 		//All "real directions" are ready for evaluation.		
-	
+		time2 = System.currentTimeMillis();
+	System.out.println("Total Time"+ (time2-start));
 					
 		
 	}
@@ -658,15 +673,20 @@ public class DescisionGrid
 		// for each action
 		// for each target
 		// mark it out!
-
+	
+		
 		AimDescriptionFactory factory = AimDescriptionFactory.getInstance();
 		for (CharacterActionDescription cad : actions)
 		{
+			
 			AimDescription aim = factory.getAsset(cad.targetType);
+			
+			
+			
 			if (aim.getDirection() == Direction.NONE)
 			{
 				CKPosition[] inverse = aim.getInverse(Direction.NONE);
-				markTargets(targets, inverse, Direction.NONE, cad);
+			markTargets(targets, inverse, Direction.NONE, cad);
 			}
 			else 
 			{Direction.stream().filter(d -> d != Direction.NONE)
@@ -676,7 +696,7 @@ public class DescisionGrid
 					});
 			}
 		}
-
+		
 	}
 
 	protected DecisionNode getNode(CKPosition pos, Direction dir)

@@ -2,6 +2,8 @@ package ckCommonUtils;
 
 import java.awt.Point;
 
+
+
 import org.python.modules.math;
 
 /**
@@ -13,8 +15,7 @@ import org.python.modules.math;
  *
  */
 public class CKPosition implements Comparable<CKPosition>,Cloneable
-{
-
+{ 
 	private double x;
 	private double y;
 	private double z;
@@ -246,7 +247,6 @@ public class CKPosition implements Comparable<CKPosition>,Cloneable
 	{
 		double xr = x*Math.cos(radians) - y*Math.sin(radians);
 		double yr = x*Math.sin(radians) - y*math.cos(radians);
-		
 		return new CKPosition(xr,yr,z,depth);
 	}
 

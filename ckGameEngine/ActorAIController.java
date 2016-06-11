@@ -61,6 +61,11 @@ public class ActorAIController extends ActorController
 	public ActorAIController(CKGridActor pc)
 	{
 		super(pc);
+		
+		
+		//this takes 1/3 of a second the first time it runs, better to do it now
+		//than during turn.
+		new CKPosition(3,4).rotate(3);
 	}
 
 	public void add(CharacterActionDescription cad)
@@ -75,37 +80,51 @@ public class ActorAIController extends ActorController
 	@Override
 	protected void takeMyTurn()
 	{
+		
 		CKGameObjectsFacade.setCurrentPlayer(getActor());
 		CKPlayerObjectsFacade.calcCPTurnLimit();
 
 		Quest w = getQuest();
 
-		System.out.println("thinking....");
+		//System.out.println("thinking....");
+		//Long time = System.currentTimeMillis();
 		//calculate movements
 		CKBook book = getActor().getAbilities();
 		GridNode [][][][] movement= 
 				w.getGrid().allPositionsReachable(getActor(),
 						book.getChapter(CH_MOVE).getValue() , 1);
-		System.out.println("reachable....");
+		/*Long time2 = System.currentTimeMillis();
+		System.out.println("reachable...."+ (time2-time));
+		time=time2;
+		*/
 		//calculate possible actions
 		DescisionGrid dgrid = new DescisionGrid(w.getGrid());
 		
 		dgrid.updateGrid(w.getActors().stream()
 				.map(CKGridActor::getPos)
 				.collect(Collectors.toList()), actions);
-		
+		/*time2 = System.currentTimeMillis();
+		System.out.println("update grid...."+ (time2-time));
+		time=time2;
+		*/
 		dgrid.generateNodeValues(movement,
 				book.getChapter(CP_PER_ROUND).getValue());
 		
 		//need to find maximal thing to do...
-		
-		System.out.println("doing....");
+		/*time2 = System.currentTimeMillis();
+		System.out.println("generate...."+ (time2-time));
+		time=time2;
+		*/
 		//calculate actions to take here....
 		DecisionNode decision = dgrid.getHighestUtilityNode();
 		GridNode destination = movement[(int) decision.position.getX()]
 				[(int) decision.position.getY()]
 				[decision.direction.ordinal()][0];
-		
+/*
+		time2 = System.currentTimeMillis();
+		System.out.println("destination...."+ (time2-time));
+		time=time2;
+*/
 		w.startTransaction();
 		
 		
@@ -204,7 +223,7 @@ public class ActorAIController extends ActorController
 		public void doAction(CKPosition target, int cp)
 		{
 			CKEditorPCController.earth(CKPropertyStrings.P_SLASH, cp, target);
-			CKEditorPCController.voice(P_TALK_CLICK, 0, target, "Your slash has done me in!");
+			//CKEditorPCController.voice(P_TALK_CLICK, 0, target, "Your slash has done me in!");
 
 			/*CKSpellObject spell = new CKSpellObject("ta");
 			
@@ -222,7 +241,7 @@ public class ActorAIController extends ActorController
 		public void doAction(CKPosition target, int cp)
 		{
 			CKEditorPCController.fire(CKPropertyStrings.P_BOLT, cp, target);
-			CKEditorPCController.voice(P_TALK_CLICK, 0, target, "I was hit by fire!!");
+			//CKEditorPCController.voice(P_TALK_CLICK, 0, target, "I was hit by fire!!");
 	/*		CKSpellObject spell = new CKSpellObject("ta");
 			
 			spell.spell(CKPropertyStrings.CH_FIRE,
