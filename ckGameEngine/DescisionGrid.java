@@ -18,9 +18,20 @@ import ckGameEngine.CKGrid.GridNode;
 public class DescisionGrid
 {
 
+	
+	/**
+	 * CharacterActionDescriptions (CAD) is a class to describe an action that a character can take.
+	 *  It will not change over the course of a game as these actions will be filled out at load time.
+	 *  
+	 * @author dragonlord
+	 *
+	 */
 	static public class CharacterActionDescription
 	{
 	
+		/**
+		 *  The name of the action in this description.
+		 */
 		public final String action;
 		public final String targetType;
 		public final int[] costs;
@@ -97,6 +108,13 @@ public class DescisionGrid
 	
 	}
 
+	/**
+	 * CharacterActionReport (CAR) are the results of using an action described in a 
+	 * CharacterActionDescription (CAD) at a particular Node, at a particular target.
+	 * 
+	 * @author dragonlord
+	 *
+	 */
 	static public class CharacterActionReport
 	{
 		final CharacterActionDescription descr;
@@ -192,7 +210,7 @@ public class DescisionGrid
 		
 
 		/**
-		 * Returns the CAR with the most value this object or the parameter car.
+		 * Returns the CAR with the highest utility this object or the parameter car.
 		 * @param car
 		 * @param cp
 		 * @param moved
@@ -299,6 +317,11 @@ public class DescisionGrid
 			actions.add(action);
 		}
 	
+		
+		/**
+		 * Creates a CAR for each CAD at this node.
+		 * Stores them in a hash table for quick retrieval
+		 */
 		public void evalActions()
 		{
 			for (CharacterActionDescription cad : actions)
@@ -336,7 +359,12 @@ public class DescisionGrid
 			return sources.values().stream();
 		}
 	
-		
+		/**
+		 * Calculate the best action for a particular node, store actions in cmap for later use.
+		 * @param cp         -  amount of cp remaining when you reach this node
+		 * @param moved  - Has the character moved by this point.
+		 * @return - the utility of this node.
+		 */
 		public double generateNodeValue(int cp,boolean moved)
 		{
 			cmap = new HashMap<>();
@@ -464,8 +492,8 @@ public class DescisionGrid
 	public void generateNodeValues(GridNode[][][][] motion,int maxCP)
 	{
 		dirtySource.stream()
-		.filter(node->node.direction!=Direction.NONE)
-		.filter(node->
+		.filter(node->node.direction!=Direction.NONE) //only look at directional elements
+		.filter(node->                                                         //only look at nodes that have been visited
 		{
 			GridNode m = motion[(int) node.position.getX()][(int) node.position.getY()]
 					[node.direction.ordinal()][0];
@@ -478,7 +506,7 @@ public class DescisionGrid
 			return m.isVisited();
 
 		})
-		.forEach(node->
+		.forEach(node->                               //Do the calculation
 		{
 			GridNode m = motion[(int) node.position.getX()][(int) node.position.getY()]
 					[node.direction.ordinal()][0];
@@ -619,7 +647,11 @@ public class DescisionGrid
 
 	}
 
-
+/**
+ * Updates all of the nodes that we can stand at to hit targets using actions (CAD's)
+ * @param targets
+ * @param actions
+ */
 	public void createTargetReachability(Collection<CKPosition> targets,
 			Collection<CharacterActionDescription> actions)
 	{
@@ -652,6 +684,15 @@ public class DescisionGrid
 		return nodes[(int) pos.getX()][(int) pos.getY()][dir.ordinal()];
 	}
 
+	
+	/**
+	 * Adds to list of places that we can stand at and fire at a target.
+	 * Stores a pointer to the CAD at each position.
+	 * @param targets
+	 * @param inverse
+	 * @param dir
+	 * @param cad
+	 */
 	protected void markTargets(Collection<CKPosition> targets,
 			CKPosition[] inverse, Direction dir, CharacterActionDescription cad)
 	{
