@@ -4,6 +4,7 @@ import static ckCommonUtils.InterpolationTools.calcLinearIterpolation;
 import static ckCommonUtils.InterpolationTools.calcPercentBetween;
 import static ckCommonUtils.StreamOperators.forXYBoundedDonut;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,7 +13,9 @@ import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
 import ckCommonUtils.AICommand;
+import ckCommonUtils.CKAreaPositions;
 import ckCommonUtils.CKPosition;
+import ckCommonUtils.CKPropertyStrings;
 import ckDatabase.AimDescriptionFactory;
 import ckGameEngine.CKGrid.GridNode;
 public class DescisionGrid
@@ -36,15 +39,39 @@ public class DescisionGrid
 		public final String targetType;
 		public final int[] costs;
 	
-		public final boolean combo; // can I use this with a walk action?
-		public final boolean interpolate; // can I use CP values between those given?
+		/**
+		 * can I use this with a walk action?
+		 */
+		public final boolean combo;
+		
+		/**
+		 * can I use CP values between those given?
+		 */
+		public final boolean interpolate; 
 	
-		public final boolean aggregate; // if true add values of this type, else max
+		/**
+		 * if true add values of this type, else max
+		 */
+		public final boolean aggregate; 
+		
+		/**
+		 * Does this CAD ONLY hit the caster
+		 */
+		public final boolean solo;
+		
+		/**
+		 * Can this CAD hit the target, (Doesn't have to specifically target)
+		 */
+		public final boolean hitSelf;
+		
 		public final int catagory;
 		
 		public final BiFunction<CharacterActionDescription, DecisionNode, double[]> evalActionConsumer;
 	
 		public final AICommand cmd;
+		
+		public CharacterActionDescription soloComponent;
+		public CharacterActionReport soloReport;
 		/**
 		 * @param action
 		 * @param targetType
@@ -61,6 +88,8 @@ public class DescisionGrid
 				boolean combo,
 				boolean interpolate,
 				boolean aggregate,
+				boolean solo,
+				boolean hitSelf,
 				int catagory,
 				BiFunction<CharacterActionDescription, DecisionNode, double[]> evalActionConsumer,
 				AICommand cmd)
@@ -71,15 +100,63 @@ public class DescisionGrid
 			this.combo = combo;
 			this.interpolate = interpolate;
 			this.aggregate = aggregate;
+			this.solo=solo;
+			this.hitSelf = hitSelf;
 			this.catagory=catagory;
 			this.evalActionConsumer = evalActionConsumer;
 			this.cmd=cmd;
 		}
 	
+		/**
+		 * Make a solo clone of that characterAcitonDescription
+		 * @param that
+		 */
+		public CharacterActionDescription(
+				CharacterActionDescription that)
+		{
+			
+			this.action = that.action;
+			this.targetType = CKPropertyStrings.P_SELF;
+			this.costs = that.costs;
+			this.combo = that.combo;
+			this.interpolate = that.interpolate;
+			this.aggregate = that.aggregate;
+			this.solo=true;
+			this.hitSelf = that.hitSelf;
+			this.catagory=that.catagory;
+			this.evalActionConsumer = that.evalActionConsumer;
+			this.cmd=that.cmd;
+		}
+
 		public CharacterActionReport evalAction(DecisionNode n)
 		{
 			return new CharacterActionReport(this,
 					this.evalActionConsumer.apply(this, n),n);
+		}
+		
+		
+		public CharacterActionReport evalSoloAction(CKPosition pos,DecisionNode n)
+		{
+			
+			CharacterActionDescription cad = this;
+			CharacterActionReport rep =null;
+			if(!solo)
+			{
+				this.soloComponent = new CharacterActionDescription(this);
+				cad = this.soloComponent;
+			
+				rep = new CharacterActionReport(cad,
+						this.evalActionConsumer.apply(cad, n),n);
+				
+				this.soloReport = rep;
+			}
+			else
+			{
+				rep = new CharacterActionReport(cad,
+						this.evalActionConsumer.apply(cad, n),n);
+			}
+			return rep;
+			
 		}
 	
 		public int[] getCosts()
@@ -105,6 +182,8 @@ public class DescisionGrid
 		{
 			cmd.doCommand(position,dir,targetType,cp);			
 		}
+		
+	
 	
 	}
 
@@ -419,7 +498,20 @@ public class DescisionGrid
 
 	}
 
-	public void updateGrid(Collection<CKPosition> targets,
+	
+	/**
+	 * Creates a CAR for each CAD at this node.
+	 * Stores them in a hash table for quick retrieval
+	 */
+	public Stream<CharacterActionReport> evalSoloActions(CKPosition pos,Stream<CharacterActionDescription> actions)
+	{
+		
+		return actions.map(cad ->cad.evalSoloAction(pos,
+				nodes[(int) pos.getX()][(int) pos.getY()][(int) pos.getZ()]));
+	}
+	
+	
+	public void updateGrid(CKPosition me, Collection<CKPosition> targets,
 			Collection<CharacterActionDescription> actions)
 	{
 		Long start = System.currentTimeMillis();
@@ -431,7 +523,23 @@ public class DescisionGrid
 		dirtyOrigin.clear();
 		dirtySource.clear();
 		
-		createTargetReachability(targets,actions);
+		
+		//Sort them out by classifications
+		Stream<CharacterActionDescription> solos = actions.stream().filter(cad->cad.solo);
+		Stream<CharacterActionDescription> hitSelfs = actions.stream()
+				.filter(cad-> !cad.solo && cad.hitSelf);
+		Stream<CharacterActionDescription> normals = 
+				actions.stream().filter(cad->!cad.solo && ! cad.hitSelf);
+		
+		
+		
+		//Calculate reachability for all but solo actions
+		//need to inject new solos for self targeting cads
+		
+		//createTargetReachability(targets,actions);	
+		createTargetReachability(targets,normals);
+		createTargetReachability(targets,hitSelfs);
+		
 		
 		time2 = System.currentTimeMillis();
 		System.out.println("reachability + cleaning...."+ (time2-time));
@@ -440,6 +548,18 @@ public class DescisionGrid
 		//dirtyOrigins.forEach(o->{System.out.println("Origin"+o.)
 		
 		dirtyOrigin.forEach(o->o.evalActions());
+		
+		
+		/*
+		 * Evaluate all of your solo targets here
+		 * 
+		 * 
+		 * 
+		 */
+		Stream<CharacterActionReport> soloReports = evalSoloActions(me,solos);
+		Stream<CharacterActionReport> compositeReports = evalSoloActions(me,hitSelfs);
+		
+		
 		
 		time2 = System.currentTimeMillis();
 		System.out.println("eval...."+ (time2-time));
@@ -461,6 +581,10 @@ public class DescisionGrid
 					forXYBoundedDonut(x,y,min,max,grid.width, grid.height,
 							(xp,yp)->createSourceNode(xp,yp,node.direction,car));					
 				}));
+		
+		//how do I deal with the Solo's now?
+		
+		
 		
 	
 		//now collapse the None direction
@@ -657,6 +781,35 @@ public class DescisionGrid
 	{
 		DecisionNode n = nodes[x][y][direction.ordinal()];
 		//System.out.println("Source for "+x+","+y+"Direction"+direction);
+		if(car.descr.soloComponent!=null)
+		{
+			CKPosition origin = n.position;
+			//need to determine if I should rejoin them...
+			AimDescriptionFactory factory = AimDescriptionFactory.getInstance();
+			AimDescription aim = factory.getAsset(car.descr.targetType);
+			CKPosition [] offsets = aim.getOffsets(direction);
+			CKPosition [] targets = AimDescription.calculateTarget(origin, offsets);
+			for(CKPosition pos:targets)
+			{
+				if(pos.equals(origin))
+				{
+					//join two cars
+					CharacterActionReport solo = car.descr.soloReport;
+					for (int i=0;i<solo.values.length;i++)
+					{
+						car.values[i] = car.values[i]+car.values[i];
+					}
+					
+					n.addSource(car);
+					dirtySource.add(n);
+					return;
+				}
+			}
+			
+		}
+		
+		
+		
 		n.addSource(car);
 		dirtySource.add(n);
 
@@ -668,7 +821,7 @@ public class DescisionGrid
  * @param actions
  */
 	public void createTargetReachability(Collection<CKPosition> targets,
-			Collection<CharacterActionDescription> actions)
+			Stream<CharacterActionDescription> actions)
 	{
 		// for each action
 		// for each target
@@ -676,7 +829,8 @@ public class DescisionGrid
 	
 		
 		AimDescriptionFactory factory = AimDescriptionFactory.getInstance();
-		for (CharacterActionDescription cad : actions)
+		
+		actions.forEach(cad ->
 		{
 			
 			AimDescription aim = factory.getAsset(cad.targetType);
@@ -686,7 +840,7 @@ public class DescisionGrid
 			if (aim.getDirection() == Direction.NONE)
 			{
 				CKPosition[] inverse = aim.getInverse(Direction.NONE);
-			markTargets(targets, inverse, Direction.NONE, cad);
+				markTargets(targets, inverse, Direction.NONE, cad);
 			}
 			else 
 			{Direction.stream().filter(d -> d != Direction.NONE)
@@ -695,7 +849,7 @@ public class DescisionGrid
 						markTargets(targets, inverse, dir, cad);
 					});
 			}
-		}
+		});
 		
 	}
 

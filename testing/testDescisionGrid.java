@@ -92,7 +92,7 @@ public class testDescisionGrid
 		int [] costs = {3,20};
 		CharacterActionDescription swing = 
 				new CharacterActionDescription("Swing", CKPropertyStrings.P_SWIPE,
-				costs, false, true, false, 0, swingFunction,null);			
+				costs, false, true, false,false,false, 0, swingFunction,null);			
 		
 				
 		BiFunction<CharacterActionDescription,DecisionNode,double[]> farDistanceFunction 
@@ -109,12 +109,12 @@ public class testDescisionGrid
 		int [] fcosts = {5,20};
 		CharacterActionDescription far = 
 				new CharacterActionDescription("FAR", CKPropertyStrings.P_SHORT_TARGET,
-				fcosts, false, true, false, 0, farDistanceFunction,null);			
+				fcosts, false, true, false,false,false, 0, farDistanceFunction,null);			
 		
 		
 		CharacterActionDescription [] actions = {swing,far};
 		
-		dgrid.updateGrid(Arrays.asList(targets), Arrays.asList(actions));
+		dgrid.updateGrid(new CKPosition(0,0),Arrays.asList(targets), Arrays.asList(actions));
 		
 		dgrid.generateNodeValues(12,false);
 		
@@ -207,7 +207,7 @@ public class testDescisionGrid
 		int [] costs = {3,20};
 		CharacterActionDescription swing = 
 				new CharacterActionDescription("Swing", CKPropertyStrings.P_SWIPE,
-				costs, false, true, false, 0, swingFunction,null);			
+				costs, false, true, false,false,false, 0, swingFunction,null);			
 		
 				
 		BiFunction<CharacterActionDescription,DecisionNode,double[]> farDistanceFunction 
@@ -224,12 +224,12 @@ public class testDescisionGrid
 		int [] fcosts = {5,20};
 		CharacterActionDescription far = 
 				new CharacterActionDescription("FAR", CKPropertyStrings.P_SHORT_TARGET,
-				fcosts, false, true, false, 0, farDistanceFunction,null);			
+				fcosts, false, true, false,false,false, 0, farDistanceFunction,null);			
 		
 		
 		CharacterActionDescription [] actions = {swing,far};
 		
-		dgrid.updateGrid(Arrays.asList(targets), Arrays.asList(actions));
+		dgrid.updateGrid(new CKPosition(0,0),Arrays.asList(targets), Arrays.asList(actions));
 		
 		dgrid.generateNodeValues(12,false);
 		
@@ -284,7 +284,7 @@ public class testDescisionGrid
 		int [] costs = {3,20};
 		CharacterActionDescription swing = 
 				new CharacterActionDescription("Swing", CKPropertyStrings.P_SWIPE,
-				costs, true, true, false, 0, swingFunction,null);			
+				costs, true, true, false,false,false, 0, swingFunction,null);			
 		
 				
 		BiFunction<CharacterActionDescription,DecisionNode,double[]> farDistanceFunction 
@@ -302,13 +302,13 @@ public class testDescisionGrid
 		CharacterActionDescription far = 
 				new CharacterActionDescription("FAR", CKPropertyStrings.P_SHORT_TARGET,
 				//fcosts, false, true, false, 0, farDistanceFunction);			
-				fcosts, true, true, false, 0, farDistanceFunction,null);			
+				fcosts, true, true, false,false,false, 0, farDistanceFunction,null);			
 		
 		
 		CharacterActionDescription [] actions = {swing,far};
 		//CharacterActionDescription [] actions = {far};
 		
-		dgrid.updateGrid(Arrays.asList(targets), Arrays.asList(actions));
+		dgrid.updateGrid(new CKPosition(),Arrays.asList(targets), Arrays.asList(actions));
 		
 		
 		//now calcualte movement stuff

@@ -100,7 +100,9 @@ public class ActorAIController extends ActorController
 		//calculate possible actions
 		DescisionGrid dgrid = new DescisionGrid(w.getGrid());
 		
-		dgrid.updateGrid(w.getActors().stream()
+		dgrid.updateGrid(getActor().getPos(),
+				w.getActors().stream()
+				.filter(a->a!=getActor())
 				.map(CKGridActor::getPos)
 				.collect(Collectors.toList()), actions);
 		/*time2 = System.currentTimeMillis();
