@@ -104,13 +104,15 @@ public class ActorAIController extends ActorController
 				w.getActors().stream()
 				.filter(a->a!=getActor())
 				.map(CKGridActor::getPos)
-				.collect(Collectors.toList()), actions);
+				.collect(Collectors.toList()),
+				actions,
+				movement,
+				book.getChapter(CP_PER_ROUND).getValue());
 		/*time2 = System.currentTimeMillis();
 		System.out.println("update grid...."+ (time2-time));
 		time=time2;
 		*/
-		dgrid.generateNodeValues(movement,
-				book.getChapter(CP_PER_ROUND).getValue());
+//		dgrid.generateNodeValues(
 		
 		//need to find maximal thing to do...
 		/*time2 = System.currentTimeMillis();

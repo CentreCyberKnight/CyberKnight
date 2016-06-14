@@ -9,12 +9,14 @@ import java.util.stream.Stream;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ckCommonUtils.AIBasicCommand;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKPropertyStrings;
 import ckDatabase.AimDescriptionFactory;
 import ckGameEngine.AimDescription;
 import ckGameEngine.CKAbstractGridItem;
 import ckGameEngine.CKGrid;
+import ckGameEngine.ActorAIController.SwingCommand;
 import ckGameEngine.CKGrid.GridNode;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKGridItem;
@@ -114,9 +116,10 @@ public class testDescisionGrid
 		
 		CharacterActionDescription [] actions = {swing,far};
 		
-		dgrid.updateGrid(new CKPosition(0,0),Arrays.asList(targets), Arrays.asList(actions));
+		dgrid.updateGrid(new CKPosition(0,0),Arrays.asList(targets),
+				Arrays.asList(actions),null,12);
 		
-		dgrid.generateNodeValues(12,false);
+//		dgrid.generateNodeValues(12,false);
 		
 		dgrid.PrettyPrintNodeValues(Direction.SOUTHEAST);
 		//dgrid.PrettyPrintNodeValues(Direction.SOUTHWEST);
@@ -229,9 +232,10 @@ public class testDescisionGrid
 		
 		CharacterActionDescription [] actions = {swing,far};
 		
-		dgrid.updateGrid(new CKPosition(0,0),Arrays.asList(targets), Arrays.asList(actions));
+		dgrid.updateGrid(new CKPosition(0,0),Arrays.asList(targets),
+				Arrays.asList(actions),null,12);
 		
-		dgrid.generateNodeValues(12,false);
+		//dgrid.generateNodeValues(12,false);
 		
 		dgrid.PrettyPrintNodeValues(Direction.SOUTHEAST);
 		//dgrid.PrettyPrintNodeValues(Direction.SOUTHWEST);
@@ -243,7 +247,7 @@ public class testDescisionGrid
 	}
 	
 	
-	@Test
+	//@Test
 	public void testMoveAndShoot()
 	{
 		System.out.println("TestMovingFriendly\n");
@@ -308,8 +312,6 @@ public class testDescisionGrid
 		CharacterActionDescription [] actions = {swing,far};
 		//CharacterActionDescription [] actions = {far};
 		
-		dgrid.updateGrid(new CKPosition(),Arrays.asList(targets), Arrays.asList(actions));
-		
 		
 		//now calcualte movement stuff
 		
@@ -318,9 +320,15 @@ public class testDescisionGrid
 		baby.setPos(new CKPosition(5,4));
 		
 		GridNode [][][][] movement= grid.allPositionsReachable(baby, 22, 1);
+
+		dgrid.updateGrid(new CKPosition(),
+				Arrays.asList(targets), Arrays.asList(actions),
+				movement,22);
+		
+
 		
 		//dgrid.generateNodeValues(12,false);
-		dgrid.generateNodeValues(movement, 22);
+//		dgrid.generateNodeValues(movement, 22);
 		
 		
 		//System.out.println("Values for "+Direction.SOUTHEAST);
@@ -349,5 +357,167 @@ public class testDescisionGrid
 		
 		
 	}
+	
+	@Test
+	public void testSoloCompositeShoot()
+	{
+		System.out.println("Test Solo Composites Friendly\n");
+		DescisionGrid dgrid = new DescisionGrid(grid);
+		//need Collection of Target positions
+		CKPosition myPos = new CKPosition(7,7);
+		CKPosition[] targets = {new CKPosition(5,5),new CKPosition(5,7),new CKPosition(5,9)};
+		CKPosition[] friendlyTargets = {new CKPosition(5,9)};
+		CKPosition[] foeTargets = {new CKPosition(5,5),new CKPosition(5,7),new CKPosition(7,4)};
+		
+		//and array of CharacterActionDescriptions
+		
+		
+		BiFunction<CharacterActionDescription,DecisionNode,double[]> swingFunction 
+		=(cad,node)->
+		{
+			CKPosition pos = node.position;
+			//double x = node.position.getX();
+			//double y = node.position.getY();
+			
+			
+			AimDescriptionFactory factory = AimDescriptionFactory.getInstance();
+			AimDescription aim = factory.getAsset(cad.targetType);
+			CKPosition [] offsets = aim.getOffsets(node.direction);
+			
+			long goodHits = targetHitStream(pos,foeTargets,offsets).count();
+			long badHits = targetHitStream(pos,friendlyTargets,offsets).count();
+			
+			
+			
+			double []utils=new double[cad.costs.length];
+			for(int i=0;i<utils.length;i++)
+			{
+				utils[i] = (cad.costs[i]-2)*(goodHits-1.5*badHits);
+			}
+			return utils;
+		};
+		
+		int [] costs = {3,20};
+		CharacterActionDescription swing = 
+				new CharacterActionDescription("Swing", CKPropertyStrings.P_SWIPE,
+				costs, true, true, false,false,false, 0, swingFunction,null);			
+		
+				
+		BiFunction<CharacterActionDescription,DecisionNode,double[]> farDistanceFunction 
+		=(cad,node)->
+		{//only one target, so no need to check how many you hit!
+			double []utils=new double[cad.costs.length];
+			for(int i=0;i<utils.length;i++)
+			{
+				utils[i] = (cad.costs[i]-3);
+			}
+			return utils;
+		};
+		
+		int [] fcosts = {5,20};
+		CharacterActionDescription far = 
+				new CharacterActionDescription("FAR", CKPropertyStrings.P_SHORT_TARGET,
+				//fcosts, false, true, false, 0, farDistanceFunction);			
+				fcosts, true, true, false,false,false, 0, farDistanceFunction,null);			
+		
+		
+		
+		BiFunction<CharacterActionDescription,DecisionNode,double[]> healingCrossFunction 
+		=(cad,node)->
+		{
+			
+			CKPosition pos = node.position;
+			//double x = node.position.getX();
+			//double y = node.position.getY();
+			
+			
+			AimDescriptionFactory factory = AimDescriptionFactory.getInstance();
+			AimDescription aim = factory.getAsset(cad.targetType);
+			CKPosition [] offsets = aim.getOffsets(node.direction);
+			
+			long goodHits =targetHitStream(pos,friendlyTargets,offsets).count(); 
+			long badHits = targetHitStream(pos,foeTargets,offsets).count();
+			if(cad.solo)
+			{
+				goodHits=1;
+			}
+			
+			double []utils=new double[cad.costs.length];
+			for(int i=0;i<utils.length;i++)
+			{
+				utils[i] = (cad.costs[i]-3)*(goodHits-.75*badHits);
+			}
+			System.out.println("calculating: "+cad.action+" at "
+			+pos+" "+utils[0]+" "+goodHits+" "+badHits);
+			return utils;
+		};
+		
+		int [] cCosts = {10};
+		CharacterActionDescription cross = 
+				new CharacterActionDescription("CROSS", CKPropertyStrings.P_CROSS_TARGET,
+				//fcosts, false, true, false, 0, farDistanceFunction);			
+				cCosts, true, false, false,false,true, 0, healingCrossFunction,null);	
+		
+		
+		
+		int [] csCosts = {5};
+		CharacterActionDescription healSelf = 
+				new CharacterActionDescription("SELF", CKPropertyStrings.P_SELF,
+				//fcosts, false, true, false, 0, farDistanceFunction);			
+				csCosts, true, false, false,true,false, 0, healingCrossFunction,null);	
+		
+		
+		
+		
+		
+		CharacterActionDescription [] actions = {cross,healSelf,swing,far};
+		//CharacterActionDescription [] actions = {far};
+		
+		
+		//now calculate movement stuff
+		
+		
+		CKGridActor baby = new CKGridActor("babySprite",Direction.NORTHWEST);
+		baby.setPos(new CKPosition(5,4));
+		
+		GridNode [][][][] movement= grid.allPositionsReachable(baby, 22, 1);
+
+		dgrid.updateGrid(myPos,
+				Arrays.asList(targets), Arrays.asList(actions),
+				movement,22);
+		
+
+		
+		//dgrid.generateNodeValues(12,false);
+//		dgrid.generateNodeValues(movement, 22);
+		
+		
+		//System.out.println("Values for "+Direction.SOUTHEAST);
+		//dgrid.PrettyPrintNodeSummary(Direction.SOUTHEAST);
+		//System.out.println("Values for "+Direction.SOUTHWEST);
+		//dgrid.PrettyPrintNodeSummary(Direction.SOUTHWEST);
+		System.out.println("Values for "+Direction.NORTHWEST);
+		dgrid.PrettyPrintNodeSummary(Direction.NORTHWEST);
+		//System.out.println("Values for "+Direction.NORTHEAST);
+		//dgrid.PrettyPrintNodeSummary(Direction.NORTHEAST);
+		
+		/*
+		System.out.println("Values for "+Direction.SOUTHEAST);
+		dgrid.PrettyPrintNodeValues(Direction.SOUTHEAST);
+		System.out.println("Values for "+Direction.SOUTHWEST);
+		dgrid.PrettyPrintNodeValues(Direction.SOUTHWEST);
+		*/System.out.println("Values for "+Direction.NORTHWEST);
+		dgrid.PrettyPrintNodeValues(Direction.NORTHWEST);
+		dgrid.PrettyPrintNodeActions(Direction.NORTHWEST);
+		
+		/*System.out.println("Values for "+Direction.NORTHEAST);
+		dgrid.PrettyPrintNodeValues(Direction.NORTHEAST);
+		*/
+		
+		getCmds(movement[7][7][Direction.NORTHEAST.ordinal()][0]);
+		
+		
+	}
+	
 
 }

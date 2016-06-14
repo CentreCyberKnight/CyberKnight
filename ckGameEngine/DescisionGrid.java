@@ -9,7 +9,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import ckCommonUtils.AICommand;
@@ -372,6 +374,7 @@ public class DescisionGrid
 		HashSet<CharacterActionDescription> actions = new HashSet<>();
 		HashMap<String, CharacterActionReport> reports = new HashMap<>();
 		HashMap<String, CharacterActionReport> sources = new HashMap<>();
+		HashMap<CharacterActionReport, Boolean> exclusions = new HashMap<>();
 		public HashMap<Integer,CharacterActionReport> cmap;
 		public boolean hasMoved;
 	
@@ -461,6 +464,11 @@ public class DescisionGrid
 			return utility;
 
 		}
+
+		public void addExclusion(CharacterActionReport solo)
+		{
+			exclusions.put(solo,true);
+		}
 		
 		/*
 		 * public void forEachAction(BiConsumer<? super String, ? super Double>
@@ -503,16 +511,19 @@ public class DescisionGrid
 	 * Creates a CAR for each CAD at this node.
 	 * Stores them in a hash table for quick retrieval
 	 */
-	public Stream<CharacterActionReport> evalSoloActions(CKPosition pos,Stream<CharacterActionDescription> actions)
+	public List<CharacterActionReport> evalSoloActions(CKPosition pos,
+			List<CharacterActionDescription> actions)
 	{
 		
-		return actions.map(cad ->cad.evalSoloAction(pos,
-				nodes[(int) pos.getX()][(int) pos.getY()][(int) pos.getZ()]));
+		return actions.stream().map(cad ->cad.evalSoloAction(pos,
+				nodes[(int) pos.getX()][(int) pos.getY()][(int) pos.getZ()]))
+				.collect(Collectors.toList());
 	}
 	
 	
 	public void updateGrid(CKPosition me, Collection<CKPosition> targets,
-			Collection<CharacterActionDescription> actions)
+			Collection<CharacterActionDescription> actions,
+			GridNode[][][][] movement, int maxCP)
 	{
 		Long start = System.currentTimeMillis();
 		Long time =  start;
@@ -525,12 +536,15 @@ public class DescisionGrid
 		
 		
 		//Sort them out by classifications
-		Stream<CharacterActionDescription> solos = actions.stream().filter(cad->cad.solo);
-		Stream<CharacterActionDescription> hitSelfs = actions.stream()
-				.filter(cad-> !cad.solo && cad.hitSelf);
-		Stream<CharacterActionDescription> normals = 
-				actions.stream().filter(cad->!cad.solo && ! cad.hitSelf);
-		
+		List<CharacterActionDescription> solos = actions.stream()
+				.filter(cad->cad.solo).collect(Collectors.toList());
+		List<CharacterActionDescription> hitSelfs = actions.stream()
+				.filter(cad-> !cad.solo && cad.hitSelf)
+				.collect(Collectors.toList());
+		List<CharacterActionDescription> normals = 
+				actions.stream()
+				.filter(cad->!cad.solo && ! cad.hitSelf)
+				.collect(Collectors.toList());	
 		
 		
 		//Calculate reachability for all but solo actions
@@ -556,8 +570,8 @@ public class DescisionGrid
 		 * 
 		 * 
 		 */
-		Stream<CharacterActionReport> soloReports = evalSoloActions(me,solos);
-		Stream<CharacterActionReport> compositeReports = evalSoloActions(me,hitSelfs);
+		List<CharacterActionReport> soloReports = evalSoloActions(me,solos);
+		List<CharacterActionReport> compositeReports = evalSoloActions(me,hitSelfs);
 		
 		
 		
@@ -611,6 +625,10 @@ public class DescisionGrid
 		time2 = System.currentTimeMillis();
 	System.out.println("Total Time"+ (time2-start));
 					
+	
+	
+	
+		generateNodeValues(movement,maxCP,soloReports,compositeReports);
 		
 	}
 
@@ -628,8 +646,16 @@ public class DescisionGrid
 	 * @param motion
 	 * @param maxCP
 	 */
-	public void generateNodeValues(GridNode[][][][] motion,int maxCP)
+	public void generateNodeValues(GridNode[][][][] motion,int maxCP,
+			List<CharacterActionReport> soloReports,
+			List<CharacterActionReport> compositeReports)
 	{
+		if(motion==null)
+		{
+			generateNodeValues(maxCP,false);
+			return;
+		}
+		
 		dirtySource.stream()
 		.filter(node->node.direction!=Direction.NONE) //only look at directional elements
 		.filter(node->                                                         //only look at nodes that have been visited
@@ -649,6 +675,16 @@ public class DescisionGrid
 		{
 			GridNode m = motion[(int) node.position.getX()][(int) node.position.getY()]
 					[node.direction.ordinal()][0];
+			
+			//add solos and composites if necessary
+			soloReports.forEach(car->node.addSource(car));
+			compositeReports.forEach(car->{
+				if(!node.exclusions.containsKey(car))
+				{
+					node.addSource(car);
+				}				
+			});
+			
 			
 			
 			
@@ -799,7 +835,7 @@ public class DescisionGrid
 					{
 						car.values[i] = car.values[i]+car.values[i];
 					}
-					
+					n.addExclusion(solo);
 					n.addSource(car);
 					dirtySource.add(n);
 					return;
@@ -821,7 +857,7 @@ public class DescisionGrid
  * @param actions
  */
 	public void createTargetReachability(Collection<CKPosition> targets,
-			Stream<CharacterActionDescription> actions)
+			List<CharacterActionDescription> actions)
 	{
 		// for each action
 		// for each target

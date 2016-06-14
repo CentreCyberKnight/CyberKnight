@@ -10,6 +10,7 @@ import static ckCommonUtils.CKPropertyStrings.P_SWIPE;
 import java.util.HashMap;
 
 import ckCommonUtils.CKPosition;
+import ckCommonUtils.CKPropertyStrings;
 import ckGameEngine.AimDescription;
 import ckGameEngine.Direction;
 
@@ -83,7 +84,11 @@ public class AimDescriptionFactory
 		AimDescription star =
 				new AimDescription(3,starO,Direction.NONE,false,1,5);
 		assetMap.put(P_STAR, star);		
-		
+		CKPosition[] crossO = {new CKPosition(1, 0), new CKPosition(0, -1),
+				new CKPosition(-1, 0), new CKPosition(0, 1), new CKPosition(0,0)};
+		AimDescription cross = 
+				new AimDescription(2,crossO,Direction.NONE,true,0,.25);
+		assetMap.put(CKPropertyStrings.P_CROSS_TARGET, cross);
 		
 		
 		

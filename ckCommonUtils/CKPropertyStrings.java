@@ -74,6 +74,7 @@ public class CKPropertyStrings
 	public static String P_SHORT_TARGET="short target";
 	public static String P_MID_TARGET="mid target";
 	public static String P_FAR_TARGET="far target";
+	public static String P_CROSS_TARGET="Cross Target";
 	
 	
 	public static String P_STAR="star";
