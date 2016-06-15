@@ -89,7 +89,9 @@ public class AimDescriptionFactory
 		AimDescription cross = 
 				new AimDescription(2,crossO,Direction.NONE,true,0,.25);
 		assetMap.put(CKPropertyStrings.P_CROSS_TARGET, cross);
-		
+		AimDescription shortSmallCircle = 
+				new AimDescription(4,crossO,Direction.NONE,false,0,4);
+		assetMap.put(CKPropertyStrings.P_SHORT_SMALL_CIRCLE, shortSmallCircle);
 		
 		
 		

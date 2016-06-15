@@ -596,9 +596,6 @@ public class DescisionGrid
 							(xp,yp)->createSourceNode(xp,yp,node.direction,car));					
 				}));
 		
-		//how do I deal with the Solo's now?
-		
-		
 		
 	
 		//now collapse the None direction
@@ -620,7 +617,10 @@ public class DescisionGrid
 						});
 					})
 					);
-					
+		
+		setSoloCars(movement,soloReports,compositeReports);
+		
+		
 		//All "real directions" are ready for evaluation.		
 		time2 = System.currentTimeMillis();
 	System.out.println("Total Time"+ (time2-start));
@@ -656,6 +656,12 @@ public class DescisionGrid
 			return;
 		}
 		
+	
+		
+		
+		
+		
+		
 		dirtySource.stream()
 		.filter(node->node.direction!=Direction.NONE) //only look at directional elements
 		.filter(node->                                                         //only look at nodes that have been visited
@@ -676,17 +682,9 @@ public class DescisionGrid
 			GridNode m = motion[(int) node.position.getX()][(int) node.position.getY()]
 					[node.direction.ordinal()][0];
 			
-			//add solos and composites if necessary
-			soloReports.forEach(car->node.addSource(car));
-			compositeReports.forEach(car->{
-				if(!node.exclusions.containsKey(car))
-				{
-					node.addSource(car);
-				}				
-			});
 			
 			
-			
+	
 			
 			int cp = m.remainingCP;
 			boolean moved = maxCP !=cp;
@@ -832,8 +830,8 @@ public class DescisionGrid
 					//join two cars
 					CharacterActionReport solo = car.descr.soloReport;
 					for (int i=0;i<solo.values.length;i++)
-					{
-						car.values[i] = car.values[i]+car.values[i];
+					{//MKB
+						car.values[i] = car.values[i]+solo.values[i];
 					}
 					n.addExclusion(solo);
 					n.addSource(car);
@@ -888,6 +886,53 @@ public class DescisionGrid
 		});
 		
 	}
+	
+	
+	/**
+	 * Updates all of the nodes that we can stand at to hit targets using actions (CAD's)
+	 * @param targets
+	 * @param actions
+	 */
+		public void setSoloCars(GridNode[][][][] movement,
+				List<CharacterActionReport> solos,List<CharacterActionReport> composite)
+		{
+			//for each node
+			//if visited,add self
+			
+			for (int i = 0; i < grid.width; i++)
+				for (int j = 0; j < grid.height; j++)
+					for (int k = 0; k < Direction.values().length; k++)
+					{
+						if(movement[i][j][k][0].isVisited())
+						{
+//							GridNode g = movement[i][j][k][0];
+							DecisionNode node = nodes[i][j][k];
+							for(CharacterActionReport car: solos)
+							{	//do this after the collapse, so place it in all of the nodes...
+									node.addSource(car);
+									dirtySource.add(node);
+							}
+							for(CharacterActionReport car:composite)
+							{		
+									if(!node.exclusions.containsKey(car))
+									{	//System.out.println("Adding Exclusion");
+										node.addSource(car);
+										dirtySource.add(node);
+									}
+									else
+									{
+										//System.out.println("Exclusion present"+node.position);
+									}
+									
+							}
+								
+								
+							
+							
+						}
+					}
+		
+		}
 
 	protected DecisionNode getNode(CKPosition pos, Direction dir)
 	{
@@ -906,9 +951,14 @@ public class DescisionGrid
 	protected void markTargets(Collection<CKPosition> targets,
 			CKPosition[] inverse, Direction dir, CharacterActionDescription cad)
 	{
+		//CKPosition self = new CKPosition(0,0);
 		for (CKPosition invP : inverse)
+		{
+			//if(cad.hitself && invP.equals(self)) { continue; }
+			
 			for (CKPosition pos : targets)
 			{
+				
 				CKPosition oPos = invP.add(pos);
 				//make sure that oPos is on the grid.
 				//double x = oPos.getX();
@@ -920,7 +970,7 @@ public class DescisionGrid
 					dirtyOrigin.add(node);
 				}
 			}
-
+		}
 	}
 
 }

@@ -402,7 +402,17 @@ public class testDescisionGrid
 				new CharacterActionDescription("Swing", CKPropertyStrings.P_SWIPE,
 				costs, true, true, false,false,false, 0, swingFunction,null);			
 		
-				
+		
+		int [] firecosts = {10,15};
+		CharacterActionDescription fireball = 
+				new CharacterActionDescription("FB", CKPropertyStrings.P_SHORT_SMALL_CIRCLE,
+				firecosts, true, false, false,false,true, 0, swingFunction,null);			
+		
+		
+		
+		
+		
+		
 		BiFunction<CharacterActionDescription,DecisionNode,double[]> farDistanceFunction 
 		=(cad,node)->
 		{//only one target, so no need to check how many you hit!
@@ -470,8 +480,8 @@ public class testDescisionGrid
 		
 		
 		
-		CharacterActionDescription [] actions = {cross,healSelf,swing,far};
-		//CharacterActionDescription [] actions = {far};
+		CharacterActionDescription [] actions = {fireball};
+		//CharacterActionDescription [] actions = {healSelf,cross,swing,far};
 		
 		
 		//now calculate movement stuff
