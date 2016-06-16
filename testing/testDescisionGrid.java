@@ -364,10 +364,10 @@ public class testDescisionGrid
 		System.out.println("Test Solo Composites Friendly\n");
 		DescisionGrid dgrid = new DescisionGrid(grid);
 		//need Collection of Target positions
-		CKPosition myPos = new CKPosition(7,7);
+		CKPosition myPos = new CKPosition(7,8);
 		CKPosition[] targets = {new CKPosition(5,5),new CKPosition(5,7),new CKPosition(5,9)};
 		CKPosition[] friendlyTargets = {new CKPosition(5,9)};
-		CKPosition[] foeTargets = {new CKPosition(5,5),new CKPosition(5,7),new CKPosition(7,4)};
+		CKPosition[] foeTargets = {new CKPosition(5,5),new CKPosition(5,7)};
 		
 		//and array of CharacterActionDescriptions
 		
@@ -386,13 +386,22 @@ public class testDescisionGrid
 			
 			long goodHits = targetHitStream(pos,foeTargets,offsets).count();
 			long badHits = targetHitStream(pos,friendlyTargets,offsets).count();
+			if(cad.solo)
+			{
+				badHits=1;
+			}
+			if(goodHits==2)
+			{
+				System.out.println("two hits");
+			}
+			
 			
 			
 			
 			double []utils=new double[cad.costs.length];
 			for(int i=0;i<utils.length;i++)
 			{
-				utils[i] = (cad.costs[i]-2)*(goodHits-1.5*badHits);
+				utils[i] = (cad.costs[i]-2)*(goodHits-.75*badHits);
 			}
 			return utils;
 		};
@@ -488,13 +497,13 @@ public class testDescisionGrid
 		
 		
 		CKGridActor baby = new CKGridActor("babySprite",Direction.NORTHWEST);
-		baby.setPos(new CKPosition(5,4));
-		
-		GridNode [][][][] movement= grid.allPositionsReachable(baby, 22, 1);
+		baby.setPos(myPos);
+		int CP = 15;
+		GridNode [][][][] movement= grid.allPositionsReachable(baby, 15, 1);
 
 		dgrid.updateGrid(myPos,
 				Arrays.asList(targets), Arrays.asList(actions),
-				movement,22);
+				movement,15);
 		
 
 		

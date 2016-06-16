@@ -177,6 +177,7 @@ public class DescisionGrid
 					+ Arrays.toString(costs) + ", combo=" + combo
 					+ ", interpolate=" + interpolate + ", aggregate="
 					+ aggregate + ", catagory=" + catagory
+					+ ", solo="+solo+", hitSelf="+hitSelf
 					+  "]";
 		}
 
@@ -312,12 +313,12 @@ public class DescisionGrid
 		
 		public CharacterActionReport add(CharacterActionReport car)
 		{
-			return add(car,descr.aggregate);
+			return add(car,descr.aggregate,false);
 		}
-		public CharacterActionReport add(CharacterActionReport car,boolean aggregate)
+		public CharacterActionReport add(CharacterActionReport car,boolean aggregate,boolean force)
 		{
 
-			if (descr != car.descr)
+			if (descr != car.descr && !force)
 			{
 				return null;
 			}
@@ -329,7 +330,7 @@ public class DescisionGrid
 				{
 					v[i] = values[i] + car.values[i];
 				}
-				return new CharacterActionReport(descr, v,null);
+				return new CharacterActionReport(descr, v,origin);
 			} 
 			else	// return max value
 			{
@@ -720,8 +721,10 @@ public class DescisionGrid
 	{
 		for (int y = 0; y < grid.height; y++)
 		{
-			for (int x = 0; x < grid.width; x++)
+			int x = 7;
+//			for (int x = 0; x < grid.width; x++)
 			{
+					DecisionNode node = nodes[x][y][dir.ordinal()];
 					double utility =nodes[x][y][dir.ordinal()].utility;
 					if(utility>0)
 					{
@@ -730,8 +733,18 @@ public class DescisionGrid
 					System.out.print(y);
 					System.out.print("->");
 					System.out.print(utility);
+					System.out.print(" with ");
+					System.out.print(node.cpAvailible+" cp");
 					System.out.print('\n');
 					System.out.println(nodes[x][y][dir.ordinal()].cmap.get(0).toString());
+					System.out.print(nodes[x][y][dir.ordinal()].cmap.get(0).values[0]);
+					if(nodes[x][y][dir.ordinal()].cmap.get(0).origin != null)
+						{
+						System.out.println(","+nodes[x][y][dir.ordinal()].cmap.get(0).origin.position);
+						}
+					else{
+						System.out.println("unset origin");
+					}
 					}
 					
 			}
@@ -827,14 +840,14 @@ public class DescisionGrid
 			{
 				if(pos.equals(origin))
 				{
-					//join two cars
+					//join two cars--create new report
 					CharacterActionReport solo = car.descr.soloReport;
-					for (int i=0;i<solo.values.length;i++)
+					/*for (int i=0;i<solo.values.length;i++)
 					{//MKB
 						car.values[i] = car.values[i]+solo.values[i];
-					}
+					}*/
 					n.addExclusion(solo);
-					n.addSource(car);
+					n.addSource(car.add(solo,true,true));
 					dirtySource.add(n);
 					return;
 				}
