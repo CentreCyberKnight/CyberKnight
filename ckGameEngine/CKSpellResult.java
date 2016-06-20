@@ -172,9 +172,6 @@ public class CKSpellResult
 	}
 	
 	
-	
-	
-	
 	public DoubleStream resultsStream(String resultType)
 	{
 		return results.stream()
@@ -188,8 +185,6 @@ public class CKSpellResult
 				.filter(r->r.resultType.equalsIgnoreCase(resultType))
 				.mapToDouble(Tuple::getResult);
 	}
-	
-	
 	
 	public double sumResults(String resultType)
 	{
@@ -218,8 +213,6 @@ public class CKSpellResult
 	{
 		return resultsStream(resultType).average().getAsDouble();
 	}
-	
-	
 	
 	
 	

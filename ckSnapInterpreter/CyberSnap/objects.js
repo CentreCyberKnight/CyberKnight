@@ -168,6 +168,7 @@ SpriteMorph.prototype.categories =
         'earth',
         'variables',
         'lightning',
+        'scry',
         'other',
     ];
 
@@ -182,6 +183,7 @@ SpriteMorph.prototype.blockColor = {
     operators : new Color(144, 39, 156),
     variables : new Color(94, 110, 99),
     earth : new Color(13, 156, 51),
+    scry : new Color(255,52,179),
     other : new Color(243, 118, 29)
 };
 
@@ -1237,15 +1239,85 @@ SpriteMorph.prototype.initBlocks = function () {
 
 SpriteMorph.prototype.initBlocks();
 
+SpriteMorph.prototype.addNeccesaryToCache=function(){
+	var t=SpriteMorph.prototype.getNecessaryCategories();
+	var i=SpriteMorph.prototype.blocks[0];
+	console.log(SpriteMorph.prototype.blocks);
+	for(var i=0; i<SpriteMorph.prototype.blocks.length; i++){
+	console.log("t");
+		for(var v=0; v<t.length; v++){
+			if(t[v]==SpriteMorph.prototype.blocks.category){
+				console.log(SpriteMorph.prototype.blocks.category);
+			}
+		}
+	}
+}
 
+
+
+SpriteMorph.prototype.getNecessaryCategories=function(){
+	var acc=0;
+	var timeToStop=SpriteMorph.prototype.categories.length;
+	var returner=[];
+	for(var i=0; i<timeToStop; i++){
+		var cat=SpriteMorph.prototype.categories[i];
+		switch(cat){
+		case 'control':
+		case 'operators':
+		case 'variables':
+		case 'other':
+			{
+				break;
+			}
+		default:
+			{
+				returner[acc]=cat;
+				acc=acc+1;
+			}
+		}
+	}
+	return returner;
+}
+
+
+function getCategoryNames(){
+	return (SpriteMorph.prototype.getNecessaryCategories());
+}		
 
 CyberKnight = {};
 
+var globalComplete;
+
 CyberKnight.castSpell = function(catagory,spell,cp,target,key)
 {
-	jsDebug.print(catagory+" "+spell+" for "+cp);
+	//jsDebug.print(catagory+" "+spell+" for "+cp);
+	//jsDebug.print("looking for "+key);
+	var complete = javaMove.spell(catagory,spell,cp,target,key);
+	globalComplete=complete;	
+	console.log(SpriteMorph.prototype.artifact);
+	
+	if(complete==null)
+	{
+		jsDebug.print("Spell Fails--Needs to stop here!");
+	}
+	else if (!complete.isSet())
+	{	//MKB DEBUG
+		console.log("Pausing spell",spell);
+		console.log(ide.stage);
+		ide.stage.threads.pauseAll(ide.stage);
+	}
+		 
+}
 
-	var complete = javaMove.spell(catagory,spell,cp,target,key)
+CyberKnight.castTrySpell = function(catagory,spell,cp,target,key)
+{
+	jsDebug.print(catagory+" "+spell+" for "+cp);
+	jsDebug.print("looking for "+key);
+
+	var complete = javaMove.spell(catagory,spell,cp,target,key);
+	globalComplete=complete;
+	
+	
 	if(complete==null)
 	{
 		jsDebug.print("Spell Fails--Needs to stop here!");
@@ -1254,15 +1326,17 @@ CyberKnight.castSpell = function(catagory,spell,cp,target,key)
 	{	//MKB DEBUG
 		console.log("Pausing spell",spell);
 		ide.stage.threads.pauseAll(ide.stage);
-	}	 
+
+	}
+ 
 }
 
-CyberKnight.castMoveToSpell = function()
+CyberKnight.castMoveToSpell = function(cp)
 {
 	//need to change this debug info
 	//jsDebug.print("moveToTest");
 
-	var complete = javaMove.moveTo();
+	var complete = javaMove.moveTo(cp);
 	if(complete==null)
 	{
 		jsDebug.print("Move to failed--Needs to stop here!");
@@ -1271,6 +1345,7 @@ CyberKnight.castMoveToSpell = function()
 	{	//alex debug
 		console.log("Pausing spell");
 		ide.stage.threads.pauseAll(ide.stage);
+		
 	}	 
 }
 
@@ -1278,7 +1353,7 @@ CyberKnight.castMoveToSpell = function()
 CyberKnight.castAimSpell = function(catagory,spell,cp,target,key)
 {
 	var tar =javaMove.aim(spell,cp);
-	
+
 	
 	if(! tar.isSet())
 	{
@@ -1292,8 +1367,7 @@ CyberKnight.castAimSpell = function(catagory,spell,cp,target,key)
 CyberKnight.castSelfSpell = function(catagory,spell,cp,key)
 {
 	jsDebug.print(catagory+" "+spell+" for "+cp);
-
-	var complete = javaMove.selfSpell(catagory,spell,cp,key)
+	var complete = javaMove.selfSpell(catagory,spell,cp,key);
 	if(complete==null)
 	{
 		jsDebug.print("Spell Fails--Needs to stop here!");
@@ -1303,6 +1377,23 @@ CyberKnight.castSelfSpell = function(catagory,spell,cp,key)
 		ide.stage.threads.pauseAll(ide.stage);
 	}	 
 }
+//set globalComplete to null in snapCompletes
+CyberKnight.castSpellValue = function(catagory,spell,cp,key,value)
+{
+	//jsDebug.print(catagory+" "+spell+" for "+cp);	
+	if(globalComplete!=null){
+	var k=globalComplete.getValue().sumResults(value);
+	console.log(k);
+	return k;
+	}
+	else{
+	return -5;
+	}
+
+}
+
+
+
 CyberKnight.spells =
 [
 ["water","poison",-1],
@@ -1331,6 +1422,7 @@ CyberKnight.spells =
 ["earth","projectile",-1],
 ["earth","mud",10],
 ["earth","stone skin",10],
+['move',"take",1],
 ];
 
 CyberKnight.selfSpells = 
@@ -1356,8 +1448,24 @@ CyberKnight.aimSpells =
 
 CyberKnight.moveToSpells=
 [
-['move','moveTo',5]
+['move','moveTo',-1],
 ];
+//for the fourth value
+//1 means that the key is the page
+//0 means that the key is a page the user is searching for
+CyberKnight.scrySpells=
+[
+['scry',"traits",0,1],
+['scry',"visible",0,1],
+];
+
+CyberKnight.hackSpells=
+[
+["lightning","test hide",5],
+["lightning","test hide 2",5],
+['scry',"results",0],
+];
+
 
 
 CyberKnight.craftName = function(spell)
@@ -1388,7 +1496,7 @@ CyberKnight.writeSpellCommands = function()
 			only: SpriteMorph,
 			type: 'command',
 			category: spell[0],
-			spec:spell[1]+" at %dst"+cpSlot,
+			spec:spell[1]+" at %testing "+cpSlot,
 		};
 		//then link the target	
 		
@@ -1403,9 +1511,11 @@ CyberKnight.createSpellFunction = function(spell)
 		{	
 			var CP = cp;
 			if(spell[2]>=0) { CP = spell[2]; }			
-			CyberKnight.castSpell(spell[0],spell[1],CP,target,"");
+			return CyberKnight.castSpell(spell[0],spell[1],CP,target,"");
 		};
 };
+
+
 
 
 /**AIM STUFF **/
@@ -1505,15 +1615,15 @@ moveTo SPELL STUFF
 CyberKnight.writeMoveToSpellCommands = function()
 {
 	
-	console.log("Does this work?");
+	//console.log("Does this work?");
 	
 	
 	for(var i=0;i<CyberKnight.moveToSpells.length;i++)
 	{
-	console.log("Does this work? 2");
+	//console.log("Does this work? 2");
 		var spell = CyberKnight.moveToSpells[i];
 		var name = CyberKnight.craftName(spell);
-		console.log("Does this work? 3",spell,name);
+		//console.log("Does this work? 3",spell,name);
 		jsDebug.print("Loading "+spell+" named "+name);
 
 		
@@ -1542,7 +1652,106 @@ CyberKnight.createMoveToSpellFunction = function(spell)
 		{	
 			var CP = cp;
 			if(spell[2]>=0) { CP = spell[2]; }			
-			return CyberKnight.castMoveToSpell();
+			return CyberKnight.castMoveToSpell(CP);
+		};
+};
+
+/*
+Scry spell stuff
+*/
+
+CyberKnight.writeScrySpellCommands = function()
+{
+	
+	//jsDebug.print("Does this work?);
+	
+	
+	for(var i=0;i<CyberKnight.scrySpells.length;i++)
+	{
+		var spell = CyberKnight.scrySpells[i];
+		var name = CyberKnight.craftName(spell);
+		jsDebug.print("Loading "+spell+" named "+name);
+
+		
+		//first write block		
+		var cpSlot = "";
+		if(spell[2]==-1) { cpSlot = " for %n"; }
+		
+		var label = " for %s ";
+		if(spell[3]==1) 
+		{ 
+			label="";						 
+		}
+
+		SpriteMorph.prototype.blocks[name] =
+		{
+			only: SpriteMorph,
+			type: 'command',
+			category: spell[0],
+			spec:spell[1]+" at %dst "+label+cpSlot,
+		};
+		//then link the target	
+		
+		SpriteMorph.prototype[name] = CyberKnight.createScrySpellFunction(spell);
+	}
+	
+};
+
+CyberKnight.createScrySpellFunction = function(spell)
+{
+	return  function (target,key,cp)
+		{	
+			var CP = cp;
+			var Key=key;
+			if(spell[2]>=0) { CP = spell[2]; }
+			if(spell[3]==1){Key=spell[1];}
+			console.log(Key);			
+			CyberKnight.castTrySpell(spell[0],spell[1],CP,target,Key);
+		};
+};
+
+/*
+hacky spells in order to get scry to work
+*/
+
+CyberKnight.writeHackSpellCommands = function()
+{
+	
+	//jsDebug.print("Does this work?);
+	
+	
+	for(var i=0;i<CyberKnight.hackSpells.length;i++)
+	{
+		var spell = CyberKnight.hackSpells[i];
+		var name = CyberKnight.craftName(spell);
+		jsDebug.print("Loading "+spell+" named "+name);
+
+		
+		//first write block		
+		var cpSlot = "";
+		if(spell[2]==-1) { cpSlot = " for %n"; }
+
+		SpriteMorph.prototype.blocks[name] =
+		{
+			only: SpriteMorph,
+			type: 'reporter',
+			category: spell[0],
+			spec:spell[1]+" for %s "+cpSlot,
+		};
+		//then link the target	
+		
+		SpriteMorph.prototype[name] = CyberKnight.createHackSpellFunction(spell);
+	}
+	
+};
+
+CyberKnight.createHackSpellFunction = function(spell)
+{
+	return  function (value,cp)
+		{	
+			var CP = cp;
+			if(spell[2]>=0) { CP = spell[2]; }			
+			return CyberKnight.castSpellValue(spell[0],spell[1],CP,"",value);
 		};
 };
 
@@ -1550,7 +1759,7 @@ CyberKnight.createMoveToSpellFunction = function(spell)
 	puts blocks into the categories so we can see them.
 */
 CyberKnight.pushCategories = function(cat,blocks,block)
-{
+{	
 	jsDebug.print("Printing for "+cat);
 	for(var i=0;i<CyberKnight.spells.length;i++)
 	{
@@ -1592,9 +1801,9 @@ CyberKnight.pushCategories = function(cat,blocks,block)
 	
 			var spell = CyberKnight.moveToSpells[i];
 			jsDebug.print("Printing for "+cat+" A "+spell[0]+" A "+(spell[0]==cat));
-			jsDebug.print("Printing for "+cat+" A "+spell[0]);
-			jsDebug.print("it's being called");
-			console.log(spell);
+			//jsDebug.print("Printing for "+cat+" A "+spell[0]);
+			//jsDebug.print("it's being called");
+			//console.log(spell);
 			if(spell[0]===cat)
 			{	
 				var name = CyberKnight.craftName(spell);
@@ -1603,6 +1812,28 @@ CyberKnight.pushCategories = function(cat,blocks,block)
 			}
 				
 		}
+		jsDebug.print("Printing for "+cat);
+		
+	for(var i=0;i<CyberKnight.scrySpells.length;i++)
+	{
+		var spell = CyberKnight.scrySpells[i];
+		if(spell[0]===cat)
+		{	
+			var name = CyberKnight.craftName(spell);
+			blocks.push(block(name));	
+		}	
+	}
+	
+	for(var i=0;i<CyberKnight.hackSpells.length;i++)
+		{
+			var spell = CyberKnight.hackSpells[i];
+			if(spell[0]===cat)
+			{	
+			var name = CyberKnight.craftName(spell);
+			blocks.push(block(name));	
+			}	
+		}
+	
 		
 	
 };
@@ -1612,7 +1843,8 @@ CyberKnight.writeSpellCommands();
 CyberKnight.writeAimSpellCommands();	
 CyberKnight.writeSelfSpellCommands();	
 CyberKnight.writeMoveToSpellCommands();	
-
+CyberKnight.writeScrySpellCommands();	
+CyberKnight.writeHackSpellCommands();	
 
 SpriteMorph.prototype.initBlockMigrations = function () {
     SpriteMorph.prototype.blockMigrations = {
@@ -2072,16 +2304,14 @@ SpriteMorph.prototype.variableBlock = function (varName) {
 
 SpriteMorph.prototype.blockTemplates = function (category) {
     var blocks = [], myself = this, varNames, button,
-        cat = category || 'motion', txt;
-
-    function block(selector) {
+        cat = category || 'motion', txt;	
+    function block(selector) {    	
+    	
         if (StageMorph.prototype.hiddenPrimitives[selector]) {
             return null;
-        }
-        console.log("line 2077 object.js");
+        }        
         var newBlock = SpriteMorph.prototype.blockForSelector(selector, true);
-        newBlock.isTemplate = true;
-        console.log("line 2080 object.js");
+        newBlock.isTemplate = true;        
         return newBlock;
     }
 
@@ -2093,7 +2323,8 @@ SpriteMorph.prototype.blockTemplates = function (category) {
     }
 
     function watcherToggle(selector) {
-        if (StageMorph.prototype.hiddenPrimitives[selector]) {
+    	console.log(SpriteMorph.prototype.hiddenPrimitives);
+        if (SpriteMorph.prototype.hiddenPrimitives[selector]) {
             return null;
         }
         var info = SpriteMorph.prototype.blocks[selector];
@@ -2640,7 +2871,7 @@ SpriteMorph.prototype.palette = function (category) {
     return this.paletteCache[category];
 };
 
-SpriteMorph.prototype.freshPalette = function (category) {
+SpriteMorph.prototype.freshPalette = function (category) {	
     var palette = new ScrollFrameMorph(null, null, this.sliderColor),
         unit = SyntaxElementMorph.prototype.fontSize,
         x = 0,
@@ -2660,8 +2891,8 @@ SpriteMorph.prototype.freshPalette = function (category) {
     palette.growth = new Point(0, MorphicPreferences.scrollBarSize);
 
     // menu:
-
-    palette.userMenu = function () {
+	
+    palette.userMenu = function () {    	
         var menu = new MenuMorph(),
             ide = this.parentThatIsA(IDE_Morph),
             more = {
@@ -2684,8 +2915,8 @@ SpriteMorph.prototype.freshPalette = function (category) {
                         'doReplaceInList'
                     ]
             };
-
-        function hasHiddenPrimitives() {
+		
+        function hasHiddenPrimitives() {        	
             var defs = SpriteMorph.prototype.blocks,
                 hiddens = StageMorph.prototype.hiddenPrimitives;
             return Object.keys(hiddens).some(function (any) {
@@ -2721,7 +2952,7 @@ SpriteMorph.prototype.freshPalette = function (category) {
                     ide.refreshPalette();
                 }
             );
-        }
+        }        
         if (hasHiddenPrimitives()) {
             menu.addItem(
                 'show primitives',
@@ -2741,13 +2972,14 @@ SpriteMorph.prototype.freshPalette = function (category) {
                 }
             );
         }
+        console.log("tank engine");
         return menu;
     };
 
     // primitives:
 
     blocks = this.blocksCache[category];
-    if (!blocks) {
+    if (!blocks) {    	
         blocks = myself.blockTemplates(category);
         if (this.isCachingPrimitives) {
             myself.blocksCache[category] = blocks;
@@ -2981,7 +3213,7 @@ SpriteMorph.prototype.addVariable = function (name, isGlobal) {
             ide.flushBlocksCache('variables');
         }
     } else {
-        this.variables.addVar(name);
+        this.variables.addVar(name);                
         this.blocksCache.variables = null;
     }
 };
@@ -3809,6 +4041,9 @@ Morph.prototype.setPosition = function (aPoint, justMe) {
     }
 };
 SpriteMorph.prototype.snapCompletes = function() {
+	console.log(globalComplete);
+	globalComplete=null;	
+	console.log(globalComplete);
 	completionListener.snapCompletes();	
 };
 /*
@@ -5472,10 +5707,11 @@ StageMorph.prototype.blockTemplates = function (category) {
     var blocks = [], myself = this, varNames, button,
         cat = category || 'motion', txt;
 
-    function block(selector) {
+    function block(selector) {    	
         if (myself.hiddenPrimitives[selector]) {
             return null;
         }
+        console.log("damage");
         var newBlock = SpriteMorph.prototype.blockForSelector(selector, true);
         newBlock.isTemplate = true;
         return newBlock;
@@ -5917,7 +6153,7 @@ StageMorph.prototype.clear = function () {
 };
 
 // StageMorph user menu
-
+//This is the menu that shows up when you right click the canvas
 StageMorph.prototype.userMenu = function () {
     var ide = this.parentThatIsA(IDE_Morph),
         menu = new MenuMorph(this),

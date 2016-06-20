@@ -28,8 +28,10 @@ import ckGameEngine.CKGrid.GridNode;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKGridItemSet;
 import ckGameEngine.CKSpellCast;
+import ckGameEngine.CKSpellResult;
 import ckGameEngine.Direction;
 import ckGameEngine.Quest;
+import ckGameEngine.actions.ScryAction;
 import ckGraphicsEngine.CKSelection;
 import ckPythonInterpreter.CKPlayerObjectsFacade;
 import javafx.application.Platform;
@@ -131,7 +133,7 @@ public class CKSpellObject {
 
 	}
 	
-	public CKDelayedObject<Boolean> selfSpell(String chapter, String page, int CP, 
+	public CKDelayedObject<CKSpellResult> selfSpell(String chapter, String page, int CP, 
 			//Object protoTarget, //CKPosition target or CKDelayedObject<CKPosition>,
 			String key)
 	{
@@ -139,8 +141,66 @@ public class CKSpellObject {
 		return spell(chapter,page,CP,  getCharacter().getPos() ,key);
 	}
 
+	public CKDelayedObject<CKSpellResult> testSpell(String chapter, String page, int CP, 
+			Object protoTarget, //CKPosition target or CKDelayedObject<CKPosition>,
+			String key)
+	{
+		
+		return spell(chapter,page,CP,  getCharacter().getPos() ,key);
+	}
+
+	//@Deprecated
+	public CKDelayedObject<Double> hackSpell(){
+		CKDelayedObject<Double> completed = new CKDelayedObject<>();
+		
+		Thread t = new Thread()
+		{
+			
+		public void run()
+		{
+			//System.err.println("Casting spell:"+cast+" FX thread?"+Platform.isFxApplicationThread());
+			
+			//Quest w =CKGameObjectsFacade.getQuest();
+			//w.startTransaction();
+			//initalizes a turn controller to know when the engine is done
+			ActorSnapController snapController=null;
+			ActorController controller=CKGameObjectsFacade.getCurrentPlayer().getTurnController();
+			//check with Dr. B to see if we can assume actor target is an actor
+
+
+			
+			if(controller instanceof ActorSnapController){
+				snapController=(ActorSnapController)controller;
+				snapController.engineStart();
+			}
+			
+			//need to change this value for scry stuff
+			//check with dr b about setting completed
+			
+			completed.setValue(3.0);
+			//w.endTransaction();
+			//tell engine its done			CKDelayedObject<Double> completed = new CKDelayedObject<>();
+			if(snapController instanceof ActorSnapController){
+				snapController.engineCompletes();
+			}
+			
+			Platform.runLater(new Runnable() {
+					public void run()
+					{
+						WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
+						webEngine.executeScript("ide.stage.threads.resumeAll(ide.stage)");
+					}
+			});
+
+		}
+		};
+		t.start();
+		return completed;
+		}
 	
-	public CKDelayedObject<Boolean> spell(String chapter, String page, int CP, 
+	
+	
+	public CKDelayedObject<CKSpellResult> spell(String chapter, String page, int CP, 
 			Object protoTarget, //CKPosition target or CKDelayedObject<CKPosition>,
 			String key)
 	{
@@ -150,6 +210,7 @@ public class CKSpellObject {
 		if(protoTarget instanceof CKPosition     )
 		{
 			target = (CKPosition) protoTarget;
+
 		}
 		else if (protoTarget instanceof CKDelayedObject)
 		{
@@ -165,9 +226,11 @@ public class CKSpellObject {
 		if (attemptSpell(chapter, CP, page))
 		{
 			
-			CKDelayedObject<Boolean> completed = new CKDelayedObject<>();
+			CKDelayedObject<CKSpellResult> completed = new CKDelayedObject<>();
 			CKSpellCast cast = new CKSpellCast(getItemAt(target),
 					getCharacter(), chapter,page, CP, key);
+		
+
 					
 			Thread t = new Thread()
 					{
@@ -175,19 +238,47 @@ public class CKSpellObject {
 					public void run()
 					{
 						//System.err.println("Casting spell:"+cast+" FX thread?"+Platform.isFxApplicationThread());
-						
 						//Quest w =CKGameObjectsFacade.getQuest();
 						//w.startTransaction();
 						//initalizes a turn controller to know when the engine is done
 						ActorSnapController snapController=null;
 						ActorController controller=CKGameObjectsFacade.getCurrentPlayer().getTurnController();
+						//check with Dr. B to see if we can assume actor target is an actor
+
+
 						
 						if(controller instanceof ActorSnapController){
 							snapController=(ActorSnapController)controller;
 							snapController.engineStart();
 						}
 						cast.castSpell();
-						completed.setValue(true);
+						//need to change this value for scry stuff
+				
+						//scrying stuff that checks for a chapter
+						//super confusing booleans need to update this to make it look better
+						//need to change ckDelayedObjects back to doing a boolean
+						//only works for actors
+						//ScryAction returnValue=new ScryAction();
+						System.out.println(key);
+						CKSpellResult total=cast.getResult();
+						//double total=cast.getResult().sumResults(key);
+						System.out.println("Result of Scrying");
+						System.out.println(total.sumResults("cookies"));
+						/*
+						if(cast.getActorTarget() instanceof CKGridActor){
+						if(cast.getActorTarget().hasChapter(key)){
+							total=1;
+						}
+						else{
+							total=0;
+						}
+						}
+						else{
+							total=0;
+						}
+						*/
+					//	System.out.println("java land");
+						completed.setValue(total);
 						//w.endTransaction();
 						//tell engine its done
 						if(snapController instanceof ActorSnapController){
@@ -357,54 +448,55 @@ public class CKSpellObject {
 
 	}
 	
-	public CKDelayedObject<Boolean> moveTo()
+	public CKDelayedObject<Boolean> moveTo(int CP)
 	{
 		CKBook book = getAbilties();
 		int ap = 0;
+		
 		if(book.hasChapter(CH_MOVE))
 		{
 			ap = book.getChapter(CH_MOVE).getValue();
 		}
 				
-				
+		System.out.println("stage 1");
 		if(attemptSpell(CH_MOVE,ap,P_MOVETO))
 		{
 			
 			
 			//create delayed object so it doesn't crash
 			CKDelayedObject<Boolean> completed = new CKDelayedObject<>();
+			System.out.println("stage 2");
 			//create thread function
 			Thread tr=new Thread(){
-				
+			
 				public void run()
 				{
 					ActorSnapController snapController=null;
-					
+		
 					ActorController controller = CKGameObjectsFacade.getCurrentPlayer().getTurnController(); 
 					if(controller instanceof ActorSnapController){
 					snapController=(ActorSnapController)controller;
 					snapController.engineStart();
 					}
-					
+					System.out.println("stage 3");
 					
 					
 
-					
+					//changed it so that it takes a CP arg
 					int ap=50;
-					int cp = (int) (ap *.75);
+					int cp = (int) (CP *.75);
 					//get data
 					CKGrid grid = CKGameObjectsFacade.getQuest().getGrid();
 					GridNode[][][][] nodes= grid.allPositionsReachable(getCharacter(), cp, 1);	
 					//first aim at the areas
 					Collection<CKPosition> possibles = grid.getReachablePositions(nodes,1);
-					
 					ArrayList<CKPosition>offsets = new ArrayList<>(1);
 					offsets.add(new CKPosition(0,0));
 					CKSelection sel = new CKSelection();
 					CKPosition pos = sel.SelectTargetArea(getCharacter().getPos(),
 							possibles,offsets);
 			//now move to that position
-			
+					System.out.println("stage 4");
 					for(Direction d:Direction.values())
 					{	
 						GridNode node = nodes[(int) pos.getX()][(int) pos.getY()][d.ordinal()][0];
@@ -415,7 +507,9 @@ public class CKSpellObject {
 						}
 						
 					}
+					
 					completed.setValue(true);
+					System.out.println("stage 5");
 					if(snapController instanceof ActorSnapController){
 					snapController.engineCompletes();
 					}
@@ -423,6 +517,7 @@ public class CKSpellObject {
 						public void run()
 						{
 							WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
+							System.out.println("stage 6");
 							webEngine.executeScript("ide.stage.threads.resumeAll(ide.stage)");
 						}
 				});
@@ -430,7 +525,7 @@ public class CKSpellObject {
 				}
 			};
 			//create thread
-			
+			System.out.println("stage 7");
 			tr.start();
 			return completed;
 			
@@ -445,9 +540,10 @@ public class CKSpellObject {
 		GridNode parent = node.getParentNode(); 
 		if(parent!=null) { moveToRecursive(parent); }
 		//now do my action
+
 		String action = node.getAction();
 		int cp = node.getActionCost();
-		
+
 		if(action.equals("") || action.equals(P_END_TURN))
 		{
 			return; //we are done

@@ -1208,6 +1208,16 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
                 true
             );
             break;
+        case '%testing':
+        	part=new InputSlotMorph(
+        		null,
+        		false,
+        		{
+        		
+                    },
+                true
+                );
+                break;
         case '%codeKind':
             part = new InputSlotMorph(
                 null,
@@ -1987,7 +1997,7 @@ BlockMorph.prototype.init = function () {
 
 BlockMorph.prototype.receiver = function () {
     // answer the object to which I apply (whose method I represent)
-    var up = this.parent;
+    var up = this.parent;        
     while (!!up) {
         if (up.owner) {
             return up.owner;
@@ -3090,6 +3100,9 @@ BlockMorph.prototype.mouseClickLeft = function () {
     var top = this.topBlock(),
         receiver = top.receiver(),
         stage;
+    if(this instanceof commandBlockMorph){
+    	return;
+    	}
     if (top instanceof PrototypeHatBlockMorph) {
         return top.mouseClickLeft();
     }
@@ -3099,6 +3112,8 @@ BlockMorph.prototype.mouseClickLeft = function () {
             stage.threads.toggleProcess(top);
         }
     }
+    
+    
 };
 
 // BlockMorph thumbnail
@@ -3216,7 +3231,7 @@ BlockMorph.prototype.allComments = function () {
 BlockMorph.prototype.destroy = function () {
     this.allComments().forEach(function (comment) {
         comment.destroy();
-    });
+    });    
     BlockMorph.uber.destroy.call(this);
 };
 
@@ -6603,7 +6618,7 @@ InputSlotMorph.prototype.dropDownMenu = function () {
     }
     if (menu.items.length > 0) {
     	//commenting out the drop down menus
-        //menu.popUpAtHand(this.world());
+        menu.popUpAtHand(this.world());
     } else {
         return null;
     }
@@ -6888,13 +6903,13 @@ InputSlotMorph.prototype.getVarNamesDict = function () {
             });
         }
     });
-    if (rcvr) {
+    if (rcvr) {     
         dict = rcvr.variables.allNamesDict();
         tempVars.forEach(function (name) {
             dict[name] = name;
         });
         return dict;
-    }
+    }   
     return {};
 };
 
@@ -7003,11 +7018,12 @@ InputSlotMorph.prototype.mouseDownLeft = function (pos) {
 };
 
 InputSlotMorph.prototype.mouseClickLeft = function (pos) {
-    if (this.arrow().bounds.containsPoint(pos)) {
+	console.log("time keep up the beat");
+    if (this.arrow().bounds.containsPoint(pos)) {    	
         this.dropDownMenu();
-    } else if (this.isReadOnly) {
+    } else if (this.isReadOnly) {       	
         this.dropDownMenu();
-    } else {
+    } else { 
         this.contents().edit();
         this.contents().selectAll();
     }

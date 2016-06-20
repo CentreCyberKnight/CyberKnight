@@ -272,8 +272,12 @@ public class CKGridActor extends CKGridItem
 	{
 		return getAbilities().hasChapter(chapter);
 	}
-
-
+/*
+	public boolean hasPage(String page)
+	{
+		return getAbilities().hasPage(page);
+	}
+*/
 
 	public ActorController getTurnController()
 	{

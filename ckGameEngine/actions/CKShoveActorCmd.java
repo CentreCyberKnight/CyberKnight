@@ -69,6 +69,7 @@ public class CKShoveActorCmd extends CKQuestAction
 
 		CKGrid grid = CKGameObjectsFacade.getQuest().getGrid();
 		int presentCP = CP - grid.costSlide(target,dir);
+		System.out.println("shove is called");
 
 		 
 		while(presentCP >=0)
