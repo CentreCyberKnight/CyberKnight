@@ -120,6 +120,7 @@ public class CKPropertyStrings
 	public static String P_END_TURN="END TURN";
 	
 	
-	
+	//Levels
+	public static String CH_LEVELS="Levels";
 	
 }

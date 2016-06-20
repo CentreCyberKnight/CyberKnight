@@ -2,6 +2,7 @@ package ckGameEngine;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -32,8 +33,11 @@ public class CampaignNode extends CKGUINode implements CKXMLAsset<CampaignNode>
 	String questID = ""; 
 	String name = "";
 	String campaign = "";
+	String winName = "";
+	int winValue = 0;
 	
 	public CampaignNode(String aid,String questID,String name,String campaign,
+			String winName,
 				CKBook preReqs,CKBook postAdds)
 	{
 		
@@ -41,6 +45,7 @@ public class CampaignNode extends CKGUINode implements CKXMLAsset<CampaignNode>
 		this.questID = questID;
 		this.name=name;
 		this.campaign = campaign;
+		this.winName=winName;
 		add(preReqs);
 		add(postAdds);
 		
@@ -52,7 +57,7 @@ public class CampaignNode extends CKGUINode implements CKXMLAsset<CampaignNode>
 	
 	public CampaignNode()
 	{
-		this("","","","",new CKBook("PreRequisits"),new CKBook("PostAdditions"));
+		this("","","","","",new CKBook("PreRequisits"),new CKBook("PostAdditions"));
 	}
 	
 	
@@ -153,6 +158,26 @@ public class CampaignNode extends CKGUINode implements CKXMLAsset<CampaignNode>
 		this.name = name;
 	}
 
+	/**
+	 * @return the winName
+	 */
+	public String getWinName()
+	{
+		return winName;
+	}
+
+
+	/**
+	 * @param winName the winName to set
+	 */
+	public void setWinName(String winName)
+	{
+		this.winName = winName;
+	}
+
+
+	
+
 	/* (non-Javadoc)
 	 * @see javax.swing.tree.DefaultMutableTreeNode#clone()
 	 */
@@ -160,7 +185,7 @@ public class CampaignNode extends CKGUINode implements CKXMLAsset<CampaignNode>
 	public Object clone()
 	{
 		CampaignNode cm = new CampaignNode(getAID(),getQuestID(),getName(),
-				getCampaign(),
+				getCampaign(),getWinName(),
 				(CKBook) getPrereqs().clone(),
 				(CKBook) getPostAdds().clone());
 		return cm;
@@ -173,7 +198,7 @@ public class CampaignNode extends CKGUINode implements CKXMLAsset<CampaignNode>
 			JFrame frame = new JFrame("CyberKnight CampaignNode Editor");
 			CKGuiRoot root = new CKGuiRoot();
 		
-			CampaignNode cm = new CampaignNode("bob","rob","sob","dob",
+			CampaignNode cm = new CampaignNode("bob","rob","sob","dob","level1",
 					new CKBook(),new CKBook());
 			root.add(cm );
 			
@@ -192,6 +217,9 @@ public class CampaignNode extends CKGUINode implements CKXMLAsset<CampaignNode>
 	static JTextField[] nameText;
 	static JLabel [] questLabel;
 	static JButton [] questButton;
+	
+	static JTextField[] levelWinText;
+	
 	static QuestSelectedListener questListener;
 	
 	class QuestSelectedListener implements ActionListener
@@ -286,6 +314,25 @@ public class CampaignNode extends CKGUINode implements CKXMLAsset<CampaignNode>
 			qPanel[1].add(questButton[1]);
 			
 			
+			
+			JPanel []winPanel = new JPanel[2];
+			winPanel[0] = new JPanel(new FlowLayout());
+			winPanel[1] = new JPanel(new FlowLayout());
+			
+			winPanel[0].add(new JLabel("Win Label"));
+			winPanel[1].add(new JLabel("Win Label"));
+			
+			
+			levelWinText = new JTextField[2];
+			levelWinText[0] = new JTextField();
+			levelWinText[0].setColumns(20);
+			levelWinText[1] = new JTextField();
+			levelWinText[1].setColumns(20);
+			
+			winPanel[0].add(levelWinText[0]);
+			winPanel[1].add(levelWinText[1]);
+			
+
 			panel[0]=new JPanel();
 			panel[0].setLayout(new BoxLayout(panel[0],BoxLayout.Y_AXIS));
 			panel[1]=new JPanel();			
@@ -294,10 +341,13 @@ public class CampaignNode extends CKGUINode implements CKXMLAsset<CampaignNode>
 			
 			panel[0].add(descPanel[0]);
 			panel[0].add(qPanel[0]);
+			panel[0].add(winPanel[0]);
 			
 			panel[1].add(descPanel[1]);
 			panel[1].add(qPanel[1]);
+			panel[1].add(winPanel[1]);
 
+			
 			
 		}
 		
@@ -316,6 +366,7 @@ public class CampaignNode extends CKGUINode implements CKXMLAsset<CampaignNode>
 		nameText[index].setText(getName());
 		nameText[index].setColumns(15);
 		questLabel[index].setText("Quest:  "+getQuestID());
+		levelWinText[index].setText(winName);
 		
 		
 		
@@ -348,6 +399,7 @@ public class CampaignNode extends CKGUINode implements CKXMLAsset<CampaignNode>
 	public void storeComponentValues()
 	{
 		setName( (String)nameText[EDIT].getText() );
+		setWinName( levelWinText[EDIT].getText());
 		
 	}
 
