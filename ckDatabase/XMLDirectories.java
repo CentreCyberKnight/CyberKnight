@@ -25,6 +25,7 @@ public final class XMLDirectories
 	public static final String TEAM_DIR = "GAME/TEAMS/";
 	public static final String QUEST_TEST_DIR = "TESTING/QUESTS/";
 	public static final String ACTOR_CONTROLLERS_DIR = "GAME/CONTROLLERS/";
+	public static final String CAMPAIGN_NODE_DIR = "GAME/CAMPAIGN_NODES/";
 	
 	
 	

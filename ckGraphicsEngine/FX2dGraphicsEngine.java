@@ -599,7 +599,8 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 	
 	public static void main(String argv[]) 
 	{
-		Application.launch(TestEngine.class,argv);
+		Application.launch(testByMyself.class,argv);
+		//Application.launch(TestEngine.class,argv);
 		//Application.launch(TestEngineSimple.class,argv);
 	}
 	
@@ -614,7 +615,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 		//JFrame frame = new JFrame();
 		
 		FX2dGraphicsEngine engine = new FX2dGraphicsEngine(30,5);
-		engine.resize(600,600);
+		engine.resize(200,200);
 		
 		//get scene
 		engine.loadScene("Kitchen");

@@ -1,5 +1,7 @@
 package ckGameEngine.actions;
 
+import java.util.stream.Stream;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -15,6 +17,7 @@ import ckEditor.treegui.CKGUINodeLabel;
 import ckEditor.treegui.CKGuiRoot;
 import ckEditor.treegui.CKTravelEffect;
 import ckEditor.treegui.CKTreeGui;
+import ckEditor.treegui.UpDownTravelEffect;
 import ckGameEngine.CKAbstractGridItem;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
@@ -134,18 +137,18 @@ public class CKSpellAction extends CKGameAction implements
 		return getCasterEffect().doActorEffect(cast, true,startTime);
 	}
 
-	public synchronized CKTravelEffect getFirstTravelEffect()
+	public  synchronized CKTravelEffect getFirstTravelEffect()
 	{
 		return (CKTravelEffect) getChildAt(FIRST_TRAVEL_EFFECT);
 	}
 
-	public synchronized void setFirstTravelEffect(CKTravelEffect effect)
+	public void setFirstTravelEffect(CKTravelEffect effect)
 	{
 		remove(FIRST_TRAVEL_EFFECT);
 		super.insert(effect, FIRST_TRAVEL_EFFECT);
 	}
 
-	public int doFirstTravelGraphics(CKPosition startingPos, CKSpellCast cast,
+	public synchronized int doFirstTravelGraphics(CKPosition startingPos, CKSpellCast cast,
 			int startTime)
 	{
 
@@ -419,10 +422,21 @@ public class CKSpellAction extends CKGameAction implements
 
 	public static void main(String[] args)
 	{
-		JFrame frame = new JFrame("CyberKnight Actor Editor");
-		CKGuiRoot root = new CKGuiRoot();
+		//JFrame frame = new JFrame("CyberKnight Actor Editor");
+		//CKGuiRoot root = new CKGuiRoot();
 
 		CKSpellAction action = new CKSpellAction();
+		
+		CKTravelEffect effect = new UpDownTravelEffect();
+		action.setFirstTravelEffect(effect);
+		
+		
+		
+		
+		action.writeToStream(System.out);
+		
+		
+		
 
 		/*CKTravelEffect travel = new CKTravelEffect();
 		CKSoundPickerNode effect = new CKSoundPickerNode();
@@ -435,7 +449,7 @@ public class CKSpellAction extends CKGameAction implements
 
 		action.setFirstTravelEffect(travel);
 		*/
-		
+		/*
 		root.add(action);
 		frame.add(new CKTreeGui(root));
 		// frame.add(new CKGameActionBuilder());
@@ -443,7 +457,7 @@ public class CKSpellAction extends CKGameAction implements
 		frame.setVisible(true);
 		frame.setSize(600, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+*/
 		// heroAct.writeToStream(System.out);
 		// tl.writeToStream(System.out);
 

@@ -1,57 +1,58 @@
 package ckSnapInterpreter;
 
+import ckDatabase.CKQuestFactory;
+import ckDatabase.CKTeamFactory;
+import ckGameEngine.CKGameObjectsFacade;
+import ckGameEngine.CKGridActor;
+import ckGameEngine.CKSpellCast;
+import ckGameEngine.Quest;
+import ckGameEngine.QuestData;
+import ckGraphicsEngine.FX2dGraphicsEngine;
+import ckSnapInterpreter.CKDrawerTab;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.SplitPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 
-public class CKQuestRunner extends Application 
+public class CKQuestSceneBuilder  
 {
 	public static String rectColor = "rgb(0,20,28)";
 	public static Double rectOpacity = 0.2;
 	 
 	
-//	public CKDataModel data;
-//	private Quest quest;
-	CKQuestSceneBuilder builder;
-	
+	public CKDataModel data;
+	private Quest quest;
+	private Scene scene;
 
 	
-	@Override
-	public void init() throws Exception
+	public CKQuestSceneBuilder (String questID)
 	{
 	
-		super.init();
-		
-		Parameters param = getParameters();
-		for(String p:param.getRaw())
-		{
-			System.out.println("Param:"+p);
-			
-			
-		}
-		String asset = param.getRaw().get(0);
-		builder = new CKQuestSceneBuilder(asset);
-		/*
 		CKTeamFactory.getInstance().clearCache();
-		QuestData q  = CKQuestFactory.getInstance().getAsset(asset);
-		quest = new Quest(q);
-		
-		data = new CKDataModel(q);
-		*/
+		QuestData q  = CKQuestFactory.getInstance().getAsset(questID);
+		init(q);
 	}
 	
-	/*
-
-    @Override
-    public void start(Stage primaryStage) {
-
-    
-    	
-    	//The main pane that all DrawerTab nodes are added onto
-    	//BorderPane border = new BorderPane();
-    	//border.setPrefSize(200,200);
-    	SplitPane split =new SplitPane();
+	public CKQuestSceneBuilder(QuestData q)
+	{
+		
+		init(q);
+	}
+	
+	
+	private void init(QuestData q)
+	{
+		quest = new Quest(q);
+		data = new CKDataModel(q);
+	}
+	
+	public	Scene getAndStartScene()
+		{
+		
+		SplitPane split =new SplitPane();
     	Pane menuPane = new Pane();
     	menuPane.setPrefSize(200, 200);
   
@@ -113,10 +114,19 @@ public class CKQuestRunner extends Application
     	Button endTurn = new Button("EndTurn");
     	endTurn.setOnAction(e-> {castSpellOnCurrent("WORLD", "END TURN",1);} );
     	endTurn.relocate(350, 50);
+    	
+    	Button endWin = new Button("End/Win");
+    	endWin.setOnAction(e->CKGameObjectsFacade.getGameCompletionListener().endGame(3,quest.getQuestData().getAID()));
+    	endWin.relocate(425, 0);
+    	
+    	Button endLose = new Button("End/Lose");
+    	endLose.setOnAction(e->CKGameObjectsFacade.getGameCompletionListener().endGame(-1,quest.getQuestData().getAID()));
+    	endLose.relocate(425, 50);
 
     	menuPane.getChildren().addAll(iconsTab, playerTab, artifactTab,
 										abilitiesTab, allArtifactsTab, statsTab,controls,
-										startTurn,endTurn
+										startTurn,endTurn,
+										endWin,endLose
 				);
 
 		split.getItems().addAll(menuPane,snap);
@@ -124,31 +134,22 @@ public class CKQuestRunner extends Application
 
 	
 //		Scene scene = new Scene(menuPane,1500,820);
-		Scene scene = new Scene(split,1100,650);
+		scene = new Scene(split,1100,650);
 		
-	    primaryStage.setTitle("Test Drawer Tabs");
-	    primaryStage.setScene(scene);
-	    primaryStage.show();
-	    
-	    
-	    
+	
+	
+	
+	
+	
 	    //now to add the game Thread....
 	    Thread T = new gameThread();
 		T.start();
+		return scene;
 	    
     }
     
-    */
-	
-	@Override
-	public void start(Stage primaryStage) throws Exception
-	{
-		Scene scene = builder.getAndStartScene();
-		 primaryStage.setTitle("Test Drawer Tabs");
-		    primaryStage.setScene(scene);
-		    primaryStage.show();
-	}
-    /*
+    
+    
     public void castSpellOnCurrent(String chapter, String page,int CP)
     {
     	
@@ -170,11 +171,11 @@ public class CKQuestRunner extends Application
     }
     
     
-    */
+    
 
 	
     
-/*
+
 	class gameThread extends Thread
 	 {
 		
@@ -190,6 +191,7 @@ public class CKQuestRunner extends Application
 			 try
 			 {
 				 quest.gameLoop();
+				 //MKB do call back here to report that the level is done.
 			 }
 			 catch (Exception e)
 			 {
@@ -198,21 +200,6 @@ public class CKQuestRunner extends Application
 		
 		 }
 }
-   
-*/
-    
-    
-  
- 
-    public static void main(String[] args)
-    {
-    	
-    	String input[] = {"asset7364953977011982560"};
-    	
-        launch(input);
-    	//launch(args);
-    }
-
 
 }
 

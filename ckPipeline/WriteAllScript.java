@@ -7,29 +7,44 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-public class WriteScript {
-	private String character,dir,base,base2;
+public class WriteAllScript {
+	private ArrayList<String> characters;
+	private String dir,base;
+	private ArrayList<String> defs=new ArrayList<String>();	//the default actions
 	private ArrayList<Action> actions;
 	private String output;
 	private String[] directions;
 	
-	public WriteScript(String characterNamen, String bass){
+	public WriteAllScript(ArrayList<String> chars, String bass){
 		//This writes the DAZscript for rendering all actions of a single character
-		character=characterNamen.substring(0,characterNamen.length()-4);
-		actions=new ArrayList<Action>();
+		characters = chars;
+		for (int ch = 0; ch < chars.size(); ch ++)
+		{
+			String name = chars.get(ch);
+			characters.set(ch, name.substring(0,name.length()-4));
+		}
+		
 		dir="Scripts";
 		base=bass;
 		base=base.replace("\\", "\\\\");
+		actions=new ArrayList<Action>();
 		directions=new String[]{"'LF'","'RF'","'LB'","'RB'"};
 		getDefaults();
-		getCharacter();
-		write();
+		
+		output="var scrip=new DzScript() \n";
+		output=output+"scrip.loadFromFile('"+base+"Scripts\\\\myScript.dsa') \n";
+		for (int ch = 0; ch < characters.size(); ch ++)
+		{
+			String name = characters.get(ch);
+			getCharacter(name);
+		}
+		output = output + "scrip.call('quitDaz',[''])";
+		
 		save();
 	}
 	public void getDefaults(){
 		//This gets the default actions and their files
 		Boolean file=true;
-		ArrayList<String> defs=new ArrayList<String>();
 		Path direc = Paths.get(base);
 		Path p=direc;
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(direc)) {
@@ -73,10 +88,12 @@ public class WriteScript {
 			}
 		}
 	}
-	public void getCharacter(){
+	public void getCharacter(String character){
 		//This gets the file for the character itself, and if there are any actions that have different files here, they are changed
+		//This calls write to update the output
 		Boolean file=true;
-		ArrayList<String> defs=new ArrayList<String>();
+		ArrayList<String> chDefs=defs;
+		ArrayList<Action> chActions = actions;
 		Path direc = Paths.get(base);
 		Path p=direc;
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(direc)) {
@@ -94,7 +111,7 @@ public class WriteScript {
 			//This tries to scan the default file, if there is none it returns false
 			Scanner scan=new Scanner(new FileReader(new File(p.toFile(),character+".txt")));
 			while(scan.hasNextLine()){
-				defs.add(scan.nextLine());
+				chDefs.add(scan.nextLine());
 			}
 			scan.close();
 			file=true;
@@ -105,57 +122,54 @@ public class WriteScript {
 		}
 		if (file){
 			//If there is a file, this adds the already set defaults into the menu correctly
-			for (int x=0;x<defs.size();x++){
-				String act=defs.get(x);
+			for (int x=0;x<chDefs.size();x++){
+				String act=chDefs.get(x);
 				String[] acts=act.split(";");
-				if (hasAction(acts[0])){
-					Action actionen=findAction(acts[0]);
+				if (hasAction(chActions, acts[0])){
+					Action actionen=findAction(chActions, acts[0]);
 					actionen.setFile(acts[1]);
 				}
 				//System.out.println(action.getCharacter());
 				//System.out.println(action.getFile());
 			}
 		}
+		
+		write(chActions, character);
 	}
-	public boolean hasAction(String namen){
+	public boolean hasAction(ArrayList<Action> chActions, String namen){
 		//This makes sure that there is an action by this name
-		for (Action act:actions){
+		for (Action act:chActions){
 			if(act.getName().equals(namen)){
 				return true;
 			}
 		}
 		return false;
 	}
-	public Action findAction(String namen){
+	public Action findAction(ArrayList<Action> chActions, String namen){
 		//This gives the action by that name, or null if there is no such action
-		for (Action act:actions){
+		for (Action act:chActions){
 			if(act.getName().equals(namen)){
 				return act;
 			}
 		}
 		return null;
 	}
-	public void write(){
+	public void write(ArrayList<Action> chActions, String namen){
+		//This updates the output with given character's actions
 		//This saves what needs to be written to the script in one string
-		
-		output="var scrip=new DzScript() \n";
-		output=output+"scrip.loadFromFile('"+base+"Scripts\\\\myScript.dsa') \n";
-		
-		for(Action act:actions){
+		for(Action act:chActions){
 			//for(String d:directions){
-				//String line="scrip.call('loadPreset',['"+character+"', '"+act.getName()+"', '"+act.getFile()+"', "+d+", '"+base+"']) \n";
-			String line="scrip.call('loadPreset',['"+character+"', '"+act.getName()+"', '"+act.getFile()+"', 'LF', '"+base+"']) \n";	
-			output=output+line;
+				//String line="scrip.call('loadPreset',['"+namen+"', '"+act.getName()+"', '"+act.getFile()+"', "+d+", '"+base+"']) \n";
+				String line="scrip.call('loadPreset',['"+namen+"', '"+act.getName()+"', '"+act.getFile()+"', 'LF', '"+base+"']) \n";	
+				output=output+line;
 			//}
 		}
-		
-		output = output + "scrip.call('quitDaz',[''])";
 	}
 	public void save(){
 		//This actually writes the text of the code to the .dsa file
 		try {
 			 
- 			File file = new File(base+"/"+dir,character+".dsa");
+ 			File file = new File(base+"/"+dir,"allScript.dsa");
  
 			// if file doesnt exists, then create it
 			if (!file.exists()) {

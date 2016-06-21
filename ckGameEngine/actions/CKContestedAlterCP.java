@@ -186,6 +186,9 @@ public class CKContestedAlterCP extends CKGameAction
 	@Override
 	public void doAction(CKGameActionListenerInterface L, CKSpellCast cast)
 	{
+		replaceListener(L);
+		
+		
 		int def =0;
 		double max = 100.0;
 		double portion = 1.0;

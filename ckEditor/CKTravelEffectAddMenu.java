@@ -9,6 +9,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import ckEditor.treegui.CKTravelEffect;
 import ckEditor.treegui.CKTreeGui;
+import ckEditor.treegui.UpDownTravelEffect;
 
 public class CKTravelEffectAddMenu
 {
@@ -31,6 +32,10 @@ public class CKTravelEffectAddMenu
 			JMenuItem addSeq = new JMenuItem("Point A to B");
 			addSeq.addActionListener(new TreeAddActionListener("A2B",tree,text,pos,replace));
 			addActions.add(addSeq);
+			//
+			JMenuItem example=new JMenuItem("MoveUp");
+			example.addActionListener(new TreeAddActionListener("Up",tree,text,pos,replace));
+			addActions.add(example);
 
 			return addActions;
 		}
@@ -66,18 +71,23 @@ static class TreeAddActionListener implements ActionListener
 			
 				return;
 			}
-			CKTravelEffect action=new CKTravelEffect(text);
-			//if(name.compareTo("A2B")==0)
-			//{
-					//do nothing already default
-			//}
+			CKTravelEffect action=null;
+			if(name.compareTo("A2B")==0)
+			{
+				action=new CKTravelEffect(text+": A to B");	
+				//do nothing already default
+			}
+			else if(name.compareTo("Up")==0)
+			{
+				action=new UpDownTravelEffect(text+": Up");
+			}
 
 			if(replace)
 			{
 				node.remove(position);
 			}
 			
-			tree.addNode(node,action,position);		
+			tree.addNode(node,(UpDownTravelEffect)action,position);		
 		}
 			
 	

@@ -41,7 +41,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
-public class CKUITurns extends Application 
+public class CKAITurns extends Application 
 {
 	public static String rectColor = "rgb(0,20,28)";
 	public static Double rectOpacity = 0.2;
