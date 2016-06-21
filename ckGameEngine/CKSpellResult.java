@@ -196,8 +196,8 @@ public class CKSpellResult
 				.mapToDouble(Tuple::getResult);
 	}
 	
-<<<<<<< HEAD
-=======
+
+
 	
 	public DoubleStream resultsStream(String resultType,CKPosition pos,boolean exclude)
 	{
@@ -207,7 +207,7 @@ public class CKSpellResult
 	}
 	
 	
->>>>>>> 5f7b5572dd4cd03a3e2b01635260adac40afae2a
+
 	public double sumResults(String resultType)
 	{
 		return resultsStream(resultType).sum();	
