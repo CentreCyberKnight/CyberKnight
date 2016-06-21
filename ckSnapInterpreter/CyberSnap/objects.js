@@ -1293,8 +1293,7 @@ CyberKnight.castSpell = function(catagory,spell,cp,target,key)
 	//jsDebug.print(catagory+" "+spell+" for "+cp);
 	//jsDebug.print("looking for "+key);
 	var complete = javaMove.spell(catagory,spell,cp,target,key);
-	globalComplete=complete;	
-	console.log(SpriteMorph.prototype.artifact);
+	globalComplete=complete;		
 	
 	if(complete==null)
 	{
@@ -2286,7 +2285,7 @@ SpriteMorph.prototype.blockForSelector = function (selector, setDefaults) {
                 }
             }
         }
-    }
+    }    
     return block;
 };
 
@@ -2305,13 +2304,12 @@ SpriteMorph.prototype.variableBlock = function (varName) {
 SpriteMorph.prototype.blockTemplates = function (category) {
     var blocks = [], myself = this, varNames, button,
         cat = category || 'motion', txt;	
-    function block(selector) {    	
-    	
+    function block(selector) {    	    
         if (StageMorph.prototype.hiddenPrimitives[selector]) {
             return null;
         }        
         var newBlock = SpriteMorph.prototype.blockForSelector(selector, true);
-        newBlock.isTemplate = true;        
+        newBlock.isTemplate = true;                
         return newBlock;
     }
 
@@ -2323,10 +2321,12 @@ SpriteMorph.prototype.blockTemplates = function (category) {
     }
 
     function watcherToggle(selector) {
-    	console.log(SpriteMorph.prototype.hiddenPrimitives);
+    	//for some reason having this line breaks everything
+    	/*
         if (SpriteMorph.prototype.hiddenPrimitives[selector]) {
             return null;
         }
+      	*/
         var info = SpriteMorph.prototype.blocks[selector];
         return new ToggleMorph(
             'checkbox',

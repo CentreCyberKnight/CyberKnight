@@ -487,7 +487,7 @@ IDE_Morph.prototype.buildPanes = function () {
     this.createCorralBar();
     this.createCorral();
     //added this in to create the artifact icon in the spriteBar
-   // this.setArtifact();
+   	this.setArtifact();
 };
 
 IDE_Morph.prototype.createLogo = function () {
@@ -1005,6 +1005,7 @@ IDE_Morph.prototype.createStage = function () {
         this.stage.add(this.currentSprite);
     }
     this.add(this.stage);
+    console.log(this.stage);
 };
 
 //this function now assumes that the spriteMorph in object.js has been created
@@ -1012,29 +1013,32 @@ IDE_Morph.prototype.createStage = function () {
 //will hand it a book eventually
 //right now handing it a whole category to get rid of
 //book is a ckbook
+//creating a hacky way to move all of the blocks.  Uses the bounds of the previous blocks.
 IDE_Morph.prototype.hideBlocks = function (book) {
 	//so this is using the cache which doesn't check all of the different categories
-	var allCat = Object.keys(this.currentSprite.blocksCache);
-	console.log(allCat);	
-	//console.log(blockTemplates("CKfire_bolt");
+	var allCat = Object.keys(this.currentSprite.blocksCache);		
 	//var allCat = getCategoryNames();
-	var nullCat = [];		
+	var nullCat = [];
+	console.log(this.stage);
 	for (var i = 0; i < allCat.length; i++) {
-	        var catName = allCat[i];
-            //this.sprites.contents.forEach(function(e) {
+	        var catName = allCat[i];	        
+            //this.sprites.contents.forEach(function(e) {            	
             	var cat = this.currentSprite.blocksCache[catName];            	
             	for (var k = 0; k < cat.length; k++){
 	            	var block = cat[k];	            	
 	            	var blockSpec = block.blockSpec;
-	            	var blockCategory = block.category;	    	            	
-	            	if (!book.hasPage(blockCategory,blockSpec)) {
-	            		//console.log(cat[k]);
-	            		cat[k].destroy();
+	            	var blockCategory = block.category;
+	            	console.log(cat[k]);	            			            	
+	            	cat[k].hide();	            	
+	            	if (book.hasPage(blockCategory,blockSpec)) {	            		
+	            		cat[k].show();	            
 	            		//cat[k] = null;
 	            	}
+		
+	            	
             	};
-            
-            //});
+            	
+           //});
 
 	};
 
@@ -1043,7 +1047,8 @@ IDE_Morph.prototype.hideBlocks = function (book) {
         this.stage.blocksCache[catName] = null;
         this.flushPaletteCache(catName);
 	};
-	console.log("time");
+	this.fixLayout('tabEditor');
+	
 };
 
 
@@ -1129,7 +1134,7 @@ IDE_Morph.prototype.setCyberSnap = function(){
 	//fixing layout and creating all necessary panels	
 	this.buildCKPanes();
 	this.fixLayout();
-	//this.hideBlocks(artifact.getAbilities());
+//	this.hideBlocks(artifact.getAbilities());
 	
 };
 
@@ -1195,7 +1200,8 @@ IDE_Morph.prototype.buildCKPanes = function () {
     this.createCorralBar();
     this.createCorral();
     //added this in to create the artifact icon in the spriteBar
-   	this.setArtifact();   	
+   	this.setArtifact();  
+	this.createPalette(); 	   	
 };
 
 //exports project information to Java using 'exportXML' jsObject

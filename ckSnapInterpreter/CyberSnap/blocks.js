@@ -4295,7 +4295,7 @@ ReporterBlockMorph.prototype.userDestroy = function () {
 
 // ReporterBlockMorph drawing:
 
-ReporterBlockMorph.prototype.drawNew = function () {
+ReporterBlockMorph.prototype.drawNew = function () {	
     var context;
     this.cachedClr = this.color.toString();
     this.cachedClrBright = this.bright();
@@ -4311,7 +4311,7 @@ ReporterBlockMorph.prototype.drawNew = function () {
     }
 
     // erase CommandSlots
-    this.eraseHoles(context);
+    this.eraseHoles(context);    
 };
 
 ReporterBlockMorph.prototype.drawRounded = function (context) {
@@ -4519,7 +4519,6 @@ ReporterBlockMorph.prototype.drawRounded = function (context) {
     context.moveTo(w - shift, r + shift);
     context.lineTo(w - shift, h - r);
     context.stroke();
-
 };
 
 ReporterBlockMorph.prototype.drawDiamond = function (context) {
@@ -7018,7 +7017,6 @@ InputSlotMorph.prototype.mouseDownLeft = function (pos) {
 };
 
 InputSlotMorph.prototype.mouseClickLeft = function (pos) {
-	console.log("time keep up the beat");
     if (this.arrow().bounds.containsPoint(pos)) {    	
         this.dropDownMenu();
     } else if (this.isReadOnly) {       	
