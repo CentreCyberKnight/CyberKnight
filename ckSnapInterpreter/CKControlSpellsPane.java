@@ -16,13 +16,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
-
 import ckDatabase.CKConnection;
 import netscape.javascript.JSObject;
 
 
-public class CKControlSpellsPane extends HBox {
+public class CKControlSpellsPane extends VBox {
 
 	
 	public CKControlSpellsPane(CKDataModel data) {

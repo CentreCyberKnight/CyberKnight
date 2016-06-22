@@ -115,10 +115,11 @@ public class CKGUI
 	protected void drawSingleMessage(GraphicsContext g,int width,int height)
 	{
 		int margin = 10;
+		int leftMargin = 200;
 		int col=226;
 		g.setFill(javafx.scene.paint.Color.rgb(col,col,col,.75));
-		Rectangle rect = new Rectangle(margin, height-200,
-				width-(2*margin), 200-margin);
+		Rectangle rect = new Rectangle(leftMargin, height-200,
+				width-margin-leftMargin, 200-margin);
 		//g.fillRect(rect.x,rect.y,rect.width,rect.height);
 		g.fillRect(rect.x, rect.y, rect.width, rect.height);
 		
