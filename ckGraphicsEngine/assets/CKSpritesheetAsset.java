@@ -267,13 +267,25 @@ public class CKSpritesheetAsset {
 		String spriteAssetID = this.characterName+"_Sprite";
 		CKSpriteAsset characterSprite = new CKSpriteAsset(spriteAssetID,this.characterName);
 		for(int i=0;i<this.size();i++){
+			
+			System.out.println(i + "th run: ------------------");
+			
 			CKSpritesheetActionNode action = this.actionList.get(i);
 			String actionName = action.getActionName();
+			
+			System.out.println("Action Name: " + actionName);
+			
 			int num_Frames = action.getActionFrames();
-			CKSelectAsset newAction = new CKSelectAsset(this.characterName+"_"+actionName+"ID",this.characterName+"_"+actionName,regAssetID,num_Frames,startFrame);
+			
+			System.out.println("Number of frames: " + num_Frames);
+			
+			CKSelectAsset newAction = new CKSelectAsset(this.characterName+"_"+actionName+"ID",this.characterName+"_"+actionName,regAssetID,num_Frames*3,startFrame*3);
 			CKGraphicsAssetFactoryXML.writeAssetToXMLDirectory(newAction);
 			characterSprite.addAnimation(actionName, newAction);
 			startFrame = startFrame + num_Frames;
+			
+			System.out.println("Start Frame for next run: " + startFrame);
+			
 			
 			}
 		if ((startFrame)==this.totalFrames){

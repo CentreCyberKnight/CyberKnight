@@ -162,6 +162,14 @@ public class CKGraphicsLayerFactoryXML implements CKGraphicsLayerFactory
 			layer5.storeLayerToDB(stmt);
 */
 			//layer 6 - kitchen
+			CKTiledLayer layer6 = new CKTiledLayer(CKGraphicsLayer.BACKGROUND1_LAYER,
+					"asset6849515026589853026","black background",
+					CKTiledLayer.OffsetType.CAMERA_FOLLOW);
+			
+			layer6.addAsset(new CKPosition(0,0,0,0), afactory.getGraphicsAsset("asset6849515026589853026"));
+			writeLayerToXMLDirectory(layer6);
+			
+			
 			int krows = 10;
 			int kcols=krows;
 			CKStaticMatrixLayer kitchen = 
