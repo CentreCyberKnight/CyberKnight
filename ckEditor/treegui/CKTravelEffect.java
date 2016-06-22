@@ -67,7 +67,7 @@ public class CKTravelEffect extends CKGUINode
 		
 		FX2dGraphicsEngine engine=CKGameObjectsFacade.getEngine();
 		//Quest quest = CKGameObjectsFacade.getQuest();		
-		System.out.println("!!!!!!!MoveAtoB");
+		//System.out.println("!!!!!!!MoveAtoB");
 		int travelTime=startTime;
 		try
 		{

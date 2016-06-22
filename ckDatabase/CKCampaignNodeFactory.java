@@ -1,27 +1,11 @@
 package ckDatabase;
-import static ckCommonUtils.CKPropertyStrings.CH_FIRE;
-import static ckCommonUtils.CKPropertyStrings.CH_MARK;
-import static ckCommonUtils.CKPropertyStrings.CH_VOICE;
-import static ckCommonUtils.CKPropertyStrings.P_ANY;
-import static ckCommonUtils.CKPropertyStrings.P_ILLUMINATE;
-import static ckCommonUtils.CKPropertyStrings.P_TALK;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+import java.util.stream.Collectors;
 
 import ckGameEngine.CampaignNode;
-import ckGameEngine.actions.CKDialogAction;
-import ckGameEngine.actions.CKGameAction;
-import ckGameEngine.actions.CKMarkGridActor;
-import ckGameEngine.actions.CKSimpleGUIAction;
-import ckGameEngine.actions.CKSpellAction;
-import ckSatisfies.NumericalCostType;
-import ckSatisfies.Satisfies;
-import ckSatisfies.SpellSatisfies;
-import ckTrigger.CKSharedTrigger;
-import ckTrigger.CKTrigger;
-import ckTrigger.TriggerResult;
 
 /**A CKTriggerFactory that uses a DB to solve the problems.
  * 
@@ -63,6 +47,19 @@ public class CKCampaignNodeFactory extends  CKXMLFactory<CampaignNode>
 		public CampaignNode getAssetInstance()
 		{
 			return new CampaignNode();
+		}
+		
+		
+		
+		
+		public List<CampaignNode> getCampaign(String s)
+		{
+			//get all nodes
+			return CKCampaignNodeFactory.getInstance()
+			.getAllAssetsVectored()
+			.stream()
+			.filter(n->n.getCampaign().compareTo(s)==0)
+			.collect(Collectors.toList());
 		}
 		
 			

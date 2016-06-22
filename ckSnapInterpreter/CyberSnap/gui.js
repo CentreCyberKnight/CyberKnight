@@ -487,7 +487,7 @@ IDE_Morph.prototype.buildPanes = function () {
     this.createCorralBar();
     this.createCorral();
     //added this in to create the artifact icon in the spriteBar
-   // this.setArtifact();
+   	this.setArtifact();
 };
 
 IDE_Morph.prototype.createLogo = function () {
@@ -1005,28 +1005,40 @@ IDE_Morph.prototype.createStage = function () {
         this.stage.add(this.currentSprite);
     }
     this.add(this.stage);
+    console.log(this.stage);
 };
 
-
+//this function now assumes that the spriteMorph in object.js has been created
 //hides primitive blocks for a particular sprite
 //will hand it a book eventually
 //right now handing it a whole category to get rid of
-IDE_Morph.prototype.hideBlock = function (book) {
-	var allCat = Object.keys(this.currentSprite.blocksCache);
+//book is a ckbook
+//creating a hacky way to move all of the blocks.  Uses the bounds of the previous blocks.
+IDE_Morph.prototype.hideBlocks = function (book) {
+	//so this is using the cache which doesn't check all of the different categories
+	var allCat = Object.keys(this.currentSprite.blocksCache);		
+	//var allCat = getCategoryNames();
 	var nullCat = [];
-	
+	console.log(this.stage);
 	for (var i = 0; i < allCat.length; i++) {
-	        var catName = allCat[i];
-            this.sprites.contents.forEach(function(e) {
-            	var cat = e.blocksCache[catName];
+	        var catName = allCat[i];	        
+            //this.sprites.contents.forEach(function(e) {            	
+            	var cat = this.currentSprite.blocksCache[catName];            	
             	for (var k = 0; k < cat.length; k++){
-	            	var block = cat[k];
+	            	var block = cat[k];	            	
 	            	var blockSpec = block.blockSpec;
-	            	if (!book.hasOwnProperty(blockSpec)) {
-	            		cat[k] = null;
+	            	var blockCategory = block.category;
+	            	console.log(cat[k]);	            			            	
+	            	cat[k].hide();	            	
+	            	if (book.hasPage(blockCategory,blockSpec)) {	            		
+	            		cat[k].show();	            
+	            		//cat[k] = null;
 	            	}
+		
+	            	
             	};
-            });
+            	
+           //});
 
 	};
 
@@ -1034,8 +1046,8 @@ IDE_Morph.prototype.hideBlock = function (book) {
 	    var catName = allCat[f];
         this.stage.blocksCache[catName] = null;
         this.flushPaletteCache(catName);
-
 	};
+	this.fixLayout('tabEditor');
 	
 };
 
@@ -1117,9 +1129,12 @@ IDE_Morph.prototype.setCyberSnap = function(){
 	//setting the artifact icon
 	this.img = 'data:image/png;base64,'+ artifact.getSnapImage();
 	
-	//fixing layout and creating all necessary panels
+	//var triangle=artifact.getAbilities().getChapter("move").getVectorPages();
+	
+	//fixing layout and creating all necessary panels	
 	this.buildCKPanes();
 	this.fixLayout();
+//	this.hideBlocks(artifact.getAbilities());
 	
 };
 
@@ -1170,11 +1185,12 @@ IDE_Morph.prototype.setArtifact = function() {
 		    thumbnail.setExtent(new Point(100, 75));
 		    this.spriteBar.add(thumbnail);
     	}
+    	
 	
 };
 
 //used to refresh panel
-IDE_Morph.prototype.buildCKPanes = function () {
+IDE_Morph.prototype.buildCKPanes = function () {	
     this.createLogo();
     this.createControlBar();
     this.createCategories();
@@ -1184,7 +1200,8 @@ IDE_Morph.prototype.buildCKPanes = function () {
     this.createCorralBar();
     this.createCorral();
     //added this in to create the artifact icon in the spriteBar
-    this.setArtifact();
+   	this.setArtifact();  
+	this.createPalette(); 	   	
 };
 
 //exports project information to Java using 'exportXML' jsObject
@@ -2096,6 +2113,7 @@ IDE_Morph.prototype.refreshPalette = function (shouldIgnorePosition) {
     if (!shouldIgnorePosition) {
         this.palette.contents.setTop(oldTop);
     }
+    
 };
 
 IDE_Morph.prototype.pressStart = function () {
@@ -2308,6 +2326,7 @@ IDE_Morph.prototype.addNewSprite = function (name, acc) {
 	block.setSelector('receiveID');
 	block.setSpec(name + ": Button " + acc);	//setting name
 	sprite.scripts.addChild(block);
+
 };
 
 IDE_Morph.prototype.paintNewSprite = function () {

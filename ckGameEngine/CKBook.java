@@ -200,8 +200,11 @@ public class CKBook extends CKGUINode implements CKXMLAsset<CKBook>
 		}
 		return false;
 	}
-	
-	
+	/*
+	public boolean hasPage2(String abl){
+		LinkedKeyIterator j=map.
+	}
+	*/
 	public boolean meetsRequirements(CKBook reqs)
 	{
 		for(CKChapter ch:reqs.map.values())

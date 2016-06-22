@@ -111,16 +111,16 @@ public class CKActorControllerFactory extends CKXMLFactory<ActorController>
 			
 			AIBasicCommand Swing = new AIBasicCommand(new SwingCommand());
 			int [] costs = {3,20};
-			CharacterActionDescription swing = 
+			CharacterActionDescription swing = //new CharacterActionDescription(AID, AID, costs, shouldReload, shouldReload, shouldReload, shouldReload, shouldReload, 0, null, Swing);//null;
 					new CharacterActionDescription("Swing", CKPropertyStrings.P_SWIPE,
-					costs, true, true, false, 0,(cad,node)->{return Swing.doPrediction(cad, node);}, 
+					costs, true, true, false, false, false, 0,(cad,node)->{return Swing.doPrediction(cad, node);}, 
 					Swing);			
 			
 			AIBasicCommand Far = new AIBasicCommand(new FireCommand());
 			int [] fcosts = {5,10};
 			CharacterActionDescription far = 
 					new CharacterActionDescription("FAR", CKPropertyStrings.P_SHORT_TARGET,	
-					fcosts, true, true, false, 0, (cad,node)->{return Far.doPrediction(cad,node);},Far);			
+					fcosts, true, true, false,false,false, 0, (cad,node)->{return Far.doPrediction(cad,node);},Far);			
 			
 			add(swing);
 			add(far);		

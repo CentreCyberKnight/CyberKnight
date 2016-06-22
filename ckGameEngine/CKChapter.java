@@ -2,6 +2,8 @@ package ckGameEngine;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -124,7 +126,12 @@ public class CKChapter extends CKGUINode
 	{
 		return pages.values().iterator();
 	}
-	
+	//need to talk to dr. b about checking this
+	public Collection<CKPage> getVectorPages()
+	{
+		return pages.values();
+		
+	}
 	
 	
 

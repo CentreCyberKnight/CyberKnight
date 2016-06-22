@@ -140,6 +140,7 @@ function ThreadManager() {
 }
 
 ThreadManager.prototype.toggleProcess = function (block) {
+	console.log("active");
     var active = this.findProcess(block);
     if (active) {
         active.stop();
@@ -256,7 +257,6 @@ ThreadManager.prototype.step = function () {
             proc.runStep();
         }
     });
-	
     this.removeTerminatedProcesses();
 };
 
@@ -266,8 +266,7 @@ ThreadManager.prototype.removeTerminatedProcesses = function () {
     var remaining = [];
     this.processes.forEach(function (proc) {
         if ((!proc.isRunning() && !proc.errorFlag) || proc.isDead) {
-        
-            if (proc.topBlock instanceof BlockMorph) {
+        	if (proc.topBlock instanceof BlockMorph) {
                 proc.topBlock.removeHighlight();
             }
             if (proc.prompter) {
@@ -276,7 +275,6 @@ ThreadManager.prototype.removeTerminatedProcesses = function () {
                     proc.homeContext.receiver.stopTalking();
                 }
             }
-            
             //catches invisible hat block
             if (proc.topBlock.selector === 'receiveID') {
             	//sets an indicator that we will call snapCompletes()    	
@@ -413,11 +411,11 @@ function Process(topBlock, onComplete) {
     this.exportResult = false;
     this.onComplete = onComplete || null;
     this.procedureCount = 0;
-
+	
     if (topBlock) {
         this.homeContext.receiver = topBlock.receiver();
-        this.homeContext.variables.parentFrame =
-            this.homeContext.receiver.variables;
+        this.homeContext.variables.parentFrame =(
+            this.homeContext.receiver.variables);
         this.context = new Context(
             null,
             topBlock.blockSequence(),
@@ -438,7 +436,6 @@ Process.prototype.isRunning = function () {
 Process.prototype.runStep = function () {
     // a step is an an uninterruptable 'atom', it can consist
     // of several contexts, even of several blocks
-
     if (this.isPaused) { // allow pausing in between atomic steps:
     
         return this.pauseStep();
@@ -465,7 +462,6 @@ Process.prototype.runStep = function () {
         this.homeContext.receiver.endWarp();
         this.homeContext.receiver.startWarp();
     }
-
     if (this.readyToTerminate) {
         while (this.context) {
             this.popContext();
@@ -513,7 +509,7 @@ Process.prototype.evaluateContext = function () {
     var exp = this.context.expression;
     this.frameCount += 1;
 
-    if (exp instanceof BlockMorph) {
+    if (exp instanceof BlockMorph) {  
         return this.evaluateBlock(exp, exp.inputs().length);
     }
     if (this.context.tag === 'exit') {
@@ -703,7 +699,7 @@ Process.prototype.evaluateInput = function (input) {
             ans = this.context.variables.getVar(input.bindingID);
         }
     } else {
-        ans = input.evaluate();
+        ans = input.evaluate();        
         if (ans) {
             if (contains(
                     [CommandSlotMorph, ReporterSlotMorph],
@@ -817,6 +813,8 @@ Process.prototype.handleError = function (error, element) {
             + '\n'
             + error.message
     );
+    console.log("time");
+    console.log(error);
 };
 
 // Process Lambda primitives
@@ -1124,7 +1122,7 @@ Process.prototype.runContinuation = function (aContext, args) {
 
 // Process custom block primitives
 
-Process.prototype.evaluateCustomBlock = function () {
+Process.prototype.evaluateCustomBlock = function () {	
     var caller = this.context.parentContext,
         context = this.context.expression.definition.body,
         declarations = this.context.expression.definition.declarations,

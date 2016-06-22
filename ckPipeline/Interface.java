@@ -1,21 +1,9 @@
 package ckPipeline;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 public class Interface extends JFrame{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8717938164212919671L;
 	//This is the actual window of the GUI
 	JPanel content,bottom;
 	JButton finish,add;

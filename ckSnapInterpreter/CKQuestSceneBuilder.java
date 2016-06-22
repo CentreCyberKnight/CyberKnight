@@ -114,10 +114,19 @@ public class CKQuestSceneBuilder
     	Button endTurn = new Button("EndTurn");
     	endTurn.setOnAction(e-> {castSpellOnCurrent("WORLD", "END TURN",1);} );
     	endTurn.relocate(350, 50);
+    	
+    	Button endWin = new Button("End/Win");
+    	endWin.setOnAction(e->CKGameObjectsFacade.getGameCompletionListener().endGame(3,quest.getQuestData().getAID()));
+    	endWin.relocate(425, 0);
+    	
+    	Button endLose = new Button("End/Lose");
+    	endLose.setOnAction(e->CKGameObjectsFacade.getGameCompletionListener().endGame(-1,quest.getQuestData().getAID()));
+    	endLose.relocate(425, 50);
 
     	menuPane.getChildren().addAll(iconsTab, playerTab, artifactTab,
 										abilitiesTab, allArtifactsTab, statsTab,controls,
-										startTurn,endTurn
+										startTurn,endTurn,
+										endWin,endLose
 				);
 
 		split.getItems().addAll(menuPane,snap);
@@ -182,6 +191,7 @@ public class CKQuestSceneBuilder
 			 try
 			 {
 				 quest.gameLoop();
+				 //MKB do call back here to report that the level is done.
 			 }
 			 catch (Exception e)
 			 {
