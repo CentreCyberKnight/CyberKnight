@@ -113,7 +113,7 @@ public class CKCampaignEditor extends JPanel
 	
 	
 	
-	public void selectCampaign(BiConsumer<String,Vector<CampaignNode>> fcn)
+	public static void selectCampaign(BiConsumer<String,Vector<CampaignNode>> fcn)
 	{
 		//get all nodes
 		Iterator<CampaignNode> iter = CKCampaignNodeFactory.getInstance().getAllAssets();

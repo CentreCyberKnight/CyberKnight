@@ -951,7 +951,7 @@ TabMorph.prototype.refresh = function () {
         if (this.parent) {
             this.parent.add(this);
         }
-    }
+    }    
     TabMorph.uber.refresh.call(this);
 };
 

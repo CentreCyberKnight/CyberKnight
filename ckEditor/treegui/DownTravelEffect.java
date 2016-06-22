@@ -7,31 +7,28 @@ import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.LoadAssetError;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
 
-public class UpDownTravelEffect extends CKTravelEffect
-{
+public class DownTravelEffect extends CKTravelEffect{
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
 
-
-	public UpDownTravelEffect(){
+	public DownTravelEffect(){
 		super();
 	}
 	
-	public UpDownTravelEffect(String description){
-		super(description+":Up");
+	public DownTravelEffect(String description){
+		super(description);
 	}
-
-
+	
 	@Override
 	public int doTravelEffect(CKPosition startingPos, CKPosition endingPos,int startTime)
 	{
 		FX2dGraphicsEngine engine=CKGameObjectsFacade.getEngine();	
-		System.out.println("!!!!!!!MoveUP");
+		System.out.println("!!!!!!!MoveDOWN");
 		CKPosition added=new CKPosition(0,0,20,0);
-		CKPosition epos=startingPos.add(added);
+		CKPosition spos=endingPos.add(added);
 		int travelTime=startTime;
 		try
 		{
@@ -39,9 +36,9 @@ public class UpDownTravelEffect extends CKTravelEffect
 			String aid = getGraphic().getAID();
 			if(aid.compareTo("null")!=0)
 			{
-				int travel1Effect = engine.createInstance(0, aid, startingPos,startTime, CKGraphicsLayer.FRONTHIGHLIGHT_LAYER);
+				int travel1Effect = engine.createInstance(0, aid, spos,startTime, CKGraphicsLayer.FRONTHIGHLIGHT_LAYER);
 				//do visuals
-				travelTime = engine.move(0,travel1Effect, startTime, startingPos, epos,getSpeed());
+				travelTime = engine.move(0,travel1Effect, startTime, spos, endingPos,getSpeed());
 
 				engine.destroy(0,travel1Effect,travelTime);
 				int speed = getSpeed();
@@ -71,11 +68,10 @@ public class UpDownTravelEffect extends CKTravelEffect
 	@Override
 	public Object clone()
 	{
-		UpDownTravelEffect effect = new UpDownTravelEffect(this.getDescription());
+		DownTravelEffect effect = new DownTravelEffect(this.getDescription());
 		effect.setSpeed(getSpeed());
 		effect.setGraphic((CKGraphicsAssetPickerNode) this.getGraphic().clone());
 		effect.setSound((CKSoundPickerNode) this.getSound().clone());
 		return effect;
 	}
-	
 }

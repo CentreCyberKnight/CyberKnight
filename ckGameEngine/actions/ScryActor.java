@@ -19,7 +19,6 @@ public class ScryActor extends ScryAction
 	
 	
 	public ScryActor() {	}
-
 	public void switchHandler(CKSpellCast cast)
 	{
 		super.switchHandler(cast);

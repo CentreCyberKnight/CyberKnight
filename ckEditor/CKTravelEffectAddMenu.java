@@ -9,7 +9,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import ckEditor.treegui.CKTravelEffect;
 import ckEditor.treegui.CKTreeGui;
-import ckEditor.treegui.UpDownTravelEffect;
+import ckEditor.treegui.DownTravelEffect;
+import ckEditor.treegui.Teleport;
+import ckEditor.treegui.UpTravelEffect;
 
 public class CKTravelEffectAddMenu
 {
@@ -33,9 +35,14 @@ public class CKTravelEffectAddMenu
 			addSeq.addActionListener(new TreeAddActionListener("A2B",tree,text,pos,replace));
 			addActions.add(addSeq);
 			//
-			JMenuItem example=new JMenuItem("MoveUp");
-			example.addActionListener(new TreeAddActionListener("Up",tree,text,pos,replace));
-			addActions.add(example);
+			JMenuItem Up=new JMenuItem("MoveUp");
+			Up.addActionListener(new TreeAddActionListener("Up",tree,text,pos,replace));
+			addActions.add(Up);
+			
+			//REMEMBER TO DELETE LATER..........
+			JMenuItem Down=new JMenuItem("MoveDown");
+			Down.addActionListener(new TreeAddActionListener("Down",tree,text,pos,replace));
+			addActions.add(Down);
 
 			return addActions;
 		}
@@ -79,7 +86,12 @@ static class TreeAddActionListener implements ActionListener
 			}
 			else if(name.compareTo("Up")==0)
 			{
-				action=new UpDownTravelEffect(text+": Up");
+				action=new UpTravelEffect(text+": Up");
+			}
+			//NEED TO REMOVE LATER
+			else if(name.compareTo("Down")==0)
+			{
+				action=new DownTravelEffect(text+":Down");
 			}
 
 			if(replace)
@@ -87,7 +99,7 @@ static class TreeAddActionListener implements ActionListener
 				node.remove(position);
 			}
 			
-			tree.addNode(node,(UpDownTravelEffect)action,position);		
+			tree.addNode(node,action,position);		
 		}
 			
 	

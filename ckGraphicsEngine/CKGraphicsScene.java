@@ -143,6 +143,7 @@ public class CKGraphicsScene implements CKGraphicsSceneInterface, ImageObserver
 
 	public void calcState()
 	{
+		
 		presentFrame++;
 		boolean working = !workCompleted(); //store to see if I need to notify my boss
 		 

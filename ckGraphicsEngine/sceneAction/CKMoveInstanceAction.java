@@ -1,6 +1,7 @@
 package ckGraphicsEngine.sceneAction;
 
 import ckCommonUtils.CKPosition;
+import ckCommonUtils.INTERPOLATE;
 import ckGraphicsEngine.CKGraphicsSceneInterface;
 import ckGraphicsEngine.assets.CKAssetInstance;
 
@@ -10,6 +11,8 @@ public class CKMoveInstanceAction extends CKSceneAction
 	CKPosition sPos;
 	CKPosition ePos;
 	int framePerTile;
+	//////
+	INTERPOLATE fun;
 	
 	/**
 	 * Moves an instance to a particular destination across a period of time. 
@@ -30,7 +33,24 @@ public class CKMoveInstanceAction extends CKSceneAction
 			sPos=(CKPosition) startPos.clone();
 		}
 		ePos=(CKPosition) endPos.clone();
+		fun=CKPosition::interpolate;
 	}
+	
+	//////////
+	public CKMoveInstanceAction(CKPosition startPos,CKPosition endPos,
+			CKAssetInstance inst, int stime, int etime,INTERPOLATE f)
+	{
+		super(stime, etime);
+		instance=inst;
+		if(sPos != null)
+		{
+			sPos=(CKPosition) startPos.clone();
+		}
+		ePos=(CKPosition) endPos.clone();
+		fun=f;
+	}
+	
+	
 
 
 	/* (non-Javadoc)
@@ -60,12 +80,14 @@ public class CKMoveInstanceAction extends CKSceneAction
 		//			" with a frac of "+frac+" frame "+frame+" start "+startTime+
 		//			" end "+endTime);
 
-			CKPosition pos = CKPosition.interpolate(sPos,ePos, frac);
+			//CKPosition pos = CKPosition.interpolate(sPos,ePos, frac);
+			CKPosition pos=fun.interpolate(sPos, ePos, frac);
 		//	System.out.println("x coords S"+sPos.getX()+" "+pos.getX()+" "+ePos.getX());
 			instance.moveTo(pos);
 //			System.out.println("Sprite Position"+pos);
 		}
 	}
+	
 	
 	
 	/**

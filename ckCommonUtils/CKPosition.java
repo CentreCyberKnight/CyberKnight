@@ -2,7 +2,18 @@ package ckCommonUtils;
 
 import java.awt.Point;
 
+
+
 import org.python.modules.math;
+
+import ckGraphicsEngine.BadInstanceIDError;
+import ckGraphicsEngine.FX2dGraphicsEngine;
+import ckGraphicsEngine.LoadAssetError;
+import ckGraphicsEngine.layers.CKGraphicsLayer;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 /**
  * Provides a Position description with X,Y,Z and depth data.
@@ -13,8 +24,7 @@ import org.python.modules.math;
  *
  */
 public class CKPosition implements Comparable<CKPosition>,Cloneable
-{
-
+{ 
 	private double x;
 	private double y;
 	private double z;
@@ -164,10 +174,26 @@ public class CKPosition implements Comparable<CKPosition>,Cloneable
 	}
 
 	//added method
-	//polynomial interpolate
-	/*public static CKPosition polyinterpolate(CKPosition sPos,CKPosition ePos){
-		
-	}*/
+	//quadratic easing in - accelerating from zero velocity 
+	//Copyright © 2001 Robert Penner All rights reserved.
+	public static CKPosition easingininterpolate(CKPosition sPos,CKPosition ePos, float frac){
+		return new CKPosition(
+				(ePos.x-sPos.x)*frac*frac+sPos.x,
+				(ePos.y-sPos.y)*frac*frac+sPos.y,
+				(ePos.z-sPos.z)*frac*frac+sPos.z,
+				(int) ((ePos.depth-sPos.depth)*frac+sPos.depth));
+	}
+	
+	//quadratic easing out - decelerating to zero velocity 
+	//Copyright © 2001 Robert Penner All rights reserved.
+	public static CKPosition easingoutinterpolate(CKPosition sPos,CKPosition ePos,float frac){
+		return new CKPosition(
+				(ePos.x-sPos.x)*(2*frac-frac*frac)+sPos.x,
+				(ePos.y-sPos.y)*(2*frac-frac*frac)+sPos.y,
+				(ePos.z-sPos.z)*(2*frac-frac*frac)+sPos.z,
+				(int) ((ePos.depth-sPos.depth)*frac+sPos.depth));
+	}
+	
 	
 	public Object clone() {
 	    try
@@ -181,6 +207,7 @@ public class CKPosition implements Comparable<CKPosition>,Cloneable
 	    }
 	}
 
+	
 	/**
 	  * Nomalizes the position values for x,y,z. so that the distance will be 1.
 	  * @return the magnitude of the original vector (x,y,z)
@@ -246,8 +273,56 @@ public class CKPosition implements Comparable<CKPosition>,Cloneable
 	{
 		double xr = x*Math.cos(radians) - y*Math.sin(radians);
 		double yr = x*Math.sin(radians) - y*math.cos(radians);
-		
 		return new CKPosition(xr,yr,z,depth);
+	}
+	public static void main(String[] args){
+		Application.launch(Test.class,args);
+	}
+	
+	public static class Test extends Application{
+	
+		@Override
+		public void start(Stage stage){
+			FX2dGraphicsEngine engine=new FX2dGraphicsEngine();
+			engine.resize(600,600);
+			engine.loadScene("Kitchen");
+			CKPosition spos1=new CKPosition(7,9,0,0);
+			CKPosition epos1=new CKPosition(7,9,15,0);
+			CKPosition spos2=new CKPosition(9,7,0,0);
+			CKPosition epos2=new CKPosition(9,7,15,0);
+			CKPosition spos3=new CKPosition(8,8,0,0);
+			CKPosition epos3=new CKPosition(8,8,15,0);
+			try{
+				
+				int tid=engine.startTransaction(true);
+				engine.loadAsset(tid, "illuminate");
+				engine.loadAsset(tid, "Swirl");
+				engine.loadAsset(tid, "SlowSwirl");
+				int spriteID1=engine.createInstance(tid, "illuminate", spos1,0, CKGraphicsLayer.SPRITE_LAYER);
+				engine.move(tid, spriteID1, 60, spos1, epos1, 5);
+				int spriteID2=engine.createInstance(tid, "Swirl", spos2, 0, CKGraphicsLayer.SPRITE_LAYER);
+				engine.move(tid, spriteID2, 60, spos2, epos2, 5,CKPosition::easingininterpolate);
+				int spriteID3=engine.createInstance(tid, "SlowSwirl", spos3, 0, CKGraphicsLayer.SPRITE_LAYER);
+				engine.move(tid, spriteID3, 60, spos3, epos3, 5, CKPosition::easingoutinterpolate);
+				engine.endTransaction(0, false);}
+			catch (BadInstanceIDError e){}
+			catch (LoadAssetError e){}
+	
+			HBox root = new HBox();
+			Scene scene = new Scene(root,600,600);
+			stage.setScene(scene);
+	
+			engine.maxWidth(Double.MAX_VALUE);
+			engine.maxHeight(Double.MAX_VALUE);
+			engine.widthProperty().bind(root.widthProperty());
+			engine.heightProperty().bind(root.heightProperty());
+			root.getChildren().addAll(engine);
+			stage.setTitle("Tutorial1");
+			stage.show();
+
+		
+		}
+	
 	}
 
 }
