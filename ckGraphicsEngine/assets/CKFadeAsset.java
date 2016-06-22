@@ -12,6 +12,7 @@ public class CKFadeAsset extends CKGraphicsAsset
 	private CKGraphicsAsset asset;
 	private int startFade;
 	private int endFade;
+	private boolean FadeOut;
 	
 
 
@@ -23,6 +24,15 @@ public class CKFadeAsset extends CKGraphicsAsset
 		this.asset = asset;
 		this.startFade = startFade;
 		this.endFade=endFade;
+		FadeOut=true;
+	}
+	
+	public CKFadeAsset(CKGraphicsAsset asset, int startFade, int endFade, boolean FadeOut){
+		super("assetFades", "wrappper to fade other assets");
+		this.asset = asset;
+		this.startFade = startFade;
+		this.endFade=endFade;
+		this.FadeOut=FadeOut;
 	}
 
 	@Override
@@ -55,26 +65,40 @@ public class CKFadeAsset extends CKGraphicsAsset
 			int frame, int row, ImageObserver observer)
 	{
 
-		if(frame<startFade)
+		if(frame<startFade&&FadeOut)
 		{
 			asset.drawToGraphics(g, screenx, screeny, frame, row, observer);
 		}
 		else if (frame < endFade)
 		{
+
 			double alpha = g.getGlobalAlpha();
 			
-			double percent = 1-(frame-startFade)/(double)(endFade-startFade); 
+			double percent=0;
+			if (FadeOut){
+				percent = 1-(frame-startFade)/(double)(endFade-startFade); }
+			else{
+				percent=(frame-startFade)/(double)(endFade-startFade);
+			}
 			System.out.println(percent);
 			g.setGlobalAlpha(percent);
 			asset.drawToGraphics(g, screenx, screeny, frame, row, observer);
 			g.setGlobalAlpha(alpha);
 		}
-		
+		else{
+			if(!FadeOut){
+				
+				asset.drawToGraphics(g, screenx, screeny, frame, row, observer);
+			}
+				
+			}
+			
+		}
 			
 			
 			
 		
-	}
+	
 
 	@Override
 	public void drawPreviewRowToGraphics(Graphics g, int screenx, int screeny,

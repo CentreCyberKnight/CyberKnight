@@ -17,7 +17,7 @@ import ckEditor.treegui.CKGUINodeLabel;
 import ckEditor.treegui.CKGuiRoot;
 import ckEditor.treegui.CKTravelEffect;
 import ckEditor.treegui.CKTreeGui;
-import ckEditor.treegui.UpDownTravelEffect;
+import ckEditor.treegui.UpTravelEffect;
 import ckGameEngine.CKAbstractGridItem;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
@@ -427,7 +427,7 @@ public class CKSpellAction extends CKGameAction implements
 
 		CKSpellAction action = new CKSpellAction();
 		
-		CKTravelEffect effect = new UpDownTravelEffect();
+		CKTravelEffect effect = new UpTravelEffect();
 		action.setFirstTravelEffect(effect);
 		
 		
