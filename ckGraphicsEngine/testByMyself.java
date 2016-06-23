@@ -5,6 +5,7 @@ import ckCommonUtils.*;
 import ckGraphicsEngine.assets.CKTextAsset;
 import ckGraphicsEngine.layers.CKGraphicsLayer;*/
 import javafx.application.Application;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -47,6 +48,7 @@ public class testByMyself extends Application{
 		stage.setTitle("Tutorial");
 		stage.show();*/
 		
+		//Build engine, load the scene, and initialize the position needed
 		FX2dGraphicsEngine engine=new FX2dGraphicsEngine();
 		engine.loadScene("Kitchen");
 		int tid=engine.startTransaction(true);
@@ -57,19 +59,27 @@ public class testByMyself extends Application{
 		CKPosition pos5=new CKPosition(3,3,0,0);
 		CKPosition pos6=new CKPosition(7,7,0,0);
 		
+		//Create the animation of fade text and special effect
 		FadeText.Fadetext("10",pos1,1,Color.RED,engine,tid);
 		FadeText.Fadetext("30",pos2,50,Color.BLUE,engine,tid);
 		FadeText.specialEffect("illuminate", pos3,pos4, 1, engine, tid);
 		FadeText.specialEffect("Swirl", pos5,pos6, 180, engine, tid);
 		engine.endTransaction(tid, false);
-		HBox root = new HBox();
+		
+		//Work on the transparent effect 
+		Group root = new Group();
+		
 		Scene scene = new Scene(root,600,600);
-		stage.setScene(scene);
+		//TransparentEffect trans=new TransparentEffect(engine,pos3,150,scene);
+		//Group trans1=trans.DrawOnScene();
+		
 		engine.maxWidth(Double.MAX_VALUE);
 		engine.maxHeight(Double.MAX_VALUE);
-		engine.widthProperty().bind(root.widthProperty());
-		engine.heightProperty().bind(root.heightProperty());
+		engine.widthProperty().bind(scene.widthProperty());
+		engine.heightProperty().bind(scene.heightProperty());
 		root.getChildren().addAll(engine);
+		
+		stage.setScene(scene);
 		stage.setTitle("Tutorial");
 		stage.show();
 	}

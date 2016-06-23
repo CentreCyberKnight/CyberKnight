@@ -24,16 +24,20 @@ public class TxtFile {
 	public TxtFile(Path p,Path bas){
 		setBasics();
 		actions2=new ArrayList<String>();
-		directionen=new String[]{"RB","RF","LB","LF"};
+		directionen=new String[]{"NW","SE","NE","SW"};
 		base=bas;
 		folder=p;
 		bass=base.toString().replace("\\","/");
+		
 		outp=p.getFileName().toString();
 		outp=outp+";"+bass+";";
+		
 		actions=actions(p);
 		numFrames=numFrames(p);
+		
 		outp=outp+numFrames+";";
 		outp=outp+width+";"+height+";"+fps+"@";
+		
 		for(int y=0;y<actions2.size();y++){
 			outp=outp+actions2.get(y);
 			//System.out.println(actions2.get(y));

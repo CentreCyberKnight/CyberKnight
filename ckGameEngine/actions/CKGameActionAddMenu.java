@@ -98,6 +98,11 @@ public class CKGameActionAddMenu
 			addAMove.addActionListener(new TreeAddActionListener("PC_ABSOLUTE_MOVE",tree,pos,replace));
 			addMove.add(addAMove);
 			
+			//Teleport
+			JMenuItem addTAction= new JMenuItem("Teleport Action");
+			addTAction.addActionListener(new TreeAddActionListener("PC_TELEPORT_ACTION",tree,pos,replace));
+			addMove.add(addTAction);
+			
 			JMenuItem addRMove= new JMenuItem("Relative Move");
 			addRMove.addActionListener(new TreeAddActionListener("PC_RELATIVE_MOVE",tree,pos,replace));
 			addMove.add(addRMove);
@@ -275,6 +280,12 @@ class TreeAddActionListener implements ActionListener
 			{
 				action = new CKPCAbsoluteMoveCmd();
 			}
+			//teleport
+			else if(name.compareTo("PC_TELEPORT_ACTION")==0)
+			{
+				action = new TeleportAction(); 
+			}
+					
 			else if(name.compareTo("PC_CAMERA_FOCUS")==0)
 			{
 				action = new CKPCFocusCameraCmd();

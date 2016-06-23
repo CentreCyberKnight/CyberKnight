@@ -28,7 +28,7 @@ public class WriteAllScript {
 		base=bass;
 		base=base.replace("\\", "\\\\");
 		actions=new ArrayList<Action>();
-		directions=new String[]{"'LF'","'RF'","'LB'","'RB'"};
+		directions=new String[]{"'SW'","'SE'","'NE'","'NW'"};
 		getDefaults();
 		
 		output="var scrip=new DzScript() \n";
@@ -158,11 +158,11 @@ public class WriteAllScript {
 		//This updates the output with given character's actions
 		//This saves what needs to be written to the script in one string
 		for(Action act:chActions){
-			//for(String d:directions){
-				//String line="scrip.call('loadPreset',['"+namen+"', '"+act.getName()+"', '"+act.getFile()+"', "+d+", '"+base+"']) \n";
-				String line="scrip.call('loadPreset',['"+namen+"', '"+act.getName()+"', '"+act.getFile()+"', 'LF', '"+base+"']) \n";	
+			for(String d:directions){
+				String line="scrip.call('loadPreset',['"+namen+"', '"+act.getName()+"', '"+act.getFile()+"', "+d+", '"+base+"']) \n";
+				//String line="scrip.call('loadPreset',['"+namen+"', '"+act.getName()+"', '"+act.getFile()+"', 'LF', '"+base+"']) \n";	
 				output=output+line;
-			//}
+			}
 		}
 	}
 	public void save(){

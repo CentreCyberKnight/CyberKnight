@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 
 import ckCommonUtils.CKXMLAsset;
+import ckDatabase.CKQuestFactory;
 import ckDatabase.CKQuestTestFactory;
 import ckDatabase.CKXMLFactory;
 
@@ -108,8 +109,10 @@ public class QuickCKEditor
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		*/
 
-		CKQuestTestFactory factory = CKQuestTestFactory.getInstance();
-		openEditor(factory.getAsset("asset1442108278258210067"),factory);
+		//CKQuestTestFactory factory = CKQuestTestFactory.getInstance();
+		CKQuestFactory factory = CKQuestFactory.getInstance();
+		//openEditor(factory.getAsset("asset7990217181097898597"),factory);
+		openEditor(factory.getAsset("asset3345354808389436014"),factory);
 		
 	}
 
