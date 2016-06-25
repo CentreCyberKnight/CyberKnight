@@ -39,7 +39,9 @@ public class ActorSnapController extends ActorController
 			
 			while((!snapDone) || (!engineDone)) //need this in case snap completes before we can wait for it.
 			{	try {wait();}
-				catch (InterruptedException e) {}
+				catch (InterruptedException e) {
+					System.err.println(e);
+				}
 			}
 			//now wrap it up.
 			System.out.print("after thread");

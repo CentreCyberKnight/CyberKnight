@@ -214,22 +214,7 @@ public class CKSpellResult
 		return resultsStream(resultType).average().getAsDouble();
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	

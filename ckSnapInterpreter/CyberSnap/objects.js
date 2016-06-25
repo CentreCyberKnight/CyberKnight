@@ -174,7 +174,7 @@ SpriteMorph.prototype.categories =
 
 SpriteMorph.prototype.blockColor = {
     move : new Color(203, 122, 0),
-    aim:new Color(0,255,255),
+    aim: new Color(0,255,255),
     fire : new Color(247, 0, 0),
     water : new Color(0, 0, 247),
     wind : new Color(224, 224, 224),
@@ -1293,8 +1293,7 @@ CyberKnight.castSpell = function(catagory,spell,cp,target,key)
 	//jsDebug.print(catagory+" "+spell+" for "+cp);
 	//jsDebug.print("looking for "+key);
 	var complete = javaMove.spell(catagory,spell,cp,target,key);
-	globalComplete=complete;		
-	
+	globalComplete=complete;			
 	if(complete==null)
 	{
 		jsDebug.print("Spell Fails--Needs to stop here!");
@@ -1406,6 +1405,8 @@ CyberKnight.spells =
 ["water","immune to fire",-1],
 ["water","invisibility",-1],
 ["water","throw ice shards",-1],
+["water","pour",1],
+["water","drink",1],
 ["fire","bolt",-1],
 ["fire","sunbeam",-1],
 ["fire","flash",8],
@@ -1416,7 +1417,7 @@ CyberKnight.spells =
 ["earth","slice",-1],
 ["earth","wall",-1],
 ["earth","shove",-1],
-["earth","baby kick",-1],
+["earth","baby kick",1],
 ["earth","dig",-1],
 ["earth","projectile",-1],
 ["earth","mud",10],
@@ -1488,7 +1489,7 @@ CyberKnight.writeSpellCommands = function()
 		
 		//first write block		
 		var cpSlot = "";
-		if(spell[2]==-1) { cpSlot = " for %n"; }
+		if(spell[2]==-1) { cpSlot = " for %n cp"; }
 
 		SpriteMorph.prototype.blocks[name] =
 		{
@@ -1753,6 +1754,7 @@ CyberKnight.createHackSpellFunction = function(spell)
 			return CyberKnight.castSpellValue(spell[0],spell[1],CP,"",value);
 		};
 };
+
 
 /**
 	puts blocks into the categories so we can see them.
@@ -2304,10 +2306,10 @@ SpriteMorph.prototype.variableBlock = function (varName) {
 SpriteMorph.prototype.blockTemplates = function (category) {
     var blocks = [], myself = this, varNames, button,
         cat = category || 'motion', txt;	
-    function block(selector) {    	    
+    function block(selector) {    	
         if (StageMorph.prototype.hiddenPrimitives[selector]) {
             return null;
-        }        
+        }                        
         var newBlock = SpriteMorph.prototype.blockForSelector(selector, true);
         newBlock.isTemplate = true;                
         return newBlock;

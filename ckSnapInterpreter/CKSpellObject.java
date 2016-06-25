@@ -263,7 +263,7 @@ public class CKSpellObject {
 						CKSpellResult total=cast.getResult();
 						//double total=cast.getResult().sumResults(key);
 						System.out.println("Result of Scrying");
-						System.out.println(total.sumResults("cookies"));
+						//System.out.println(total.sumResults("cookies"));
 						/*
 						if(cast.getActorTarget() instanceof CKGridActor){
 						if(cast.getActorTarget().hasChapter(key)){
@@ -499,10 +499,11 @@ public class CKSpellObject {
 					System.out.println("stage 4");
 					for(Direction d:Direction.values())
 					{	
+						
 						GridNode node = nodes[(int) pos.getX()][(int) pos.getY()][d.ordinal()][0];
 						if(node.isVisited())
-						{	
-							moveToRecursive(node);
+						{							
+							moveToRecursive(node);							
 							break;
 						}
 						

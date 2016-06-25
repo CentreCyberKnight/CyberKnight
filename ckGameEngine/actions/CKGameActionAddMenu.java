@@ -42,7 +42,11 @@ public class CKGameActionAddMenu
 			JMenuItem addConn = new JMenuItem("Add Concurrent Action");
 			addConn.addActionListener(new TreeAddActionListener("CONCURRENT",tree,pos,replace));
 			addActionType.add(addConn);
-
+			
+			JMenuItem addRand = new JMenuItem("Add Random Action");
+			addRand.addActionListener(new TreeAddActionListener("RANDOM",tree,pos,replace));
+			addActionType.add(addRand);
+			
 			JMenuItem addNULL= new JMenuItem("Add NULL Action");
 			addNULL.addActionListener(new TreeAddActionListener("NULL_ACTION",tree,pos,replace));
 			addActionType.add(addNULL);
@@ -130,6 +134,10 @@ public class CKGameActionAddMenu
 			JMenuItem addMarkGridActor= new JMenuItem("Mark Grid Actor");
 			addMarkGridActor.addActionListener(new TreeAddActionListener("Mark Grid Actor",tree,pos,replace));
 			addActorCmd.add(addMarkGridActor);
+			
+			JMenuItem removeActorPage= new JMenuItem("Remove Actor Page");
+			removeActorPage.addActionListener(new TreeAddActionListener("Remove Actor Page",tree,pos,replace));
+			addActorCmd.add(removeActorPage);
 			
 			/*
 			 * 
@@ -238,7 +246,10 @@ class TreeAddActionListener implements ActionListener
 			else if(name.compareTo("SEQUENTIAL")==0)
 			{
 				action = new CKSequentialAction();
-			}
+			}			
+			else if(name.compareTo("RANDOM")==0){
+				action = new CKRandomAction();
+			}			
 			else if(name.compareTo("TRIGGERLIST")==0)
 			{
 				action = new CKTriggerList();
@@ -286,6 +297,10 @@ class TreeAddActionListener implements ActionListener
 			else if(name.compareTo("Mark Grid Actor")==0)
 			{
 				action = new CKMarkGridActor();
+			}
+			else if(name.compareTo("Remove Actor Page")==0)
+			{
+				action = new CKRemovePage();
 			}
 			else if(name.compareTo("Reactive Spell Action")==0)
 			{

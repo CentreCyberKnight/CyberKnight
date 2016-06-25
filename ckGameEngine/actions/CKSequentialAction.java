@@ -46,7 +46,7 @@ public class CKSequentialAction extends CKCompoundGameAction
 	{
 		if(iter.hasNext())
 		{
-			CKGameAction act = iter.next();
+			CKGameAction act = iter.next();			
 			CKGameObjectsFacade.getQuest().startTransaction();
 			act.doAction(this,cast,true);//not sure if this is needed
 			//act.doAction(this,cast);

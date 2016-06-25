@@ -1134,6 +1134,8 @@ IDE_Morph.prototype.setCyberSnap = function(){
 	//fixing layout and creating all necessary panels	
 	this.buildCKPanes();
 	this.fixLayout();
+	console.log("triangle");
+	console.log(StageMorph.prototype.hiddenPrimitives);
 //	this.hideBlocks(artifact.getAbilities());
 	
 };
