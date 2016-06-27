@@ -9,6 +9,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import ckEditor.treegui.CKTravelEffect;
 import ckEditor.treegui.CKTreeGui;
+import ckEditor.treegui.DownTravelEffect;
+import ckEditor.treegui.Teleport;
+import ckEditor.treegui.UpTravelEffect;
 
 public class CKTravelEffectAddMenu
 {
@@ -31,6 +34,15 @@ public class CKTravelEffectAddMenu
 			JMenuItem addSeq = new JMenuItem("Point A to B");
 			addSeq.addActionListener(new TreeAddActionListener("A2B",tree,text,pos,replace));
 			addActions.add(addSeq);
+			//
+			JMenuItem Up=new JMenuItem("MoveUp");
+			Up.addActionListener(new TreeAddActionListener("Up",tree,text,pos,replace));
+			addActions.add(Up);
+			
+			//REMEMBER TO DELETE LATER..........
+			JMenuItem Down=new JMenuItem("MoveDown");
+			Down.addActionListener(new TreeAddActionListener("Down",tree,text,pos,replace));
+			addActions.add(Down);
 
 			return addActions;
 		}
@@ -66,11 +78,21 @@ static class TreeAddActionListener implements ActionListener
 			
 				return;
 			}
-			CKTravelEffect action=new CKTravelEffect(text);
-			//if(name.compareTo("A2B")==0)
-			//{
-					//do nothing already default
-			//}
+			CKTravelEffect action=null;
+			if(name.compareTo("A2B")==0)
+			{
+				action=new CKTravelEffect(text+": A to B");	
+				//do nothing already default
+			}
+			else if(name.compareTo("Up")==0)
+			{
+				action=new UpTravelEffect(text+": Up");
+			}
+			//NEED TO REMOVE LATER
+			else if(name.compareTo("Down")==0)
+			{
+				action=new DownTravelEffect(text+":Down");
+			}
 
 			if(replace)
 			{

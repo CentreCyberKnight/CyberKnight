@@ -297,6 +297,7 @@ public class CKPCAbsoluteMoveCmd extends CKQuestAction
 		name = (String)nameBox[EDIT].getSelectedItem();
 		xVal=(Integer) X[EDIT].getNumber();
 		yVal=(Integer) Y[EDIT].getNumber();
+		
 		//zVal=(Integer) Z[EDIT].getNumber();
 	}
 

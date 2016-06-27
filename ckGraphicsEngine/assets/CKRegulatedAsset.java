@@ -177,7 +177,7 @@ public class CKRegulatedAsset extends CKGraphicsAsset
 	@Override
 	public int getFrames(int row)
 	{
-		return asset.getFrames(row);
+		return asset.getFrames(row) * adjust;
 	}
 
 

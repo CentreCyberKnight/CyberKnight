@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
+import ckCommonUtils.CKPosition;
+
 public class CKSpellResult
 {
 	
@@ -171,6 +173,14 @@ public class CKSpellResult
 		return actorStream(team,true);
 	}
 	
+
+
+	public Stream<Tuple> actorStream(CKPosition pos,boolean include)
+	{
+		return actorStream().filter(t->include == t.target.getPos().equals(pos));
+	}
+	
+	
 	
 	public DoubleStream resultsStream(String resultType)
 	{
@@ -186,10 +196,24 @@ public class CKSpellResult
 				.mapToDouble(Tuple::getResult);
 	}
 	
+
+
+	
+	public DoubleStream resultsStream(String resultType,CKPosition pos,boolean exclude)
+	{
+		return actorStream(pos,exclude)
+				.filter(r->r.resultType.equalsIgnoreCase(resultType))
+				.mapToDouble(Tuple::getResult);
+	}
+	
+	
+
 	public double sumResults(String resultType)
 	{
 		return resultsStream(resultType).sum();	
 	}
+	
+	
 	
 	
 	public double avgResults(String string, int depth)
@@ -202,12 +226,22 @@ public class CKSpellResult
 		return resultsStream(resultType,team).sum();	
 	}
 	
+	public double sumResults(String resultType,CKPosition pos, boolean include)
+	{
+		return resultsStream(resultType,pos,include).sum();
+		
+	}
 	
 	public double avgResults(String string, CKTeam team, int depth)
 	{
 		return sumResults(string,team)/depth;
 	}
 
+	public double avgResults(String string, CKPosition pos, boolean include,int depth)
+	{
+		return sumResults(string,pos,include)/depth;
+		
+	}
 	
 	public double avgResults(String resultType)
 	{

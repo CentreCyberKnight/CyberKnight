@@ -6,13 +6,21 @@ import ckCommonUtils.CKPosition;
 
 public enum Direction {
 
+	//Need to change it in the future
+	//This is change is for testing the daz3d models
+	NORTHEAST("walk_NE",0,-1), 
+	SOUTHEAST("walk_SE",1,0), 
+	SOUTHWEST("walk_SW",0,1), 
+	NORTHWEST("walk_NW",-1,0),
+	NONE("NONE",0,0);
 	
+	/*
 	NORTHEAST("NORTHEAST",0,-1), 
 	SOUTHEAST("SOUTHEAST",1,0), 
 	SOUTHWEST("SOUTHWEST",0,1), 
 	NORTHWEST("NORTHWEST",-1,0),
 	NONE("NONE",0,0);
-	
+	*/
 	
 	private final String directionName;
 	public final int dx;

@@ -956,6 +956,8 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 		return move(item, dPos);
 	}
 
+
+	
 	/**
 	 * Moves item to top of CKPosition.
 	 * 
@@ -986,6 +988,42 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 		return endtime;
 	}
 
+	/**
+	 * Moves item to top of CKPosition.
+	 * 
+	 * @param item
+	 * @param pos
+	 * @return the time the actor will reach the destination
+	 */
+	public int moveInstantly(CKGridActor item, CKPosition pos,int sFrame)
+	{
+		CKAbstractGridItem dest = getPosition((int) pos.getX(),
+				(int) pos.getY());
+		int endtime = 0;
+
+		if (!CKGameObjectsFacade.unitTest)
+		{
+			Quest quest = CKGameObjectsFacade.getQuest();
+
+		//	endtime = item.drawMove(item.getPos(), pos, quest.getStartTime());
+			FX2dGraphicsEngine engine=CKGameObjectsFacade.getEngine();
+			try {
+				engine.move(0, item.getInstanceID(), sFrame, item.getPos(), pos, 0);
+			} catch (BadInstanceIDError e) {
+				e.printStackTrace();
+			}
+		}
+
+		dest.stepOn(item);
+		/*
+		 * if(! CKGameObjectsFacade.unitTest) { Quest quest =
+		 * CKGameObjectsFacade.getQuest();
+		 * 
+		 * endtime = item.drawMove(pos,item.getPos(),endtime); }
+		 */
+		return endtime;
+	}
+	
 	public void setDirection(CKGridActor target, Direction direction)
 	{
 

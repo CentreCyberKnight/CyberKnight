@@ -74,6 +74,18 @@ public class CKGridActor extends CKGridItem
 		fxportrait = null; 
 	}
 	
+
+	/**
+	 * This is should only be called when creating a copy for the purpose of prediction.
+	 * @param bool - doesn't nothing, but change the signature.
+	 */
+	public CKGridActor(boolean bool)
+	{
+		// :)
+	}
+	
+	
+	
 	
 	private int cpConsumedLastRound = 0;
 	public void setCPConsumedLastRound(int consumed) 
@@ -743,7 +755,7 @@ public class CKGridActor extends CKGridItem
 	@Override
 	public CKAbstractGridItem makeCopy()
 	{
-		return makeCopy(new CKGridActor());		
+		return makeCopy(new CKGridActor(false));		
 	}
 	
 	

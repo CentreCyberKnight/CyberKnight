@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import ckCommonUtils.CKThreadCompletedListener;
+import ckCommonUtils.GameCompletionListener;
 import ckEditor.CKTeamArtifactEditor;
 import ckGameEngine.actions.CKGameActionListenerInterface;
 import ckGraphicsEngine.FX2dGraphicsEngine;
@@ -326,6 +327,34 @@ public class CKGameObjectsFacade
 	public static CKDataModel getDataModel()
 	{
 		return dataModel;
+	}
+
+
+	private static GameCompletionListener gameListener;
+	
+	public static void setGameCompletionListener(GameCompletionListener l)
+	{
+		gameListener = l;
+	}
+	
+	
+	public static GameCompletionListener getGameCompletionListener()
+	{	
+		if(gameListener==null)
+		{
+			return new GameCompletionListener() {
+
+				@Override
+				public void endGame(int state,String assetID)
+				{
+					
+				} };
+		}
+		else
+		{
+			return gameListener;
+		}
+		
 	}
 	
 	

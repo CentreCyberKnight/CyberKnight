@@ -64,9 +64,10 @@ public class CKTravelEffect extends CKGUINode
 	
 	public int doTravelEffect(CKPosition startingPos, CKPosition endingPos,int startTime)
 	{
+		
 		FX2dGraphicsEngine engine=CKGameObjectsFacade.getEngine();
 		//Quest quest = CKGameObjectsFacade.getQuest();		
-		
+		//System.out.println("!!!!!!!MoveAtoB");
 		int travelTime=startTime;
 		try
 		{

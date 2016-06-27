@@ -1,20 +1,14 @@
 package ckPipeline;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.*;
+import java.io.*;
 import java.nio.file.DirectoryIteratorException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Scanner;
 public class WriteScript {
-	private String character, dir,base;
+	private String character,dir,base,base2;
 	private ArrayList<Action> actions;
 	private String output;
 	private String[] directions;
@@ -25,6 +19,7 @@ public class WriteScript {
 		actions=new ArrayList<Action>();
 		dir="Scripts";
 		base=bass;
+		base=base.replace("\\", "\\\\");
 		directions=new String[]{"'LF'","'RF'","'LB'","'RB'"};
 		getDefaults();
 		getCharacter();
@@ -39,9 +34,11 @@ public class WriteScript {
 		Path p=direc;
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(direc)) {
 		    for (Path fil: stream) {
-		    	if(fil.toFile().isDirectory()||fil.getFileName().toString().equals("Texts")){
+		    	if(fil.toFile().isDirectory() && fil.getFileName().toString().equals("Texts")){
 		    		p=fil;
-		    		//System.out.println(file.getFileName().toString());
+		    		//
+		    		System.out.println(fil.getFileName().toString());
+		    		//
 		    	}}
 		} catch (IOException | DirectoryIteratorException x) {
 		    // IOException can never be thrown by the iteration.
@@ -58,7 +55,9 @@ public class WriteScript {
 		}
 		catch(FileNotFoundException e){
 			file=false;
-			//System.out.println("FILENOTFOUND");
+			//
+			System.out.println("FILENOTFOUND");
+			//
 		}
 		if (file){
 			//This adds the defaults
@@ -68,6 +67,9 @@ public class WriteScript {
 				Action action=new Action(acts[0],acts[1]);
 				actions.add(action);
 				
+				//
+				System.out.println("Action name: " + action.getName() + ": " + acts[0] + " " + acts[1]);
+				//
 			}
 		}
 	}
@@ -79,7 +81,7 @@ public class WriteScript {
 		Path p=direc;
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(direc)) {
 		    for (Path fil: stream) {
-		    	if(fil.toFile().isDirectory()||fil.getFileName().toString().equals("Texts")){
+		    	if(fil.toFile().isDirectory() && fil.getFileName().toString().equals("Texts")){
 		    		p=fil;
 		    		//System.out.println(file.getFileName().toString());
 		    	}}
@@ -135,14 +137,19 @@ public class WriteScript {
 	}
 	public void write(){
 		//This saves what needs to be written to the script in one string
+		
 		output="var scrip=new DzScript() \n";
-		output=output+"scrip.loadFromFile('"+base+"Scripts/myScript.dsa') \n";
+		output=output+"scrip.loadFromFile('"+base+"Scripts\\\\myScript.dsa') \n";
+		
 		for(Action act:actions){
-			for(String d:directions){
-				String line="scrip.call('loadPreset',['"+character+"', '"+act.getName()+"', '"+act.getFile()+"', "+d+", '"+base+"']); \n";
-				output=output+line;
-			}
+			//for(String d:directions){
+				//String line="scrip.call('loadPreset',['"+character+"', '"+act.getName()+"', '"+act.getFile()+"', "+d+", '"+base+"']) \n";
+			String line="scrip.call('loadPreset',['"+character+"', '"+act.getName()+"', '"+act.getFile()+"', 'LF', '"+base+"']) \n";	
+			output=output+line;
+			//}
 		}
+		
+		output = output + "scrip.call('quitDaz',[''])";
 	}
 	public void save(){
 		//This actually writes the text of the code to the .dsa file

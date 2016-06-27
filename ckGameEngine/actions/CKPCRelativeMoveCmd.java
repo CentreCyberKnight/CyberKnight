@@ -200,7 +200,8 @@ public class CKPCRelativeMoveCmd extends CKQuestAction
 	private void setPanelValues(int index)
 	{
 		//System.out.println("setting panel");
-		if(panel==null) { initPanel(true); }
+		if(panel==null) { initPanel(true);
+		System.out.println("squares"+squares);}
 		panel[index].setBackground(colors[index]);
 		
 		if(getQuest()!=null)
@@ -215,6 +216,7 @@ public class CKPCRelativeMoveCmd extends CKQuestAction
 		}
 		
 		steps[index].setValue(squares);	
+		System.out.println("New squares"+squares);
 	}
 	
 	

@@ -95,7 +95,7 @@ public class CKTextAsset extends CKGraphicsAsset
 			int row, ImageObserver observer)
 	{
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -108,6 +108,9 @@ public class CKTextAsset extends CKGraphicsAsset
 		g.setTextAlign(TextAlignment.CENTER);
 		g.fillText(text, screenx, screeny);
 		g.setFill(fill);
+		//
+		g.setLineWidth(2);
+        g.strokeText(text,screenx,screeny);
 	}
 
 	@Override

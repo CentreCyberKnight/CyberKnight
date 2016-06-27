@@ -113,23 +113,25 @@ public class CKSpellObject {
 		}
 */
 		// now test for enough CP - spell fizzle
-		int ap = CKPlayerObjectsFacade.getCPTurnRemaining();
-		System.out.println("points left?" + ap);
-		CKPlayerObjectsFacade.alterCPTurnRemaining(-val);
-		getCharacter().setCyberPoints(getCharacter().getCyberPoints() - val);
-		
-
-		
-		if (ap >= val)
+		if (!CKGameObjectsFacade.isPrediction())
 		{
-			return true;
-		} else
-		{
-			CPShortage("You don't have enough CP");
+			int ap = CKPlayerObjectsFacade.getCPTurnRemaining();
+			System.out.println("points left?" + ap);
+			CKPlayerObjectsFacade.alterCPTurnRemaining(-val);
+			getCharacter()
+					.setCyberPoints(getCharacter().getCyberPoints() - val);
 
-			return false;
+			if (ap >= val)
+			{
+				return true;
+			} else
+			{
+				CPShortage("You don't have enough CP");
+
+				return false;
+			}
 		}
-
+		return true;
 
 	}
 	
@@ -281,9 +283,10 @@ public class CKSpellObject {
 						completed.setValue(total);
 						//w.endTransaction();
 						//tell engine its done
-						if(snapController instanceof ActorSnapController){
+						if(snapController instanceof ActorSnapController)
+						{
 							snapController.engineCompletes();
-						}
+						
 						
 						Platform.runLater(new Runnable() {
 								public void run()
@@ -292,7 +295,7 @@ public class CKSpellObject {
 									webEngine.executeScript("ide.stage.threads.resumeAll(ide.stage)");
 								}
 						});
-
+						}
 					}
 					};
 			t.start();

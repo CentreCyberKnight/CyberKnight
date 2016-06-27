@@ -10,7 +10,9 @@ import java.util.Vector;
 
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKWorkSupervisorListener;
+import ckCommonUtils.DialogueBubble;
 import ckCommonUtils.FXSwingBridge;
+import ckCommonUtils.INTERPOLATE;
 import ckCommonUtils.LogListener;
 import ckDatabase.CKGraphicsAssetFactory;
 import ckDatabase.CKGraphicsAssetFactoryXML;
@@ -20,17 +22,20 @@ import ckDatabase.CKSceneFactory;
 import ckGameEngine.CKGrid;
 import ckGraphicsEngine.assets.CKAssetInstance;
 import ckGraphicsEngine.assets.CKFadeAsset;
+import ckGraphicsEngine.assets.CKFadeSprite;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.assets.CKShadowAsset;
 import ckGraphicsEngine.assets.CKSpriteAsset;
 import ckGraphicsEngine.assets.CKSpriteInstance;
 import ckGraphicsEngine.assets.CKTextAsset;
+import ckGraphicsEngine.assets.CKTransparentAsset;
 import ckGraphicsEngine.assets.FXAssetViewer;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
 import ckGraphicsEngine.sceneAction.CKAddAssetAction;
 import ckGraphicsEngine.sceneAction.CKAddInstanceAction;
 import ckGraphicsEngine.sceneAction.CKAimAction;
 import ckGraphicsEngine.sceneAction.CKChangeAnimationAction;
+import ckGraphicsEngine.sceneAction.CKFadeAction;
 import ckGraphicsEngine.sceneAction.CKInstanceVisibleAction;
 import ckGraphicsEngine.sceneAction.CKLinkInstanceAction;
 import ckGraphicsEngine.sceneAction.CKMoveInstanceAction;
@@ -312,8 +317,42 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 		
 		return startFrame+frames;
 	}
-
 	
+	public int FadeMe(int tid, CKGraphicsAsset asset, int startFrame, 
+			int endFrame,boolean Fadeout,CKPosition spos,int layerDepth)
+	{ 
+		CKFadeAction Fade;
+		int spriteID;
+		if (((CKSpriteAsset) asset) instanceof CKSpriteAsset){
+			System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
+			CKFadeSprite trans=new CKFadeSprite(asset);
+			Fade=new CKFadeAction(trans,startFrame,endFrame,Fadeout);
+			spriteID=createUniqueInstance(tid,trans,spos,startFrame,layerDepth);
+		}
+		else{
+			CKTransparentAsset trans=new CKTransparentAsset(asset);
+			Fade=new CKFadeAction(trans,startFrame,endFrame,Fadeout);
+			spriteID=createUniqueInstance(tid,trans,spos,startFrame,layerDepth);
+		}
+		actions.add(Fade);
+		
+		
+		return spriteID;
+	}
+
+
+	public int move(int tid, int IID, int startFrame, CKPosition orgin,CKPosition destination, int speed, INTERPOLATE f) throws BadInstanceIDError
+	{
+		//do not need to clone positions as they will be cloned in ckmoveInstanceAction
+		CKAssetInstance inst = getInstance(IID);
+				
+		//need to calc ending time
+		int frames = CKMoveInstanceAction.calcTravelTime(orgin, destination, speed);
+
+		CKMoveInstanceAction a1=new CKMoveInstanceAction(orgin,destination,inst, startFrame,startFrame+frames,f);
+		actions.add(a1);
+		return startFrame+frames;
+	}
 	
 	@Override
 	public int moveTo(int tid, int IID, int startFrame, 
@@ -355,6 +394,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 		return inst.getAsset().getAnimationLength(animation);
 	}
 
+	
 	@Override
 	public void setAnimation(int tid, int IID, String animation, int startFrame)
 			throws BadInstanceIDError, UnknownAnimationError
@@ -599,6 +639,8 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 	
 	public static void main(String argv[]) 
 	{
+		//Application.launch(DialogueBubble.class,argv);
+		//Application.launch(testByMyself.class,argv);
 		Application.launch(TestEngine.class,argv);
 		//Application.launch(TestEngineSimple.class,argv);
 	}
@@ -614,7 +656,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 		//JFrame frame = new JFrame();
 		
 		FX2dGraphicsEngine engine = new FX2dGraphicsEngine(30,5);
-		engine.resize(600,600);
+		engine.resize(200,200);
 		
 		//get scene
 		engine.loadScene("Kitchen");

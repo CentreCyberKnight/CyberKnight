@@ -113,19 +113,20 @@ public class AimDescription
 
 	public CKPosition[] getOffsets(Direction d)
 	{
-		if(d==direction || direction==Direction.NONE || d==Direction.NONE)
+		if (d == direction || direction == Direction.NONE
+				|| d == Direction.NONE)
 		{
 			return offsets;
 		}
-		//else we need to create the offsets
-		CKPosition [] ret = new CKPosition[offsets.length];
+		// else we need to create the offsets
+		CKPosition[] ret = new CKPosition[offsets.length];
 		double deg = direction.angleTo(d);
-		for(int i =0;i<offsets.length;i++)
+		for (int i = 0; i < offsets.length; i++)
 		{
 			ret[i] = offsets[i].rotate(deg);
 		}
-		
-		return ret;		
+
+		return ret;
 	}
 	
 	
