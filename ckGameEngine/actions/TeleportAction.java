@@ -97,7 +97,7 @@ public class TeleportAction extends CKQuestAction
 		
 		
 		try {
-			int ID1=engine.FadeMe(tid, target.getAsset(), startFadeOut, endFadeOut, true,spos,CKGraphicsLayer.FRONTHIGHLIGHT_LAYER);
+			int ID1=engine.FadeMe(tid, target.getAsset(), startFadeOut, endFadeOut, true,spos,CKGraphicsLayer.FRONTHIGHLIGHT_LAYER,target.getDirection().toString());
 			engine.loadAsset(tid, "teleport2_Select");
 			int spriteID3=engine.createInstance(tid, "teleport2_Select", spos, startFadeOut, CKGraphicsLayer.ENVIRNOMENT_BOUNDRY);
 			engine.hide(tid, target.getInstanceID(), startFadeOut);
@@ -110,13 +110,8 @@ public class TeleportAction extends CKQuestAction
 			
 			e1.printStackTrace();}
 	
-		int ID2=engine.FadeMe(tid, target.getAsset(), startFadeIn, endFadeIn, false, epos, CKGraphicsLayer.FRONTHIGHLIGHT_LAYER);
-		try {
-			engine.setAnimation(tid,ID2, target.getDirection().toString(), startFadeIn);
-		} catch (BadInstanceIDError|UnknownAnimationError e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		int ID2=engine.FadeMe(tid, target.getAsset(), startFadeIn, endFadeIn, false, epos, CKGraphicsLayer.FRONTHIGHLIGHT_LAYER,target.getDirection().toString());
+		
 		try {
 			engine.destroy(tid,ID2,endFadeIn);
 			engine.reveal(tid, target.getInstanceID(), endFadeIn);

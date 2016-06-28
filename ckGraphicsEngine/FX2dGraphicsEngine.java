@@ -319,14 +319,20 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 	}
 	
 	public int FadeMe(int tid, CKGraphicsAsset asset, int startFrame, 
-			int endFrame,boolean Fadeout,CKPosition spos,int layerDepth)
+			int endFrame,boolean Fadeout,CKPosition spos,int layerDepth,String direction)
 	{ 
 		CKFadeAction Fade;
 		int spriteID;
-		if ( asset instanceof CKSpriteAsset){
+		if ((asset) instanceof CKSpriteAsset){
 			CKFadeSprite trans=new CKFadeSprite(asset);
 			Fade=new CKFadeAction(trans,startFrame,endFrame,Fadeout);
 			spriteID=createUniqueInstance(tid,trans,spos,startFrame,layerDepth);
+			try {
+				setAnimation(tid,spriteID,direction,startFrame);
+			} catch (BadInstanceIDError | UnknownAnimationError e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		else{
 			CKTransparentAsset trans=new CKTransparentAsset(asset);
