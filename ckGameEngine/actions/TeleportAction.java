@@ -5,9 +5,6 @@ package ckGameEngine.actions;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
@@ -15,13 +12,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTree;
-import javax.swing.SpinnerListModel;
 import javax.swing.SpinnerNumberModel;
 
 import ckCommonUtils.CKGridPosition;
 import ckCommonUtils.CKPosition;
-import ckEditor.treegui.CKGraphicsAssetPickerNode;
-import ckEditor.treegui.CKSoundPickerNode;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGrid;
 import ckGameEngine.CKGridActor;
@@ -30,9 +24,6 @@ import ckGraphicsEngine.BadInstanceIDError;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.LoadAssetError;
 import ckGraphicsEngine.UnknownAnimationError;
-import ckGraphicsEngine.assets.CKFadeAsset;
-import ckGraphicsEngine.assets.CKGraphicsAsset;
-import ckGraphicsEngine.assets.CKTransparentAsset;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
 import ckSnapInterpreter.CKQuestRunner;
 
@@ -87,10 +78,12 @@ public class TeleportAction extends CKQuestAction
 	{
 		CKGridActor target;
 		if(cast!=null) 	{
-			target = cast.getActorTarget(); 
-			
+			target = cast.getActorTarget();
+			target = getPC(name);
 		}
-		else					{target = getPC(name); }
+		
+		else{					
+			target = getPC(name); }
 		
 		FX2dGraphicsEngine engine=CKGameObjectsFacade.getEngine();
 		
@@ -105,8 +98,8 @@ public class TeleportAction extends CKQuestAction
 		
 		try {
 			int ID1=engine.FadeMe(tid, target.getAsset(), startFadeOut, endFadeOut, true,spos,CKGraphicsLayer.FRONTHIGHLIGHT_LAYER);
-			engine.loadAsset(tid, "Swirl");
-			int spriteID3=engine.createInstance(tid, "Swirl", spos, startFadeOut, CKGraphicsLayer.SPRITE_LAYER);
+			engine.loadAsset(tid, "teleport2_Select");
+			int spriteID3=engine.createInstance(tid, "teleport2_Select", spos, startFadeOut, CKGraphicsLayer.ENVIRNOMENT_BOUNDRY);
 			engine.hide(tid, target.getInstanceID(), startFadeOut);
 			CKGrid grid = CKGameObjectsFacade.getQuest().getGrid();
 			CKGameObjectsFacade.getQuest().setStartTime(grid.moveInstantly(target,epos,startFadeOut)); 
@@ -120,9 +113,14 @@ public class TeleportAction extends CKQuestAction
 		int ID2=engine.FadeMe(tid, target.getAsset(), startFadeIn, endFadeIn, false, epos, CKGraphicsLayer.FRONTHIGHLIGHT_LAYER);
 		try {
 			engine.setAnimation(tid,ID2, target.getDirection().toString(), startFadeIn);
+		} catch (BadInstanceIDError|UnknownAnimationError e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
 			engine.destroy(tid,ID2,endFadeIn);
 			engine.reveal(tid, target.getInstanceID(), endFadeIn);
-		} catch (BadInstanceIDError|UnknownAnimationError e) {
+		} catch (BadInstanceIDError e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

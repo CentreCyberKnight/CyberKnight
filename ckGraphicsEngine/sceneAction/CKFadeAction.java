@@ -1,7 +1,6 @@
 package ckGraphicsEngine.sceneAction;
 
 import ckGraphicsEngine.CKGraphicsSceneInterface;
-import ckGraphicsEngine.assets.CKTransparentAsset;
 import ckGraphicsEngine.assets.TransAsset;
 
 public class CKFadeAction extends CKSceneAction{

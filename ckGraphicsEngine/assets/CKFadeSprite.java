@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import ckGraphicsEngine.UnknownAnimationError;
-import ckGraphicsEngine.assets.CKSpriteAsset.SpriteIterator;
-import ckGraphicsEngine.assets.CKSpriteAsset.SpriteNode;
 import javafx.scene.canvas.GraphicsContext;
 
 //actually a CKTransparentSprite

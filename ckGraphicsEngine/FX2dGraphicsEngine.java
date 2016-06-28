@@ -323,8 +323,7 @@ CKGraphicsEngine,CKWorkSupervisorListener<CKGraphicsScene>
 	{ 
 		CKFadeAction Fade;
 		int spriteID;
-		if (((CKSpriteAsset) asset) instanceof CKSpriteAsset){
-			System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
+		if ( asset instanceof CKSpriteAsset){
 			CKFadeSprite trans=new CKFadeSprite(asset);
 			Fade=new CKFadeAction(trans,startFrame,endFrame,Fadeout);
 			spriteID=createUniqueInstance(tid,trans,spos,startFrame,layerDepth);
