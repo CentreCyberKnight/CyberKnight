@@ -1018,8 +1018,7 @@ IDE_Morph.prototype.hideBlocks = function (book) {
 	//so this is using the cache which doesn't check all of the different categories
 	var allCat = Object.keys(this.currentSprite.blocksCache);		
 	//var allCat = getCategoryNames();
-	var nullCat = [];
-	console.log(this.stage);
+	var nullCat = [];	
 	for (var i = 0; i < allCat.length; i++) {
 	        var catName = allCat[i];	        
             //this.sprites.contents.forEach(function(e) {            	

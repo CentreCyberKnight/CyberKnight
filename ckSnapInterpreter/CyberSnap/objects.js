@@ -1456,11 +1456,14 @@ CyberKnight.moveToSpells=
 //for the fourth value
 //1 means that the key is the page
 //0 means that the key is a page the user is searching for
+
 CyberKnight.scrySpells=
 [
 ['scry',"traits",0,1],
 ['scry',"visible",0,1],
 ];
+
+
 
 CyberKnight.hackSpells=
 [
