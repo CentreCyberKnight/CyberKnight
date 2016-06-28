@@ -3,6 +3,7 @@ package ckGameEngine.actions;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
@@ -201,8 +202,23 @@ public class CKGameActionAddMenu
 			addWait.addActionListener(new TreeAddActionListener("WAIT",tree,pos,replace));
 			addActions.add(addWait);
 			
+			addMenuItem("End Quest","ENDQUEST",addActions,tree,pos,replace);
+			
+			
 			return addActions;
 		}
+	
+	
+	private static void addMenuItem(String name, String tag, JComponent parent,
+			CKTreeGui tree,int pos,boolean replace)
+	
+	{
+		JMenuItem item = new JMenuItem(name);
+		item.addActionListener(new TreeAddActionListener(tag,tree,pos,replace));
+		parent.add(item);	
+		
+	}
+	
 	
 	
 }
@@ -346,7 +362,11 @@ class TreeAddActionListener implements ActionListener
 			{
 				action = new CKMoveActorCmd();
 			}
-
+			else if(name.compareTo("ENDQUEST")==0)
+			{
+				action = new CKEndGameAction();
+			}
+			
 			if(replace)
 			{
 				node.remove(position);

@@ -178,9 +178,12 @@ public class CKSelectAsset extends CKGraphicsAsset {
 	public void drawToGraphics(GraphicsContext g, int screenx, int screeny, int frame, int row, ImageObserver observer) 
 	{
 		coordinateNode cNode = calculateRow_Frame(LeyuFrame++ % numFramesAction);
-		System.out.println("Frame Number: " + cNode.getTheFrame() + "-------------------");
-		System.out.println("Row: " + cNode.getTheRow() + "---------------------------------");
-		System.out.println("Asset ID: " + getAID() + "-------------------");
+
+
+		//System.out.println("Frame Number: " + cNode.getTheFrame() + "-------------------");
+		//System.out.println("Row: " + cNode.getTheRow() + "---------------------------------");
+		//System.out.println("Asset ID: " + getAID() + "-------------------");
+
 		asset.drawToGraphics(g,screenx,screeny,cNode.getTheFrame(),cNode.getTheRow(),observer);
 	}
 	

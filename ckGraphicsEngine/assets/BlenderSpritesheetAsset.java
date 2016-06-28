@@ -26,12 +26,14 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.JFrame;
+
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckDatabase.XMLDirectories;
 //import javax.swing.JFrame;
 
 
-public class CKSpritesheetAsset {
+public class BlenderSpritesheetAsset {
 	public static final String IMG_EXTENSION=".png";
 	//Change PATH_TO_CK_DATA depending on the computer 
 	//Make sure to go into both CK_DATA folders
@@ -49,14 +51,12 @@ public class CKSpritesheetAsset {
 	
 	//Constructor parses a text file from DAZ script/java
 	//Need full path to text file
-	public CKSpritesheetAsset(String txtFileName) throws FileNotFoundException{ 
-		this.actionList = new ArrayList<CKSpritesheetActionNode>();
+	public BlenderSpritesheetAsset(String txtFileName) throws FileNotFoundException{ 
 		FileReader fin = new FileReader(txtFileName);
 		Scanner scan = new Scanner(fin);
 		String spritesheetInfo = scan.nextLine();
 		scan.close();
-		String[] inTwo = spritesheetInfo.split("@");
-		String[] spritesheetData = inTwo[0].split(";");
+		String[] spritesheetData = spritesheetInfo.split(";");
 		this.characterName = spritesheetData[0];
 		this.basePath = spritesheetData[1];
 		this.totalFrames = Integer.parseInt(spritesheetData[2]);
@@ -65,16 +65,9 @@ public class CKSpritesheetAsset {
 		this.imgHeight = Integer.parseInt(spritesheetData[4]);
 		this.frameRate = Integer.parseInt(spritesheetData[5]);
 		this.sheetFileName = spritesheetData[0]+IMG_EXTENSION;
-		String[] actionData = inTwo[1].split(";");
-		for (int j=0;j<actionData.length;j++){
-			String actData = actionData[j];
-			String[] action = actData.split(",");
-			int nFrm = Integer.parseInt(action[1]);
-			addAction(action[0],nFrm);
-		}
 	}
 	//Previous constructor used in testing
-	public CKSpritesheetAsset(String charName,String filename,int numFrames, int width,int height,int framerate){ 
+	public BlenderSpritesheetAsset(String charName,String filename,int numFrames, int width,int height,int framerate){ 
 		this.actionList = new ArrayList<CKSpritesheetActionNode>();
 		this.characterName = charName;	
 		this.sheetFileName = filename;
@@ -87,7 +80,7 @@ public class CKSpritesheetAsset {
 		this.sheetFileName = charName+IMG_EXTENSION;
 	}
 	//Previous constructor used in testing
-	public CKSpritesheetAsset(String charName,String filename,int numFrames,int frames_Row,int num_Rows, int width,int height,int framerate){ 
+	public BlenderSpritesheetAsset(String charName,String filename,int numFrames,int frames_Row,int num_Rows, int width,int height,int framerate){ 
 		this.actionList = new ArrayList<CKSpritesheetActionNode>();
 		this.characterName = charName;	
 		this.sheetFileName = filename;
@@ -218,6 +211,9 @@ public class CKSpritesheetAsset {
 				return fileName.endsWith(IMG_EXTENSION);}});
 		ArrayList<String> commandList = new ArrayList<String>();
 		commandList.add("montage");
+		
+		System.out.println("imgFileList.length: " + imgFileList.length);
+		
 		for (int i=1;i<imgFileList.length+1;i++){
 			commandList.add(imgFileList[i-1]);
 		}
@@ -232,6 +228,12 @@ public class CKSpritesheetAsset {
 		commandList.add("-background");
 		commandList.add("none");
 		commandList.add(this.characterName+IMG_EXTENSION);
+		
+		for (int i = 0; i < commandList.size(); i ++)
+		{
+			System.out.println(commandList.get(i));
+		}
+		
 		try{
 			ProcessBuilder pb = new ProcessBuilder(commandList);
 			pb.directory(new File(this.basePath+"/"+this.characterName));
@@ -260,44 +262,18 @@ public class CKSpritesheetAsset {
 		//Currently must upload images to CK_DATA before using with wrapper
 		CKImageAsset imgAst = new CKImageAsset(this.characterName+"_Image",this.characterName+"_spritesheet_"+this.totalFrames,this.imgWidth,this.imgHeight,this.numColumns,this.numRows,TileType.SPRITE,XMLDirectories.GRAPHIC_ASSET_IMAGE_DIR+this.sheetFileName);
 		CKGraphicsAssetFactoryXML.writeAssetToXMLDirectory(imgAst);
+		
 		String regAssetID = this.characterName+"_Regulated";
 		CKRegulatedAsset regAst = new CKRegulatedAsset(regAssetID,this.characterName+"_Regulated_"+this.frameRate+"fps",imgAst,this.frameRate);
 		CKGraphicsAssetFactoryXML.writeAssetToXMLDirectory(regAst);
+		
 		int startFrame = 0;
-		String spriteAssetID = this.characterName+"_Sprite";
-		CKSpriteAsset characterSprite = new CKSpriteAsset(spriteAssetID,this.characterName);
-		for(int i=0;i<this.size();i++){
-			
-			//System.out.println(i + "th run: ------------------");
-			
-			CKSpritesheetActionNode action = this.actionList.get(i);
-			String actionName = action.getActionName();
-			
-			//System.out.println("Action Name: " + actionName);
-			
-			int num_Frames = action.getActionFrames();
-			
-			//System.out.println("Number of frames: " + num_Frames);
-			
-			CKSelectAsset newAction = new CKSelectAsset(this.characterName+"_"+actionName+"ID",this.characterName+"_"+actionName,regAssetID,num_Frames*3,startFrame*3);
-			CKGraphicsAssetFactoryXML.writeAssetToXMLDirectory(newAction);
-			characterSprite.addAnimation(actionName, newAction);
-			startFrame = startFrame + num_Frames;
-			
-			//System.out.println("Start Frame for next run: " + startFrame);
-			
-			
-			}
-		if ((startFrame)==this.totalFrames){
-			System.out.println("Frames aligned: "+this.totalFrames+" frames");
-		}
-		else{
-			System.out.println("Frames don't match: "+(startFrame)+ "--"+this.totalFrames);
-			
-		}
-		CKGraphicsAssetFactoryXML.writeAssetToXMLDirectory(characterSprite);
-		((CKGraphicsAssetFactoryXML) CKGraphicsAssetFactoryXML.getInstance()).assignUsageTypeToAsset(spriteAssetID,"sprite");
-		return characterSprite;
+		String selectAssetID = this.characterName+"_Select";
+		int num_Frames = this.getTotalFrames();
+		CKSelectAsset selectAst = new CKSelectAsset(selectAssetID,this.characterName,regAssetID,num_Frames*3,startFrame*3);
+		CKGraphicsAssetFactoryXML.writeAssetToXMLDirectory(selectAst);
+		
+		return selectAst;
 	}
 	//Runs all 3 major programs in correct sequence for simplified use
 	public CKGraphicsAsset pipeline(){
@@ -312,11 +288,7 @@ public class CKSpritesheetAsset {
 		+this.numColumns+"x"+this.numRows+" tiles | "
 		+this.totalFrames+" frames\n"
 		+this.imgWidth+"x"+this.imgHeight+"p | "
-		+this.frameRate+"fps\n"+"Actions\n";
-		for (int i = 0;i<actionList.size();i++){
-			CKSpritesheetActionNode element = actionList.get(i);
-			toReturn = toReturn+element.getActionName()+": "+element.getActionFrames()+"\n";
-		}
+		+this.frameRate+"fps\n";
 		return toReturn;
 	}
 	//Returns the number of actions in the spritesheet
@@ -367,8 +339,8 @@ public class CKSpritesheetAsset {
 	}
 
 	public static void main(String[] args) {
-		/*try{
-			CKSpritesheetAsset test_ = new CKSpritesheetAsset("C:/Users/Chadwick/Desktop/CK_Pipeline/Images/elf/elf.txt");
+		try{
+			BlenderSpritesheetAsset test_ = new BlenderSpritesheetAsset("D:/BlenderPipeline/Output/teleport/teleport.txt");
 			System.out.println(test_);
 			CKGraphicsAsset newAsset = test_.pipeline();
 			CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset(newAsset.getAID());	
@@ -379,6 +351,6 @@ public class CKSpritesheetAsset {
 			frame.setVisible(true);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		}
-		catch(FileNotFoundException e){System.out.println(e.getMessage());}*/
+		catch(FileNotFoundException e){System.out.println(e.getMessage());}
 	}
 }

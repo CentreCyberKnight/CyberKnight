@@ -88,16 +88,19 @@ public class CKQuestSceneBuilder
     	
     	CKControlSpellsPane controls = new CKControlSpellsPane(data);
     	CKAllArtifactsPane allArtifacts = new CKAllArtifactsPane(data, controls);
-    	CKDrawerTab allArtifactsTab = new CKDrawerTab(allArtifacts, DrawerSides.BOTTOM, 
-    			350.0, 500.0, 400.0, 120.0, "ckSnapInterpreter/sword.png"); 
+    	CKDrawerTab allArtifactsTab = new CKDrawerTab(allArtifacts, 
+    			DrawerSides.LEFT, 0.0, 470.0, 190.0, 350.0,
+    			//DrawerSides.BOTTOM,350.0, 500.0, 400.0, 120.0,
+    			"ckSnapInterpreter/sword.png"); 
     	
     	allArtifactsTab.openDrawer(true);
     	
 //    	allArtifactsTab.translateXProperty().bind(menuPane.widthProperty().divide(2) );
-    	allArtifactsTab.layoutYProperty().bind(menuPane.heightProperty().subtract(120) );
+//    	allArtifactsTab.layoutYProperty().bind(menuPane.heightProperty().subtract(120) );
     	
-    	controls.layoutXProperty().bind(allArtifactsTab.layoutXProperty());
-		controls.layoutYProperty().bind(allArtifactsTab.layoutYProperty().subtract(140));
+    	controls.layoutXProperty().bind(allArtifactsTab.layoutXProperty().add(70));
+//		controls.layoutYProperty().bind(allArtifactsTab.layoutYProperty().subtract(140));
+		controls.layoutYProperty().bind(allArtifactsTab.layoutYProperty());
 	
     	
     	CKAddedAbilitiesPane abilities = new CKAddedAbilitiesPane(data);
@@ -124,7 +127,10 @@ public class CKQuestSceneBuilder
     	endLose.relocate(425, 50);
 
     	menuPane.getChildren().addAll(iconsTab, playerTab, artifactTab,
-										abilitiesTab, allArtifactsTab, statsTab,controls,
+										//abilitiesTab,
+    									allArtifactsTab, 
+										//statsTab,
+										controls,
 										startTurn,endTurn,
 										endWin,endLose
 				);
