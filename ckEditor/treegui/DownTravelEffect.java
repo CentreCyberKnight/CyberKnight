@@ -26,7 +26,6 @@ public class DownTravelEffect extends CKTravelEffect{
 	public int doTravelEffect(CKPosition startingPos, CKPosition endingPos,int startTime)
 	{
 		FX2dGraphicsEngine engine=CKGameObjectsFacade.getEngine();	
-		System.out.println("!!!!!!!MoveDOWN");
 		CKPosition added=new CKPosition(0,0,20,0);
 		CKPosition spos=endingPos.add(added);
 		int travelTime=startTime;
