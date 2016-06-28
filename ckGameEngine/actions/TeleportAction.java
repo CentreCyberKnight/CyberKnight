@@ -87,10 +87,12 @@ public class TeleportAction extends CKQuestAction
 	{
 		CKGridActor target;
 		if(cast!=null) 	{
-			target = cast.getActorTarget(); 
-			
+			System.out.println("<<<<<<<<<<<>>>>>>>>>>>>");
+			target = getPC(name);			
 		}
-		else					{target = getPC(name); }
+		else{
+			target = getPC(name);						
+			}
 		
 		FX2dGraphicsEngine engine=CKGameObjectsFacade.getEngine();
 		
@@ -104,7 +106,7 @@ public class TeleportAction extends CKQuestAction
 		
 		
 		try {
-			int ID1=engine.FadeMe(tid, target.getAsset(), startFadeOut, endFadeOut, true,spos,CKGraphicsLayer.FRONTHIGHLIGHT_LAYER);
+			int ID1=engine.FadeMe(tid, target.getAsset(), startFadeOut, endFadeOut, true,spos,CKGraphicsLayer.FRONTHIGHLIGHT_LAYER,target.getDirection().toString());
 			engine.loadAsset(tid, "Swirl");
 			int spriteID3=engine.createInstance(tid, "Swirl", spos, startFadeOut, CKGraphicsLayer.SPRITE_LAYER);
 			engine.hide(tid, target.getInstanceID(), startFadeOut);
@@ -112,20 +114,26 @@ public class TeleportAction extends CKQuestAction
 			CKGameObjectsFacade.getQuest().setStartTime(grid.moveInstantly(target,epos,startFadeOut)); 
 			engine.destroy(tid, spriteID3, endFadeOut);
 			engine.destroy(tid, ID1, endFadeOut);
-			engine.setAnimation(tid,ID1, target.getDirection().toString(), startFadeOut);
-		} catch (BadInstanceIDError |LoadAssetError| UnknownAnimationError e1) {
-			
+			//engine.setAnimation(tid,ID1, target.getDirection().toString(), startFadeOut);
+		} catch (BadInstanceIDError |LoadAssetError/*| UnknownAnimationError*/ e1) {			
 			e1.printStackTrace();}
 	
-		int ID2=engine.FadeMe(tid, target.getAsset(), startFadeIn, endFadeIn, false, epos, CKGraphicsLayer.FRONTHIGHLIGHT_LAYER);
+		int ID2=engine.FadeMe(tid, target.getAsset(), startFadeIn, endFadeIn, false, epos, CKGraphicsLayer.FRONTHIGHLIGHT_LAYER,target.getDirection().toString());
+		
+			/*try {
+				engine.setAnimation(tid,ID2, target.getDirection().toString(), startFadeIn);
+			} catch (BadInstanceIDError | UnknownAnimationError e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}*/
 		try {
-			engine.setAnimation(tid,ID2, target.getDirection().toString(), startFadeIn);
 			engine.destroy(tid,ID2,endFadeIn);
 			engine.reveal(tid, target.getInstanceID(), endFadeIn);
-		} catch (BadInstanceIDError|UnknownAnimationError e) {
+		} catch (BadInstanceIDError e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		
 
 		engine.endTransaction(tid, false);

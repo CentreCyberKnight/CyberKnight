@@ -280,7 +280,7 @@ public class CKSpellObject {
 						}
 						*/
 					//	System.out.println("java land");
-						completed.setValue(total);
+						completed.setValue(total);						
 						//w.endTransaction();
 						//tell engine its done
 						if(snapController instanceof ActorSnapController)

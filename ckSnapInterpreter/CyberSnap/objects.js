@@ -1380,8 +1380,7 @@ CyberKnight.castSpellValue = function(catagory,spell,cp,key,value)
 {
 	//jsDebug.print(catagory+" "+spell+" for "+cp);	
 	if(globalComplete!=null){
-	var k=globalComplete.getValue().sumResults(value);
-	console.log(k);
+	var k=globalComplete.getValue().sumResults_S(value);		
 	return k;
 	}
 	else{
@@ -1414,6 +1413,7 @@ CyberKnight.spells =
 ["fire","heat it up",-1],
 ["fire","Burn it down",-1],
 ["fire","soul burn",10],
+["fire","shoot",5],
 ["earth","slice",-1],
 ["earth","wall",-1],
 ["earth","shove",-1],
@@ -1428,13 +1428,15 @@ CyberKnight.spells =
 
 CyberKnight.selfSpells = 
 [
-["move","forward",-1],
+["move","forward",1],
 ["move","left",1],
 ["move","right",1],
 ["move","crawl",3],
 ["move","turn right",2],
 ["move","turn left",2],
 ]
+
+
 
 CyberKnight.aimSpells =
 [
@@ -1466,7 +1468,6 @@ CyberKnight.hackSpells=
 ["lightning","test hide 2",5],
 ['scry',"results",0],
 ];
-
 
 
 CyberKnight.craftName = function(spell)
@@ -1755,7 +1756,6 @@ CyberKnight.createHackSpellFunction = function(spell)
 			return CyberKnight.castSpellValue(spell[0],spell[1],CP,"",value);
 		};
 };
-
 
 /**
 	puts blocks into the categories so we can see them.
@@ -4043,10 +4043,7 @@ Morph.prototype.setPosition = function (aPoint, justMe) {
         this.moveBy(delta, justMe);
     }
 };
-SpriteMorph.prototype.snapCompletes = function() {
-	console.log(globalComplete);
-	globalComplete=null;	
-	console.log(globalComplete);
+SpriteMorph.prototype.snapCompletes = function() {			
 	completionListener.snapCompletes();	
 };
 /*
