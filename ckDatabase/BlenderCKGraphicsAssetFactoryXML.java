@@ -1,6 +1,4 @@
 package ckDatabase;
-import static ckCommonUtils.CKDatabaseTools.DBAT;
-
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -9,9 +7,7 @@ import java.beans.XMLEncoder;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,7 +15,8 @@ import java.util.Vector;
 
 import javax.swing.JFrame;
 
-import ckCommonUtils.CKURL;
+
+import ckCommonUtils.BlenderCKURL;
 import ckGraphicsEngine.assets.CKAssetViewer;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.assets.CKImageAsset;
@@ -30,12 +27,14 @@ import ckGraphicsEngine.assets.CKSharedAsset;
 import ckGraphicsEngine.assets.CKSpriteAsset;
 import ckGraphicsEngine.assets.TileType;
 
+import static ckCommonUtils.CKDatabaseTools.*;
+
 /**A CK GraphicsAsset fFactory that uses XML files store data
  * 
  * @author Michael K. Bradshaw
  *
  */
-public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
+public class BlenderCKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 {
 
 	/*static private String AT_TYPE = "graphics_asset_type";
@@ -52,28 +51,27 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 	private static HashMap<String,String> portraitMap=null;
 	private static HashMap<String,Vector<String> > usageMap=null;
 	
-	private static CKGraphicsAssetFactoryXML factory= null;
+	private static BlenderCKGraphicsAssetFactoryXML factory= null;
 	
 	public static CKGraphicsAssetFactory getInstance()
 	{
 		if(factory==null)
 		{
-			factory = new CKGraphicsAssetFactoryXML();
+			factory = new BlenderCKGraphicsAssetFactoryXML();
 		}
 		return factory;
 	}
 	
-	@SuppressWarnings("unchecked")
-	private CKGraphicsAssetFactoryXML()
+	private BlenderCKGraphicsAssetFactoryXML()
 	{
 		super();
 		assetMap = new HashMap<String,CKGraphicsAsset>();
 		
 		//read in portraits
-		CKURL u;
+		BlenderCKURL u;
 		try
 		{
-			u = new CKURL(XMLDirectories.GRAPHIC_PORTRAITS);
+			u = new BlenderCKURL(XMLDirectories.GRAPHIC_PORTRAITS);
 		
 			XMLDecoder d = new XMLDecoder(u.getInputStream());
 			portraitMap = (HashMap<String,String>) d.readObject();
@@ -93,7 +91,7 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 	{
 		try
 		{
-			String path = new CKURL(XMLDirectories.GRAPHIC_ASSET_DIR).getURL().getFile();
+			String path = new BlenderCKURL(XMLDirectories.GRAPHIC_ASSET_DIR).getURL().getFile();
 			File uniqueFile = File.createTempFile("asset", ".xml", new File(path));
 			String name =uniqueFile.getName(); 
 			return name.substring(0, name.lastIndexOf(".xml"));
@@ -114,7 +112,7 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 			{
 				asset.setAID(generateUniqueAssetName());
 			}
-			CKURL u = new CKURL(XMLDirectories.GRAPHIC_ASSET_DIR+asset.getAID()+".xml");
+			BlenderCKURL u = new BlenderCKURL(XMLDirectories.GRAPHIC_ASSET_DIR+asset.getAID()+".xml");
 			asset.writeToStream(u.getOutputStream());
 		} catch (IOException e)
 		{
@@ -128,7 +126,7 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 	{
 		try
 		{
-			CKURL u = new CKURL(XMLDirectories.GRAPHIC_ASSET_DIR+assetID+".xml");
+			BlenderCKURL u = new BlenderCKURL(XMLDirectories.GRAPHIC_ASSET_DIR+assetID+".xml");
 			return CKGraphicsAsset.readFromStream(u.getInputStream());
 		} catch (IOException e)
 		{
@@ -183,10 +181,10 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 		
 	protected void storePortraits()
 	{
-		CKURL u;
+		BlenderCKURL u;
 		try
 		{
-			u = new CKURL(XMLDirectories.GRAPHIC_PORTRAITS);
+			u = new BlenderCKURL(XMLDirectories.GRAPHIC_PORTRAITS);
 		
 			XMLEncoder d = new XMLEncoder(u.getOutputStream());
 			d.writeObject(portraitMap);
@@ -230,7 +228,7 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 		
 		try
 		{
-			folder = new File (new CKURL(XMLDirectories.GRAPHIC_ASSET_DIR).getURL().getFile());
+			folder = new File (new BlenderCKURL(XMLDirectories.GRAPHIC_ASSET_DIR).getURL().getFile());
 		
 			for (File f : folder.listFiles())
 			{
@@ -250,7 +248,6 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 	 * Initializes the usage map for assets.  This should only be called when the accessing files,
 	 * Not web pages or JAR files.
 	 */
-	@SuppressWarnings("unchecked")
 	protected void readUsages()
 	{
 		if(usageMap==null)
@@ -260,13 +257,13 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 			{
 
 				File folder;
-				folder = new File (new CKURL(XMLDirectories.GRAPHIC_ASSET_USAGE_DIR).getURL().getFile());
+				folder = new File (new BlenderCKURL(XMLDirectories.GRAPHIC_ASSET_USAGE_DIR).getURL().getFile());
 			
 				for (File f : folder.listFiles())
 				{
 					//read in portraits
 					String name = XMLDirectories.GRAPHIC_ASSET_USAGE_DIR + f.getName();
-					XMLDecoder d = new XMLDecoder(new CKURL(name).getInputStream());
+					XMLDecoder d = new XMLDecoder(new BlenderCKURL(name).getInputStream());
 					usageMap.put(f.getName().replaceFirst("[.][^.]+$", ""), (Vector<String>) d.readObject() );
 					d.close();
 				}
@@ -286,10 +283,10 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 	{
 		readUsages();
 	
-		CKURL u;
+		BlenderCKURL u;
 		try
 		{
-			u = new CKURL(XMLDirectories.GRAPHIC_ASSET_USAGE_DIR+t+".xml");
+			u = new BlenderCKURL(XMLDirectories.GRAPHIC_ASSET_USAGE_DIR+t+".xml");
 		} catch (MalformedURLException e1)
 		{
 			e1.printStackTrace();
@@ -503,7 +500,7 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 		
 	public static void createTestDB()
 	{
-		CKGraphicsAssetFactoryXML factory = new CKGraphicsAssetFactoryXML();
+		BlenderCKGraphicsAssetFactoryXML factory = new BlenderCKGraphicsAssetFactoryXML();
 		String floor = "floor";
 		String sprite="sprite";
 		String portrait = "portrait";
@@ -545,22 +542,7 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 			heroS.addAnimation("SOUTHEAST", a2d);
 			writeAssetToXMLDirectory(heroS);
 			factory.assignUsageTypeToAsset("heroSprite",sprite);
-			
-			//mom1 portrait
-			//CKImageAsset mom1_portrait =(CKImageAsset) CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset("asset600870298058200373");
-			CKImageAsset mom1_portrait = new CKImageAsset("mom1_portrait","mom1_portrait",100,150,1,1,TileType.BASE,
-					  XMLDirectories.GRAPHIC_ASSET_IMAGE_DIR+"mom1_portrait.png");
-			writeAssetToXMLDirectory(mom1_portrait);
-			factory.assignUsageTypeToAsset(mom1_portrait.getAID(),portrait);
-			factory.assignPortrait("Mom1_Sprite",mom1_portrait.getAID());
-			
-			//girl portrait
-			CKImageAsset girl_portrait = new CKImageAsset("girl_portrait","girl_portrait",100,150,1,1,TileType.BASE,
-					  XMLDirectories.GRAPHIC_ASSET_IMAGE_DIR+"girl_portrait.png");
-			writeAssetToXMLDirectory(girl_portrait);
-			factory.assignUsageTypeToAsset(girl_portrait.getAID(),portrait);
-			factory.assignPortrait("LittleGirl_Sprite",girl_portrait.getAID());
-			
+
 			//43 dad portrait
 			CKImageAsset dpor = new CKImageAsset("HeroPortrait","dad",100,131,1,1,TileType.BASE,
 					  XMLDirectories.GRAPHIC_ASSET_IMAGE_DIR+"dad_portrait.jpg");
@@ -834,7 +816,7 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 		
 		
 		
-		CKGraphicsAsset person = (new CKGraphicsAssetFactoryXML()).getGraphicsAsset("babySprite");
+		CKGraphicsAsset person = (new BlenderCKGraphicsAssetFactoryXML()).getGraphicsAsset("babySprite");
 		
 		JFrame frame = new JFrame();
 		CKAssetViewer view=new CKAssetViewer(30,person,new Dimension(256,256));

@@ -24,7 +24,7 @@ public class TxtFile {
 	public TxtFile(Path p,Path bas){
 		setBasics();
 		actions2=new ArrayList<String>();
-		directionen=new String[]{"NW","SE","NE","SW"};
+		directionen=new String[]{"NE","NW","SE","SW"};
 		base=bas;
 		folder=p;
 		bass=base.toString().replace("\\","/");
