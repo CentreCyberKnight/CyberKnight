@@ -1428,10 +1428,9 @@ CyberKnight.spells =
 
 CyberKnight.selfSpells = 
 [
-["move","forward",1],
 ["move","left",1],
 ["move","right",1],
-["move","crawl",3],
+["move","forward",1],
 ["move","turn right",2],
 ["move","turn left",2],
 ]
