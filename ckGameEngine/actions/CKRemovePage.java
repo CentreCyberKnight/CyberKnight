@@ -28,7 +28,7 @@ import ckSatisfies.NumericalCostType;
  * @author dragonlord
  *
  */
-public class CKMarkGridActor extends CKGameAction implements ItemListener
+public class CKRemovePage extends CKGameAction implements ItemListener
 {
 	private String chapter = "MOVE";
     private String page = "Forward";
@@ -43,7 +43,7 @@ public class CKMarkGridActor extends CKGameAction implements ItemListener
 	
 	private static final long serialVersionUID = -1112825497910646743L;
 
-	public CKMarkGridActor() {}
+	public CKRemovePage() {}
 
 
 	/**
@@ -172,8 +172,9 @@ public class CKMarkGridActor extends CKGameAction implements ItemListener
 
 	@Override
 	public void doAction(CKGameActionListenerInterface L, CKSpellCast cast)
-	{
-		replaceListener(L);		
+	{		
+		replaceListener(L);
+
 		CKGridActor actor;
 		
 		if(pickActor)
@@ -192,15 +193,17 @@ public class CKMarkGridActor extends CKGameAction implements ItemListener
 			cost = cast.getCp();
 		}//else use the values set here.
 		
+
 		if(actor != null)
 		{
 			if(page.length()==0)
-			{	
+			{									
 				actor.addChapter(chapter,cost);
 			}
 			else
-			{				
-				actor.addPage(chapter,cost,page);
+			{								
+				actor.removePage(chapter,cost,page);
+				System.out.println(actor.hasPage(chapter, page));
 			}
 		}
 		notifyListener();
@@ -253,8 +256,8 @@ public class CKMarkGridActor extends CKGameAction implements ItemListener
 			nameBox[1] = new JComboBox<String>();
 			top[0].add(nameBox[0]);
 			top[1].add(nameBox[1]);
-			top[0].add(new JLabel("is marked with"));
-			top[1].add(new JLabel("is marked with"));
+			top[0].add(new JLabel("uses page"));
+			top[1].add(new JLabel("uses page"));
 			
 	
 
@@ -446,7 +449,7 @@ public class CKMarkGridActor extends CKGameAction implements ItemListener
 		
 			
 			//root.add(new BookSatisfies("Fire","bolt",13,NumericalCostType.EQ) );
-			root.add(new CKMarkGridActor());
+			root.add(new CKRemovePage());
 			frame.add(new CKTreeGui(root));
 			//frame.add(new CKGameActionBuilder());
 			frame.pack();

@@ -41,13 +41,16 @@ public class CKShoveActorCmd extends CKQuestAction
 	@Override
 	protected void questDoAction(CKSpellCast cast)
 	{
+		if(!(cast.getActorTarget() instanceof CKGridActor)){
+			return;
+		}
 		CKGridActor target = cast.getActorTarget();
 		CKAbstractGridItem source= cast.getSource();
 		Direction dir;
 		
 		String page = cast.getPage();
-		
-		if(page.compareToIgnoreCase(P_SHOVE)==0)
+		System.out.println(page);		
+		if(page.compareToIgnoreCase(P_SHOVE)==0 || page.compareToIgnoreCase("baby kick")==0)
 			{
 			dir = Direction.getDirectionTo(source.getPos(),target.getPos()); 
 			//CKGridActor actor = (CKGridActor) source;
@@ -83,7 +86,7 @@ public class CKShoveActorCmd extends CKQuestAction
 				
 				if(presentCP ==0) { break; }
 				
-				presentCP = presentCP - grid.costSlide(target, dir);
+				presentCP = presentCP - grid.costSlide(target, dir);				
 		}
 		
 		

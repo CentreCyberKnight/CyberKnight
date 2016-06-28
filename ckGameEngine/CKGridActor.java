@@ -280,16 +280,22 @@ public class CKGridActor extends CKGridItem
 		questAbilities.addChapter(new CKChapter(chapter,val));
 	}
 
+	
+	public void removePage(String chapter, int val, String page)
+	{		
+		this.coreAbilities=(getCoreAbilities().removePage(chapter,page));	
+	}
+	
 	public boolean hasChapter(String chapter)
 	{
 		return getAbilities().hasChapter(chapter);
 	}
-/*
-	public boolean hasPage(String page)
+
+	public boolean hasPage(String chapter, String page)
 	{
-		return getAbilities().hasPage(page);
+		return getAbilities().getChapter(chapter).hasPage(page);
 	}
-*/
+
 
 	public ActorController getTurnController()
 	{

@@ -67,6 +67,7 @@ public class ScryAction extends CKGameAction
 				while(iterator.hasNext())
 				{
 					test=iterator.next();
+					//System.out.println("<<<<<<<<<"+test+">>>>>>>>>");
 					cast.addResult(cast.getItemTarget(),action,test.getName(),
 							cast.getActorTarget().getAbilities().hasPage("traits", test.getName()));
 				}

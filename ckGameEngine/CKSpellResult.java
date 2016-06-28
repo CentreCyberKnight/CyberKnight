@@ -113,6 +113,13 @@ public class CKSpellResult
 			this.resultDescription = resultDescription;
 		}
 
+
+		@Override
+		public String toString() {
+			return "Tuple [target=" + target + ", action=" + action + ", resultType=" + resultType + ", result="
+					+ result + ", resultDescription=" + resultDescription + "]";
+		}
+
 		
 		
 
@@ -180,7 +187,12 @@ public class CKSpellResult
 		return actorStream().filter(t->include == t.target.getPos().equals(pos));
 	}
 	
-	
+	public void report(){
+		results.stream()
+				.forEach(e->{
+					System.out.println(e);
+				});
+	}
 	
 	public DoubleStream resultsStream(String resultType)
 	{
@@ -210,10 +222,27 @@ public class CKSpellResult
 
 	public double sumResults(String resultType)
 	{
+		System.out.println("<<<<<<<<<<<<triangle>>>>>>>>>>");
 		return resultsStream(resultType).sum();	
 	}
 	
+
+	public double sumResults_S(String resultType)
+	{
+		System.out.println("<<<<<<<<<<<<triangle>>>>>>>>>>");
+		return sumResults(resultType);	
+	}
 	
+	public double sumCookies()
+	{
+		System.out.println("<<<<<<<<<<<<fudge>>>>>>>>>>");
+		return resultsStream("cookies").sum();	
+	}
+	
+	public int test(){
+		System.out.println("<<<<<<<<<<<<heap>>>>>>>>>>");
+		return 5;
+	}
 	
 	
 	public double avgResults(String string, int depth)
@@ -248,22 +277,7 @@ public class CKSpellResult
 		return resultsStream(resultType).average().getAsDouble();
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	

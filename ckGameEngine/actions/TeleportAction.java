@@ -78,12 +78,13 @@ public class TeleportAction extends CKQuestAction
 	{
 		CKGridActor target;
 		if(cast!=null) 	{
-			target = cast.getActorTarget();
-			target = getPC(name);
+
+			System.out.println("<<<<<<<<<<<>>>>>>>>>>>>");
+			target = getPC(name);			
 		}
-		
-		else{					
-			target = getPC(name); }
+		else{
+			target = getPC(name);						
+			}
 		
 		FX2dGraphicsEngine engine=CKGameObjectsFacade.getEngine();
 		
@@ -105,20 +106,21 @@ public class TeleportAction extends CKQuestAction
 			CKGameObjectsFacade.getQuest().setStartTime(grid.moveInstantly(target,epos,startFadeOut)); 
 			engine.destroy(tid, spriteID3, endFadeOut);
 			engine.destroy(tid, ID1, endFadeOut);
-			engine.setAnimation(tid,ID1, target.getDirection().toString(), startFadeOut);
-		} catch (BadInstanceIDError |LoadAssetError| UnknownAnimationError e1) {
-			
+			//engine.setAnimation(tid,ID1, target.getDirection().toString(), startFadeOut);
+		} catch (BadInstanceIDError |LoadAssetError/*| UnknownAnimationError*/ e1) {			
 			e1.printStackTrace();}
 	
 		int ID2=engine.FadeMe(tid, target.getAsset(), startFadeIn, endFadeIn, false, epos, CKGraphicsLayer.FRONTHIGHLIGHT_LAYER,target.getDirection().toString());
 		
 		try {
+
 			engine.destroy(tid,ID2,endFadeIn);
 			engine.reveal(tid, target.getInstanceID(), endFadeIn);
 		} catch (BadInstanceIDError e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		
 
 		engine.endTransaction(tid, false);

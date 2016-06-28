@@ -174,7 +174,7 @@ SpriteMorph.prototype.categories =
 
 SpriteMorph.prototype.blockColor = {
     move : new Color(203, 122, 0),
-    aim:new Color(0,255,255),
+    aim: new Color(0,255,255),
     fire : new Color(247, 0, 0),
     water : new Color(0, 0, 247),
     wind : new Color(224, 224, 224),
@@ -1293,8 +1293,7 @@ CyberKnight.castSpell = function(catagory,spell,cp,target,key)
 	//jsDebug.print(catagory+" "+spell+" for "+cp);
 	//jsDebug.print("looking for "+key);
 	var complete = javaMove.spell(catagory,spell,cp,target,key);
-	globalComplete=complete;		
-	
+	globalComplete=complete;			
 	if(complete==null)
 	{
 		jsDebug.print("Spell Fails--Needs to stop here!");
@@ -1381,8 +1380,7 @@ CyberKnight.castSpellValue = function(catagory,spell,cp,key,value)
 {
 	//jsDebug.print(catagory+" "+spell+" for "+cp);	
 	if(globalComplete!=null){
-	var k=globalComplete.getValue().sumResults(value);
-	console.log(k);
+	var k=globalComplete.getValue().sumResults_S(value);		
 	return k;
 	}
 	else{
@@ -1406,6 +1404,8 @@ CyberKnight.spells =
 ["water","immune to fire",-1],
 ["water","invisibility",-1],
 ["water","throw ice shards",-1],
+["water","pour",1],
+["water","drink",1],
 ["fire","bolt",-1],
 ["fire","sunbeam",-1],
 ["fire","flash",8],
@@ -1413,10 +1413,11 @@ CyberKnight.spells =
 ["fire","heat it up",-1],
 ["fire","Burn it down",-1],
 ["fire","soul burn",10],
+["fire","shoot",5],
 ["earth","slice",-1],
 ["earth","wall",-1],
 ["earth","shove",-1],
-["earth","baby kick",-1],
+["earth","baby kick",1],
 ["earth","dig",-1],
 ["earth","projectile",-1],
 ["earth","mud",10],
@@ -1433,6 +1434,8 @@ CyberKnight.selfSpells =
 ["move","turn right",2],
 ["move","turn left",2],
 ]
+
+
 
 CyberKnight.aimSpells =
 [
@@ -1452,11 +1455,14 @@ CyberKnight.moveToSpells=
 //for the fourth value
 //1 means that the key is the page
 //0 means that the key is a page the user is searching for
+
 CyberKnight.scrySpells=
 [
 ['scry',"traits",0,1],
 ['scry',"visible",0,1],
 ];
+
+
 
 CyberKnight.hackSpells=
 [
@@ -1464,7 +1470,6 @@ CyberKnight.hackSpells=
 ["lightning","test hide 2",5],
 ['scry',"results",0],
 ];
-
 
 
 CyberKnight.craftName = function(spell)
@@ -1488,7 +1493,7 @@ CyberKnight.writeSpellCommands = function()
 		
 		//first write block		
 		var cpSlot = "";
-		if(spell[2]==-1) { cpSlot = " for %n"; }
+		if(spell[2]==-1) { cpSlot = " for %n cp"; }
 
 		SpriteMorph.prototype.blocks[name] =
 		{
@@ -2304,10 +2309,10 @@ SpriteMorph.prototype.variableBlock = function (varName) {
 SpriteMorph.prototype.blockTemplates = function (category) {
     var blocks = [], myself = this, varNames, button,
         cat = category || 'motion', txt;	
-    function block(selector) {    	    
+    function block(selector) {    	
         if (StageMorph.prototype.hiddenPrimitives[selector]) {
             return null;
-        }        
+        }                        
         var newBlock = SpriteMorph.prototype.blockForSelector(selector, true);
         newBlock.isTemplate = true;                
         return newBlock;
@@ -4040,10 +4045,7 @@ Morph.prototype.setPosition = function (aPoint, justMe) {
         this.moveBy(delta, justMe);
     }
 };
-SpriteMorph.prototype.snapCompletes = function() {
-	console.log(globalComplete);
-	globalComplete=null;	
-	console.log(globalComplete);
+SpriteMorph.prototype.snapCompletes = function() {			
 	completionListener.snapCompletes();	
 };
 /*

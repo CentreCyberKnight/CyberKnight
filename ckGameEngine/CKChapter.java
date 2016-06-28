@@ -157,9 +157,14 @@ public class CKChapter extends CKGUINode
 	public void removePage(String s)
 	{
 		//privateRemovePage(s);
+		if(s.compareToIgnoreCase("*")==0)
+		{
+			this.removeAllChildren();
+		}
 		CKPage p = getPage(s);
 		if(p !=null)
 		{
+			pages.remove(s);
 			remove(p);
 		}
 		
