@@ -66,6 +66,20 @@ public class CKDynamicLayer extends CKGraphicsLayer
 		if(!isVisible()) return;
 		//System.out.println("looking for sprite"+sprites.size());
 
+		sprites.stream()
+			.filter(instance->{
+				return y == (int) Math.ceil(instance.getPosition().getY());
+			})
+			.sorted((i1,i2)->
+			Double.compare(i1.getPosition().getX(),
+					i2.getPosition().getX()) )
+			.forEach(instance->{
+				instance.drawToGraphics(g, frame, observer,translator);
+				System.out.println("I am drawing"+instance.getAsset().getAID()+" at"+
+						instance.getPosition().toString());
+			});
+		
+/*		
 		Iterator<CKAssetInstance> iter=sprites.iterator();
 		while(iter.hasNext())
 		{
@@ -79,7 +93,7 @@ public class CKDynamicLayer extends CKGraphicsLayer
 			}
 		}
 		
-
+*/
 	}
 
 	@Override
@@ -123,7 +137,19 @@ public class CKDynamicLayer extends CKGraphicsLayer
 	{
 		if(!isVisible()) return;
 		//System.out.println("looking for sprite"+sprites.size());
-
+		sprites.stream()
+		.filter(instance->{
+			return y == (int) Math.ceil(instance.getPosition().getY());
+		})
+		.sorted((i1,i2)->
+		Double.compare(i1.getPosition().getX(),
+				i2.getPosition().getX()) )
+		.forEach(instance->{
+			instance.drawToGraphics(g, frame, observer,translator);
+			System.out.println("I am drawing"+instance.getAsset().getAID()+" at"+
+					instance.getPosition().toString());
+		});
+		/*
 		Iterator<CKAssetInstance> iter=sprites.iterator();
 		while(iter.hasNext())
 		{
@@ -136,7 +162,7 @@ public class CKDynamicLayer extends CKGraphicsLayer
 				instance.drawToGraphics(g, frame, observer,translator);
 			}
 		}
-		
+		*/
 
 	}
 
