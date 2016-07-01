@@ -77,9 +77,7 @@ public class TeleportAction extends CKQuestAction
 	protected void questDoAction(CKSpellCast cast)
 	{
 		CKGridActor target;
-		if(cast!=null) 	{
-
-			System.out.println("<<<<<<<<<<<>>>>>>>>>>>>");
+		if(cast!=null) 	{			
 			target = getPC(name);			
 		}
 		else{
@@ -100,8 +98,8 @@ public class TeleportAction extends CKQuestAction
 		try {
 
 			int ID1=engine.FadeMe(tid, target.getAsset(), startFadeOut, endFadeOut, true,spos,CKGraphicsLayer.FRONTHIGHLIGHT_LAYER,target.getDirection().toString());
-			engine.loadAsset(tid, "Swirl");
-			int spriteID3=engine.createInstance(tid, "Swirl", spos, startFadeOut, CKGraphicsLayer.SPRITE_LAYER);
+			engine.loadAsset(tid, "teleport2_Select");
+			int spriteID3=engine.createInstance(tid, "teleport2_Select", spos, startFadeOut, CKGraphicsLayer.ENVIRNOMENT_BOUNDRY);
 			engine.hide(tid, target.getInstanceID(), startFadeOut);
 			CKGrid grid = CKGameObjectsFacade.getQuest().getGrid();
 			CKGameObjectsFacade.getQuest().setStartTime(grid.moveInstantly(target,epos,startFadeOut)); 

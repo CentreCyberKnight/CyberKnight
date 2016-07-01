@@ -47,7 +47,7 @@ public class CKQuestRunner extends Application
     public static void main(String[] args)
     {
     	
-    	String input[] = {"asset7364953977011982560"};
+    	String input[] = {"asset6893846372188007178"};
     	
         launch(input);
     	//launch(args);

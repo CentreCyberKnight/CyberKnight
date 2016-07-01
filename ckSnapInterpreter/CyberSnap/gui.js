@@ -875,12 +875,13 @@ IDE_Morph.prototype.createCategories = function () {
         button = new ToggleButtonMorph(
             colors,
             myself, // the IDE is the target
-            function () {
+            function () {            	            	
                 myself.currentCategory = category;
                 myself.categories.children.forEach(function (each) {
                     each.refresh();
                 });
                 myself.refreshPalette(true);
+               //this.hideBlocks(artifact.getAbilities());          	
             },
             category[0].toUpperCase().concat(category.slice(1)), // label
             function () {  // query
@@ -890,7 +891,7 @@ IDE_Morph.prototype.createCategories = function () {
             null, // hint
             null, // template cache
             labelWidth, // minWidth
-            true // has preview
+            true // has preview            
         );
 
         button.corner = 8;
@@ -1005,7 +1006,8 @@ IDE_Morph.prototype.createStage = function () {
         this.stage.add(this.currentSprite);
     }
     this.add(this.stage);
-    console.log(this.stage);
+    //console.log(this.stage);
+    
 };
 
 //this function now assumes that the spriteMorph in object.js has been created
@@ -1016,40 +1018,66 @@ IDE_Morph.prototype.createStage = function () {
 //creating a hacky way to move all of the blocks.  Uses the bounds of the previous blocks.
 IDE_Morph.prototype.hideBlocks = function (book) {
 	//so this is using the cache which doesn't check all of the different categories
+	console.log("hiding blocks now");
 	var allCat = Object.keys(this.currentSprite.blocksCache);		
 	//var allCat = getCategoryNames();
-	var nullCat = [];	
+	var nullCat = [];						
 	for (var i = 0; i < allCat.length; i++) {
-	        var catName = allCat[i];	        
-            //this.sprites.contents.forEach(function(e) {            	
-            	var cat = this.currentSprite.blocksCache[catName];            	
+	        var catName = allCat[i];		        	        
+           	var cat = this.currentSprite.blocksCache[catName];
+			if(cat!=null){
             	for (var k = 0; k < cat.length; k++){
-	            	var block = cat[k];	            	
-	            	var blockSpec = block.blockSpec;
-	            	var blockCategory = block.category;
-	            	console.log(cat[k]);	            			            	
-	            	cat[k].hide();	            	
-	            	if (book.hasPage(blockCategory,blockSpec)) {	            		
-	            		cat[k].show();	            
-	            		//cat[k] = null;
+            		
+	            	var block = cat[k];	            		            	
+	            	//this if statement is because hidden blocks are null	            	
+	            	if(block!=null){
+	            	var str=block.selector;
+	            	var blockSpec;	
+	            	try{      	            		            	
+	            	var str = block.selector.split("_");
+	            	blockSpec=str[1];
 	            	}
-		
+	            	catch(err){
+	            		blockSpec=str;
+	            	}	            		            		            		            	
+	            	var blockCategory = block.category;	            		            		            	
+	            		            	
+	            	if (!book.hasPage(blockCategory,blockSpec)) 
+	            		{	            		
+	            			console.log(cat[k]);
+	            			try{
+	            			cat[k].hidePrimitive();
+	            			}
+	            			catch(err){
+	            			console.log(err);
+	            			}	            			
+	            		}
+	            		
+	            		}
+	            	};
+	            
+	            }	
 	            	
-            	};
-            	
-           //});
+	            		            	
+            };        
+              	           
+				
 
-	};
+	for(var l=0; l< allCat.length; l++){
+	var catName=allCat[l];
+	var hiddens = this.stage.hiddenPrimitives;			
+    var defs = this.currentSprite.blocks;    		    		
+    Object.keys(hiddens).forEach(function (sel) {        			        			        			
+    if (defs[sel] && (defs[sel].category === catName)) 
+    	{                 				
+			delete this.ide.stage.hiddenPrimitives[sel];	    
+        }
+    });
+    
+};     		
 
-	for (var f = 0; f < allCat.length; f++) {
-	    var catName = allCat[f];
-        this.stage.blocksCache[catName] = null;
-        this.flushPaletteCache(catName);
-	};
-	this.fixLayout('tabEditor');
 	
 };
-
 
 IDE_Morph.prototype.fireTEST = function() {
 	var event = new CustomEvent("CK", {detail : 'Button'});
@@ -1132,10 +1160,10 @@ IDE_Morph.prototype.setCyberSnap = function(){
 	
 	//fixing layout and creating all necessary panels	
 	this.buildCKPanes();
-	this.fixLayout();
-	console.log("triangle");
-	console.log(StageMorph.prototype.hiddenPrimitives);
-//	this.hideBlocks(artifact.getAbilities());
+	this.fixLayout();	
+	//this.hideBlocks(artifact.getAbilities());
+	//console.log(this.stage.hiddenPrimitives);
+	
 	
 };
 
@@ -1271,7 +1299,7 @@ IDE_Morph.prototype.ckImportXML = function () {
             this
         );
     }
-    this.stopFastTracking();
+    this.stopFastTracking();      
 };
 
 //finds most recent spells and loads it to the screen after importing a file
