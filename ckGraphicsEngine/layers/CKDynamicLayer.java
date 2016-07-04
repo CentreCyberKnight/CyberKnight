@@ -75,8 +75,8 @@ public class CKDynamicLayer extends CKGraphicsLayer
 					i2.getPosition().getX()) )
 			.forEach(instance->{
 				instance.drawToGraphics(g, frame, observer,translator);
-				System.out.println("I am drawing"+instance.getAsset().getAID()+" at"+
-						instance.getPosition().toString());
+				//System.out.println("I am drawing"+instance.getAsset().getAID()+" at"+
+				//		instance.getPosition().toString());
 			});
 		
 /*		
@@ -146,8 +146,8 @@ public class CKDynamicLayer extends CKGraphicsLayer
 				i2.getPosition().getX()) )
 		.forEach(instance->{
 			instance.drawToGraphics(g, frame, observer,translator);
-			System.out.println("I am drawing"+instance.getAsset().getAID()+" at"+
-					instance.getPosition().toString());
+			//System.out.println("I am drawing"+instance.getAsset().getAID()+" at"+
+			//		instance.getPosition().toString());
 		});
 		/*
 		Iterator<CKAssetInstance> iter=sprites.iterator();
