@@ -1854,6 +1854,11 @@ SyntaxElementMorph.prototype.endLayout = function () {
     defaults    - an optional Array containing default input values
     topBlock()    - answer the top block of the stack I'm attached to
     blockSpec    - a formalized description of my label parts
+    
+    CK
+    spellName      -a value that sets itself to the name of the spell for hiding (firebolt="firebolt" turn right="turn right"
+    End CK
+    
     setSpec()    - force me to change my label structure
     evaluate()    - answer the result of my evaluation
     isUnevaluated() - answer whether I am part of a special form
@@ -1985,7 +1990,7 @@ BlockMorph.prototype.init = function () {
     this.selector = null; // name of method to be triggered
     this.blockSpec = ''; // formal description of label and arguments
     this.comment = null; // optional "sticky" comment morph
-
+	this.spellName='';//this is a value added to help hide blocks
     // not to be persisted:
     this.instantiationSpec = null; // spec to set upon fullCopy() of template
     this.category = null; // for zebra coloring (non persistent)
@@ -2316,12 +2321,13 @@ BlockMorph.prototype.developersMenu = function () {
     return menu;
 };
 
-BlockMorph.prototype.hidePrimitive = function () {
+BlockMorph.prototype.hidePrimitive = function () {	
     var ide = this.parentThatIsA(IDE_Morph),
         dict,
         cat;
-    if (!ide) {return; }
-    StageMorph.prototype.hiddenPrimitives[this.selector] = true;
+    
+    if (!ide) {return; }    
+    StageMorph.prototype.hiddenPrimitives[this.selector] = true;    
     dict = {
         doWarp: 'control',
         reifyScript: 'operators',
@@ -2330,7 +2336,7 @@ BlockMorph.prototype.hidePrimitive = function () {
         doDeclareVariables: 'variables'
     };
     cat = dict[this.selector] || this.category;
-    if (cat === 'lists') {cat = 'variables'; }
+    if (cat === 'lists') {cat = 'variables'; }    
     ide.flushBlocksCache(cat);
     ide.refreshPalette();
 };
@@ -3100,9 +3106,11 @@ BlockMorph.prototype.mouseClickLeft = function () {
     var top = this.topBlock(),
         receiver = top.receiver(),
         stage;
-    if(this instanceof commandBlockMorph){
+    /*
+    if((this instanceof commandBlockMorph)  && !(this instanceof hatBlockMorph)){
     	return;
     	}
+    	*/
     if (top instanceof PrototypeHatBlockMorph) {
         return top.mouseClickLeft();
     }

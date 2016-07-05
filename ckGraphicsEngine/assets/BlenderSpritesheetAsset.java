@@ -210,7 +210,7 @@ public class BlenderSpritesheetAsset {
 			public boolean accept(File directory,String fileName){
 				return fileName.endsWith(IMG_EXTENSION);}});
 		ArrayList<String> commandList = new ArrayList<String>();
-		commandList.add("montage");
+		commandList.add("blender");
 		
 		System.out.println("imgFileList.length: " + imgFileList.length);
 		
@@ -243,6 +243,7 @@ public class BlenderSpritesheetAsset {
 			catch(IOException e1){System.out.println(e1.getMessage());} 
 			catch (InterruptedException e) {e.printStackTrace();}
 	}
+	
 	//Moves the spritesheet to the ASSET_IMAGES directory in CK_DATA
 	public void moveSpritesheet(){
 		String curString = this.basePath+"/"+this.characterName+"/"+this.sheetFileName;
@@ -340,7 +341,7 @@ public class BlenderSpritesheetAsset {
 
 	public static void main(String[] args) {
 		try{
-			BlenderSpritesheetAsset test_ = new BlenderSpritesheetAsset("D:/BlenderPipeline/Output/teleport/teleport.txt");
+			BlenderSpritesheetAsset test_ = new BlenderSpritesheetAsset("D:/BlenderPipeline/Output/teleport2/teleport2.txt");
 			System.out.println(test_);
 			CKGraphicsAsset newAsset = test_.pipeline();
 			CKGraphicsAsset A1=CKGraphicsAssetFactoryXML.getInstance().getGraphicsAsset(newAsset.getAID());	

@@ -139,6 +139,8 @@ public class CKSelectAsset extends CKGraphicsAsset {
 		//System.out.println("Final Frame is: " + finalFrame);
 		//System.out.println("Frame per row is: " + framesPerRow);
 
+
+
 		/*
 		System.out.println("This is the " + gameFrame + "th movement, so its frame number is " + correspondingFrame);
 		System.out.println("The original coordinate is: (" + initialFrame / framesPerRow + ", " + initialFrame % framesPerRow + ")");
@@ -146,6 +148,7 @@ public class CKSelectAsset extends CKGraphicsAsset {
 		System.out.println("::::::::::"+numFramesAction);
 		System.out.println("------------------------------------------------");
 		*/
+
 		
 		
 		return new coordinateNode(curRow,curFrame);

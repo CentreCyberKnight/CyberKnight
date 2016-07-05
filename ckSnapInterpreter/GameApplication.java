@@ -46,7 +46,7 @@ public class GameApplication extends Application implements GameCompletionListen
 				}
 		
 		//Campaign Data
-		campaign = CKCampaignNodeFactory.getInstance().getCampaign("Demo");
+		campaign = CKCampaignNodeFactory.getInstance().getCampaign("Test_Campaign");
 		
 	}
 	

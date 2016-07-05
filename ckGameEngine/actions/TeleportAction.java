@@ -90,7 +90,11 @@ public class TeleportAction extends CKQuestAction
 	protected void questDoAction(CKSpellCast cast)
 	{
 		CKGridActor target;
+
+
+
 		if(cast!=null) 	{
+
 			target = getPC(name);			
 		}
 		else{
@@ -111,6 +115,7 @@ public class TeleportAction extends CKQuestAction
 		try {
 			//create fade out instance
 			int ID1=engine.FadeMe(tid, target.getAsset(), startFadeOut, endFadeOut, true,spos,CKGraphicsLayer.FRONTHIGHLIGHT_LAYER,target.getDirection().toString());
+
 			//create the image effect
 			if(imageID!="null"){
 				engine.loadAsset(tid, imageID);
@@ -119,6 +124,7 @@ public class TeleportAction extends CKQuestAction
 			engine.hide(tid, target.getInstanceID(), startFadeOut);//hide actor
 			
 			//move the actor
+
 			CKGrid grid = CKGameObjectsFacade.getQuest().getGrid();
 			CKGameObjectsFacade.getQuest().setStartTime(grid.moveInstantly(target,epos,startFadeOut)); 
 			

@@ -146,7 +146,6 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 		try
 		{
 			CKURL u = new CKURL(getBaseDir()+XMLDirectories.ASSET_DIR+assetID+".xml");
-			//System.out.println("Reading asset "+u);
 			XMLDecoder d = new XMLDecoder(u.getInputStream());
 			
 			@SuppressWarnings("unchecked")
@@ -176,6 +175,7 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 	public  T getAsset(String assetID,boolean forceReload)
 	{
 		//check it if exists
+		
 		T asset= assetMap.get(assetID);
 		if(asset ==null || forceReload)
 		{

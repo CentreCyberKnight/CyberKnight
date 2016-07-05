@@ -196,7 +196,7 @@ public class LevelChooser extends Pane
 					CampaignNode node = (CampaignNode) obj; 
 				
 					Stage stage = (Stage) getScene().getWindow();
-					CKQuestSceneBuilder builder = new CKQuestSceneBuilder(node.getQuestID());
+					CKQuestSceneBuilder builder = new CKQuestSceneBuilder(node.getQuestID(),false);
 					stage.setScene(builder.getAndStartScene());
 				}
 			}
