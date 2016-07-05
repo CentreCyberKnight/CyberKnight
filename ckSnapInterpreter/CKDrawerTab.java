@@ -158,7 +158,7 @@ public class CKDrawerTab extends Pane
 		ftShow = new FadeTransition(Duration.seconds(0.6), openR);
 
 		ftHide.setToValue(0.0);
-		ftShow.setToValue(0.5);
+		ftShow.setToValue(1);
 
 		
 		pause = new PauseTransition(Duration.seconds(0.8));
