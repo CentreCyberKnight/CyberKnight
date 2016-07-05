@@ -146,7 +146,6 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 		try
 		{
 			CKURL u = new CKURL(getBaseDir()+XMLDirectories.ASSET_DIR+assetID+".xml");
-			
 			XMLDecoder d = new XMLDecoder(u.getInputStream());
 			@SuppressWarnings("unchecked")
 			T node = (T) d.readObject();

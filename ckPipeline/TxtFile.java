@@ -12,6 +12,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class TxtFile {
@@ -86,6 +87,10 @@ public class TxtFile {
 		catch(FileNotFoundException e){
 			System.out.println("FILENOTFOUND");
 		}
+		
+		//sort the actions in alphabetic order
+		Collections.sort(defs, String.CASE_INSENSITIVE_ORDER);
+		
 		ArrayList<String> out=new ArrayList<String>();
 		for (int x=0;x<defs.size();x++){
 			//This goes through all the lines in the default, and creates actions from them
