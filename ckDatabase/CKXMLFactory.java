@@ -147,13 +147,14 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 		{
 			CKURL u = new CKURL(getBaseDir()+XMLDirectories.ASSET_DIR+assetID+".xml");
 			XMLDecoder d = new XMLDecoder(u.getInputStream());
+			
 			@SuppressWarnings("unchecked")
 			T node = (T) d.readObject();
 			d.close();
 			return node;
 		} catch (IOException e)
 		{
-		
+			System.err.println("Unable to read asset"+assetID);
 			e.printStackTrace();
 		}
 		return null;
@@ -174,6 +175,7 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 	public  T getAsset(String assetID,boolean forceReload)
 	{
 		//check it if exists
+		
 		T asset= assetMap.get(assetID);
 		if(asset ==null || forceReload)
 		{
@@ -203,7 +205,12 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 			
 				for (File f : folder.listFiles())
 				{
-					vec.add(getAsset(f.getName().replaceFirst("[.][^.]+$","")));
+					
+					String filename =f.getName().replaceFirst("[.][^.]+$","");
+					//System.err.print("Reading file"+f);
+					vec.add(getAsset(filename));
+					//System.err.println("Done Reading file");
+					
 				}
 			}	catch (MalformedURLException e)
 			{

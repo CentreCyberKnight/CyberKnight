@@ -415,8 +415,8 @@ SnapSerializer.prototype.rawLoadProjectModel = function (xmlNode) {
         model.stage.attributes.threadsafe === 'true';
     StageMorph.prototype.enableCodeMapping =
         model.stage.attributes.codify === 'true';
-
-    model.hiddenPrimitives = model.project.childNamed('hidden');
+/*
+    model.hiddenPrimitives = model.project.childNamed('hidden');    
     if (model.hiddenPrimitives) {
         model.hiddenPrimitives.contents.split(' ').forEach(
             function (sel) {
@@ -426,6 +426,7 @@ SnapSerializer.prototype.rawLoadProjectModel = function (xmlNode) {
             }
         );
     }
+  */  
 
     model.codeHeaders = model.project.childNamed('headers');
     if (model.codeHeaders) {

@@ -570,7 +570,7 @@ IDE_Morph.prototype.createControlBar = function () {
     this.controlBar.color = this.frameColor;
     this.controlBar.setHeight(this.logo.height()); // height is fixed
     this.controlBar.mouseClickLeft = function () {
-        this.world().fillPage();
+        this.world().fillPage();        
     };
     this.add(this.controlBar);
 
@@ -875,12 +875,17 @@ IDE_Morph.prototype.createCategories = function () {
         button = new ToggleButtonMorph(
             colors,
             myself, // the IDE is the target
-            function () {
+            function () {            	            	
                 myself.currentCategory = category;
                 myself.categories.children.forEach(function (each) {
                     each.refresh();
                 });
-                myself.refreshPalette(true);
+                myself.refreshPalette(true);      
+               try{         
+               this.hideBlocks(artifact.getAbilities());
+               }
+               catch(exception){
+               }          	
             },
             category[0].toUpperCase().concat(category.slice(1)), // label
             function () {  // query
@@ -890,7 +895,7 @@ IDE_Morph.prototype.createCategories = function () {
             null, // hint
             null, // template cache
             labelWidth, // minWidth
-            true // has preview
+            true // has preview            
         );
 
         button.corner = 8;
@@ -1005,7 +1010,8 @@ IDE_Morph.prototype.createStage = function () {
         this.stage.add(this.currentSprite);
     }
     this.add(this.stage);
-    console.log(this.stage);
+    //console.log(this.stage);
+    
 };
 
 //this function now assumes that the spriteMorph in object.js has been created
@@ -1016,40 +1022,69 @@ IDE_Morph.prototype.createStage = function () {
 //creating a hacky way to move all of the blocks.  Uses the bounds of the previous blocks.
 IDE_Morph.prototype.hideBlocks = function (book) {
 	//so this is using the cache which doesn't check all of the different categories
+	console.log("hiding blocks now");
 	var allCat = Object.keys(this.currentSprite.blocksCache);		
 	//var allCat = getCategoryNames();
-	var nullCat = [];	
+	var nullCat = [];						
 	for (var i = 0; i < allCat.length; i++) {
-	        var catName = allCat[i];	        
-            //this.sprites.contents.forEach(function(e) {            	
-            	var cat = this.currentSprite.blocksCache[catName];            	
+	        var catName = allCat[i];		        	        
+           	var cat = this.currentSprite.blocksCache[catName];
+			if(cat!=null){
             	for (var k = 0; k < cat.length; k++){
-	            	var block = cat[k];	            	
-	            	var blockSpec = block.blockSpec;
-	            	var blockCategory = block.category;
-	            	console.log(cat[k]);	            			            	
-	            	cat[k].hide();	            	
-	            	if (book.hasPage(blockCategory,blockSpec)) {	            		
-	            		cat[k].show();	            
-	            		//cat[k] = null;
+            		
+	            	var block = cat[k];	            		            	
+	            	//this if statement is because hidden blocks are null	            	
+	            	if(block!=null){
+	            	var str=block.selector;
+	            	var blockSpec;	
+	            	try{      	            		            	
+	            	var str = block.selector.split("_");
+	            	blockSpec=str[1];
 	            	}
-		
+	            	catch(err){
+	            		blockSpec=str;
+	            	}	            		            		            		            	
+	            	var blockCategory = block.category;	            		            		            	
+	            		            	
+	            	if (!book.hasPage(blockCategory,blockSpec)) 
+	            		{	            		
+	            			
+	            			
+	            			if(cat[k] instanceof BlockMorph){          		
+	            			cat[k].hidePrimitive();
+	            			
+	            			}/*
+	            			catch(err){
+	            			
+	            			}	
+	            			*/            			
+	            		}
+	            		
+	            		}
+	            	};
+	            
+	            }	
 	            	
-            	};
-            	
-           //});
+	            		            	
+            };        
+              	           
+				
 
-	};
+	for(var l=0; l< allCat.length; l++){
+	var catName=allCat[l];
+	var hiddens = this.stage.hiddenPrimitives;			
+    var defs = this.currentSprite.blocks;    		    		
+    Object.keys(hiddens).forEach(function (sel) {        			        			        			
+    if (defs[sel] && (defs[sel].category === catName)) 
+    	{                 				
+			delete this.ide.stage.hiddenPrimitives[sel];	    
+        }
+    });
+    
+};     		
 
-	for (var f = 0; f < allCat.length; f++) {
-	    var catName = allCat[f];
-        this.stage.blocksCache[catName] = null;
-        this.flushPaletteCache(catName);
-	};
-	this.fixLayout('tabEditor');
 	
 };
-
 
 IDE_Morph.prototype.fireTEST = function() {
 	var event = new CustomEvent("CK", {detail : 'Button'});
@@ -1098,7 +1133,7 @@ IDE_Morph.prototype.setCyberSnap = function(){
 		list = new List([]);
 		this.sprites = new List([]);
 		while (acc != methods) {
-			this.addNewSprite(name, acc);
+			this.addNewSprite(name, acc);			
 			list.add(this.currentSprite);
 			this.selectSprite(this.currentSprite);
 			acc++;
@@ -1113,7 +1148,7 @@ IDE_Morph.prototype.setCyberSnap = function(){
 	this.sprites = list;
 	//updating current sprite to the first on the screen
 	this.currentSprite = this.sprites.at(1);
-		
+	console.log(this.sprites);
 	//can this be moved?	
 	//setting the picture and name for each sprite
 	var picture;
@@ -1123,7 +1158,7 @@ IDE_Morph.prototype.setCyberSnap = function(){
 		sprite = list.at(i);
 		picture = spellArray[i-1]
 		sprite.setPic('data:image/png;base64,' + picture);
-		sprite.name = spellNames[i-1];
+		sprite.name = spellNames[i-1];		
 	}
 	//setting the artifact icon
 	this.img = 'data:image/png;base64,'+ artifact.getSnapImage();
@@ -1132,10 +1167,10 @@ IDE_Morph.prototype.setCyberSnap = function(){
 	
 	//fixing layout and creating all necessary panels	
 	this.buildCKPanes();
-	this.fixLayout();
-	console.log("triangle");
-	console.log(StageMorph.prototype.hiddenPrimitives);
-//	this.hideBlocks(artifact.getAbilities());
+	this.fixLayout();	
+	this.hideBlocks(artifact.getAbilities());	
+	//console.log(this.stage.hiddenPrimitives);
+	
 	
 };
 
@@ -1271,7 +1306,7 @@ IDE_Morph.prototype.ckImportXML = function () {
             this
         );
     }
-    this.stopFastTracking();
+    this.stopFastTracking();      
 };
 
 //finds most recent spells and loads it to the screen after importing a file
@@ -1362,9 +1397,10 @@ IDE_Morph.prototype.createSpriteBar = function () {
                     myself.currentSprite.rotationStyle = rotationStyle;
                     myself.currentSprite.changed();
                     myself.currentSprite.drawNew();
-                    myself.currentSprite.changed();
+                    myself.currentSprite.changed();                    
                 }
                 rotationStyleButtons.forEach(function (each) {
+                console.log("button 1");
                     each.refresh();
                 });
             },
@@ -1501,10 +1537,10 @@ IDE_Morph.prototype.createSpriteBar = function () {
     };
       
     this.spriteBar.refresh = function () {
-        //this.stageIcon.refresh();
-        this.frame.contents.children.forEach(function (icon) {
+        //this.stageIcon.refresh();        
+        this.frame.contents.children.forEach(function (icon) {        
             icon.refresh();
-        });
+        });        
     };
 
     this.spriteBar.wantsDropOf = function (morph) {
@@ -5990,6 +6026,7 @@ SpriteIconMorph.prototype.prepareToBeGrabbed = function () {
         ide.createCorral();
         ide.createSpriteBar;
         ide.fixLayout();
+        console.log("sorting");
     }
 };
 

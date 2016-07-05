@@ -1244,7 +1244,7 @@ SpriteMorph.prototype.addNeccesaryToCache=function(){
 	var i=SpriteMorph.prototype.blocks[0];
 	console.log(SpriteMorph.prototype.blocks);
 	for(var i=0; i<SpriteMorph.prototype.blocks.length; i++){
-	console.log("t");
+	//console.log("t");
 		for(var v=0; v<t.length; v++){
 			if(t[v]==SpriteMorph.prototype.blocks.category){
 				console.log(SpriteMorph.prototype.blocks.category);
@@ -1312,7 +1312,7 @@ CyberKnight.castTrySpell = function(catagory,spell,cp,target,key)
 	jsDebug.print(catagory+" "+spell+" for "+cp);
 	jsDebug.print("looking for "+key);
 
-	var complete = javaMove.spell(catagory,spell,cp,target,key);
+	var complete = javaMove.spell(catagory,spell,cp,target,key.toLowerCase());
 	globalComplete=complete;
 	
 	
@@ -1422,7 +1422,7 @@ CyberKnight.spells =
 ["earth","projectile",-1],
 ["earth","mud",10],
 ["earth","stone skin",10],
-['move',"take",1],
+['earth',"take",1],
 ["water","poison",-1],
 ];
 
@@ -1463,7 +1463,6 @@ CyberKnight.scrySpells=
 ];
 
 
-
 CyberKnight.hackSpells=
 [
 ["lightning","test hide",5],
@@ -1474,6 +1473,14 @@ CyberKnight.hackSpells=
 
 CyberKnight.craftName = function(spell)
 {
+
+	/*
+	var str=spell[1].split(" ");
+	var t="";
+	for(var i=0; i<str.length; i++){
+		t=t+str[i];
+		}
+		*/		
 	return "CK"+spell[0]+"_"+spell[1];
 }
 
@@ -1501,6 +1508,7 @@ CyberKnight.writeSpellCommands = function()
 			type: 'command',
 			category: spell[0],
 			spec:spell[1]+" at %testing "+cpSlot,
+			spellName: spell[1],
 		};
 		//then link the target	
 		
@@ -1547,6 +1555,7 @@ CyberKnight.writeAimSpellCommands = function()
 			type: 'reporter',
 			category: spell[0],
 			spec:spell[3]+cpSlot,
+			spellName: spell[3],
 		};
 		//then link the target	
 		
@@ -1593,6 +1602,7 @@ CyberKnight.writeSelfSpellCommands = function()
 			type: 'command',
 			category: spell[0],
 			spec:spell[1]+cpSlot,
+			spellName: spell[1],
 		};
 		//then link the target	
 		
@@ -1641,6 +1651,7 @@ CyberKnight.writeMoveToSpellCommands = function()
 			type: 'command',
 			category: spell[0],
 			spec:spell[1]+cpSlot,
+			spellName: spell[1],
 		};
 		//then link the target	
 		
@@ -1693,6 +1704,7 @@ CyberKnight.writeScrySpellCommands = function()
 			type: 'command',
 			category: spell[0],
 			spec:spell[1]+" at %dst "+label+cpSlot,
+			spellName: spell[1],
 		};
 		//then link the target	
 		
@@ -1713,6 +1725,8 @@ CyberKnight.createScrySpellFunction = function(spell)
 			CyberKnight.castTrySpell(spell[0],spell[1],CP,target,Key);
 		};
 };
+
+
 
 /*
 hacky spells in order to get scry to work
@@ -1741,6 +1755,7 @@ CyberKnight.writeHackSpellCommands = function()
 			type: 'reporter',
 			category: spell[0],
 			spec:spell[1]+" for %s "+cpSlot,
+			spellName: spell[1],
 		};
 		//then link the target	
 		
@@ -1971,7 +1986,7 @@ SpriteMorph.prototype.init = function (globals) {
     this.isClone = false; // indicate a "temporary" Scratch-style clone
     this.cloneOriginName = '';
     
-    
+    this.hiddenPrimitives={};
     this.artifact = "";
     this.indexNum = 0;
     this.spellNum = 0;
@@ -2261,9 +2276,8 @@ SpriteMorph.prototype.colorFiltered = function (aColor) {
 SpriteMorph.prototype.blockForSelector = function (selector, setDefaults) {
     var migration, info, block, defaults, inputs, i;
     migration = this.blockMigrations[selector];
-    info = this.blocks[migration ? migration.selector : selector];
+    info = this.blocks[migration ? migration.selector : selector];    
     if (!info) {
-    console.log("null called");
     return null; }
     block = info.type === 'command' ? new CommandBlockMorph()
         : info.type === 'hat' ? new HatBlockMorph()
@@ -2291,6 +2305,7 @@ SpriteMorph.prototype.blockForSelector = function (selector, setDefaults) {
             }
         }
     }    
+    
     return block;
 };
 
@@ -2309,10 +2324,13 @@ SpriteMorph.prototype.variableBlock = function (varName) {
 SpriteMorph.prototype.blockTemplates = function (category) {
     var blocks = [], myself = this, varNames, button,
         cat = category || 'motion', txt;	
-    function block(selector) {    	
-        if (StageMorph.prototype.hiddenPrimitives[selector]) {
+    function block(selector) {
+    	//temporary fix for control    	    	
+    	
+        if (StageMorph.prototype.hiddenPrimitives[selector]) {        
             return null;
-        }                        
+        } 
+        
         var newBlock = SpriteMorph.prototype.blockForSelector(selector, true);
         newBlock.isTemplate = true;                
         return newBlock;
@@ -2327,11 +2345,11 @@ SpriteMorph.prototype.blockTemplates = function (category) {
 
     function watcherToggle(selector) {
     	//for some reason having this line breaks everything
-    	/*
+    	
         if (SpriteMorph.prototype.hiddenPrimitives[selector]) {
             return null;
         }
-      	*/
+      	
         var info = SpriteMorph.prototype.blocks[selector];
         return new ToggleMorph(
             'checkbox',
@@ -2523,6 +2541,7 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         blocks.push(block('doStamp'));
 
     }*/
+    
      else if (cat === 'control') {
 
         blocks.push(block('receiveGo'));
@@ -2532,11 +2551,13 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         blocks.push(block('receiveID'));
         blocks.push(block('leftArrow'));
         blocks.push('-');
+        /*
         blocks.push(block('doBroadcast'));
         blocks.push(block('doBroadcastAndWait'));
         blocks.push(watcherToggle('getLastMessage'));
         blocks.push(block('getLastMessage'));
         blocks.push('-');
+        */
         blocks.push(block('doWarp'));
         blocks.push('-');
         blocks.push(block('doWait'));
@@ -2551,7 +2572,7 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         blocks.push('-');
         blocks.push(block('doReport'));
         blocks.push('-');
-        
+    
     /*
     // old STOP variants, migrated to a newer version, now redundant
         blocks.push(block('doStopBlock'));
@@ -2957,21 +2978,29 @@ SpriteMorph.prototype.freshPalette = function (category) {
                     ide.refreshPalette();
                 }
             );
-        }        
+        }               
+        menu.addItem(
+        	'show all Blocks',
+        		function(){
+        			ide.flushBlocksCache(category);
+        			ide.refreshPalette();
+        		}
+        	);
+        
         if (hasHiddenPrimitives()) {
             menu.addItem(
                 'show primitives',
-                function () {
+                function () {                
                     var hiddens = StageMorph.prototype.hiddenPrimitives,
-                        defs = SpriteMorph.prototype.blocks;
-                    Object.keys(hiddens).forEach(function (sel) {
-                        if (defs[sel] && (defs[sel].category === category)) {
+                        defs = SpriteMorph.prototype.blocks;                                                                
+                    Object.keys(hiddens).forEach(function (sel) {                    	                    	
+                        if (defs[sel] && (defs[sel].category === category)) {                        	
                             delete StageMorph.prototype.hiddenPrimitives[sel];
                         }
-                    });
-                    (more[category] || []).forEach(function (sel) {
+                    });                                        
+                    (more[category] || []).forEach(function (sel) {                    	
                         delete StageMorph.prototype.hiddenPrimitives[sel];
-                    });
+                    });                    
                     ide.flushBlocksCache(category);
                     ide.refreshPalette();
                 }
@@ -5709,11 +5738,13 @@ StageMorph.prototype.blockTemplates = function (category) {
     var blocks = [], myself = this, varNames, button,
         cat = category || 'motion', txt;
 
-    function block(selector) {    	
+    function block(selector) {    
+
         if (myself.hiddenPrimitives[selector]) {
+         console.log("damage");
             return null;
         }
-        console.log("damage");
+      
         var newBlock = SpriteMorph.prototype.blockForSelector(selector, true);
         newBlock.isTemplate = true;
         return newBlock;
