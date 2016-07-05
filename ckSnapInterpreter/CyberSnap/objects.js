@@ -1388,7 +1388,19 @@ CyberKnight.castSpellValue = function(catagory,spell,cp,key,value)
 	}
 
 }
+CyberKnight.castCustomSpellValue = function(catagory,spell,cp,key,value)
+{
+	//jsDebug.print(catagory+" "+spell+" for "+cp);	
+	if(globalComplete!=null){
+	var k=globalComplete.getValue().sumResults_S(value);
+	console.log(k);		
+	return (k>0);
+	}
+	else{
+	return false;
+	}
 
+}
 
 
 CyberKnight.spells =
@@ -1416,7 +1428,7 @@ CyberKnight.spells =
 ["fire","shoot",5],
 ["earth","slice",-1],
 ["earth","wall",-1],
-["earth","shove",-1],
+["earth","shove",1],
 ["earth","baby kick",1],
 ["earth","dig",-1],
 ["earth","projectile",-1],
@@ -1450,7 +1462,7 @@ CyberKnight.aimSpells =
 
 CyberKnight.moveToSpells=
 [
-['move','moveTo',-1],
+['move','moveTo',8],
 ];
 //for the fourth value
 //1 means that the key is the page
@@ -1467,9 +1479,15 @@ CyberKnight.hackSpells=
 [
 ["lightning","test hide",5],
 ["lightning","test hide 2",5],
-['scry',"results",0],
+['scry',"fountain",0],
 ];
 
+//these are custom scry spells for the tutorial level 
+CyberKnight.customScrySpells=
+[
+['scry','cabinet has cookies',"cookies",0],
+['scry','fountain is chocolate',"chocolate",0],
+];
 
 CyberKnight.craftName = function(spell)
 {
@@ -1481,7 +1499,13 @@ CyberKnight.craftName = function(spell)
 		t=t+str[i];
 		}
 		*/		
-	return "CK"+spell[0]+"_"+spell[1];
+	if(spell[0]!="aim"){
+		return "CK"+spell[0]+"_"+spell[1];
+	}
+	else{
+
+		return "CK"+spell[0]+"_"+spell[3];
+		}
 }
 
 
@@ -1752,9 +1776,9 @@ CyberKnight.writeHackSpellCommands = function()
 		SpriteMorph.prototype.blocks[name] =
 		{
 			only: SpriteMorph,
-			type: 'reporter',
+			type: 'predicate',
 			category: spell[0],
-			spec:spell[1]+" for %s "+cpSlot,
+			spec:spell[1]+" is %s "+cpSlot,
 			spellName: spell[1],
 		};
 		//then link the target	
@@ -1770,7 +1794,54 @@ CyberKnight.createHackSpellFunction = function(spell)
 		{	
 			var CP = cp;
 			if(spell[2]>=0) { CP = spell[2]; }			
-			return CyberKnight.castSpellValue(spell[0],spell[1],CP,"",value);
+			return CyberKnight.castCustomSpellValue(spell[0],spell[1],CP,"",value);
+		};
+};
+
+/*
+custom spells for the tutorial level
+*/
+
+CyberKnight.writeCustomScrySpellCommands = function()
+{
+	
+	//jsDebug.print("Does this work?);
+	
+	
+	for(var i=0;i<CyberKnight.customScrySpells.length;i++)
+	{
+		var spell = CyberKnight.customScrySpells[i];
+		var name = CyberKnight.craftName(spell);
+		jsDebug.print("Loading "+spell+" named "+name);
+
+		
+		//first write block		
+		var cpSlot = "";
+		if(spell[2]==-1) { cpSlot = " for %n"; }
+
+		SpriteMorph.prototype.blocks[name] =
+		{
+			only: SpriteMorph,
+			type: 'predicate',
+			category: spell[0],
+			spec:spell[1]+cpSlot,
+			spellName: spell[1],
+		};
+		//then link the target	
+		
+		SpriteMorph.prototype[name] = CyberKnight.createCustomScrySpellFunction(spell);
+	}
+	
+};
+
+CyberKnight.createCustomScrySpellFunction = function(spell)
+{
+	return  function (cp)
+		{	
+			var CP = cp;
+			if(spell[3]>=0) { CP = spell[3]; }			
+			console.log("fire phoenix");
+			return CyberKnight.castCustomSpellValue(spell[0],spell[1],CP,"",spell[2]);
 		};
 };
 
@@ -1779,7 +1850,7 @@ CyberKnight.createHackSpellFunction = function(spell)
 */
 CyberKnight.pushCategories = function(cat,blocks,block)
 {	
-	jsDebug.print("Printing for "+cat);
+	//jsDebug.print("Printing for "+cat);
 	for(var i=0;i<CyberKnight.spells.length;i++)
 	{
 		var spell = CyberKnight.spells[i];
@@ -1819,7 +1890,7 @@ CyberKnight.pushCategories = function(cat,blocks,block)
 		{
 	
 			var spell = CyberKnight.moveToSpells[i];
-			jsDebug.print("Printing for "+cat+" A "+spell[0]+" A "+(spell[0]==cat));
+			//jsDebug.print("Printing for "+cat+" A "+spell[0]+" A "+(spell[0]==cat));
 			//jsDebug.print("Printing for "+cat+" A "+spell[0]);
 			//jsDebug.print("it's being called");
 			//console.log(spell);
@@ -1831,7 +1902,7 @@ CyberKnight.pushCategories = function(cat,blocks,block)
 			}
 				
 		}
-		jsDebug.print("Printing for "+cat);
+		//jsDebug.print("Printing for "+cat);
 		
 	for(var i=0;i<CyberKnight.scrySpells.length;i++)
 	{
@@ -1852,6 +1923,17 @@ CyberKnight.pushCategories = function(cat,blocks,block)
 			blocks.push(block(name));	
 			}	
 		}
+		
+	
+	for(var i=0;i<CyberKnight.customScrySpells.length;i++)
+		{
+			var spell = CyberKnight.customScrySpells[i];
+			if(spell[0]===cat)
+			{	
+			var name = CyberKnight.craftName(spell);
+			blocks.push(block(name));	
+			}	
+		}
 	
 		
 	
@@ -1864,6 +1946,7 @@ CyberKnight.writeSelfSpellCommands();
 CyberKnight.writeMoveToSpellCommands();	
 CyberKnight.writeScrySpellCommands();	
 CyberKnight.writeHackSpellCommands();	
+CyberKnight.writeCustomScrySpellCommands();	
 
 SpriteMorph.prototype.initBlockMigrations = function () {
     SpriteMorph.prototype.blockMigrations = {
@@ -4319,7 +4402,7 @@ SpriteMorph.prototype.allHatBlocksForInteraction = function (interaction) {
 
 // SpriteMorph events
 
-SpriteMorph.prototype.mouseClickLeft = function () {
+SpriteMorph.prototype.mouseClickLeft = function () {	
     return this.receiveUserInteraction('clicked');
 };
 

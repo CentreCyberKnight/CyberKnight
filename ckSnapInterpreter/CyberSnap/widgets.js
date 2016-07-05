@@ -587,7 +587,9 @@ ToggleButtonMorph.prototype.mouseDownLeft = function () {
 };
 
 ToggleButtonMorph.prototype.mouseClickLeft = function () {
-    if (!this.state) {
+	//console.log(this.object.parent.parent);
+
+    if (!this.state) {    	
         this.image = this.highlightImage;
         this.changed();
     }
@@ -597,8 +599,13 @@ ToggleButtonMorph.prototype.mouseClickLeft = function () {
 // ToggleButtonMorph action
 
 ToggleButtonMorph.prototype.trigger = function () {
-    ToggleButtonMorph.uber.trigger.call(this);
+    ToggleButtonMorph.uber.trigger.call(this);    
     this.refresh();
+    //assumes ide is made
+    if((this instanceof SpriteIconMorph)){
+		var i=this.object.parent.parent;
+		i.hideBlocks(artifact.getAbilities());
+	}
 };
 
 ToggleButtonMorph.prototype.refresh = function () {
