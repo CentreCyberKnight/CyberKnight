@@ -7,7 +7,24 @@
 	
 	<!--<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js#startOpened"></script>-->		
 		
-	<script type="text/javascript" src="../firebug-lite/build/firebug-lite.js#startOpened"></script>		
+		
+	<script>	
+	if (!String.prototype.includes) {
+  		String.prototype.includes = function(search, start) {
+    		'use strict';
+    		if (typeof start !== 'number') {
+      			start = 0;
+    		}
+    
+    		if (start + search.length > this.length) {
+      			return false;
+    		} else {
+      				return this.indexOf(search, start) !== -1;
+    				}
+  			};
+		}​	
+	</script>
+	<script type="text/javascript" src="../firebug-lite/build/firebug-lite.js#startOpened"></script>
 		<script type="text/javascript" src="morphic.js"></script>
 		<script type="text/javascript" src="widgets.js"></script>
 		<script type="text/javascript" src="blocks.js"></script>

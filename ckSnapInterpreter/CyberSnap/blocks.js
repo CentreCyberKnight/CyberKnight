@@ -7024,7 +7024,7 @@ InputSlotMorph.prototype.mouseDownLeft = function (pos) {
     }
 };
 
-InputSlotMorph.prototype.mouseClickLeft = function (pos) {
+InputSlotMorph.prototype.mouseClickLeft = function (pos) {	
     if (this.arrow().bounds.containsPoint(pos)) {    	
         this.dropDownMenu();
     } else if (this.isReadOnly) {       	
