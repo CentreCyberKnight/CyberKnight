@@ -26,19 +26,20 @@ public class CKQuestSceneBuilder
 	public CKDataModel data;
 	private Quest quest;
 	private Scene scene;
+	private boolean debug = false;
 
 	
-	public CKQuestSceneBuilder (String questID)
+	public CKQuestSceneBuilder (String questID,boolean debug)
 	{
-	
+		this.debug = debug;
 		CKTeamFactory.getInstance().clearCache();
 		QuestData q  = CKQuestFactory.getInstance().getAsset(questID);
 		init(q);
 	}
 	
-	public CKQuestSceneBuilder(QuestData q)
+	public CKQuestSceneBuilder(QuestData q,boolean debug)
 	{
-		
+		this.debug = debug;
 		init(q);
 	}
 	
@@ -130,11 +131,14 @@ public class CKQuestSceneBuilder
 										//abilitiesTab,
     									allArtifactsTab, 
 										//statsTab,
-										controls,
-										startTurn,endTurn,
-										endWin,endLose
-				);
-
+										controls);
+    	
+    	if(debug)
+    	{
+    		menuPane.getChildren().addAll(startTurn,endTurn,
+										endWin,endLose);
+    	}
+    	
 		split.getItems().addAll(menuPane,snap);
 		split.setDividerPosition(0, .75);
 

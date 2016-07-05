@@ -30,7 +30,7 @@ public class CKQuestRunner extends Application
 			
 		}
 		String asset = param.getRaw().get(0);
-		builder = new CKQuestSceneBuilder(asset);
+		builder = new CKQuestSceneBuilder(asset,true);
 		
 	}
 	
