@@ -559,7 +559,7 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 					  XMLDirectories.GRAPHIC_ASSET_IMAGE_DIR+"girl_portrait.png");
 			writeAssetToXMLDirectory(girl_portrait);
 			factory.assignUsageTypeToAsset(girl_portrait.getAID(),portrait);
-			factory.assignPortrait("LittleGirl_Sprite",girl_portrait.getAID());
+			factory.assignPortrait("littleGirl_Sprite",girl_portrait.getAID());
 			
 			//43 dad portrait
 			CKImageAsset dpor = new CKImageAsset("HeroPortrait","dad",100,131,1,1,TileType.BASE,

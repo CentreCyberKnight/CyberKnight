@@ -5,25 +5,38 @@ package ckGameEngine.actions;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.SpinnerNumberModel;
 
+import ckCommonUtils.CKEntitySelectedListener;
 import ckCommonUtils.CKGridPosition;
 import ckCommonUtils.CKPosition;
+import ckDatabase.CKGraphicsAssetFactory;
+import ckDatabase.CKGraphicsAssetFactoryXML;
+import ckEditor.DataPickers.CKFilteredAssetPicker;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGrid;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellCast;
 import ckGraphicsEngine.BadInstanceIDError;
+import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.LoadAssetError;
-import ckGraphicsEngine.UnknownAnimationError;
+import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
 import ckSnapInterpreter.CKQuestRunner;
 
@@ -48,6 +61,7 @@ public class TeleportAction extends CKQuestAction
 	int endFadeOut;
 	int startFadeIn;
 	int endFadeIn;
+	String imageID="null";
 	
 	public TeleportAction()
 	{
@@ -57,7 +71,8 @@ public class TeleportAction extends CKQuestAction
 	public TeleportAction(String name,CKGridPosition pos)
 	{
 		this.name = name;
-		//TeleportAction.pos=pos;
+		//this.allowsChildren=true;
+		//////////////////////addIT(new CKGraphicsAssetPickerNode());
 	}
 	
 	/* (non-Javadoc)
@@ -70,16 +85,12 @@ public class TeleportAction extends CKQuestAction
 	}
 
 	
-	/* (non-Javadoc)
-	 * @see ckGameEngineAlpha.actions.CKQuestCmd#doAction()
-	 */
+	//perform the teleport action
 	@Override
 	protected void questDoAction(CKSpellCast cast)
 	{
 		CKGridActor target;
 		if(cast!=null) 	{
-
-			System.out.println("<<<<<<<<<<<>>>>>>>>>>>>");
 			target = getPC(name);			
 		}
 		else{
@@ -98,31 +109,31 @@ public class TeleportAction extends CKQuestAction
 		
 		
 		try {
-
+			//create fade out instance
 			int ID1=engine.FadeMe(tid, target.getAsset(), startFadeOut, endFadeOut, true,spos,CKGraphicsLayer.FRONTHIGHLIGHT_LAYER,target.getDirection().toString());
-			engine.loadAsset(tid, "Swirl");
-			int spriteID3=engine.createInstance(tid, "Swirl", spos, startFadeOut, CKGraphicsLayer.SPRITE_LAYER);
-			engine.hide(tid, target.getInstanceID(), startFadeOut);
+			//create the image effect
+			if(imageID!="null"){
+				engine.loadAsset(tid, imageID);
+				int spriteID3=engine.createInstance(tid, imageID, spos, startFadeOut, CKGraphicsLayer.ENVIRNOMENT_BOUNDRY);
+				engine.destroy(tid, spriteID3, endFadeOut);}
+			engine.hide(tid, target.getInstanceID(), startFadeOut);//hide actor
+			
+			//move the actor
 			CKGrid grid = CKGameObjectsFacade.getQuest().getGrid();
 			CKGameObjectsFacade.getQuest().setStartTime(grid.moveInstantly(target,epos,startFadeOut)); 
-			engine.destroy(tid, spriteID3, endFadeOut);
+			
+			//destroy fade out effect
 			engine.destroy(tid, ID1, endFadeOut);
-			//engine.setAnimation(tid,ID1, target.getDirection().toString(), startFadeOut);
-		} catch (BadInstanceIDError |LoadAssetError/*| UnknownAnimationError*/ e1) {			
+		} catch (BadInstanceIDError |LoadAssetError e1) {			
 			e1.printStackTrace();}
 	
+		//create fade in effect
 		int ID2=engine.FadeMe(tid, target.getAsset(), startFadeIn, endFadeIn, false, epos, CKGraphicsLayer.FRONTHIGHLIGHT_LAYER,target.getDirection().toString());
 		
-			/*try {
-				engine.setAnimation(tid,ID2, target.getDirection().toString(), startFadeIn);
-			} catch (BadInstanceIDError | UnknownAnimationError e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}*/
 		try {
-
-			engine.destroy(tid,ID2,endFadeIn);
-			engine.reveal(tid, target.getInstanceID(), endFadeIn);
+			
+			engine.destroy(tid,ID2,endFadeIn);//destroy fade in effect
+			engine.reveal(tid, target.getInstanceID(), endFadeIn);//reveal actor
 		} catch (BadInstanceIDError e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -262,6 +273,22 @@ public class TeleportAction extends CKQuestAction
 	}
 	
 	
+	/**
+	 * @return the imageID
+	 */
+	public String getImageID() {
+		return imageID;
+	}
+
+	/**
+	 * @param imageID the imageID to set
+	 */
+	public void setImageID(String imageID) {
+		this.imageID = imageID;
+	}
+
+	
+	
 
 /*
 	class EditAction  implements ActionListener
@@ -358,7 +385,47 @@ public class TeleportAction extends CKQuestAction
 	public void setEndFadeIn(int endFadeIn) {
 		this.endFadeIn = endFadeIn;
 	}
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+	class AssetViewerPopupListener implements ActionListener
+	{
 
+		/* (non-Javadoc)
+		 * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
+		 */
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			JFrame frame = new JFrame();
+			
+			CKFilteredAssetPicker picker = 
+					new CKFilteredAssetPicker();
+			picker.addSelectedListener(new AssetListener(frame));
+			frame.add(picker);
+			frame.pack();
+			frame.setVisible(true);
+		}
+		
+	}
+	
+	//when the button is clicked, open the CKGraphicsAsset
+	class AssetListener implements CKEntitySelectedListener<CKGraphicsAsset>
+	{
+		JFrame frame;
+		public AssetListener(JFrame f) {frame=f;}
+		
+		@Override
+		public void entitySelected(CKGraphicsAsset a)
+		{
+			setImageID(a.getAID());
+			getQuest().notifyGraphicsChanged();
+			frame.setVisible(false); //you can't see me!
+			frame.dispose(); //Destroy the JFrame object
+		}
+
+	}
+	
+//////////////////////////////////////////////////////////////////////////////////////////
 
 
 	static JPanel []panel;
@@ -369,6 +436,9 @@ public class TeleportAction extends CKQuestAction
 	static SpinnerNumberModel []EFadeout;
 	static SpinnerNumberModel []SFadein;
 	static SpinnerNumberModel []EFadein;
+	static JTextField[] nameFields;
+	static JButton[] pickGraphics;
+	static AssetViewerPopupListener ImageListener;
 	
 	
 	
@@ -439,6 +509,7 @@ public class TeleportAction extends CKQuestAction
 			mid[0].setBackground(colors[0]);
 			mid[1].setBackground(colors[1]);
 			
+			//start fade out time
 			SFadeout=new SpinnerNumberModel[2];
 			SFadeout[0]=new SpinnerNumberModel(1,0,1000,1);
 			JSpinner spin3=new JSpinner(SFadeout[0]);
@@ -450,6 +521,7 @@ public class TeleportAction extends CKQuestAction
 			mid[0].add(new JLabel("Start Fadeout "));
 			mid[1].add(new JLabel("Start Fadeout "));
 			
+			//end fade out time
 			EFadeout=new SpinnerNumberModel[2];
 			EFadeout[0]=new SpinnerNumberModel(1,0,1000,1);
 			JSpinner spin4=new JSpinner(EFadeout[0]);
@@ -473,6 +545,7 @@ public class TeleportAction extends CKQuestAction
 			bot[0].setBackground(colors[0]);
 			bot[1].setBackground(colors[1]);
 			
+			//start fade in time
 			SFadein=new SpinnerNumberModel[2];
 			SFadein[0]=new SpinnerNumberModel(1,0,1000,1);
 			JSpinner spin5=new JSpinner(SFadein[0]);
@@ -484,6 +557,7 @@ public class TeleportAction extends CKQuestAction
 			bot[0].add(new JLabel("Start Fadein "));
 			bot[1].add(new JLabel("Start Fadein "));
 			
+			//end fade in time
 			EFadein=new SpinnerNumberModel[2];
 			EFadein[0]=new SpinnerNumberModel(1,0,1000,1);
 			JSpinner spin6=new JSpinner(EFadein[0]);
@@ -493,8 +567,34 @@ public class TeleportAction extends CKQuestAction
 			bot[1].add(spin6);
 			bot[0].add(new JLabel("End Fadein "));
 			bot[1].add(new JLabel("End Fadein "));
+			
 			panel[0].add(bot[0]);
 			panel[1].add(bot[1]);
+			
+			JPanel []und=new JPanel[2];
+			und[0]=new JPanel();
+			und[1]=new JPanel();
+			
+			und[0].setLayout(new BoxLayout(und[0], BoxLayout.LINE_AXIS));
+			und[1].setLayout(new BoxLayout(und[1], BoxLayout.LINE_AXIS));
+			und[0].setBackground(colors[0]);
+			und[1].setBackground(colors[1]);
+
+			//image effect
+			nameFields = new JTextField[2];
+			nameFields[0]=new JTextField(5);
+			nameFields[1]=new JTextField(5);
+			und[0].add(nameFields[0]);
+			und[1].add(nameFields[1]);
+
+			pickGraphics = new JButton[2];
+			pickGraphics[0] = new JButton("pick Image Effect");
+			pickGraphics[1] = new JButton("pick Image Effect");
+			und[0].add(pickGraphics[0]);
+			und[1].add(pickGraphics[1]);
+			
+			panel[0].add(und[0]);
+			panel[1].add(und[1]);
 		}
 		
 	}
@@ -506,8 +606,7 @@ public class TeleportAction extends CKQuestAction
 	private void setPanelValues(int index)
 	{
 		//System.out.println("setting panel");
-		if(panel==null) { initPanel(true);
-		System.out.println("Initial XVal is:"+xVal);}
+		if(panel==null) { initPanel(true);}
 		panel[index].setBackground(colors[index]);
 		
 		if(getQuest()!=null)
@@ -522,12 +621,12 @@ public class TeleportAction extends CKQuestAction
 		}
 		
 		X[index].setValue(xVal);
-		System.out.println("New XVal is:"+xVal);
 		Y[index].setValue(yVal);
 		SFadeout[index].setValue(startFadeOut);
 		EFadeout[index].setValue(endFadeOut);
 		SFadein[index].setValue(startFadeIn);
 		EFadein[index].setValue(endFadeIn);
+		nameFields[index].setText(imageID);
 		//Z[index].setValue(zVal);
 	}
 	
@@ -539,7 +638,12 @@ public class TeleportAction extends CKQuestAction
 	public Component getTreeCellEditorComponent(JTree tree, Object value,
 			boolean selected, boolean expanded, boolean leaf, int row)
 	{
+		pickGraphics[EDIT].removeActionListener(ImageListener);
+		
+		
 		setPanelValues(EDIT);
+		ImageListener = new AssetViewerPopupListener();
+		pickGraphics[EDIT].addActionListener(ImageListener);
 		return panel[EDIT];	
 	}
 
@@ -551,7 +655,6 @@ public class TeleportAction extends CKQuestAction
 	{
 		name = (String)nameBox[EDIT].getSelectedItem();
 		xVal= X[EDIT].getNumber().intValue();
-		System.out.println("XVal is:"+xVal);
 		yVal= Y[EDIT].getNumber().intValue();
 		startFadeOut=SFadeout[EDIT].getNumber().intValue();
 		endFadeOut=EFadeout[EDIT].getNumber().intValue();
@@ -568,16 +671,27 @@ public class TeleportAction extends CKQuestAction
 			boolean selected, boolean expanded, boolean leaf, int row,
 			boolean hasFocus)
 	{
+		
 		setPanelValues(RENDER);
 		return panel[RENDER];
 	}
+	
+	//draw the icon
+	@Override
+	public Icon getTreeIcon(boolean leaf, boolean expanded)
+	{
+		CKGraphicsAssetFactory factory = CKGraphicsAssetFactoryXML.getInstance(); 
+		return new ImageIcon(CKGraphicsPreviewGenerator.createAssetPreview(
+				factory.getGraphicsAsset(imageID),0,0,64,128) );
+	}
+	
 	
 	public static void main(String[] args){
 		new Thread() {
 	        @Override
 	        public void run() {
 	        	
-	            javafx.application.Application.launch(CKQuestRunner.class,"asset3345354808389436014");
+	            javafx.application.Application.launch(CKQuestRunner.class,"asset1238755107704265027");
 	        }
 	    }.start();
 		

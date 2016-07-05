@@ -7,8 +7,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import ckEditor.CKTravelEffectAddMenu.TreeAddActionListener;
 import ckEditor.treegui.CKActorEffect;
+import ckEditor.treegui.CKChangeAnimation;
 import ckEditor.treegui.CKTreeGui;
+import ckEditor.treegui.DownTravelEffect;
 
 public class CKActorEffectAddMenu
 {
@@ -31,10 +34,15 @@ public class CKActorEffectAddMenu
 			JMenuItem addSeq = new JMenuItem("Add Lights and Sound effect");
 			addSeq.addActionListener(new TreeAddActionListener("LAS",tree,text,pos,replace));
 			addActions.add(addSeq);
+			
+			//change action menu
+			JMenuItem ChangeAction=new JMenuItem("ChangeAction");
+			ChangeAction.addActionListener(new TreeAddActionListener("ChangeAct",tree,text,pos,replace));
+			addActions.add(ChangeAction);
 
 			return addActions;
 		}
-	
+			
 	
 
 
@@ -66,11 +74,16 @@ static class TreeAddActionListener implements ActionListener
 			
 				return;
 			}
-			CKActorEffect action=new CKActorEffect(text);
-			//if(name.compareTo("LAS")==0)
-			//{
-					//do nothing already default
-			//}
+			CKActorEffect action=null;
+			if(name.compareTo("LAS")==0)
+			{
+				action=new CKActorEffect(text+"Add light and sound");
+			}
+			//ChangeAnimation action
+			else if(name.compareTo("ChangeAct")==0)
+			{
+				action=new CKChangeAnimation(text+": ChangeAct");
+			}
 
 			if(replace)
 			{

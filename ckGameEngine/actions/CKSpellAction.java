@@ -12,6 +12,7 @@ import ckEditor.CKActorEffectAddMenu;
 import ckEditor.CKSatistfiesAddMenu;
 import ckEditor.CKTravelEffectAddMenu;
 import ckEditor.treegui.CKActorEffect;
+import ckEditor.treegui.CKChangeAnimation;
 import ckEditor.treegui.CKGUINode;
 import ckEditor.treegui.CKGUINodeLabel;
 import ckEditor.treegui.CKGuiRoot;
@@ -52,6 +53,9 @@ public class CKSpellAction extends CKGameAction implements
 	private static final int ALTER_CAST = 9;
 	private static final int SPELL_REDIRECT_EFFECT = 10;
 	// private static final int SPELL_FAILS_EFFECT=17;
+	
+	//added changeAnimation for testing
+	//private static final int CHANGE_ACT = 11;
 
 	/**
 	 * 
@@ -65,7 +69,9 @@ public class CKSpellAction extends CKGameAction implements
 		this.setChildRemoveable(false);
 		this.setPastableChildren(false);
 
-		add(new CKActorEffect("Caster Effect"));
+		//add(new CKActorEffect("Caster Effect"));
+		//added changeAnimation for testing
+		add(new CKChangeAnimation("Change Animation"));
 		add(new CKTravelEffect("First Travel Effect"));
 		add(new CKTravelEffect("Second Travel Effect"));
 		
@@ -78,6 +84,7 @@ public class CKSpellAction extends CKGameAction implements
 		add(new CKGUINodeLabel("Alter Cast"));
 		add(new CKAlterSpellCPCmd());
 		add(new CKActorEffect("Spell Redirect Effects"));
+		
 
 	}
 
@@ -112,8 +119,11 @@ public class CKSpellAction extends CKGameAction implements
 		addEffect.add(CKActorEffectAddMenu.getMenu(tree, "Spell Redirect Effect",
 				SPELL_REDIRECT_EFFECT, true));
 		
+		/*addEffect.add(CKActorEffectAddMenu.getMenu(tree, "Caster Effect",
+				CASTER_EFFECT, true));*/
 		
-		
+		//added changeAnimation for testing
+		//addEffect.add(CKActorEffectAddMenu.getMenu(tree, "Change Animation",CHANGE_ACT, true));
 		
 		
 		
@@ -137,6 +147,8 @@ public class CKSpellAction extends CKGameAction implements
 		return getCasterEffect().doActorEffect(cast, true,startTime);
 	}
 
+	
+	
 	public  synchronized CKTravelEffect getFirstTravelEffect()
 	{
 		return (CKTravelEffect) getChildAt(FIRST_TRAVEL_EFFECT);
@@ -384,6 +396,8 @@ public class CKSpellAction extends CKGameAction implements
 			Thread T = new waitForGraphicsToFinish(this, this);
 			T.start();
 		}
+		
+		
 
 	}
 

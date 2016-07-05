@@ -114,7 +114,7 @@ public class LevelChooser extends Pane
 		right.setCenter(tree);
 		
 		//Image mom = new Image("ckSnapInterpreter/sword.png");
-		Image title = new Image("ckSnapInterpreter/title.png");
+		Image title = new Image("ckSnapInterpreter/Title.png");
 		Node titleNode = new ImageView(title); 
 		BorderPane.setMargin(titleNode,new Insets(10,10,10,10));
 		right.setTop(titleNode);
