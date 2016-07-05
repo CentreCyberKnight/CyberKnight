@@ -43,6 +43,9 @@ public void drawToGraphics(GraphicsContext g, int frame,
 
 public void setAnimation(String animation) throws UnknownAnimationError 
 {
+	//added part for frame problem for special effect
+	LeyuFrame=0;
+	
 	presentRow = ((CKSpriteAsset) asset).getRowIndex(animation);
 }
 
