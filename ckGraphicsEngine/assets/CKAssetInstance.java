@@ -29,6 +29,8 @@ public class CKAssetInstance implements Comparable<CKAssetInstance>
 	private CKPosition lastParentPosition;
 	private CKPosition lastVector;
 	
+	//added parameter to fix the frame problem
+	protected int LeyuFrame=0;//this frame is used so that all the sprite will start from position 0
 	
 public CKAssetInstance(CKPosition pos,CKGraphicsAsset a,int IID )
 {
@@ -181,10 +183,12 @@ public void drawToGraphics (Graphics g,int frame,
 {
 	if(isVisible)
 	{
-		frame=(int) (frame*animationSpeed);
+		//frame=(int) (frame*animationSpeed);
+		frame=(int) (LeyuFrame*animationSpeed);
 		Point screenP = translator.convertMapToScreen(position);
 		asset.drawToGraphics(g,screenP.x,screenP.y,frame,0,observer);
 	}
+	LeyuFrame++;
 }
 
 
@@ -193,10 +197,12 @@ public void drawToGraphics (Graphics g,int frame, int row,
 {
 	if(isVisible)
 	{
-		frame=(int) (frame*animationSpeed);
+		//frame=(int) (frame*animationSpeed);
+		frame=(int) (LeyuFrame*animationSpeed);
 		Point screenP = translator.convertMapToScreen(position);
 		asset.drawToGraphics(g,screenP.x,screenP.y,frame,row,observer);
 	}
+	LeyuFrame++;
 }
 
 
@@ -205,10 +211,12 @@ public void drawToGraphics (GraphicsContext g,int frame,
 {
 	if(isVisible)
 	{
-		frame=(int) (frame*animationSpeed);
+		//frame=(int) (frame*animationSpeed);
+		frame=(int) (LeyuFrame*animationSpeed);
 		Point screenP = translator.convertMapToScreen(position);
 		asset.drawToGraphics(g,screenP.x,screenP.y,frame,0,observer);
 	}
+	LeyuFrame++;
 }
 
 
@@ -217,10 +225,12 @@ public void drawToGraphics (GraphicsContext g,int frame, int row,
 {
 	if(isVisible)
 	{
-		frame=(int) (frame*animationSpeed);
+		//frame=(int) (frame*animationSpeed);
+		frame=(int) (LeyuFrame*animationSpeed);
 		Point screenP = translator.convertMapToScreen(position);
 		asset.drawToGraphics(g,screenP.x,screenP.y,frame,row,observer);
 	}
+	LeyuFrame++;
 }
 	
 	public void setVisible(boolean vis)

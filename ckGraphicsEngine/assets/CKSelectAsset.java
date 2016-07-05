@@ -21,7 +21,7 @@ public class CKSelectAsset extends CKGraphicsAsset {
 	//int framesPerRow;//get from superclass
 	int numFramesAction;
 	int initialFrame;
-	int LeyuFrame=0;
+	//int LeyuFrame=0;
 	public CKSelectAsset(){
 		super("","");
 	}
@@ -138,8 +138,17 @@ public class CKSelectAsset extends CKGraphicsAsset {
 		//System.out.println("Initial Frame is: " + initialFrame);
 		//System.out.println("Final Frame is: " + finalFrame);
 		//System.out.println("Frame per row is: " + framesPerRow);
-		
-				
+
+
+
+		/*
+		System.out.println("This is the " + gameFrame + "th movement, so its frame number is " + correspondingFrame);
+		System.out.println("The original coordinate is: (" + initialFrame / framesPerRow + ", " + initialFrame % framesPerRow + ")");
+		System.out.println("Here is the corresponding final coordinate: (" + curRow + ", " + curFrame + ")");
+		System.out.println("::::::::::"+numFramesAction);
+		System.out.println("------------------------------------------------");
+		*/
+
 		
 		
 		return new coordinateNode(curRow,curFrame);
@@ -173,8 +182,9 @@ public class CKSelectAsset extends CKGraphicsAsset {
 	public void drawToGraphics(GraphicsContext g, int screenx, int screeny, int frame, int row, ImageObserver observer) 
 	{
 
-		coordinateNode cNode = calculateRow_Frame(LeyuFrame++ % numFramesAction);
-
+		//coordinateNode cNode = calculateRow_Frame(LeyuFrame++ % numFramesAction);
+		coordinateNode cNode = calculateRow_Frame(frame % numFramesAction);
+		//System.out.println("LEEEEEEYUUUUUUUFFFFRRRRAAAMMMMEEEE:"+LeyuFrame);
 
 		//System.out.println("Frame Number: " + cNode.getTheFrame() + "-------------------");
 		//System.out.println("Row: " + cNode.getTheRow() + "---------------------------------");

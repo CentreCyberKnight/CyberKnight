@@ -444,7 +444,7 @@ public class CampaignNode extends CKGUINode implements CKXMLAsset<CampaignNode>
 	@Override
 	public String toString()
 	{
-		return "CampaignNode:" + name;
+		return name;
 	}
 
 
