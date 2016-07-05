@@ -115,11 +115,7 @@ public class TeleportAction extends CKQuestAction
 		try {
 			//create fade out instance
 			int ID1=engine.FadeMe(tid, target.getAsset(), startFadeOut, endFadeOut, true,spos,CKGraphicsLayer.FRONTHIGHLIGHT_LAYER,target.getDirection().toString());
-<<<<<<< HEAD
-			engine.loadAsset(tid, "teleport2_Select");
-			int spriteID3=engine.createInstance(tid, "teleport2_Select", spos, startFadeOut, CKGraphicsLayer.ENVIRNOMENT_BOUNDRY);
-			engine.hide(tid, target.getInstanceID(), startFadeOut);
-=======
+
 			//create the image effect
 			if(imageID!="null"){
 				engine.loadAsset(tid, imageID);
@@ -128,7 +124,7 @@ public class TeleportAction extends CKQuestAction
 			engine.hide(tid, target.getInstanceID(), startFadeOut);//hide actor
 			
 			//move the actor
->>>>>>> master
+
 			CKGrid grid = CKGameObjectsFacade.getQuest().getGrid();
 			CKGameObjectsFacade.getQuest().setStartTime(grid.moveInstantly(target,epos,startFadeOut)); 
 			
