@@ -60,7 +60,8 @@ public class GameApplication extends Application implements GameCompletionListen
 		System.out.println("Starting the stage");
 		Pane chooseLevel = new LevelChooser(traits,campaign);
 		
-		Scene scene = new Scene(chooseLevel);
+		Scene scene = new Scene(chooseLevel,760,430);
+		scene.getStylesheets().add("ckSnapInterpreter/cyberknight_intro.css");
 		stage.setScene(scene);
 		stage.show();
 		
@@ -115,7 +116,8 @@ public class GameApplication extends Application implements GameCompletionListen
 		//now restart the chooser
 		Pane chooseLevel = new LevelChooser(traits,campaign);
 		
-		Scene scene = new Scene(chooseLevel);
+		Scene scene = new Scene(chooseLevel,760,430);
+		scene.getStylesheets().add("ckSnapInterpreter/cyberknight_intro.css");
 		stage.setScene(scene);
 		
 		
