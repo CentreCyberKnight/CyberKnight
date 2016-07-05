@@ -570,7 +570,7 @@ IDE_Morph.prototype.createControlBar = function () {
     this.controlBar.color = this.frameColor;
     this.controlBar.setHeight(this.logo.height()); // height is fixed
     this.controlBar.mouseClickLeft = function () {
-        this.world().fillPage();
+        this.world().fillPage();        
     };
     this.add(this.controlBar);
 
@@ -880,8 +880,12 @@ IDE_Morph.prototype.createCategories = function () {
                 myself.categories.children.forEach(function (each) {
                     each.refresh();
                 });
-                myself.refreshPalette(true);
-               //this.hideBlocks(artifact.getAbilities());          	
+                myself.refreshPalette(true);      
+               try{         
+               this.hideBlocks(artifact.getAbilities());
+               }
+               catch(exception){
+               }          	
             },
             category[0].toUpperCase().concat(category.slice(1)), // label
             function () {  // query
@@ -1044,13 +1048,16 @@ IDE_Morph.prototype.hideBlocks = function (book) {
 	            		            	
 	            	if (!book.hasPage(blockCategory,blockSpec)) 
 	            		{	            		
-	            			console.log(cat[k]);
-	            			try{
+	            			
+	            			
+	            			if(cat[k] instanceof BlockMorph){          		
 	            			cat[k].hidePrimitive();
-	            			}
+	            			
+	            			}/*
 	            			catch(err){
-	            			console.log(err);
-	            			}	            			
+	            			
+	            			}	
+	            			*/            			
 	            		}
 	            		
 	            		}
@@ -1126,7 +1133,7 @@ IDE_Morph.prototype.setCyberSnap = function(){
 		list = new List([]);
 		this.sprites = new List([]);
 		while (acc != methods) {
-			this.addNewSprite(name, acc);
+			this.addNewSprite(name, acc);			
 			list.add(this.currentSprite);
 			this.selectSprite(this.currentSprite);
 			acc++;
@@ -1141,7 +1148,7 @@ IDE_Morph.prototype.setCyberSnap = function(){
 	this.sprites = list;
 	//updating current sprite to the first on the screen
 	this.currentSprite = this.sprites.at(1);
-		
+	console.log(this.sprites);
 	//can this be moved?	
 	//setting the picture and name for each sprite
 	var picture;
@@ -1151,7 +1158,7 @@ IDE_Morph.prototype.setCyberSnap = function(){
 		sprite = list.at(i);
 		picture = spellArray[i-1]
 		sprite.setPic('data:image/png;base64,' + picture);
-		sprite.name = spellNames[i-1];
+		sprite.name = spellNames[i-1];		
 	}
 	//setting the artifact icon
 	this.img = 'data:image/png;base64,'+ artifact.getSnapImage();
@@ -1161,7 +1168,7 @@ IDE_Morph.prototype.setCyberSnap = function(){
 	//fixing layout and creating all necessary panels	
 	this.buildCKPanes();
 	this.fixLayout();	
-	//this.hideBlocks(artifact.getAbilities());
+	this.hideBlocks(artifact.getAbilities());	
 	//console.log(this.stage.hiddenPrimitives);
 	
 	
@@ -1390,9 +1397,10 @@ IDE_Morph.prototype.createSpriteBar = function () {
                     myself.currentSprite.rotationStyle = rotationStyle;
                     myself.currentSprite.changed();
                     myself.currentSprite.drawNew();
-                    myself.currentSprite.changed();
+                    myself.currentSprite.changed();                    
                 }
                 rotationStyleButtons.forEach(function (each) {
+                console.log("button 1");
                     each.refresh();
                 });
             },
@@ -1529,10 +1537,10 @@ IDE_Morph.prototype.createSpriteBar = function () {
     };
       
     this.spriteBar.refresh = function () {
-        //this.stageIcon.refresh();
-        this.frame.contents.children.forEach(function (icon) {
+        //this.stageIcon.refresh();        
+        this.frame.contents.children.forEach(function (icon) {        
             icon.refresh();
-        });
+        });        
     };
 
     this.spriteBar.wantsDropOf = function (morph) {
