@@ -6026,6 +6026,7 @@ SpriteIconMorph.prototype.prepareToBeGrabbed = function () {
         ide.createCorral();
         ide.createSpriteBar;
         ide.fixLayout();
+        console.log("sorting");
     }
 };
 
