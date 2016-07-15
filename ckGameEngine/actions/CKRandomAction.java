@@ -64,6 +64,7 @@ public class CKRandomAction extends CKCompoundGameAction
 		}		
 		if(acc!=0 && !iter.hasNext()){			
 			int rand=num.nextInt(acc);
+			System.out.println(acc);
 			System.out.println("<<<<<<<<<"+rand+">>>>>>>>>");
 			CKGameAction t=storage[rand];
 			CKGameObjectsFacade.getQuest().startTransaction();

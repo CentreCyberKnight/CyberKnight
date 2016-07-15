@@ -570,6 +570,7 @@ IDE_Morph.prototype.createControlBar = function () {
     this.controlBar.color = this.frameColor;
     this.controlBar.setHeight(this.logo.height()); // height is fixed
     this.controlBar.mouseClickLeft = function () {
+    	console.log("umy");
         this.world().fillPage();        
     };
     this.add(this.controlBar);
@@ -1038,12 +1039,18 @@ IDE_Morph.prototype.hideBlocks = function (book) {
 	            	var str=block.selector;
 	            	var blockSpec;	
 	            	try{      	            		            	
-	            	var str = block.selector.split("_");
+	            	var str = str.split("_");
 	            	blockSpec=str[1];
 	            	}
-	            	catch(err){
-	            		blockSpec=str;
-	            	}	            		            		            		            	
+	            	catch(err){	            		
+	            		console.log(blockSpec);
+	            	}
+	            	if(blockSpec==undefined){
+	            		console.log("yurgis");
+	            		blockSpec=block.selector;
+	            		console.log(blockSpec);
+	            	}	
+	            	            		            		            		            	
 	            	var blockCategory = block.category;	            		            		            	
 	            		            	
 	            	if (!book.hasPage(blockCategory,blockSpec)) 
@@ -1314,6 +1321,7 @@ IDE_Morph.prototype.ckViewArtifact = function(artifact){
 //	updating what spells are on the screen
 	this.sprites = this.artifactDictionary[artifact];
 	this.currentSprite = this.sprites.at(1);
+	console.log(this.currentSprite);
 };
 
 //creates this.artifactDictionary after an xml file is imported

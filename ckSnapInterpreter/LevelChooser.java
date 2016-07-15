@@ -72,7 +72,7 @@ public class LevelChooser extends Pane
 		Background back = new Background(new BackgroundFill(Color.BLACK, null, null));
 		Color frontColor = Color.web("c8e6ff");
 		
-		Font f= Font.font("Serif",FontWeight.SEMI_BOLD.BOLD ,FontPosture.REGULAR, 20);
+		Font f= Font.font("Serif",FontWeight.SEMI_BOLD.BOLD ,FontPosture.REGULAR, 18);
 		
 		//javafx.scene.text.Font.getFamilies().forEach(s->System.out.println("FONT"+s));
 		

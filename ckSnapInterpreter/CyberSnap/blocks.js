@@ -1213,8 +1213,8 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
         		null,
         		false,
         		{
-        		
-                    },
+        		aim_spell_slot : 'Place aim spell here',
+	            },
                 true
                 );
                 break;
@@ -7024,7 +7024,7 @@ InputSlotMorph.prototype.mouseDownLeft = function (pos) {
     }
 };
 
-InputSlotMorph.prototype.mouseClickLeft = function (pos) {
+InputSlotMorph.prototype.mouseClickLeft = function (pos) {	
     if (this.arrow().bounds.containsPoint(pos)) {    	
         this.dropDownMenu();
     } else if (this.isReadOnly) {       	
