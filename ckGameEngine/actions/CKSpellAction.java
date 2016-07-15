@@ -131,12 +131,23 @@ public class CKSpellAction extends CKGameAction implements
 		return addEffect;
 	}
 
-	public synchronized CKActorEffect getCasterEffect()
+	/*public synchronized CKActorEffect getCasterEffect()
 	{
 		return (CKActorEffect) getChildAt(CASTER_EFFECT);
+	}*/
+	
+	public synchronized CKGUINode getCasterEffect()
+	{
+		return (CKGUINode) getChildAt(CASTER_EFFECT);
 	}
 
-	public synchronized void setCasterEffect(CKActorEffect effect)
+	/*public synchronized void setCasterEffect(CKActorEffect effect)
+	{
+		remove(CASTER_EFFECT);
+		super.insert(effect, CASTER_EFFECT);
+	}*/
+	
+	public synchronized void setCasterEffect(CKGUINode effect)
 	{
 		remove(CASTER_EFFECT);
 		super.insert(effect, CASTER_EFFECT);
@@ -144,8 +155,19 @@ public class CKSpellAction extends CKGameAction implements
 
 	protected int doCasterEffect(CKSpellCast cast, int startTime)
 	{
-		return getCasterEffect().doActorEffect(cast, true,startTime);
+		/////////////
+		CKGUINode effect=getCasterEffect();
+		if (effect instanceof CKActorEffect){
+			return ((CKActorEffect)effect).doActorEffect(cast, true,startTime);
+		}
+		///////////
+		return ((CKChangeAnimation)getCasterEffect()).doActorEffect(cast, true,startTime);
 	}
+	
+	/*protected int doCasterEffect(CKSpellCast cast, int startTime)
+	{
+		return getCasterEffect().doActorEffect(cast, true,startTime);
+	}*/
 
 	
 	

@@ -399,6 +399,7 @@ public class TeleportAction extends CKQuestAction
 		/* (non-Javadoc)
 		 * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
 		 */
+		//when the button is clicked, open the CKGraphicsAsset
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
@@ -414,7 +415,7 @@ public class TeleportAction extends CKQuestAction
 		
 	}
 	
-	//when the button is clicked, open the CKGraphicsAsset
+	//when the Graphic asset is selected, close the window
 	class AssetListener implements CKEntitySelectedListener<CKGraphicsAsset>
 	{
 		JFrame frame;
