@@ -1147,7 +1147,7 @@ function isObject(target) {
         (typeof target === 'object' || target instanceof Object);
 }
 
-function radians(degrees) {
+function radians(degrees) {	
     return degrees * Math.PI / 180;
 }
 
@@ -1239,7 +1239,7 @@ function getDocumentPositionOf(aDOMelement) {
             pos.y -= offsetParent.scrollTop;
         }
         offsetParent = offsetParent.offsetParent;
-    }
+    }    
     return pos;
 }
 
@@ -1716,7 +1716,7 @@ function Rectangle(left, top, right, bottom) {
 
 Rectangle.prototype.init = function (originPoint, cornerPoint) {
     this.origin = originPoint;
-    this.corner = cornerPoint;
+    this.corner = cornerPoint;    
 };
 
 // Rectangle string representation: e.g. '[0@0 | 160@80]'
@@ -1863,7 +1863,7 @@ Rectangle.prototype.topRight = function () {
     return new Point(this.corner.x, this.origin.y);
 };
 
-Rectangle.prototype.width = function () {
+Rectangle.prototype.width = function () {	
     return this.corner.x - this.origin.x;
 };
 
@@ -2532,7 +2532,7 @@ Morph.prototype.silentSetExtent = function (aPoint) {
     this.bounds.corner = new Point(
         this.bounds.origin.x + newWidth,
         this.bounds.origin.y + newHeight
-    );
+    );    
 };
 
 Morph.prototype.setWidth = function (width) {
@@ -4935,8 +4935,10 @@ BoxMorph.prototype.outlinePath = function (context, radius, inset) {
     var offset = radius + inset,
         w = this.width(),
         h = this.height();
-
-    // top left:
+      
+      
+   	          		
+    // top left:    
     context.arc(
         offset,
         offset,
@@ -4945,8 +4947,10 @@ BoxMorph.prototype.outlinePath = function (context, radius, inset) {
         radians(-90),
         false
     );
-    // top right:
-    context.arc(
+    
+    // top right:    
+    /*
+	context.arc(
         w - offset,
         offset,
         radius,
@@ -4954,7 +4958,21 @@ BoxMorph.prototype.outlinePath = function (context, radius, inset) {
         radians(-0),
         false
     );
+    */
+    
+    //corrected
+	context.arc(
+        w - offset,
+        offset,
+        radius,
+        radians(90),
+        radians(0),
+        false
+    );
+    
+
     // bottom right:
+    
     context.arc(
         w - offset,
         h - offset,
@@ -4963,7 +4981,9 @@ BoxMorph.prototype.outlinePath = function (context, radius, inset) {
         radians(90),
         false
     );
+    
     // bottom left:
+    
     context.arc(
         offset,
         h - offset,
@@ -4972,6 +4992,7 @@ BoxMorph.prototype.outlinePath = function (context, radius, inset) {
         radians(180),
         false
     );
+    
 };
 
 
@@ -8084,7 +8105,7 @@ TriggerMorph.prototype.init = function (
 
     // override inherited properites:
     this.color = new Color(255, 255, 255);
-    this.drawNew();
+    this.drawNew();    
 };
 
 // TriggerMorph drawing:
@@ -8098,8 +8119,7 @@ TriggerMorph.prototype.drawNew = function () {
 
 TriggerMorph.prototype.createBackgrounds = function () {
     var context,
-        ext = this.extent();
-
+        ext = this.extent();	   
     this.normalImage = newCanvas(ext);
     context = this.normalImage.getContext('2d');
     context.fillStyle = this.color.toString();

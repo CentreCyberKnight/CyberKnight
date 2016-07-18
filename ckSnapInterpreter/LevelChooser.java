@@ -98,7 +98,7 @@ public class LevelChooser extends Pane
 		
 		
 
-		String message = "Hey Tiger, are you ready to learn how to use the Cyber? \n\n"
+		String message = "Welcome to CyberKnight. \n\n"
 				+ "Double click any level to play.";
 		Text text = new Text(message);
 		text.setFill(frontColor);

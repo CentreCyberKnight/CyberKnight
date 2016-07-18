@@ -1,5 +1,5 @@
 /*
-
+peace
     blocks.js
 
     a programming construction kit
@@ -1208,16 +1208,25 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
                 true
             );
             break;
+		
         case '%testing':
         	part=new InputSlotMorph(
         		null,
         		false,
-        		{
-        		aim_spell_slot : 'Place aim spell here',
-	            },
+        		'getAimChoices',
                 true
                 );
                 break;
+        /*                   
+        case '%testing':
+        	part=new InputSlotMorph(
+        		null,
+        		true,
+        		null,
+                true
+                );
+                break;
+                */       
         case '%codeKind':
             part = new InputSlotMorph(
                 null,
@@ -2799,7 +2808,7 @@ BlockMorph.prototype.eraseHoles = function (context) {
             return part.isHole;
         });
 
-    if (this.isPredicate && (holes.length > 0)) {
+    if (this.isPredicate && (holes.length > 0)) {    	
         rightX = this.width() - this.rounding;
         context.clearRect(
             rightX,
@@ -2825,8 +2834,8 @@ BlockMorph.prototype.eraseHoles = function (context) {
         context.moveTo(rightX - shift, this.edge + shift);
         context.lineTo(rightX - shift, this.height() - this.edge - shift);
         context.stroke();
-    }
-    holes.forEach(function (hole) {
+    }    
+    holes.forEach(function (hole) {    	
         var w = hole.width(),
             h = Math.floor(hole.height()) - 2; // Opera needs this
         context.clearRect(
@@ -2835,7 +2844,7 @@ BlockMorph.prototype.eraseHoles = function (context) {
             isReporter ? w - 1 : w + 1,
             h
         );
-    });
+    });    
 };
 
 // BlockMorph highlighting
@@ -3986,6 +3995,12 @@ HatBlockMorph.prototype.blockSequence = function () {
     // override my inherited method so that I am not part of my sequence
     var result = HatBlockMorph.uber.blockSequence.call(this);
     result.shift();
+    /*
+    hard coded in to end turn when no one entered something
+    */
+    if(result.length==0){
+    	CyberKnight.castSelfSpell("lightning","dummy",0,"");
+    	}
     return result;
 };
 
@@ -4229,26 +4244,26 @@ ReporterBlockMorph.prototype.isLocked = function () {
 
 ReporterBlockMorph.prototype.getSlotSpec = function () {
     // answer the spec of the slot I'm in, if any
-    var parts, idx;
+    var parts, idx;    
     if (this.parent instanceof BlockMorph) {
         parts = this.parent.parts().filter(
-            function (part) {
+            function (part) {            	
                 return !(part instanceof BlockHighlightMorph);
             }
         );
         idx = parts.indexOf(this);
         if (idx !== -1) {
-            if (this.parent.blockSpec) {
+            if (this.parent.blockSpec) {                       	
                 return this.parseSpec(this.parent.blockSpec)[idx];
             }
         }
     }
-    if (this.parent instanceof MultiArgMorph) {
+    if (this.parent instanceof MultiArgMorph) {    	
         return this.parent.slotSpec;
     }
-    if (this.parent instanceof TemplateSlotMorph) {
+    if (this.parent instanceof TemplateSlotMorph) {    	
         return this.parent.getSpec();
-    }
+    }    
     return null;
 };
 
@@ -4256,6 +4271,7 @@ ReporterBlockMorph.prototype.getSlotSpec = function () {
 
 ReporterBlockMorph.prototype.mouseClickLeft = function (pos) {
     var isRing;
+    return;
     if (this.parent instanceof BlockInputFragmentMorph) {
         return this.parent.mouseClickLeft();
     }
@@ -4310,7 +4326,7 @@ ReporterBlockMorph.prototype.drawNew = function () {
     this.cachedClrDark = this.dark();
     this.image = newCanvas(this.extent());
     context = this.image.getContext('2d');
-    context.fillStyle = this.cachedClr;
+    context.fillStyle = this.cachedClr;    
 
     if (this.isPredicate) {
         this.drawDiamond(context);
@@ -4319,10 +4335,10 @@ ReporterBlockMorph.prototype.drawNew = function () {
     }
 
     // erase CommandSlots
-    this.eraseHoles(context);    
+    this.eraseHoles(context);        
 };
 
-ReporterBlockMorph.prototype.drawRounded = function (context) {
+ReporterBlockMorph.prototype.drawRounded = function (context) {	
     var h = this.height(),
         r = Math.min(this.rounding, h / 2),
         w = this.width(),
@@ -4342,8 +4358,18 @@ ReporterBlockMorph.prototype.drawRounded = function (context) {
         radians(-90),
         false
     );
-
     // top right:
+    
+    context.arc(
+        w - r,
+        r,
+        r,
+        radians(90),
+        radians(0),
+        false
+    );
+	
+	/*
     context.arc(
         w - r,
         r,
@@ -4352,7 +4378,7 @@ ReporterBlockMorph.prototype.drawRounded = function (context) {
         radians(-0),
         false
     );
-
+    */
     // bottom right:
     context.arc(
         w - r,
@@ -4374,8 +4400,7 @@ ReporterBlockMorph.prototype.drawRounded = function (context) {
     );
 
     context.closePath();
-    context.fill();
-
+    context.fill();    	
     if (MorphicPreferences.isFlat) {return; }
 
     // add 3D-Effect:
@@ -4509,6 +4534,7 @@ ReporterBlockMorph.prototype.drawRounded = function (context) {
     context.stroke();
 
     // left edge: straight vertical line
+    
     gradient = context.createLinearGradient(0, 0, this.edge, 0);
     gradient.addColorStop(0, this.cachedClrBright);
     gradient.addColorStop(1, this.cachedClr);
@@ -4517,7 +4543,7 @@ ReporterBlockMorph.prototype.drawRounded = function (context) {
     context.moveTo(shift, r);
     context.lineTo(shift, h - r);
     context.stroke();
-
+	
     // right edge: straight vertical line
     gradient = context.createLinearGradient(w - this.edge, 0, w, 0);
     gradient.addColorStop(0, this.cachedClr);
@@ -4527,6 +4553,7 @@ ReporterBlockMorph.prototype.drawRounded = function (context) {
     context.moveTo(w - shift, r + shift);
     context.lineTo(w - shift, h - r);
     context.stroke();
+        
 };
 
 ReporterBlockMorph.prototype.drawDiamond = function (context) {
@@ -6506,7 +6533,7 @@ InputSlotMorph.prototype.init = function (
     isReadOnly
 ) {
     var contents = new StringMorph(''),
-        arrow = new ArrowMorph(
+       	arrow = new ArrowMorph(
             'down',
             0,
             Math.max(Math.floor(this.fontSize / 6), 1)
@@ -6880,6 +6907,57 @@ InputSlotMorph.prototype.soundsMenu = function () {
     return dict;
 };
 
+InputSlotMorph.prototype.getAimChoices=function(){
+	var block = this.parentThatIsA(BlockMorph),
+        rcvr,
+        tempVars = [],
+        dict;
+		
+    if (!block) {
+        return {};
+    }
+	var aim_spells= [];
+	
+	try{
+		var book=artifact.getAbilities();
+		}
+	catch(exception){
+		jsDebug.print("no artifact");
+		}
+	
+	if(book==undefined)
+	{
+		for(var t=0; t<CyberKnight.aimSpells.length; t++){			
+			aim_spells[t]=CyberKnight.aimSpells[t][3];		
+		};
+		
+		}
+	else{
+		var acc=0;		
+		for(var t=0; t<CyberKnight.aimSpells.length; t++){
+			
+			if(book.hasPage("aim",CyberKnight.aimSpells[t][3]))
+				{						
+				aim_spells[acc]=CyberKnight.aimSpells[t][3];
+				acc=acc+1;
+				}						
+			};
+		
+	}
+	
+	//var ck=CyberKnight.castAimSpell("Aim","short target",2,"","");
+	
+    var t = [];    
+    
+    for(var i=0; i<aim_spells.length; i++)
+    {    	
+    	var key=aim_spells[i];    	
+    	t[key]=aim_spells[i];
+    };    
+    return t;
+    
+};
+
 InputSlotMorph.prototype.getVarNamesDict = function () {
     var block = this.parentThatIsA(BlockMorph),
         rcvr,
@@ -7141,6 +7219,8 @@ InputSlotMorph.prototype.evaluate = function () {
 */
     var num,
         contents = this.contents();
+            
+    
     if (this.constant) {
         return this.constant;
     }
@@ -7150,6 +7230,15 @@ InputSlotMorph.prototype.evaluate = function () {
             return num;
         }
     }
+    //for the aim spells
+    //the aim spell names are now key words for those slots
+    for(var i=0; i<CyberKnight.aimSpells.length; i++){    	
+    	if(contents.text===CyberKnight.aimSpells[i][3] && this.choices==="getAimChoices"){    		
+    		var k;
+    		k = CyberKnight.castAimSpell("Aim",CyberKnight.aimSpells[i][1],CyberKnight.aimSpells[i][2],"","");
+    		return k;
+    		}
+    	};
     return contents.text;
 };
 

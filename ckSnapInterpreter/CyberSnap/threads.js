@@ -508,26 +508,26 @@ Process.prototype.pauseStep = function () {
 Process.prototype.evaluateContext = function () {
     var exp = this.context.expression;
     this.frameCount += 1;
-
-    if (exp instanceof BlockMorph) {  
+	
+    if (exp instanceof BlockMorph) {    	    	
         return this.evaluateBlock(exp, exp.inputs().length);
     }
-    if (this.context.tag === 'exit') {
+    if (this.context.tag === 'exit') {    	
         this.expectReport();
     }
-    if (exp instanceof Array) {
+    if (exp instanceof Array) {    	
         return this.evaluateSequence(exp);
     }
-    if (exp instanceof MultiArgMorph) {
+    if (exp instanceof MultiArgMorph) {    	
         return this.evaluateMultiSlot(exp, exp.inputs().length);
     }
     if (exp instanceof ArgLabelMorph) {
         return this.evaluateArgLabel(exp);
     }
-    if (exp instanceof ArgMorph || exp.bindingID) {
+    if (exp instanceof ArgMorph || exp.bindingID) {    	
         return this.evaluateInput(exp);
     }
-    if (isString(exp)) {
+    if (isString(exp)) {    	
         return this[exp]();
     }
     this.popContext(); // default: just ignore it
@@ -535,8 +535,7 @@ Process.prototype.evaluateContext = function () {
 
 Process.prototype.evaluateBlock = function (block, argCount) {
     // check for special forms
-	//jsDebug.print("eval block");
-	
+	//jsDebug.print("eval block");	
     if (contains(['reportOr', 'reportAnd', 'doReport'], block.selector)) {
         return this[block.selector](block);
     }
@@ -687,7 +686,7 @@ Process.prototype.evaluateArgLabel = function (argLabel) {
 
 Process.prototype.evaluateInput = function (input) {
     // evaluate the input unless it is bound to an implicit parameter
-    var ans;
+    var ans;            
     if (input.bindingID) {
         if (this.isCatchingErrors) {
             try {

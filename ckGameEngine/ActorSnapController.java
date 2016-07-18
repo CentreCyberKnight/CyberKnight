@@ -22,7 +22,7 @@ public class ActorSnapController extends ActorController
 	
 	public ActorSnapController(CKGridActor pc)
 	{
-		super(pc);
+		super(pc);		
 	}
 
 
@@ -51,7 +51,15 @@ public class ActorSnapController extends ActorController
 		{
 			snapDone=true;
 			System.out.println("SNAP COMPLETES");
-			
+			/*
+			if(this.getActor().hasPage("turns", "turn_1")){
+				
+			}
+			else{
+				this.getActor().addPage("turns", 0, "turn_1");
+			}			
+			System.out.println(this.getActor().hasPage("turns", "turn_1"));
+			*/
 			notify();
 		}
 		public synchronized void engineCompletes(){

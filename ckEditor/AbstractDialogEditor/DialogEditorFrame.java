@@ -225,8 +225,7 @@ implements CKEntitySelectedListener<JPanel>,ChangeListener,WindowListener
 
 		}
 		
-		
-		System.out.println("you chose YES");
+				
 		//triggerchange
 		stateChanged(null);
 		this.dispose();

@@ -123,6 +123,8 @@ public class CKSpellObject {
 
 			if (ap >= val)
 			{
+				System.out.println("<<<<<<<"+ap+">>>>>>>");
+				System.out.println("<<<<<<<"+val+">>>>>>>");
 				return true;
 			} else
 			{

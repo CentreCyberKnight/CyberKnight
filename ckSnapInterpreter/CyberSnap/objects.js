@@ -143,7 +143,7 @@ var WatcherMorph;
 var StagePrompterMorph;
 var Note;
 var SpriteHighlightMorph;
-
+var artifact;
 // SpriteMorph /////////////////////////////////////////////////////////
 
 // I am a scriptable object
@@ -168,13 +168,13 @@ SpriteMorph.prototype.categories =
         'earth',
         'variables',
         'lightning',
-        'scry',
+        'scry',        
         'other',
     ];
 
 SpriteMorph.prototype.blockColor = {
     move : new Color(203, 122, 0),
-    aim: new Color(0,255,255),
+    aim: new Color(0,128,128),
     fire : new Color(247, 0, 0),
     water : new Color(0, 0, 247),
     wind : new Color(224, 224, 224),
@@ -183,7 +183,7 @@ SpriteMorph.prototype.blockColor = {
     operators : new Color(144, 39, 156),
     variables : new Color(94, 110, 99),
     earth : new Color(13, 156, 51),
-    scry : new Color(255,52,179),
+    scry : new Color(255,52,179),    
     other : new Color(243, 118, 29)
 };
 
@@ -1239,51 +1239,6 @@ SpriteMorph.prototype.initBlocks = function () {
 
 SpriteMorph.prototype.initBlocks();
 
-SpriteMorph.prototype.addNeccesaryToCache=function(){
-	var t=SpriteMorph.prototype.getNecessaryCategories();
-	var i=SpriteMorph.prototype.blocks[0];
-	console.log(SpriteMorph.prototype.blocks);
-	for(var i=0; i<SpriteMorph.prototype.blocks.length; i++){
-	//console.log("t");
-		for(var v=0; v<t.length; v++){
-			if(t[v]==SpriteMorph.prototype.blocks.category){
-				console.log(SpriteMorph.prototype.blocks.category);
-			}
-		}
-	}
-}
-
-
-
-SpriteMorph.prototype.getNecessaryCategories=function(){
-	var acc=0;
-	var timeToStop=SpriteMorph.prototype.categories.length;
-	var returner=[];
-	for(var i=0; i<timeToStop; i++){
-		var cat=SpriteMorph.prototype.categories[i];
-		switch(cat){
-		case 'control':
-		case 'operators':
-		case 'variables':
-		case 'other':
-			{
-				break;
-			}
-		default:
-			{
-				returner[acc]=cat;
-				acc=acc+1;
-			}
-		}
-	}
-	return returner;
-}
-
-
-function getCategoryNames(){
-	return (SpriteMorph.prototype.getNecessaryCategories());
-}		
-
 CyberKnight = {};
 
 var globalComplete;
@@ -1291,8 +1246,8 @@ var globalComplete;
 CyberKnight.castSpell = function(catagory,spell,cp,target,key)
 {
 	//jsDebug.print(catagory+" "+spell+" for "+cp);
-	//jsDebug.print("looking for "+key);
-	var complete = javaMove.spell(catagory,spell,cp,target,key);
+	//jsDebug.print("looking for "+key);		
+	var complete = javaMove.spell(catagory,spell,cp,target,key);	
 	globalComplete=complete;			
 	if(complete==null)
 	{
@@ -1304,6 +1259,7 @@ CyberKnight.castSpell = function(catagory,spell,cp,target,key)
 		console.log(ide.stage);
 		ide.stage.threads.pauseAll(ide.stage);
 	}
+	
 		 
 }
 
@@ -1353,12 +1309,12 @@ CyberKnight.castAimSpell = function(catagory,spell,cp,target,key)
 	var tar =javaMove.aim(spell,cp);
 
 	
-	if(! tar.isSet())
+	if(!tar.isSet())
 	{
 		jsDebug.print("Pausing for AIM spell to complete");
 		ide.stage.threads.pauseAll(ide.stage);
 	}
-	jsDebug.print("TARGET IS"+tar+" "+tar.isSet());
+	jsDebug.print("TARGET IS"+tar+" "+tar.isSet());	
 	return tar;
 }
 
@@ -1416,7 +1372,7 @@ CyberKnight.spells =
 ["water","immune to fire",-1],
 ["water","invisibility",-1],
 ["water","throw ice shards",-1],
-["water","pour",1],
+["water","transmute",1],
 ["water","drink",1],
 ["fire","bolt",-1],
 ["fire","sunbeam",-1],
@@ -1445,6 +1401,7 @@ CyberKnight.selfSpells =
 ["move","forward",1],
 ["move","turn right",2],
 ["move","turn left",2],
+["lightning","dummy",0],
 ]
 
 
@@ -1486,7 +1443,6 @@ CyberKnight.hackSpells=
 CyberKnight.customScrySpells=
 [
 ['scry','cabinet has cookies',"cookies",0],
-['scry','fountain is chocolate',"chocolate",0],
 ];
 
 CyberKnight.craftName = function(spell)
@@ -1727,7 +1683,7 @@ CyberKnight.writeScrySpellCommands = function()
 			only: SpriteMorph,
 			type: 'command',
 			category: spell[0],
-			spec:spell[1]+" at %dst "+label+cpSlot,
+			spec:spell[1]+" at %testing "+label+cpSlot,
 			spellName: spell[1],
 		};
 		//then link the target	
@@ -2408,9 +2364,8 @@ SpriteMorph.prototype.blockTemplates = function (category) {
     var blocks = [], myself = this, varNames, button,
         cat = category || 'motion', txt;	
     function block(selector) {
-    	//temporary fix for control    	    	
-    	
-        if (StageMorph.prototype.hiddenPrimitives[selector]) {        
+    	//temporary fix for control    	    	    	
+        if (StageMorph.prototype.hiddenPrimitives[selector] && cat!="variables") {        
             return null;
         } 
         
@@ -3061,7 +3016,9 @@ SpriteMorph.prototype.freshPalette = function (category) {
                     ide.refreshPalette();
                 }
             );
-        }               
+        }
+        //this was a method Kaiser25125 wrote to work with his hideBlocks function in gui
+        //it literally just refreshes the palette
         menu.addItem(
         	'show all Blocks',
         		function(){
@@ -3069,6 +3026,7 @@ SpriteMorph.prototype.freshPalette = function (category) {
         			ide.refreshPalette();
         		}
         	);
+        	
         
         if (hasHiddenPrimitives()) {
             menu.addItem(

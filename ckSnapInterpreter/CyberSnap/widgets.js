@@ -208,7 +208,7 @@ PushButtonMorph.prototype.mouseLeave = function () {
 
 PushButtonMorph.prototype.outlinePath = BoxMorph.prototype.outlinePath;
 
-PushButtonMorph.prototype.drawOutline = function (context) {
+PushButtonMorph.prototype.drawOutline = function (context) {		
     var outlineStyle,
         isFlat = MorphicPreferences.isFlat && !this.is3D;
 
@@ -226,17 +226,18 @@ PushButtonMorph.prototype.drawOutline = function (context) {
         outlineStyle = this.outlineColor.toString();
     }
     context.fillStyle = outlineStyle;
-    context.beginPath();
+    context.beginPath();    	    	
     this.outlinePath(
         context,
         isFlat ? 0 : this.corner,
         0
     );
-    context.closePath();
+    context.closePath();    
     context.fill();
+    
 };
 
-PushButtonMorph.prototype.drawBackground = function (context, color) {
+PushButtonMorph.prototype.drawBackground = function (context, color) {	
     var isFlat = MorphicPreferences.isFlat && !this.is3D;
 
     context.fillStyle = color.toString();
@@ -248,7 +249,7 @@ PushButtonMorph.prototype.drawBackground = function (context, color) {
     );
     context.closePath();
     context.fill();
-    context.lineWidth = this.outline;
+    context.lineWidth = this.outline;        
 };
 
 PushButtonMorph.prototype.drawEdges = function (
@@ -527,15 +528,18 @@ ToggleButtonMorph.prototype.init = function (
     hasPreview,
     isPicture
 ) {
+	
     // additional properties:
+    
     this.state = false;
     this.query = query || function () {return true; };
     this.minWidth = minWidth || null;
     this.hasPreview = hasPreview || false;
     this.isPicture = isPicture || false;
     this.trueStateLabel = null;
-
+	
     // initialize inherited properties:
+
     ToggleButtonMorph.uber.init.call(
         this,
         target,
@@ -545,16 +549,16 @@ ToggleButtonMorph.prototype.init = function (
         hint,
         template
     );
-
+	
     // override default colors if others are specified
     if (colors) {
         this.color = colors[0];
         this.highlightColor = colors[1];
         this.pressColor = colors[2];
-    }
-
+    }	
     this.refresh();
-    this.drawNew();
+   	this.drawNew();
+   	
 };
 
 // ToggleButtonMorph events
@@ -587,8 +591,7 @@ ToggleButtonMorph.prototype.mouseDownLeft = function () {
 };
 
 ToggleButtonMorph.prototype.mouseClickLeft = function () {
-	//console.log(this.object.parent.parent);
-
+	//console.log(this.object.parent.parent);	
     if (!this.state) {    	
         this.image = this.highlightImage;
         this.changed();
@@ -679,10 +682,11 @@ ToggleButtonMorph.prototype.createBackgrounds = function () {
     the selection color (e.g. in the case of Scratch palette-category
     selector. the latter is done in the drawEdges() method.
 */
+	
     var context,
         ext = this.extent();
-
-    if (this.template) { // take the backgrounds images from the template
+	
+    if (this.template) { // take the backgrounds images from the template    	
         this.image = this.template.image;
         this.normalImage = this.template.normalImage;
         this.highlightImage = this.template.highlightImage;
@@ -715,7 +719,7 @@ ToggleButtonMorph.prototype.createBackgrounds = function () {
     // note: don't invert the 3D-ish edges for pressedImage, because
     // it will stay that way, and should not look inverted (or should it?)
     this.pressImage = newCanvas(ext);
-    context = this.pressImage.getContext('2d');
+    context = this.pressImage.getContext('2d');    
     this.drawOutline(context);
     this.drawBackground(context, this.pressColor);
     this.drawEdges(
@@ -726,6 +730,7 @@ ToggleButtonMorph.prototype.createBackgrounds = function () {
     );
 
     this.image = this.normalImage;
+    
 };
 
 ToggleButtonMorph.prototype.drawEdges = function (
@@ -735,7 +740,7 @@ ToggleButtonMorph.prototype.drawEdges = function (
     bottomColor
 ) {
     var gradient;
-
+    
     ToggleButtonMorph.uber.drawEdges.call(
         this,
         context,
@@ -743,16 +748,16 @@ ToggleButtonMorph.prototype.drawEdges = function (
         topColor,
         bottomColor
     );
-
+    
     if (this.hasPreview) { // indicate the possible selection color
-        if (MorphicPreferences.isFlat && !this.is3D) {
-            context.fillStyle = this.pressColor.toString();
+        if (MorphicPreferences.isFlat && !this.is3D) {        	
+            context.fillStyle = this.pressColor.toString();            
             context.fillRect(
                 this.outline,
                 this.outline,
                 this.corner,
                 this.height() - this.outline * 2
-            );
+            );            
             return;
         }
         gradient = context.createLinearGradient(
@@ -772,7 +777,8 @@ ToggleButtonMorph.prototype.drawEdges = function (
         );
         context.closePath();
         context.fill();
-    }
+    
+    }         
 };
 
 ToggleButtonMorph.prototype.previewPath = function (context, radius, inset) {
@@ -882,7 +888,7 @@ ToggleButtonMorph.prototype.createLabel = function () {
     this.add(this.label);
     if (this.trueStateLabel) {
         this.add(this.trueStateLabel);
-    }
+    }    
 };
 
 // ToggleButtonMorph hiding and showing:

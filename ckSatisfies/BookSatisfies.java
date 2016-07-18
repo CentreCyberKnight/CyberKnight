@@ -115,7 +115,7 @@ public void setT(NumericalCostType t)
 	{
 		CKBook aBook;
 		if(pickActor)
-		{
+		{			
 			aBook = getQuest().getActor(actorName).getAbilities();
 		}
 		else

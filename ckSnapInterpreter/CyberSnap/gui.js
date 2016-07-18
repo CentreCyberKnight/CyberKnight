@@ -569,8 +569,7 @@ IDE_Morph.prototype.createControlBar = function () {
     this.controlBar = new Morph();
     this.controlBar.color = this.frameColor;
     this.controlBar.setHeight(this.logo.height()); // height is fixed
-    this.controlBar.mouseClickLeft = function () {
-    	console.log("umy");
+    this.controlBar.mouseClickLeft = function () {    	
         this.world().fillPage();        
     };
     this.add(this.controlBar);
@@ -897,16 +896,15 @@ IDE_Morph.prototype.createCategories = function () {
             null, // template cache
             labelWidth, // minWidth
             true // has preview            
-        );
-
+        );		
         button.corner = 8;
         button.padding = 0;
         button.labelShadowOffset = new Point(-1, -1);
         button.labelShadowColor = colors[1];
         button.labelColor = myself.buttonLabelColor;
-        button.fixLayout();
+    	button.fixLayout();
         button.refresh();
-        myself.categories.add(button);
+        myself.categories.add(button);                   
         return button;
     }
 
@@ -1023,72 +1021,76 @@ IDE_Morph.prototype.createStage = function () {
 //creating a hacky way to move all of the blocks.  Uses the bounds of the previous blocks.
 IDE_Morph.prototype.hideBlocks = function (book) {
 	//so this is using the cache which doesn't check all of the different categories
-	console.log("hiding blocks now");
+	console.log("hiding blocks now");	
 	var allCat = Object.keys(this.currentSprite.blocksCache);		
 	//var allCat = getCategoryNames();
 	var nullCat = [];						
 	for (var i = 0; i < allCat.length; i++) {
 	        var catName = allCat[i];		        	        
            	var cat = this.currentSprite.blocksCache[catName];
-			if(cat!=null){
-            	for (var k = 0; k < cat.length; k++){
-            		
+           	//if the catergory exists
+			if(cat!=null)
+				{
+				//for each category
+            	for (var k = 0; k < cat.length; k++)
+            		{
+            		//store block value(maybe bottleneck)
 	            	var block = cat[k];	            		            	
 	            	//this if statement is because hidden blocks are null	            	
-	            	if(block!=null){
-	            	var str=block.selector;
-	            	var blockSpec;	
-	            	try{      	            		            	
-	            	var str = str.split("_");
-	            	blockSpec=str[1];
-	            	}
-	            	catch(err){	            		
-	            		console.log(blockSpec);
-	            	}
-	            	if(blockSpec==undefined){
-	            		console.log("yurgis");
-	            		blockSpec=block.selector;
-	            		console.log(blockSpec);
-	            	}	
-	            	            		            		            		            	
-	            	var blockCategory = block.category;	            		            		            	
-	            		            	
-	            	if (!book.hasPage(blockCategory,blockSpec)) 
+	            	if(block!=null)
+	            		{	            		
+	            		var str=block.selector;
+	            		var blockSpec;	
+	            		try{      	            		            	
+	            			var str = str.split("_");
+	            			blockSpec=str[1];
+	            			}
+	            		catch(err)
 	            		{	            		
 	            			
-	            			
-	            			if(cat[k] instanceof BlockMorph){          		
-	            			cat[k].hidePrimitive();
-	            			
-	            			}/*
-	            			catch(err){
-	            			
-	            			}	
-	            			*/            			
 	            		}
-	            		
+	            		//when you split on a selector without an underscore it becomes undefined
+	            		//this if statement for control, operators variables
+	            		if(blockSpec==undefined){	            			
+	            			blockSpec=block.selector;	            			
+	            		}		            	            		            		            		            	
+	            		var blockCategory = block.category;	            	
+	            		//if the block's selector isn't in the book	            		            		            		            	
+	            		if (!book.hasPage(blockCategory,blockSpec)) 
+	            			{	            			       
+	            				
+	            				if(cat[k] instanceof BlockMorph){          		
+	            				this.stage.hiddenPrimitives[block.selector]=true;
+	            				//cat[k].hidePrimitive();
+	            				}      			
+	            			}
 	            		}
 	            	};
 	            
-	            }	
-	            	
-	            		            	
+	            }		            		            		            	
             };        
               	           
-				
-
-	for(var l=0; l< allCat.length; l++){
+    if(Object.keys(this.stage.hiddenPrimitives).length>0)
+    	{				    	
+		this.flushBlocksCache();
+		this.refreshPalette();
+		}
+	//gets everything out of hidden primitives
+	//ripped from showPrimitives
+	for(var l=0; l< allCat.length; l++)
+	{
 	var catName=allCat[l];
 	var hiddens = this.stage.hiddenPrimitives;			
-    var defs = this.currentSprite.blocks;    		    		
-    Object.keys(hiddens).forEach(function (sel) {        			        			        			
-    if (defs[sel] && (defs[sel].category === catName)) 
-    	{                 				
-			delete this.ide.stage.hiddenPrimitives[sel];	    
-        }
-    });
+    var defs = this.currentSprite.blocks;    	    
+    Object.keys(hiddens).forEach(function (sel) {
+    	//i feel hesitant about this code    	        			        			        			
+    	if (defs[sel]) 
+    		{                 				
+				delete this.ide.stage.hiddenPrimitives[sel];	    
+        	}
+    	});
     
-};     		
+	};     		
 
 	
 };
@@ -2047,11 +2049,11 @@ IDE_Morph.prototype.setExtent = function (point) {
 // IDE_Morph events
 
 IDE_Morph.prototype.reactToWorldResize = function (rect) {
-    if (this.isAutoFill) {
+    if (this.isAutoFill) {    	
         this.setPosition(rect.origin);
-        this.setExtent(rect.extent());
+        this.setExtent(rect.extent());        
     }
-    if (this.filePicker) {
+    if (this.filePicker) {    	
         document.body.removeChild(this.filePicker);
         this.filePicker = null;
     }
