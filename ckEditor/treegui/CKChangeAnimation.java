@@ -9,20 +9,26 @@ import ckGraphicsEngine.BadInstanceIDError;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.UnknownAnimationError;
 
-public class CKChangeAnimation extends CKActorEffect{
+public class CKChangeAnimation extends CKGUINode implements CKActorInterface{
 	
 	private String description;
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	//slot for action name right now
+	private static final int ActionName=0;
 
 	public CKChangeAnimation(){
-		super();}
+		this("Change Animation");}
 	
 	public CKChangeAnimation(String description){
-		super(description);
+		//super(description);
 		this.description=description;
+		add(new CKActionInputNode("Action"));
+		this.setChildOrderLocked(true);
+		this.setChildRemoveable(false);
 	}
 	
 	//need to rewrite later, right now just change to push and change back to walk
@@ -30,6 +36,7 @@ public class CKChangeAnimation extends CKActorEffect{
 	public int doActorEffect(CKSpellCast cast,boolean source,int startTime){
 		FX2dGraphicsEngine engine=CKGameObjectsFacade.getEngine();
 		int tid=engine.startTransaction(true);
+		String action=getAction().getAction();
 		String direction;
 		int Duration=0;
 		if(source)
@@ -39,7 +46,7 @@ public class CKChangeAnimation extends CKActorEffect{
 				direction=target.getDirection().toString();
 				String dir=direction.substring(direction.length()-2);
 				System.out.println("my direction is: "+dir);
-				String Animation="pushBall_"+dir;
+				String Animation=action+"_"+dir;
 				try {
 					//System.out.println("AAAAAAANNNNNNNNNNIIIIIIIMMMMMMMEEEEEE: "+Animation);
 					engine.setAnimation(tid, target.getInstanceID(), Animation, startTime);
@@ -70,6 +77,38 @@ public class CKChangeAnimation extends CKActorEffect{
 		}
 		return action;
 
+	}
+	
+	//get the action
+	public CKActionInputNode getAction()
+	{
+		return ( (CKActionInputNode) this.getChildAt(ActionName));
+	}
+	
+	//set the action
+	public void setAction(CKActionInputNode node)
+	{
+		remove(ActionName);
+		insert(node,ActionName);
+	}
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public String toString()
+	{
+		return description;
 	}
 	
 }

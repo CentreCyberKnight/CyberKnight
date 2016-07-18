@@ -9,6 +9,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import ckEditor.CKTravelEffectAddMenu.TreeAddActionListener;
 import ckEditor.treegui.CKActorEffect;
+import ckEditor.treegui.CKActorInterface;
 import ckEditor.treegui.CKChangeAnimation;
 import ckEditor.treegui.CKTreeGui;
 import ckEditor.treegui.DownTravelEffect;
@@ -74,10 +75,10 @@ static class TreeAddActionListener implements ActionListener
 			
 				return;
 			}
-			CKActorEffect action=null;
+			CKActorInterface action=null;
 			if(name.compareTo("LAS")==0)
 			{
-				action=new CKActorEffect(text+"Add light and sound");
+				action=new CKActorEffect(text+": Add light and sound");
 			}
 			//ChangeAnimation action
 			else if(name.compareTo("ChangeAct")==0)
@@ -90,7 +91,7 @@ static class TreeAddActionListener implements ActionListener
 				node.remove(position);
 			}
 			
-			tree.addNode(node,action,position);		
+			tree.addNode(node,(DefaultMutableTreeNode) action,position);		
 		}
 			
 	

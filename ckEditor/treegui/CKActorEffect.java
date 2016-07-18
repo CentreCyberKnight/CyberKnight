@@ -16,7 +16,7 @@ import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.LoadAssetError;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
 
-public class CKActorEffect extends CKGUINode
+public class CKActorEffect extends CKGUINode implements CKActorInterface
 {
 	
 	/**
