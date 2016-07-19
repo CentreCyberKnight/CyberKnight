@@ -14,7 +14,6 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
-
 import ckDatabase.CKConnection;
 
 
@@ -81,7 +80,8 @@ public class CKSnapPane extends Pane {
 				.getLoadWorker()
 				.stateProperty()
 				.addListener((obs, oldValue, newValue) -> {
-					if (newValue == State.SUCCEEDED) {
+					if (newValue == State.SUCCEEDED) 
+					{
 
 						
 						//remote
@@ -114,6 +114,7 @@ public class CKSnapPane extends Pane {
 								e.printStackTrace();
 							}
 						}
+						loadComplete();
 					}
 				});
 
@@ -150,5 +151,33 @@ public class CKSnapPane extends Pane {
 		});
 		return BrowserWindow;
 	}
+	
+	private volatile boolean ready=false;
+	
+	
+	private synchronized void loadComplete()
+	{
+		ready = true;
+		notifyAll();
+	}
+	
+	
+	public synchronized void waitForSnapToLoad()
+	{
+		if(ready) return;
+		while(! ready)
+		{
+			try
+			{
+				wait();
+			} catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
+	
 
 }

@@ -26,6 +26,7 @@ public class CKQuestSceneBuilder
 	public CKDataModel data;
 	private Quest quest;
 	private Scene scene;
+	private CKSnapPane snap;
 	private boolean debug = false;
 
 	
@@ -84,7 +85,7 @@ public class CKQuestSceneBuilder
     	CKArtifactPane artifact = new CKArtifactPane(data);
     	CKDrawerTab artifactTab = new CKDrawerTab(artifact, DrawerSides.TOP, 350.0, 0.0, 400.0, 300.0, "ckSnapInterpreter/arrow.png");
     	
-    	CKSnapPane snap = new CKSnapPane(data); //Snap Pane
+    	snap = new CKSnapPane(data); //Snap Pane
     	//CKDrawerTab snapTab = new CKDrawerTab(snap, DrawerSides.RIGHT, 750.0, 0.0, 690.0, 820.0, "ckSnapInterpreter/text.png");
     	
     	CKControlSpellsPane controls = new CKControlSpellsPane(data);
@@ -104,11 +105,11 @@ public class CKQuestSceneBuilder
 		controls.layoutYProperty().bind(allArtifactsTab.layoutYProperty());
 	
     	
-    	CKAddedAbilitiesPane abilities = new CKAddedAbilitiesPane(data);
-    	CKDrawerTab abilitiesTab = new CKDrawerTab(abilities, DrawerSides.RIGHT, 350.0, 300.0, 400.0, 295.0, "ckSnapInterpreter/arrow.png");
+    	//CKAddedAbilitiesPane abilities = new CKAddedAbilitiesPane(data);
+    	//CKDrawerTab abilitiesTab = new CKDrawerTab(abilities, DrawerSides.RIGHT, 350.0, 300.0, 400.0, 295.0, "ckSnapInterpreter/arrow.png");
     	
-    	CKPlayerStatsPane stats = new CKPlayerStatsPane(data);
-    	CKDrawerTab statsTab = new CKDrawerTab(stats, DrawerSides.LEFT, 0.0, 470.0, 350.0, 350.0, "ckSnapInterpreter/text.png");
+    	//CKPlayerStatsPane stats = new CKPlayerStatsPane(data);
+    	//CKDrawerTab statsTab = new CKDrawerTab(stats, DrawerSides.LEFT, 0.0, 470.0, 350.0, 350.0, "ckSnapInterpreter/text.png");
 
 
     	Button startTurn = new Button("StartTurn");
@@ -196,8 +197,8 @@ public class CKQuestSceneBuilder
 		
 		 public void run()
 		 {
-			 
-						 
+			 snap.waitForSnapToLoad();
+				 
 			 try
 			 {
 				 quest.gameLoop();

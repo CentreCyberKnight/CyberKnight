@@ -652,6 +652,14 @@ public class CKGUINode extends DefaultMutableTreeNode implements CKGUIEditable
 		return initializeJComboBox(box,name,actors);
 	}
 	
+	protected String initializeArtifactBox(JComboBox<String> box,
+			String actor,String artifact)
+	{
+		String [] artifacts = getQuest().getActor(actor).getTeam().getArtifacts()
+				.stream().map(a->a.getName()).toArray(size->new String[size]);
+		
+		return initializeJComboBox(box,artifact,artifacts);
+	}
 	
 	protected SpinnerNumberModel[] generatePositionModels()
 	{

@@ -112,7 +112,7 @@ public class QuickCKEditor
 		//CKQuestTestFactory factory = CKQuestTestFactory.getInstance();
 		CKQuestFactory factory = CKQuestFactory.getInstance();
 		//openEditor(factory.getAsset("asset7990217181097898597"),factory);
-		openEditor(factory.getAsset("asset3345354808389436014"),factory);
+		openEditor(factory.getAsset("asset5480648433123583504"),factory);
 		
 	}
 

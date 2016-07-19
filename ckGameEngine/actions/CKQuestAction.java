@@ -3,7 +3,8 @@ package ckGameEngine.actions;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellCast;
 
-public abstract class CKQuestAction extends CKGameAction implements CKGameActionListenerInterface
+public abstract class CKQuestAction extends CKGameAction 
+implements CKGameActionListenerInterface
 {
 
 	/**
