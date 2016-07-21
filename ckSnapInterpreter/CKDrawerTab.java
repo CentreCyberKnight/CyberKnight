@@ -52,7 +52,8 @@ public class CKDrawerTab extends Pane
 		this.contents = contents;
 		this.side = side;
 		this.iconimage = new Image(icon);
-		// this.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY,
+		//this.setStyle("-fx-background-color: green;");
+		//this.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY,
 		// null, null)));
 		// this.setOpacity(0.8);
 		this.x = x;

@@ -87,7 +87,18 @@ public class CKGameActionAddMenu
 			{
 				addGUI.setEnabled(false);
 			}
+			
+			
+			JMenuItem addActorSel= new JMenuItem("Add Actor/Artifact Selection Action");
+			addActorSel.addActionListener(new TreeAddActionListener("SELECTION_ACTION",tree,pos,replace));
+			addDialogue.add(addActorSel);
+			if(quest==null)
+			{
+				addActorSel.setEnabled(false);
+			}
 
+			
+			
 			/*
 			 * 
 			 * MOVEMENT OPTIONS
@@ -380,6 +391,10 @@ class TreeAddActionListener implements ActionListener
 			else if(name.compareTo("ENDQUEST")==0)
 			{
 				action = new CKEndGameAction();
+			}
+			else if(name.compareTo("SELECTION_ACTION")==0)
+			{
+				action = new CKSelectActorArtifactAction();
 			}
 			
 			if(replace)
