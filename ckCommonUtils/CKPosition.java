@@ -157,6 +157,10 @@ public class CKPosition implements Comparable<CKPosition>,Cloneable
 		String s="Position("+x+","+y+","+z+","+depth+")";
 		return s;
 	}
+	
+	public String getType(){
+		return "CKPosition";
+	}
 
 	/**
 	 * Interpolates the Position that is frac % between P1 and P2

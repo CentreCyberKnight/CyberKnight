@@ -130,13 +130,14 @@ public class CKSpellResult
 	public CKSpellResult() {}
 	
 	public void addResult(CKAbstractGridItem target, String action, String resultType,double result)
-	{
-			results.add(new Tuple(target,action,resultType,result,""));
+	{						
+		results.add(new Tuple(target,action,resultType,result,""));			
 	}
 	
 	public void addResult(CKAbstractGridItem target, String action, String resultType,double result,String resultString)
-	{
-			results.add(new Tuple(target,action,resultType,result,resultString));
+	{	
+		results.add(new Tuple(target,action,resultType,result,resultString));
+			
 	}
 
 	
@@ -195,7 +196,7 @@ public class CKSpellResult
 	}
 	
 	public DoubleStream resultsStream(String resultType)
-	{
+	{		
 		return results.stream()
 				.filter(r->r.resultType.equalsIgnoreCase(resultType))
 				.mapToDouble(Tuple::getResult);
@@ -321,6 +322,11 @@ public class CKSpellResult
 	public Set<String> allResultTypes()
 	{
 		return results.stream().collect(Collectors.mapping(Tuple::getResultType,Collectors.toSet()));
+	}
+	
+	public String getType()
+	{
+		return "CKSpellResult";
 	}
 
 	

@@ -743,6 +743,10 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
             part = new MultiArgMorph('%t', null, 1, spec);
             part.canBeEmpty = false;
             break;
+        case '%spellResults':
+        	part = new MultiArgMorph('%t',null,0,spec);
+        	part.canBeEmpty = true;
+        	break;
         case '%parms':
             part = new MultiArgMorph('%t', 'Input Names:', 0, spec);
             part.canBeEmpty = false;
@@ -1196,6 +1200,15 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
             );
             part.isStatic = true;
             break;
+        case "%aim_var":        	
+            part = new InputSlotMorph(
+                null,
+                false,
+                'getVarAndAimDict',
+                true
+            );
+            part.isStatic = true;
+            break;
         case '%lst':
             part = new InputSlotMorph(
                 null,
@@ -1274,7 +1287,7 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
             break;
         case '%t':
             part = new TemplateSlotMorph('a');
-            break;
+            break;        
         case '%upvar':
             part = new TemplateSlotMorph('\u2191'); // up-arrow
             break;
@@ -3115,11 +3128,11 @@ BlockMorph.prototype.mouseClickLeft = function () {
     var top = this.topBlock(),
         receiver = top.receiver(),
         stage;
-    /*
-    if((this instanceof commandBlockMorph)  && !(this instanceof hatBlockMorph)){
+    
+    if((this instanceof CommandBlockMorph)  && !(this instanceof HatBlockMorph)){
     	return;
     	}
-    	*/
+    
     if (top instanceof PrototypeHatBlockMorph) {
         return top.mouseClickLeft();
     }
@@ -4271,7 +4284,7 @@ ReporterBlockMorph.prototype.getSlotSpec = function () {
 
 ReporterBlockMorph.prototype.mouseClickLeft = function (pos) {
     var isRing;
-    return;
+    //return;
     if (this.parent instanceof BlockInputFragmentMorph) {
         return this.parent.mouseClickLeft();
     }
@@ -6953,10 +6966,91 @@ InputSlotMorph.prototype.getAimChoices=function(){
     {    	
     	var key=aim_spells[i];    	
     	t[key]=aim_spells[i];
-    };    
+    };        
     return t;
     
 };
+
+
+InputSlotMorph.prototype.getVarAndAimDict = function () {
+    var block = this.parentThatIsA(BlockMorph),
+        rcvr,
+        tempVars = [],
+        dict;
+
+    if (!block) {
+        return {};
+    }
+    
+	var aim_spells= [];
+	
+	try{
+		var book=artifact.getAbilities();
+		}
+	catch(exception){
+		jsDebug.print("no artifact");
+		}
+	
+	if(book==undefined)
+	{
+		for(var t=0; t<CyberKnight.aimSpells.length; t++){			
+			aim_spells[t]=CyberKnight.aimSpells[t][3];		
+		};
+		
+		}
+	else{
+		var acc=0;		
+		for(var t=0; t<CyberKnight.aimSpells.length; t++){
+			
+			if(book.hasPage("aim",CyberKnight.aimSpells[t][3]))
+				{						
+				aim_spells[acc]=CyberKnight.aimSpells[t][3];
+				acc=acc+1;
+				}						
+			};
+		
+	}
+	
+	//var ck=CyberKnight.castAimSpell("Aim","short target",2,"","");	    
+    
+    
+    rcvr = block.receiver();
+    block.allParents().forEach(function (morph) {
+        if (morph instanceof PrototypeHatBlockMorph) {
+            tempVars.push.apply(
+                tempVars,
+                morph.inputs()[0].inputFragmentNames()
+            );
+        } else if (morph instanceof BlockMorph) {
+            morph.inputs().forEach(function (inp) {
+                if (inp instanceof TemplateSlotMorph) {
+                    tempVars.push(inp.contents());
+                } else if (inp instanceof MultiArgMorph) {
+                    inp.children.forEach(function (m) {
+                        if (m instanceof TemplateSlotMorph) {
+                            tempVars.push(m.contents());
+                        }
+                    });
+                }
+            });
+        }
+    });
+    if (rcvr) {     
+        dict = rcvr.variables.allNamesDict();        
+        tempVars.forEach(function (name) {
+            dict[name] = name;
+        });        
+    	for(var i=0; i<aim_spells.length; i++)
+    		{    	
+    			var key=aim_spells[i];    	
+    			dict[key]=aim_spells[i];
+    		};        
+    
+        return dict;
+    }   
+    return {};
+};
+
 
 InputSlotMorph.prototype.getVarNamesDict = function () {
     var block = this.parentThatIsA(BlockMorph),
@@ -6989,10 +7083,11 @@ InputSlotMorph.prototype.getVarNamesDict = function () {
         }
     });
     if (rcvr) {     
-        dict = rcvr.variables.allNamesDict();
+        dict = rcvr.variables.allNamesDict();        
         tempVars.forEach(function (name) {
             dict[name] = name;
         });
+        console.log(dict);
         return dict;
     }   
     return {};
@@ -7233,12 +7328,12 @@ InputSlotMorph.prototype.evaluate = function () {
     //for the aim spells
     //the aim spell names are now key words for those slots
     for(var i=0; i<CyberKnight.aimSpells.length; i++){    	
-    	if(contents.text===CyberKnight.aimSpells[i][3] && this.choices==="getAimChoices"){    		
+    	if(contents.text===CyberKnight.aimSpells[i][3] && (this.choices==="getAimChoices" || this.choices==="getVarAndAimDict") ){    		
     		var k;
     		k = CyberKnight.castAimSpell("Aim",CyberKnight.aimSpells[i][1],CyberKnight.aimSpells[i][2],"","");
     		return k;
     		}
-    	};
+    	};    
     return contents.text;
 };
 
@@ -7539,7 +7634,7 @@ TemplateSlotMorph.prototype.init = function (name) {
     this.add(template);
     this.fixLayout();
     this.isDraggable = false;
-    this.isStatic = true; // I cannot be exchanged
+    this.isStatic = true; // I cannot be exchanged    
 };
 
 // TemplateSlotMorph accessing:
@@ -7552,7 +7647,7 @@ TemplateSlotMorph.prototype.template = function () {
     return this.children[0];
 };
 
-TemplateSlotMorph.prototype.contents = function () {
+TemplateSlotMorph.prototype.contents = function () {	
     return this.template().blockSpec;
 };
 
@@ -7565,7 +7660,7 @@ TemplateSlotMorph.prototype.setContents = function (aString) {
 
 // TemplateSlotMorph evaluating:
 
-TemplateSlotMorph.prototype.evaluate = function () {
+TemplateSlotMorph.prototype.evaluate = function () {	
     return this.contents();
 };
 
@@ -9404,11 +9499,9 @@ MultiArgMorph.prototype.init = function (
     this.elementSpec = eSpec || null;
     this.labelColor = labelColor || null;
     this.shadowColor = shadowColor || null;
-    this.shadowOffset = shadowOffset || null;
-
+    this.shadowOffset = shadowOffset || null;	
     this.canBeEmpty = true;
-    MultiArgMorph.uber.init.call(this);
-
+    MultiArgMorph.uber.init.call(this);	
     // MultiArgMorphs are transparent by default b/c of zebra coloring
     this.alpha = isTransparent === false ? 1 : 0;
     arrows.alpha = isTransparent === false ? 1 : 0;
@@ -9465,9 +9558,9 @@ MultiArgMorph.prototype.getSpec = function () {
 // MultiArgMorph defaults:
 
 MultiArgMorph.prototype.setContents = function (anArray) {
-    var inputs = this.inputs(), i;
+    var inputs = this.inputs(), i;    
     for (i = 0; i < anArray.length; i += 1) {
-        if (anArray[i] !== null && (inputs[i])) {
+        if (anArray[i] !== null && (inputs[i])) {        	
             inputs[i].setContents(anArray[i]);
         }
     }
@@ -9576,7 +9669,7 @@ MultiArgMorph.prototype.drawNew = function () {
 
 // MultiArgMorph arity control:
 
-MultiArgMorph.prototype.addInput = function (contents) {
+MultiArgMorph.prototype.addInput = function (contents) {	
     var i, name,
         newPart = this.labelPart(this.slotSpec),
         idx = this.children.length - 1;
@@ -9594,10 +9687,20 @@ MultiArgMorph.prototype.addInput = function (contents) {
     } else if (contains(['%parms', '%ringparms'], this.elementSpec)) {
         newPart.setContents('#' + idx);
     }
+      else if (this.elementSpec === "%spellResults") {      	
+      	var dum=(this.parent.selector.split("_"))[1];
+      	var dum2=dum.split(" ");
+      	var dum3="";
+      	for(var i=0; i<dum2.length; i++){
+      		dum3=dum3+dum2[i]+"_";
+      		};
+      	newPart.setContents(dum3+"Result");
+      	}
+      	
     newPart.parent = this;
     this.children.splice(idx, 0, newPart);
     newPart.drawNew();
-    this.fixLayout();
+    this.fixLayout();    
 };
 
 MultiArgMorph.prototype.removeInput = function () {
@@ -9754,10 +9857,10 @@ MultiArgMorph.prototype.evaluate = function () {
     this is usually overridden by the interpreter. This method is only
     called (and needed) for the variables menu.
 */
-    var result = [];
+    var result = [];    
     this.inputs().forEach(function (slot) {
         result.push(slot.evaluate());
-    });
+    });    
     return result;
 };
 

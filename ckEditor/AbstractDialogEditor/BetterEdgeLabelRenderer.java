@@ -47,9 +47,9 @@ public class BetterEdgeLabelRenderer<V,E> extends BasicEdgeLabelRenderer<V,E>
 	        float distX = x2 - x1;
 	        float distY = y2 - y1;
 	        double totalLength = Math.sqrt(distX * distX + distY * distY);
-
+	        System.out.println("<<<<<<<1>>>>>>>>");
 	        double closeness = rc.getEdgeLabelClosenessTransformer().transform(Context.<Graph<V,E>,E>getInstance(graph, e)).doubleValue();
-
+	        System.out.println("<<<<<<<2>>>>>>>>");
 	        int posX = (int) (x1 + (closeness) * distX);
 	        int posY = (int) (y1 + (closeness) * distY);
 

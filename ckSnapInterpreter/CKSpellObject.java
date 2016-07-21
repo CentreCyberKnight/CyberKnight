@@ -267,6 +267,7 @@ public class CKSpellObject {
 						CKSpellResult total=cast.getResult();
 						//double total=cast.getResult().sumResults(key);
 						System.out.println("Result of Scrying");
+						System.out.println(total);
 						//System.out.println(total.sumResults("cookies"));
 						/*
 						if(cast.getActorTarget() instanceof CKGridActor){

@@ -1020,8 +1020,7 @@ IDE_Morph.prototype.createStage = function () {
 //book is a ckbook
 //creating a hacky way to move all of the blocks.  Uses the bounds of the previous blocks.
 IDE_Morph.prototype.hideBlocks = function (book) {
-	//so this is using the cache which doesn't check all of the different categories
-	console.log("hiding blocks now");	
+	//so this is using the cache which doesn't check all of the different categories	
 	var allCat = Object.keys(this.currentSprite.blocksCache);		
 	//var allCat = getCategoryNames();
 	var nullCat = [];						
@@ -1138,7 +1137,7 @@ IDE_Morph.prototype.setCyberSnap = function(){
 	{
 		//creates new sprites for each spell and adds them to a list
 		//MKB
-		console.log(name,methods);
+		//console.log(name,methods);
 		list = new List([]);
 		this.sprites = new List([]);
 		while (acc != methods) {
@@ -1157,7 +1156,7 @@ IDE_Morph.prototype.setCyberSnap = function(){
 	this.sprites = list;
 	//updating current sprite to the first on the screen
 	this.currentSprite = this.sprites.at(1);
-	console.log(this.sprites);
+	//console.log(this.sprites);
 	//can this be moved?	
 	//setting the picture and name for each sprite
 	var picture;
@@ -1323,7 +1322,7 @@ IDE_Morph.prototype.ckViewArtifact = function(artifact){
 //	updating what spells are on the screen
 	this.sprites = this.artifactDictionary[artifact];
 	this.currentSprite = this.sprites.at(1);
-	console.log(this.currentSprite);
+	//console.log(this.currentSprite);
 };
 
 //creates this.artifactDictionary after an xml file is imported

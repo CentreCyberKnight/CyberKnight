@@ -280,7 +280,7 @@ public class CKSpellCast implements Cloneable
 
 
 	public void castSpell()
-	{
+	{		
 		CKGameActionListener listener = new CKGameActionListener();
 		castSpell(listener);//, key);
 	}
@@ -315,7 +315,7 @@ public class CKSpellCast implements Cloneable
 	}
 		
 		
-		
+	//this.addResult(target, key, "damage", 20);
 		
 		
 		

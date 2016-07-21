@@ -35,5 +35,11 @@ public class CKDelayedObject<T>
 	{
 		return value;
 	}
-
+	//testing
+	
+	public double doubleValue(){
+		return 0.0;
+	}
+	
+	
 }

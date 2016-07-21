@@ -139,8 +139,7 @@ function ThreadManager() {
     //this.boolean = false;
 }
 
-ThreadManager.prototype.toggleProcess = function (block) {
-	console.log("active");
+ThreadManager.prototype.toggleProcess = function (block) {	
     var active = this.findProcess(block);
     if (active) {
         active.stop();
@@ -504,7 +503,7 @@ Process.prototype.pauseStep = function () {
 };
 
 // Process evaluation
-
+var testing2;
 Process.prototype.evaluateContext = function () {
     var exp = this.context.expression;
     this.frameCount += 1;
@@ -518,7 +517,7 @@ Process.prototype.evaluateContext = function () {
     if (exp instanceof Array) {    	
         return this.evaluateSequence(exp);
     }
-    if (exp instanceof MultiArgMorph) {    	
+    if (exp instanceof MultiArgMorph) {    	    	
         return this.evaluateMultiSlot(exp, exp.inputs().length);
     }
     if (exp instanceof ArgLabelMorph) {
@@ -530,12 +529,13 @@ Process.prototype.evaluateContext = function () {
     if (isString(exp)) {    	
         return this[exp]();
     }
-    this.popContext(); // default: just ignore it
+    this.popContext(); // default: just ignore it    
 };
 
 Process.prototype.evaluateBlock = function (block, argCount) {
     // check for special forms
-	//jsDebug.print("eval block");	
+	//jsDebug.print("eval block");
+	testing2 = this.context.outerContext.variables;	
     if (contains(['reportOr', 'reportAnd', 'doReport'], block.selector)) {
         return this[block.selector](block);
     }
@@ -551,7 +551,7 @@ Process.prototype.evaluateBlock = function (block, argCount) {
             rcvr = this;
         }
         if (this.isCatchingErrors) {
-            try {
+            try {            	            	
                 this.returnValueToParentContext(
                     rcvr[block.selector].apply(rcvr, inputs)
                 );
@@ -811,8 +811,7 @@ Process.prototype.handleError = function (error, element) {
             + error.name
             + '\n'
             + error.message
-    );
-    console.log("time");
+    );    
     console.log(error);
 };
 
@@ -1222,7 +1221,7 @@ Process.prototype.evaluateCustomBlock = function () {
 
 // Process variables primitives
 
-Process.prototype.doDeclareVariables = function (varNames) {
+Process.prototype.doDeclareVariables = function (varNames) {	
     var varFrame = this.context.outerContext.variables;
     varNames.asArray().forEach(function (name) {
         varFrame.addVar(name);
@@ -1232,16 +1231,31 @@ Process.prototype.doDeclareVariables = function (varNames) {
 Process.prototype.doSetVar = function (varName, value) {
     var varFrame = this.context.variables,
         name = varName;
-    if (name instanceof Context) {
-        if (name.expression.selector === 'reportGetVar') {
+    if (name instanceof Context) {    	
+        if (name.expression.selector === 'reportGetVar') {        	
             name.variables.setVar(
                 name.expression.blockSpec,
                 value
             );
             return;
         }
-    }
-    varFrame.setVar(name, value, this.blockReceiver());
+    }         
+    varFrame.setVar(name, value, this.blockReceiver());    
+};
+
+Process.prototype.doSetAim = function (varName, value) {
+    var varFrame = this.context.variables,
+        name = varName;
+    if (name instanceof Context) {    	
+        if (name.expression.selector === 'reportGetVar') {        	
+            name.variables.setVar(
+                name.expression.blockSpec,
+                value
+            );
+            return;
+        }
+    }     
+    varFrame.setVar(name, value, this.blockReceiver());    
 };
 
 Process.prototype.doChangeVar = function (varName, value) {
@@ -3203,9 +3217,10 @@ VariableFrame.prototype.setVar = function (name, value) {
     before they can be accessed.
 */
     var frame = this.find(name);
-    if (frame) {
-        frame.vars[name].value = value;
+    if (frame) {    	
+        frame.vars[name].value = value;        
     }
+    console.log(frame);    
 };
 
 VariableFrame.prototype.changeVar = function (name, delta) {
@@ -3230,6 +3245,7 @@ VariableFrame.prototype.changeVar = function (name, delta) {
 VariableFrame.prototype.getVar = function (name) {
     var frame = this.silentFind(name),
         value;
+    
     if (frame) {
         value = frame.vars[name].value;
         return (value === 0 ? 0

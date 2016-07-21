@@ -44,6 +44,7 @@ public class ScryAction extends CKGameAction
 		String page = cast.getPage();
 		String key  = cast.getKey();
 		String resultType = cast.getKey().toLowerCase();		
+		System.out.println(page);
 		switch (page)
 		{
 		case "visible":
