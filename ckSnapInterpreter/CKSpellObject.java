@@ -122,9 +122,7 @@ public class CKSpellObject {
 					.setCyberPoints(getCharacter().getCyberPoints() - val);
 
 			if (ap >= val)
-			{
-				System.out.println("<<<<<<<"+ap+">>>>>>>");
-				System.out.println("<<<<<<<"+val+">>>>>>>");
+			{								
 				return true;
 			} else
 			{
@@ -263,11 +261,13 @@ public class CKSpellObject {
 						//need to change ckDelayedObjects back to doing a boolean
 						//only works for actors
 						//ScryAction returnValue=new ScryAction();
-						System.out.println(key);
+						System.out.println(key);			
 						CKSpellResult total=cast.getResult();
 						//double total=cast.getResult().sumResults(key);
-						System.out.println("Result of Scrying");
-						System.out.println(total);
+						System.out.println("<<<<<<>>>>>>");						
+						System.out.println(total.sumResults_S("turn right"));
+						System.out.println(total.sumResults_S("turn left"));
+						System.out.println("<<<<<<>>>>>>");
 						//System.out.println(total.sumResults("cookies"));
 						/*
 						if(cast.getActorTarget() instanceof CKGridActor){

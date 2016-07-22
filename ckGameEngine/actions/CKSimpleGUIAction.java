@@ -163,7 +163,7 @@ implements CKEntitySelectedListener<CKDialogChoice>, ItemListener
 		
 		
 		
-		CKGraphicsAssetFactory factory = CKGraphicsAssetFactoryXML.getInstance();
+		CKGraphicsAssetFactory factory = CKGraphicsAssetFactoryXML.getInstance();		
 		String mText = mess;
 		if(useKeyMessage)
 		{
@@ -180,13 +180,16 @@ implements CKEntitySelectedListener<CKDialogChoice>, ItemListener
 			else //use stored value
 			{
 				portrait = factory.getPortrait(getQuest().getActor(pc).getAssetID());
-			}
+			}									
 			message = new CKDialogMessage(mText, portrait);
 		}
 		else //no picture
-		{
+		{						
 			message = new CKDialogMessage(mText);			
 		}
+
+		cast.addResult(cast.getItemTarget(), "scry", mess, true);
+		System.out.println(cast.getResult().sumResults_S(mess));
 		message.replaceEventListener(this);
 		CKGameObjectsFacade.getEngine().loadDialogMessage(message);
 

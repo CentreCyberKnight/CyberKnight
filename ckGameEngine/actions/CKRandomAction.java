@@ -32,7 +32,7 @@ public class CKRandomAction extends CKCompoundGameAction
 	@Override
 	public void actionCompleted(CKGameAction action)
 	{
-		doNextAction();	
+		notifyListener();
 	}
 	
 	
@@ -71,12 +71,7 @@ public class CKRandomAction extends CKCompoundGameAction
 			t.doAction(this,cast,true);//not sure if this is needed
 			CKGameObjectsFacade.getQuest().endTransaction();			
 			trying=true;
-		}
-		if(trying)
-		{			
-			notifyListener();
-		}
-		
+		}		
 	}
 
 	/* (non-Javadoc)

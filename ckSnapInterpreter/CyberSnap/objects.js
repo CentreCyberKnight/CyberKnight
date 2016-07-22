@@ -1281,8 +1281,7 @@ CyberKnight.castSpell = function(catagory,spell,cp,target,key)
 		jsDebug.print("Spell Fails--Needs to stop here!");
 	}
 	else if (!complete.isSet())
-	{	//MKB DEBUG
-		console.log("Pausing spell",spell);		
+	{	//MKB DEBUG		
 		ide.stage.threads.pauseAll(ide.stage);		
 	}			 
 	return complete;
@@ -1354,23 +1353,19 @@ CyberKnight.castCustomSpellValue = function(catagory,spell,cp,checker,value)
 		try{					
 			var complete;				
 			try{								
-				complete=testing2.getVar(checker);
-				console.log(complete);												
+				complete=testing2.getVar(checker);				
 				}								
 			catch(exception){					
 				complete=checker;												
-				}
-				console.log(complete.getValue().getType());
-			if(complete.getValue().getType()==="CKSpellResult"){
-				console.log("tree");		
-				var k=complete.getValue().sumResults_S(value);		
+				}				
+			if(complete.getValue().getType()==="CKSpellResult"){																														
+				var k=complete.getValue().sumResults_S(value);												
 				return (k>0);
 			}
 			else if(complete.getValue().getType()==="CKPosition"){
-				var t=CyberKnight.castSpell("Scry","traits",0,complete,"");
-				console.log("peanuts");
+				var t=CyberKnight.castSpell("Scry","traits",0,complete,"");				
 				while(t.getValue()==null){
-				}
+				}				
 				return (t.getValue().sumResults_S(value)>0);
 			}
 		}
@@ -1422,6 +1417,7 @@ CyberKnight.spells =
 ["earth","mud",10],
 ["earth","stone skin",10],
 ['earth',"take",1],
+['earth',"ask",0],
 ["water","poison",-1],
 ];
 
@@ -1459,7 +1455,6 @@ CyberKnight.moveToSpells=
 CyberKnight.scrySpells=
 [
 ['scry',"traits",0,1],
-['scry',"visible",0,1],
 ];
 
 
@@ -1483,6 +1478,7 @@ CyberKnight.customScrySpells=
 ['scry',' has cookies',"cookies",0],
 ['scry','said turn right',"turn right",0],
 ['scry','said turn left',"turn left",0],
+['scry','is chocolate',"chocolate",0],
 ];
 
 CyberKnight.craftName = function(spell)
@@ -1865,7 +1861,7 @@ CyberKnight.writeEvaluateSpellCommands = function()
 			only: SpriteMorph,
 			type: 'predicate',
 			category: spell[0],
-			spec:"%dst "+spell[1]+" %s "+cpSlot,
+			spec:"%aim_var "+spell[1]+" %s "+cpSlot,
 			spellName: spell[1],
 		};
 		//then link the target	
@@ -1954,7 +1950,7 @@ CyberKnight.pushCategories = function(cat,blocks,block)
 			blocks.push(block(name));	
 		}	
 	}
-	
+	/*
 	for(var i=0;i<CyberKnight.hackSpells.length;i++)
 		{
 			var spell = CyberKnight.hackSpells[i];
@@ -1964,7 +1960,7 @@ CyberKnight.pushCategories = function(cat,blocks,block)
 			blocks.push(block(name));	
 			}	
 		}
-		
+		*/
 	
 	for(var i=0;i<CyberKnight.customScrySpells.length;i++)
 		{
@@ -1975,7 +1971,7 @@ CyberKnight.pushCategories = function(cat,blocks,block)
 			blocks.push(block(name));	
 			}	
 		}
-
+/*
 	for(var i=0;i<CyberKnight.evaluateSpells.length;i++)
 		{
 			var spell = CyberKnight.evaluateSpells[i];
@@ -1985,7 +1981,7 @@ CyberKnight.pushCategories = function(cat,blocks,block)
 			blocks.push(block(name));	
 			}	
 		}
-
+*/
 		
 	
 };
@@ -1996,9 +1992,9 @@ CyberKnight.writeAimSpellCommands();
 CyberKnight.writeSelfSpellCommands();	
 CyberKnight.writeMoveToSpellCommands();	
 CyberKnight.writeScrySpellCommands();	
-CyberKnight.writeHackSpellCommands();	
+//CyberKnight.writeHackSpellCommands();	
 CyberKnight.writeCustomScrySpellCommands();	
-CyberKnight.writeEvaluateSpellCommands();	
+//CyberKnight.writeEvaluateSpellCommands();	
 
 SpriteMorph.prototype.initBlockMigrations = function () {
     SpriteMorph.prototype.blockMigrations = {

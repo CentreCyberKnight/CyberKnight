@@ -195,15 +195,17 @@ public class CKRemovePage extends CKGameAction implements ItemListener
 		
 
 		if(actor != null)
-		{
+		{									
 			if(page.length()==0)
-			{									
-				actor.addChapter(chapter,cost);
+			{													
+				actor.addChapter(chapter,cost);				
 			}
 			else
-			{								
-				actor.removePage(chapter,cost,page);
-				System.out.println(actor.hasPage(chapter, page));
+			{							
+				if(page.equalsIgnoreCase("*") || actor.hasPage(chapter, page)){
+					actor.removePage(chapter,cost,page);									
+					System.out.println(actor.hasPage(chapter, page));
+				}
 			}
 		}
 		notifyListener();

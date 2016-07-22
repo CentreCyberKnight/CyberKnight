@@ -222,15 +222,13 @@ public class CKSpellResult
 	
 
 	public double sumResults(String resultType)
-	{
-		System.out.println("<<<<<<<<<<<<triangle>>>>>>>>>>");
+	{		
 		return resultsStream(resultType).sum();	
 	}
 	
 
 	public double sumResults_S(String resultType)
-	{
-		System.out.println("<<<<<<<<<<<<triangle>>>>>>>>>>");
+	{	
 		return sumResults(resultType);	
 	}
 	

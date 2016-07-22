@@ -7086,8 +7086,7 @@ InputSlotMorph.prototype.getVarNamesDict = function () {
         dict = rcvr.variables.allNamesDict();        
         tempVars.forEach(function (name) {
             dict[name] = name;
-        });
-        console.log(dict);
+        });        
         return dict;
     }   
     return {};

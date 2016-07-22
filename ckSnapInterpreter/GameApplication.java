@@ -46,7 +46,7 @@ public class GameApplication extends Application implements GameCompletionListen
 				}
 		
 		//Campaign Data
-		campaign = CKCampaignNodeFactory.getInstance().getCampaign("CyberKnight Act 1 Scene 1");
+		campaign = CKCampaignNodeFactory.getInstance().getCampaign("asdf");
 		
 	}
 	

@@ -64,7 +64,7 @@ public class ActorSnapController extends ActorController
 		}
 		public synchronized void engineCompletes(){
 			engineDone=true;
-			System.out.println("ENGINE COMPLETES");
+			System.out.println("ENGINE COMPLETES");			
 			
 			notify();
 		}

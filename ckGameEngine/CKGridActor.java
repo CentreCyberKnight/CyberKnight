@@ -283,7 +283,8 @@ public class CKGridActor extends CKGridItem
 	
 	public void removePage(String chapter, int val, String page)
 	{		
-		this.coreAbilities=(getCoreAbilities().removePage(chapter,page));	
+		this.questAbilities=(getQuestAbilities().removePage(chapter, page));
+		this.coreAbilities=(getCoreAbilities().removePage(chapter,page));		
 	}
 	
 	public boolean hasChapter(String chapter)
@@ -292,7 +293,7 @@ public class CKGridActor extends CKGridItem
 	}
 
 	public boolean hasPage(String chapter, String page)
-	{
+	{						
 		return getAbilities().getChapter(chapter).hasPage(page);
 	}
 

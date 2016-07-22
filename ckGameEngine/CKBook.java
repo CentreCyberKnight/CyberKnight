@@ -140,8 +140,9 @@ public class CKBook extends CKGUINode implements CKXMLAsset<CKBook>
 	
 	public CKBook removePage(String ch, String page){
 		CKChapter i= getChapter(ch);
-		System.out.println("<<<<<<<<"+i.getName()+">>>>>>>>");		
-		i.removePage(page);	
+		if(i.hasPage(page)){
+			i.removePage(page);
+		}
 		return this;
 	}
 	
