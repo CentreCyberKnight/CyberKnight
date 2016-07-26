@@ -187,9 +187,11 @@ implements CKEntitySelectedListener<CKDialogChoice>, ItemListener
 		{						
 			message = new CKDialogMessage(mText);			
 		}
-
-		cast.addResult(cast.getItemTarget(), "scry", mess, true);
-		System.out.println(cast.getResult().sumResults_S(mess));
+		if(cast!=null)
+		{
+			cast.addResult(cast.getItemTarget(), "scry", mess, true);
+		}
+		//System.out.println(cast.getResult().sumResults_S(mess));
 		message.replaceEventListener(this);
 		CKGameObjectsFacade.getEngine().loadDialogMessage(message);
 
