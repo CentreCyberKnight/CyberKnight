@@ -30,9 +30,31 @@ public class CKURL
 			setAuth=true;
 		}
 		String base = CKProperties.getValue("RESOURCEPATH");
-		if(base.compareTo("__BASE_DIR__")==0)
+		if (base == null)
+		{//look in the same jar file...
+			URL url = this.getClass().getProtectionDomain()
+					.getCodeSource().getLocation();
+			String jarPath="";
+			try
+			{
+				jarPath = URLDecoder.decode(url.getFile(), "UTF-8");
+			} catch (UnsupportedEncodingException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			base ="file:"+jarPath;
+			if(base.endsWith(".jar"))
+			{
+				base="jar:"+base+"!/";
+			}
+			base+="CK_DATA/CK_DATA/";
+
+		}
+		else if(base.compareTo("__BASE_DIR__")==0)
 		{
-			base = (new File(System.getProperty("user.dir"))).getParentFile().toURI().toURL().toString();
+			base = (new File(System.getProperty("user.dir")))
+					.getParentFile().toURI().toURL().toString();
 			//base = (new File(System.getProperty("user.dir"))).toURI().toURL().toString();
 			base+="CK_DATA/CK_DATA/";
 		}
@@ -42,7 +64,7 @@ public class CKURL
 			base = "jar:"+base+"CKResources.jar!/";
 		}
 		url = new URL(base+filename);
-		//System.out.println("URL is"+url);
+		System.out.println("URL is: "+url);
 	}
 	
 	public InputStream getInputStream() throws IOException
