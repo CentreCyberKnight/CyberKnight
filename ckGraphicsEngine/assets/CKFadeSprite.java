@@ -6,8 +6,8 @@ import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import ckGraphicsEngine.UnknownAnimationError;
 import javafx.scene.canvas.GraphicsContext;
+import ckGraphicsEngine.UnknownAnimationError;
 
 //actually a CKTransparentSprite
 

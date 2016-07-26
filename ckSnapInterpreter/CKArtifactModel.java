@@ -1,10 +1,10 @@
 package ckSnapInterpreter;
 
+import javafx.scene.web.WebEngine;
+import netscape.javascript.JSObject;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKSpell;
-import javafx.scene.web.WebEngine;
-import netscape.javascript.JSObject;
 
 public class CKArtifactModel {
 	
@@ -38,14 +38,14 @@ public class CKArtifactModel {
 	public static void generateXML()
 	{
 		WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
-		JSObject jsobj = (JSObject) webEngine.executeScript("window");
+		//JSObject jsobj = (JSObject) webEngine.executeScript("window");
 		webEngine.executeScript("ide.ckExportXML('helloWorld')");
 	}
 
 	public static void loadXML()
 	{
 		WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
-		JSObject jsobj = (JSObject) webEngine.executeScript("window");
+		//JSObject jsobj = (JSObject) webEngine.executeScript("window");
 		webEngine.executeScript("ide.ckImportXML()");
 	}
 	

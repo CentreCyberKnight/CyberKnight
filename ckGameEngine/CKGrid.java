@@ -22,6 +22,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Stack;
 
+import javafx.scene.canvas.GraphicsContext;
+
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -37,7 +39,6 @@ import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.UnknownAnimationError;
 import ckGraphicsEngine.layers.CKGridGraphicsLayer;
-import javafx.scene.canvas.GraphicsContext;
 
 public class CKGrid implements CKXMLAsset<CKGrid>
 {
@@ -1003,7 +1004,7 @@ public class CKGrid implements CKXMLAsset<CKGrid>
 
 		if (!CKGameObjectsFacade.unitTest)
 		{
-			Quest quest = CKGameObjectsFacade.getQuest();
+			//Quest quest = CKGameObjectsFacade.getQuest();
 
 		//	endtime = item.drawMove(item.getPos(), pos, quest.getStartTime());
 			FX2dGraphicsEngine engine=CKGameObjectsFacade.getEngine();

@@ -5,16 +5,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Vector;
 
-import javax.imageio.ImageIO;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import javax.imageio.ImageIO;
 
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckEditor.CKSpellListener;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
+
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 public class CKSpell
 {

@@ -6,8 +6,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.ImageObserver;
 
-import ckDatabase.CKGraphicsAssetFactoryXML;
 import javafx.scene.canvas.GraphicsContext;
+import ckDatabase.CKGraphicsAssetFactoryXML;
 
 /**
  * This is a decorator class to insure that the asset is played at 

@@ -7,9 +7,9 @@ import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javafx.scene.canvas.GraphicsContext;
 import ckCommonUtils.CKScriptTools;
 import ckCommonUtils.LogListener;
-import javafx.scene.canvas.GraphicsContext;
 
 public class CKGUI
 {

@@ -21,12 +21,12 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import javax.swing.text.EditorKit;
 
+import jsyntaxpane.DefaultSyntaxKit;
 import ckCommonUtils.CKThreadCompletedListener;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.Quest;
 import ckPythonInterpreter.CKPythonConsoleExtended;
 import ckPythonInterpreter.CKPythonEditorPane;
-import jsyntaxpane.DefaultSyntaxKit;
 
 @Deprecated
 public class CKLinkedEditor 

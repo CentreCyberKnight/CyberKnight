@@ -1,16 +1,16 @@
 package ckGraphicsEngine;
 
-import ckCommonUtils.*;
 /*import ckGraphicsEngine.assets.CKFadeAsset;
 import ckGraphicsEngine.assets.CKTextAsset;
 import ckGraphicsEngine.layers.CKGraphicsLayer;*/
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 //import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import ckCommonUtils.CKPosition;
+import ckCommonUtils.FadeText;
 
 public class testByMyself extends Application{
 	@Override

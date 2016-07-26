@@ -21,12 +21,12 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import javax.swing.text.EditorKit;
 
+import jsyntaxpane.DefaultSyntaxKit;
 import ckPythonInterpreter.CKAlgViz;
 import ckPythonInterpreter.CKPythonConsoleExtended;
 import ckPythonInterpreter.CKPythonEditorPane;
 import ckPythonInterpreter.CKUniqueAlgViz;
 import ckPythonInterpreter.CKUniqueEditor;
-import jsyntaxpane.DefaultSyntaxKit;
 public class CKVizualizeInterpreter 
 {
 	CKPythonEditorPane editor;	

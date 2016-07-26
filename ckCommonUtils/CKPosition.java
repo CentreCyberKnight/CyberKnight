@@ -2,7 +2,10 @@ package ckCommonUtils;
 
 import java.awt.Point;
 
-
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 import org.python.modules.math;
 
@@ -10,10 +13,6 @@ import ckGraphicsEngine.BadInstanceIDError;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.LoadAssetError;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 
 /**
  * Provides a Position description with X,Y,Z and depth data.

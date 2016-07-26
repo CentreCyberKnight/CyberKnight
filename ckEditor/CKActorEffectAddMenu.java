@@ -7,12 +7,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import ckEditor.CKTravelEffectAddMenu.TreeAddActionListener;
 import ckEditor.treegui.CKActorEffect;
 import ckEditor.treegui.CKActorInterface;
 import ckEditor.treegui.CKChangeAnimation;
 import ckEditor.treegui.CKTreeGui;
-import ckEditor.treegui.DownTravelEffect;
 
 public class CKActorEffectAddMenu
 {

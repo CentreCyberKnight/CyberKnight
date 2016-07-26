@@ -20,7 +20,6 @@ import static ckCommonUtils.CKPropertyStrings.P_SWORD;
 import static ckCommonUtils.CKPropertyStrings.P_TALK;
 import static ckCommonUtils.CKPropertyStrings.P_TARGET;
 import static ckCommonUtils.CKPropertyStrings.SPEED;
-
 import ckEditor.treegui.BookList;
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKBook;

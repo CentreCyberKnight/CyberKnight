@@ -9,14 +9,12 @@ import java.util.stream.Stream;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ckCommonUtils.AIBasicCommand;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKPropertyStrings;
 import ckDatabase.AimDescriptionFactory;
 import ckGameEngine.AimDescription;
 import ckGameEngine.CKAbstractGridItem;
 import ckGameEngine.CKGrid;
-import ckGameEngine.ActorAIController.SwingCommand;
 import ckGameEngine.CKGrid.GridNode;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKGridItem;
@@ -358,6 +356,7 @@ public class testDescisionGrid
 		
 	}
 	
+	@SuppressWarnings("unused")
 	@Test
 	public void testSoloCompositeShoot()
 	{
@@ -498,7 +497,7 @@ public class testDescisionGrid
 		
 		CKGridActor baby = new CKGridActor("babySprite",Direction.NORTHWEST);
 		baby.setPos(myPos);
-		int CP = 15;
+		//int CP = 15;
 		GridNode [][][][] movement= grid.allPositionsReachable(baby, 15, 1);
 
 		dgrid.updateGrid(myPos,

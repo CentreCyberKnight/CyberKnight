@@ -58,7 +58,7 @@ public class SlideEffectDemo extends Application {
   r.prefWidth(boxBounds.getWidth());
  // r.setFill(Color.RED);
   //basePane.setShape(r);
- TextField t1 = new TextField("this would be the game");
+ //TextField t1 = new TextField("this would be the game");
   basePane.getChildren().addAll(r);
 
   // TOP PANE 

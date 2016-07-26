@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import javafx.scene.canvas.GraphicsContext;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKWorkSupervisorListener;
 import ckCommonUtils.CKXMLAsset;
@@ -12,7 +13,6 @@ import ckGraphicsEngine.assets.CKAssetInstance;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
 import ckGraphicsEngine.sceneAction.CKSceneAction;
-import javafx.scene.canvas.GraphicsContext;
 
 public interface CKGraphicsSceneInterface extends CKXMLAsset<CKGraphicsSceneInterface>
 {

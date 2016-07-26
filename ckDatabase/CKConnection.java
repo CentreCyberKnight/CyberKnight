@@ -215,7 +215,10 @@ private final static String settingsDir = ".cyberknight";
 		}
 			
 	}
-
+	
+	//this method is not presently used....
+	@SuppressWarnings("resource")
+	@Deprecated
 	public static InputStream getJarFileInput(String jar, String file) throws IOException
 	{
 		

@@ -20,5 +20,5 @@ public interface EdgeMenuListener<E> {
      * @param e 
      * @param visComp 
      */
-     void setEdgeAndView(E e, VisualizationViewer visView); 
+     void setEdgeAndView(E e, @SuppressWarnings("rawtypes") VisualizationViewer visView); 
 }

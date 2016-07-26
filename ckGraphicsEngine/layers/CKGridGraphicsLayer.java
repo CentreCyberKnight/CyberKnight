@@ -8,6 +8,8 @@ import java.awt.image.ImageObserver;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import javafx.scene.canvas.GraphicsContext;
+
 import javax.swing.JFrame;
 
 import ckCommonUtils.CKPosition;
@@ -18,7 +20,6 @@ import ckGameEngine.CKGridItem;
 import ckGraphicsEngine.CKCoordinateTranslator;
 import ckGraphicsEngine.assets.CKAssetInstance;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
-import javafx.scene.canvas.GraphicsContext;
 
 public class CKGridGraphicsLayer extends CKGraphicsLayer
 {

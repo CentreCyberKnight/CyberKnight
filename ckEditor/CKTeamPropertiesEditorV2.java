@@ -3,11 +3,6 @@ package ckEditor;
 import java.awt.FlowLayout;
 import java.util.Vector;
 
-
-
-
-
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,11 +14,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-
-
-
-
 
 import ckCommonUtils.CKEntitySelectedListener;
 import ckDatabase.CKArtifactFactory;

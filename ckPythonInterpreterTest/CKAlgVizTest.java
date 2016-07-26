@@ -29,6 +29,8 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import javax.swing.text.EditorKit;
 
+import jsyntaxpane.DefaultSyntaxKit;
+
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.Unmarshaller;
 import org.exolab.castor.xml.ValidationException;
@@ -46,7 +48,6 @@ import edu.vt.cs.algviz.xml.Message;
 import edu.vt.cs.algviz.xml.Messages;
 import edu.vt.cs.algviz.xml.Pointerto;
 import edu.vt.cs.algviz.xml.types.MemallocTypeType;
-import jsyntaxpane.DefaultSyntaxKit;
 
 
 public class CKAlgVizTest 

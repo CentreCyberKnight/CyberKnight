@@ -1,6 +1,8 @@
 package ckEditor.treegui;
 
 //Haven't finished yet
+import javafx.scene.text.Font;
+
 import javax.swing.tree.MutableTreeNode;
 
 import ckCommonUtils.CKPosition;
@@ -11,7 +13,6 @@ import ckGraphicsEngine.BadInstanceIDError;
 import ckGraphicsEngine.FX2dGraphicsEngine;
 import ckGraphicsEngine.assets.CKTextAsset;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
-import javafx.scene.text.Font;
 
 public class CKDialogueBubble extends CKActorEffect{
 

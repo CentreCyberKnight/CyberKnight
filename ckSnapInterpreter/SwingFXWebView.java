@@ -4,17 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-
-//git ~ anjackson / SwingFXWebView.java
-//creates a JavaFX panel that can be placed in a Swing panel
-//used to load CyberSnap
-
-import com.sun.javafx.application.PlatformImpl;
-
-import ckGameEngine.CKGameObjectsFacade;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
@@ -24,14 +13,28 @@ import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 import netscape.javascript.JSObject;
+import ckGameEngine.CKGameObjectsFacade;
+//git ~ anjackson / SwingFXWebView.java
+//creates a JavaFX panel that can be placed in a Swing panel
+//used to load CyberSnap
+import com.sun.javafx.application.PlatformImpl;
   
 /** 
  * SwingFXWebView 
  */  
 public class SwingFXWebView extends JPanel {  
      
-    private Stage stage;  
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2657204081846082302L;
+	private Stage stage;  
     private WebView browser;  
     private static JFXPanel jfxPanel;  
     private JButton swingButton;  

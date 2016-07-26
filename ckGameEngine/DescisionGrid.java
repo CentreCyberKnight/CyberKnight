@@ -4,7 +4,6 @@ import static ckCommonUtils.InterpolationTools.calcLinearIterpolation;
 import static ckCommonUtils.InterpolationTools.calcPercentBetween;
 import static ckCommonUtils.StreamOperators.forXYBoundedDonut;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,7 +14,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import ckCommonUtils.AICommand;
-import ckCommonUtils.CKAreaPositions;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKPropertyStrings;
 import ckDatabase.AimDescriptionFactory;

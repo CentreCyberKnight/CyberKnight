@@ -5,9 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Iterator;
 
-import ckGameEngine.CKGameObjectsFacade;
-import ckGameEngine.CKSpell;
-import ckPythonInterpreter.CKPlayerObjectsFacade;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -15,11 +12,13 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
-import ckDatabase.CKConnection;
 import netscape.javascript.JSObject;
+import ckDatabase.CKConnection;
+import ckGameEngine.CKGameObjectsFacade;
+import ckGameEngine.CKSpell;
+import ckPythonInterpreter.CKPlayerObjectsFacade;
 
 
 public class CKControlSpellsPane extends VBox {

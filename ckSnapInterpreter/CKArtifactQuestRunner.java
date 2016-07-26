@@ -20,8 +20,6 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
@@ -41,8 +39,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.EditorKit;
 
+import jsyntaxpane.DefaultSyntaxKit;
 import ckCommonUtils.CKPosition;
-import ckCommonUtils.CKThreadCompletedListener;
 import ckDatabase.CKArtifactFactory;
 import ckDatabase.CKGridActorFactory;
 import ckDatabase.CKTeamFactory;
@@ -68,7 +66,6 @@ import ckSatisfies.TrueSatisfies;
 import ckTrigger.CKTrigger;
 import ckTrigger.CKTriggerList;
 import ckTrigger.TriggerResult;
-import jsyntaxpane.DefaultSyntaxKit;
 
 public class CKArtifactQuestRunner implements DocumentListener 
 { 
@@ -126,9 +123,7 @@ public class CKArtifactQuestRunner implements DocumentListener
 		 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 
-		 String cmd = "move('left',1)\n";				 
-		 
-		 //editor.setText(cmd);
+		
 		 if(newThread)
 		 {
 		 Thread T = new gameThread();
@@ -313,36 +308,9 @@ public class CKArtifactQuestRunner implements DocumentListener
 	 
 
 	 
-	 	private class ButtonHandler implements ActionListener
-	 	{
-	 		public void actionPerformed(ActionEvent event)
-	 		{
-	 			
-	 			//get code from editor
-	 			String code =editor.getText();
-	 			
-	 			console.runNewCode("from ckPythonInterpreter.CKEditorPCController import * \n"+code,new consoleThreadFinishes());
-	 			
-	 			
-	 			
-	 		}
-	 		
-	 	}
 	 	
-	 	private class consoleThreadFinishes implements CKThreadCompletedListener
-	 	{
-
-			@Override
-			public  void threadFinishes(boolean error)
-			{
-				CKGameObjectsFacade.disableTextInput();
-	 			CKGameObjectsFacade.getQuest().notifyOfInput();
-				
-			}
-	 		
-	 	}
 	 	
-	
+	 	
 	 	
 	public static void addActorData(QuestData q)
 	{

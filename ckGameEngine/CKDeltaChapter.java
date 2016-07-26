@@ -155,6 +155,7 @@ public class CKDeltaChapter extends CKChapter
 			panel[0].add(deltaLabels[0]);
 			panel[1].add(deltaLabels[1]);
 	
+			@SuppressWarnings("unchecked")
 			Map<TextAttribute, Object> attributes = (Map<TextAttribute, Object>) labels[0].getFont().getAttributes();
 			normalFont = new Font(attributes);
 			attributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);

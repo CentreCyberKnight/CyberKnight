@@ -10,11 +10,11 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.text.EditorKit;
 
+import jsyntaxpane.DefaultSyntaxKit;
 import ckCommonUtils.DisabledPanel;
 import ckGameEngine.ActorController;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
-import jsyntaxpane.DefaultSyntaxKit;
 
 public class CKCharacterEquippedView extends JPanel
 {

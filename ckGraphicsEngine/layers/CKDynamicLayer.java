@@ -7,11 +7,11 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import javafx.scene.canvas.GraphicsContext;
 import ckCommonUtils.CKPosition;
 import ckGraphicsEngine.CKCoordinateTranslator;
 import ckGraphicsEngine.assets.CKAssetInstance;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
-import javafx.scene.canvas.GraphicsContext;
 
 public class CKDynamicLayer extends CKGraphicsLayer
 {

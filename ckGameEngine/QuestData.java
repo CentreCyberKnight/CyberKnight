@@ -50,7 +50,6 @@ import ckEditor.treegui.CKTreeGui;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.CKGraphicsScene;
 import ckGraphicsEngine.CKGraphicsSceneInterface;
-import ckPythonInterpreterTest.CKArtifactQuestRunner;
 import ckSnapInterpreter.CKQuestRunner;
 import ckTrigger.CKTriggerList;
 import ckTrigger.CKTriggerListNode;

@@ -17,6 +17,21 @@ import static ckCommonUtils.CKPropertyStrings.RECHARGE_CP;
 
 import java.util.Vector;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.SplitPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 import ckCommonUtils.CKPosition;
 import ckEditor.treegui.ActorNode;
 import ckGameEngine.CKBook;
@@ -37,21 +52,6 @@ import ckSatisfies.TrueSatisfies;
 import ckTrigger.CKTrigger;
 import ckTrigger.CKTriggerList;
 import ckTrigger.TriggerResult;
-import javafx.animation.FadeTransition;
-import javafx.animation.PauseTransition;
-import javafx.animation.SequentialTransition;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.SplitPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.web.WebView;
-import javafx.stage.Stage;
-import javafx.util.Duration;
 
 
 public class CKUI extends Application 

@@ -1,11 +1,22 @@
 package ckPipeline;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 public class Interface2 extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8346313694409185139L;
 	//This is the actual GUI Window
 	private JPanel content,bottom;
-	private JButton finish,add;
+	private JButton finish;
 	private Menu2 menu;
 	private Start select;
 	private GridBagConstraints menCon;
@@ -102,7 +113,7 @@ public class Interface2 extends JFrame{
 	
 public static void main(String[] args){
 	//This opens the GUI
-	Interface2 i=new Interface2();
+	new Interface2();
 	//System.out.println("Working");
 }
 }

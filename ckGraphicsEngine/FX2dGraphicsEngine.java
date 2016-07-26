@@ -8,9 +8,14 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Vector;
 
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKWorkSupervisorListener;
-import ckCommonUtils.DialogueBubble;
 import ckCommonUtils.FXSwingBridge;
 import ckCommonUtils.INTERPOLATE;
 import ckCommonUtils.LogListener;
@@ -46,12 +51,6 @@ import ckSound.CKSound;
 import ckSound.CKSoundFactory;
 import ckSound.CKSoundLoopAction;
 import ckSound.CKSoundStopAction;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 //public class CK2dGraphicsEngine extends CKGamePanelTimer implements
 //CKGraphicsEngine

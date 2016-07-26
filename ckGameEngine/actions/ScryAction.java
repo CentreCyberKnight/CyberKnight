@@ -42,8 +42,8 @@ public class ScryAction extends CKGameAction
 	{
 		String action ="scry";//+cast.getKey().toLowerCase();
 		String page = cast.getPage();
-		String key  = cast.getKey();
-		String resultType = cast.getKey().toLowerCase();		
+		//String key  = cast.getKey();
+		//String resultType = cast.getKey().toLowerCase();		
 		System.out.println(page);
 		switch (page)
 		{

@@ -69,7 +69,7 @@ public class EdgePropertyDialog extends JDialog {
 
 
     	getContentPane().setLayout(new BorderLayout());
-        resize(new Dimension(500,500));
+        setSize(new Dimension(500,500));
         JPanel textPanel = new JPanel();
         textPanel.setLayout(new GridLayout(2,2));
         textPanel.add(jLabel1);

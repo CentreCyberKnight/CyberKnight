@@ -9,14 +9,12 @@ import java.awt.event.ItemListener;
 
 import javafx.application.Platform;
 
-import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTree;
 
 import ckCommonUtils.CKEntitySelectedListener;
@@ -27,7 +25,6 @@ import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGridActor;
 import ckGameEngine.CKSpellCast;
 import ckGraphicsEngine.CKDialogChoice;
-import ckGraphicsEngine.CKDialogMessage;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckSnapInterpreter.CKDataModel;

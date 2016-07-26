@@ -7,7 +7,6 @@ import javax.swing.JFrame;
 
 import ckCommonUtils.CKXMLAsset;
 import ckDatabase.CKQuestFactory;
-import ckDatabase.CKQuestTestFactory;
 import ckDatabase.CKXMLFactory;
 
 public class QuickCKEditor

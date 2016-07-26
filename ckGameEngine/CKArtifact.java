@@ -22,10 +22,11 @@ import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
-
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 import ckCommonUtils.CKXMLAsset;
 import ckDatabase.CKGraphicsAssetFactoryXML;
@@ -35,8 +36,8 @@ import ckEditor.CKXMLAssetPropertiesEditor;
 import ckEditor.treegui.BookList;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
+
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 public class CKArtifact implements CKXMLAsset<CKArtifact> 
 {

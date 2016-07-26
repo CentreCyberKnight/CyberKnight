@@ -1,5 +1,9 @@
 package ckSnapInterpreter;
 
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.SplitPane;
+import javafx.scene.layout.Pane;
 import ckDatabase.CKQuestFactory;
 import ckDatabase.CKTeamFactory;
 import ckGameEngine.CKGameObjectsFacade;
@@ -8,13 +12,6 @@ import ckGameEngine.CKSpellCast;
 import ckGameEngine.Quest;
 import ckGameEngine.QuestData;
 import ckGraphicsEngine.FX2dGraphicsEngine;
-import ckSnapInterpreter.CKDrawerTab;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.SplitPane;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
 
 public class CKQuestSceneBuilder  

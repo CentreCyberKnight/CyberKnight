@@ -14,13 +14,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.WritableImage;
+
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import ckCommonUtils.CKURL;
 import ckDatabase.CKGraphicsAssetFactoryXML;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.WritableImage;
 
 
 

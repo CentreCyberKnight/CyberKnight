@@ -46,7 +46,8 @@ public class InsertNodeMenuItem extends JMenuItem implements EdgeMenuListener<Na
      * @param edge 
      * @param visComp 
      */
-    public void setEdgeAndView(NateLink edge, VisualizationViewer visComp) {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public void setEdgeAndView(NateLink edge, VisualizationViewer visComp) {
         this.edge = edge;
         this.visComp = visComp;
         this.setText("Insert Node After " + edge.toString());

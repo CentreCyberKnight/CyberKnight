@@ -9,7 +9,6 @@ import static ckCommonUtils.CKPropertyStrings.P_JUMP_OVER;
 import static ckCommonUtils.CKPropertyStrings.P_JUMP_UP;
 import static ckCommonUtils.CKPropertyStrings.P_LEFT;
 import static ckCommonUtils.CKPropertyStrings.P_RIGHT;
-
 import ckCommonUtils.CKPosition;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGrid;

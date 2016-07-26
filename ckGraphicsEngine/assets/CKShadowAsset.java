@@ -4,9 +4,9 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.ImageObserver;
 
-import ckDatabase.CKGraphicsAssetFactoryXML;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.Shadow;
+import ckDatabase.CKGraphicsAssetFactoryXML;
 
 public class CKShadowAsset extends CKGraphicsAsset
 {
@@ -27,6 +27,38 @@ public class CKShadowAsset extends CKGraphicsAsset
 		this.asset = asset;
 		this.assetID = asset.getAID();
 		
+	}
+
+	/**
+	 * @return the asset
+	 */
+	public CKGraphicsAsset getAsset()
+	{
+		return asset;
+	}
+
+	/**
+	 * @param asset the asset to set
+	 */
+	public void setAsset(CKGraphicsAsset asset)
+	{
+		this.asset = asset;
+	}
+
+	/**
+	 * @return the assetID
+	 */
+	public String getAssetID()
+	{
+		return assetID;
+	}
+
+	/**
+	 * @param assetID the assetID to set
+	 */
+	public void setAssetID(String assetID)
+	{
+		this.assetID = assetID;
 	}
 
 	@Override

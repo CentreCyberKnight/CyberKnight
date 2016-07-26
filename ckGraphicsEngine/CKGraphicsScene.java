@@ -22,6 +22,8 @@ import java.util.LinkedList;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import javafx.scene.canvas.GraphicsContext;
+
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -46,7 +48,6 @@ import ckGraphicsEngine.layers.CKDynamicLayer;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
 import ckGraphicsEngine.layers.CKGridGraphicsLayer;
 import ckGraphicsEngine.sceneAction.CKSceneAction;
-import javafx.scene.canvas.GraphicsContext;
 
 
 public class CKGraphicsScene implements CKGraphicsSceneInterface, ImageObserver
@@ -561,7 +562,7 @@ public class CKGraphicsScene implements CKGraphicsSceneInterface, ImageObserver
 	}
 
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public Iterator<CKGraphicsLayer> layerIterator()
 	{	

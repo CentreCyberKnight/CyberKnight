@@ -15,6 +15,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
 
+import javafx.scene.canvas.GraphicsContext;
+
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -28,7 +30,6 @@ import ckGraphicsEngine.CKCoordinateTranslator;
 import ckGraphicsEngine.CKGraphicsPreviewGenerator;
 import ckGraphicsEngine.assets.CKAssetInstance;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
-import javafx.scene.canvas.GraphicsContext;
 
 abstract public class CKGraphicsLayer 
 		implements Comparable<CKGraphicsLayer>,CKXMLAsset<CKGraphicsLayer>

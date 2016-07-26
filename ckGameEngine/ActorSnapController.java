@@ -4,8 +4,6 @@ package ckGameEngine;
 import javafx.application.Platform;
 import javafx.scene.web.WebEngine;
 import netscape.javascript.JSObject;
-import ckGameEngine.CKGameObjectsFacade;
-
 import ckPythonInterpreter.CKPlayerObjectsFacade;
 
 public class ActorSnapController extends ActorController

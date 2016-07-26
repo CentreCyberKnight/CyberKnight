@@ -1,10 +1,6 @@
 package ckGameEngine;
 
-import javafx.application.Platform;
-import javafx.scene.web.WebEngine;
-import netscape.javascript.JSObject;
 import ckCommonUtils.CKPosition;
-import ckGameEngine.ActorSnapController.SnapRunner;
 import ckGameEngine.actions.CKGameActionListener;
 import ckGameEngine.actions.CKGameActionListenerInterface;
 
@@ -285,7 +281,7 @@ public class CKSpellCast implements Cloneable
 		castSpell(listener);//, key);
 	}
 	
-	private volatile boolean done = false; 
+	
 	public synchronized void castSpell(CKGameActionListenerInterface boss)//, String key)
 	{
 		if(CKGameObjectsFacade.isPrediction())

@@ -12,10 +12,10 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import javax.swing.text.EditorKit;
 
+import jsyntaxpane.DefaultSyntaxKit;
 import ckPythonInterpreter.CKPythonConsoleExtended;
 import ckPythonInterpreter.CKPythonEditorPane;
 import ckPythonInterpreter.CKUniqueEditor;
-import jsyntaxpane.DefaultSyntaxKit;
 
 
 public class CKPythonSuiteTest 

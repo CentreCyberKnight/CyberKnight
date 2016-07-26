@@ -4,8 +4,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.ImageObserver;
 
-import ckDatabase.CKGraphicsAssetFactoryXML;
 import javafx.scene.canvas.GraphicsContext;
+import ckDatabase.CKGraphicsAssetFactoryXML;
 
 /**
  * Shared Asset allows us to create an asset out of a single row of another asset.  This class is useful in creating composite assets

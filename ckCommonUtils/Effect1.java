@@ -2,6 +2,7 @@ package ckCommonUtils;
 
 
 
+import static java.lang.Math.random;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -20,7 +21,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import static java.lang.Math.random;
 
 public class Effect1 extends Application{
 	

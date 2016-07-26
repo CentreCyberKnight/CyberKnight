@@ -2,7 +2,6 @@ package ckSnapInterpreter;
 
 import java.util.Iterator;
 
-import ckGameEngine.CKChapter;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -13,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import ckGameEngine.CKChapter;
 
 public class CKPlayerStatsPane extends GridPane {
 	

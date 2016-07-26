@@ -20,6 +20,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.text.EditorKit;
 
+import jsyntaxpane.DefaultSyntaxKit;
 import ckCommonUtils.CKThreadCompletedListener;
 import ckEditor.treegui.CKTreeGui;
 import ckGameEngine.CKGameObjectsFacade;
@@ -28,7 +29,6 @@ import ckGameEngine.QuestData;
 import ckPythonInterpreter.CKPlayerObjectsFacade;
 import ckPythonInterpreter.CKPythonConsoleExtended;
 import ckPythonInterpreter.CKPythonEditorPane;
-import jsyntaxpane.DefaultSyntaxKit;
 
 public class CKQuestRunnerEquipment 
 { 

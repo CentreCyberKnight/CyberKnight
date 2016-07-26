@@ -2,6 +2,7 @@ package ckGameEngine.actions;
 
 import java.util.Iterator;
 import java.util.Random;
+
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKSpellCast;
 
@@ -15,9 +16,8 @@ public class CKRandomAction extends CKCompoundGameAction
 	Iterator<CKGameAction> iter;
 	//Iterator<Object> iter;
 	CKSpellCast cast;
-	//this is how many random actions can be associated with it 
-	//probably should do dynamic memory allocation
-	private static final int maxRandom=50;
+	
+	
 	
 	
 	public CKRandomAction()
@@ -36,21 +36,20 @@ public class CKRandomAction extends CKCompoundGameAction
 	}
 	
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void doAction(CKGameActionListenerInterface L,CKSpellCast cast)
-	{//TODO will cause errors if this is called twice!
+	{
 		replaceListener(L);
-		iter = children.iterator();
+		//iter = children.iterator();
 		this.cast = cast;
 		doNextAction();
 	}
 
 	private void doNextAction()
 	{
-		CKGameAction[] storage=new CKGameAction[maxRandom];
+		/*CKGameAction[] storage=new CKGameAction[maxRandom];
 		int acc=0;
-		Random num=new Random();
+
 		Boolean trying=false;
 		while(iter.hasNext())
 		{
@@ -62,16 +61,17 @@ public class CKRandomAction extends CKCompoundGameAction
 			//CKGameObjectsFacade.getQuest().endTransaction();
 			acc=acc+1;
 		}		
-		if(acc!=0 && !iter.hasNext()){			
-			int rand=num.nextInt(acc);
-			System.out.println(acc);
-			System.out.println("<<<<<<<<<"+rand+">>>>>>>>>");
-			CKGameAction t=storage[rand];
+		if(acc!=0 && !iter.hasNext()){	*/		
+		Random num=new Random();
+		int rand=num.nextInt(children.size());
+			/*System.out.println(acc);
+			System.out.println("<<<<<<<<<"+rand+">>>>>>>>>");*/
+			CKGameAction t=(CKGameAction) children.get(rand);
 			CKGameObjectsFacade.getQuest().startTransaction();
 			t.doAction(this,cast,true);//not sure if this is needed
 			CKGameObjectsFacade.getQuest().endTransaction();			
-			trying=true;
-		}		
+			//trying=true;
+		//}		
 	}
 
 	/* (non-Javadoc)

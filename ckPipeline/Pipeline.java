@@ -1,9 +1,16 @@
 package ckPipeline;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.DirectoryIteratorException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+
+import ckCommonUtils.CKProperties;
 import ckGraphicsEngine.assets.CKSpritesheetAsset;
-import java.util.*;
-import java.io.*;
-import ckCommonUtils.*;
-import java.nio.file.*;
 public class Pipeline {
 	public static void main(String[] args){
 		String bass=CKProperties.getValue("Pipeline_Path");
@@ -53,7 +60,8 @@ public class Pipeline {
 		}*/
 		
 		//write the scripts of all the characters and actions in one script file
-		WriteAllScript makeScript=new WriteAllScript(chars,bass);
+		//WriteAllScript makeScript=
+		new WriteAllScript(chars,bass);
 		
 		//run the scripts for all the characters
 		/*for(int zz=0;zz<chars.size();zz++){
@@ -90,7 +98,7 @@ public class Pipeline {
 		try{
 			Process pr=rt.exec(inp);
 			try{
-				int n=pr.waitFor();
+				pr.waitFor();
 			}
 			catch(InterruptedException i){
 				System.err.println(i);

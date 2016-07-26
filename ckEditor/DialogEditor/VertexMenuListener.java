@@ -23,6 +23,6 @@ public interface VertexMenuListener<V> {
      * @param e 
      * @param visComp 
      */
-    void setVertexAndView(V v, VisualizationViewer visView);    
+    void setVertexAndView(V v, @SuppressWarnings("rawtypes") VisualizationViewer visView);    
 }
 

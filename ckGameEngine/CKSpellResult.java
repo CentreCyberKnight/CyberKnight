@@ -285,17 +285,7 @@ public class CKSpellResult
 	public Map<String, List<String>> getResult(CKAbstractGridItem target)
 	{
 		
-		/*HashMap<String,String> map = new HashMap<>();
 		
-		for(Tuple t:results)
-		{
-			if (t.target==target)
-			{
-				//TODO merge if already in map!!
-				map.put(t.action, t.result);
-			}
-		}
-		return map;*/
 		
 		return results.stream()
 			.filter(t->t.target==target)

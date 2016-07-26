@@ -1,12 +1,18 @@
 package ckPipeline;
 
-import java.util.*;
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.DirectoryIteratorException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Scanner;
 public class WriteAllScript {
 	private ArrayList<String> characters;
 	private String dir,base;
@@ -205,8 +211,8 @@ public class WriteAllScript {
 		    // In this snippet, it can only be thrown by newDirectoryStream.
 		    System.err.println(x);
 		}
-		for (String ch:chars){
+		/*for (String ch:chars){
 			//WriteScript w=new WriteScript(ch);
-		}
+		}*/
 	}
 }

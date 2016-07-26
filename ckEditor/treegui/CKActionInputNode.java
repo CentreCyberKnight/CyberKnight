@@ -93,7 +93,7 @@ public class CKActionInputNode extends CKGUINode
 	static JButton[] enterAction;
 	static AssetViewerPopupListener ActionListener;
 	
-	@SuppressWarnings("unchecked")
+	
 	private void initPanel(boolean force)
 	{
 		if(panel==null||force)

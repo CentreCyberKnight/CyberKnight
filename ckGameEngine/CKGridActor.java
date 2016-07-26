@@ -11,6 +11,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.image.Image;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKPropertyStrings;
 import ckDatabase.CKActorControllerFactory;
@@ -26,9 +29,6 @@ import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.assets.CKNullAsset;
 import ckGraphicsEngine.assets.CKSpriteAsset;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.image.Image;
 
 public class CKGridActor extends CKGridItem
 {

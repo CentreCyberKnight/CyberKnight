@@ -1,14 +1,8 @@
 package ckSnapInterpreter;
 
 
-import netscape.javascript.JSException;
-import ckGameEngine.CKBook;
-import ckGameEngine.CKGridActor;
-import ckGameEngine.CKStatsChangeListener;
-import javafx.application.Platform;
-
 import static ckCommonUtils.CKPropertyStrings.MAX_CP;
-
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -18,6 +12,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import netscape.javascript.JSException;
+import ckGameEngine.CKBook;
+import ckGameEngine.CKGridActor;
+import ckGameEngine.CKStatsChangeListener;
 
 public class CKPlayerPane extends GridPane implements CKStatsChangeListener
 {

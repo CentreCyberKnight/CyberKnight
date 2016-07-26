@@ -1,6 +1,8 @@
 package ckPythonInterpreter;
 
 
+import prefuse.data.Edge;
+import prefuse.data.Node;
 import algviz.languages.Language;
 import algviz.renderers.RendererValueUpdater;
 import algviz.shadow.ShadowState;
@@ -15,8 +17,6 @@ import edu.vt.cs.algviz.xml.Putfield;
 import edu.vt.cs.algviz.xml.Showas;
 import edu.vt.cs.algviz.xml.Typedef;
 import edu.vt.cs.algviz.xml.types.MemallocTypeType;
-import prefuse.data.Edge;
-import prefuse.data.Node;
 
 
 public class CKAlgViz extends StateGraphView

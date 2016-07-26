@@ -6,6 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.List;
 
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import ckCommonUtils.CKPropertyStrings;
 import ckCommonUtils.GameCompletionListener;
 import ckDatabase.CKCampaignNodeFactory;
@@ -14,10 +18,6 @@ import ckGameEngine.CKBook;
 import ckGameEngine.CKChapter;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CampaignNode;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
 public class GameApplication extends Application implements GameCompletionListener
 {

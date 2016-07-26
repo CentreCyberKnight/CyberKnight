@@ -12,8 +12,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.ImageObserver;
 
-import ckDatabase.CKGraphicsAssetFactoryXML;
 import javafx.scene.canvas.GraphicsContext;
+import ckDatabase.CKGraphicsAssetFactoryXML;
 
 public class CKSelectAsset extends CKGraphicsAsset {
 	CKGraphicsAsset asset = CKNullAsset.getNullAsset();

@@ -1,10 +1,10 @@
 package ckCommonUtils;
 
-import javax.swing.JLabel;
-
 import javafx.event.EventType;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+
+import javax.swing.JLabel;
 
 //import javafx.scene.input.MouseEvent;
 

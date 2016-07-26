@@ -2,7 +2,6 @@ package ckPythonInterpreter;
 
 
 import static ckCommonUtils.CKPropertyStrings.CP_PER_ROUND;
-
 import ckGameEngine.CKArtifact;
 import ckGameEngine.CKBook;
 import ckGameEngine.CKGameObjectsFacade;

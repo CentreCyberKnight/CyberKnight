@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import ckGameEngine.CKGameObjectsFacade;
 import javafx.concurrent.Worker.State;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -15,6 +14,7 @@ import javafx.scene.web.WebView;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
 import ckDatabase.CKConnection;
+import ckGameEngine.CKGameObjectsFacade;
 
 
 public class CKSnapPane extends Pane {

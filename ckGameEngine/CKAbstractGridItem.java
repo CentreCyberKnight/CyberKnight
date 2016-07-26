@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.ImageObserver;
 
+import javafx.scene.canvas.GraphicsContext;
 import ckCommonUtils.CKPosition;
 import ckEditor.treegui.CKGUINode;
 import ckEditor.treegui.CKHiddenNode;
@@ -18,7 +19,6 @@ import ckTrigger.CKSharedTriggerList;
 import ckTrigger.CKTriggerList;
 import ckTrigger.CKTriggerNode;
 import ckTrigger.TriggerResult;
-import javafx.scene.canvas.GraphicsContext;
 
 abstract public class CKAbstractGridItem 
 {

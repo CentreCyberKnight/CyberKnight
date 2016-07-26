@@ -2,16 +2,15 @@ package ckSnapInterpreter;
 
 import static ckCommonUtils.CKPropertyStrings.CH_AIM;
 import static ckCommonUtils.CKPropertyStrings.CH_MOVE;
-import static ckCommonUtils.CKPropertyStrings.CH_SCRY;
 import static ckCommonUtils.CKPropertyStrings.P_END_TURN;
-import static ckCommonUtils.CKPropertyStrings.P_INT;
 import static ckCommonUtils.CKPropertyStrings.P_MOVETO;
-import static ckCommonUtils.CKPropertyStrings.P_STRING;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import javafx.application.Platform;
+import javafx.scene.web.WebEngine;
 import ckCommonUtils.CKAreaPositions;
 import ckCommonUtils.CKDelayedObject;
 import ckCommonUtils.CKPosition;
@@ -31,12 +30,8 @@ import ckGameEngine.CKSpellCast;
 import ckGameEngine.CKSpellResult;
 import ckGameEngine.Direction;
 import ckGameEngine.Quest;
-import ckGameEngine.actions.ScryAction;
 import ckGraphicsEngine.CKSelection;
 import ckPythonInterpreter.CKPlayerObjectsFacade;
-import javafx.application.Platform;
-import javafx.scene.web.WebEngine;
-import netscape.javascript.JSObject;
 
 public class CKSpellObject {
 	public String name;
@@ -98,13 +93,15 @@ public class CKSpellObject {
 	 */
 	public static boolean attemptSpell(String chapter, int val, String modifier)
 	{
-		CKBook limits = getAbilties();
-		//System.out.println(limits.treeString());
-		//System.out.println(modifier+"  "+val);
+		
+		
 
 		/*
 		 * 
 		 * FIXME We will need to uncomment this in the future.
+		CKBook limits = getAbilties();
+		//System.out.println(limits.treeString());
+		//System.out.println(modifier+"  "+val);
 		if (!limits.meetsRequirements(chapter, val, modifier))
 		{
 			unknownSpell("you don't know that spell " + chapter + ":"
@@ -202,6 +199,7 @@ public class CKSpellObject {
 	
 	
 	
+	@SuppressWarnings("unchecked")
 	public CKDelayedObject<CKSpellResult> spell(String chapter, String page, int CP, 
 			Object protoTarget, //CKPosition target or CKDelayedObject<CKPosition>,
 			String key)
@@ -435,7 +433,7 @@ public class CKSpellObject {
 			cast.castSpell();
 
 			WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
-			JSObject jsobj = (JSObject) webEngine.executeScript("window");
+			//JSObject jsobj = (JSObject) webEngine.executeScript("window");
 			webEngine.executeScript("ide.stage.threads.resumeAll(ide.stage)");
 			/*
 			int num = 0;
@@ -444,7 +442,7 @@ public class CKSpellObject {
 			return true;
 		}
 		WebEngine webEngine = CKGameObjectsFacade.getWebEngine();
-		JSObject jsobj = (JSObject) webEngine.executeScript("window");
+		//JSObject jsobj = (JSObject) webEngine.executeScript("window");
 		/*
 		int num = 0;
 		jsobj.setMember("javaNum", num); //set something to indicate that we are don
@@ -489,7 +487,7 @@ public class CKSpellObject {
 					
 
 					//changed it so that it takes a CP arg
-					int ap=50;
+					//int ap=50;
 					int cp = (int) (CP *.75);
 					//get data
 					CKGrid grid = CKGameObjectsFacade.getQuest().getGrid();
@@ -563,7 +561,7 @@ public class CKSpellObject {
 
 	
 
-	public static String scryString(String modifier, int CP, CKPosition target,
+	/*public static String scryString(String modifier, int CP, CKPosition target,
 			String key)
 	{
 		if (attemptSpell(CH_SCRY, CP, modifier))
@@ -607,5 +605,5 @@ public class CKSpellObject {
 		}
 		return null;
 	}
-
+*/
 }

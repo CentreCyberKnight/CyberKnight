@@ -98,18 +98,15 @@ public class CKDataModel {
 		playerObservers = playerObserverList;
 	}
 	
-	public void registerPlayerObserver(Observer<CKGridActor> o) {
-		// TODO Auto-generated method stub
+	public void registerPlayerObserver(Observer<CKGridActor> o) {	
 		playerObservers.add(o);
 	}
 
 	public void removePlayerObserver(Observer<CKGridActor> o) {
-		// TODO Auto-generated method stub
 		playerObservers.remove(o);
 	}
 
 	public void notifyPlayerObserver() {
-		// TODO Auto-generated method stub
 		for(Observer<CKGridActor> observer : playerObservers) {
 			observer.update(player);
 		}
@@ -138,17 +135,14 @@ public class CKDataModel {
 	}
 	
 	public void registerArtifactObserver(Observer<CKArtifact> o) {
-		// TODO Auto-generated method stub
 		artifactObservers.add(o);
 	}
 
 	public void removeArtifactObserver(Observer<CKArtifact> o) {
-		// TODO Auto-generated method stub
 		artifactObservers.remove(o);
 	}
 
 	public void notifyArtifactObserver() {
-		// TODO Auto-generated method stub
 		for(Observer<CKArtifact> observer : artifactObservers) {
 			observer.update(artifact);
 		}
@@ -174,17 +168,15 @@ public class CKDataModel {
 	}
 	
 	public void registerSpellObserver(Observer<CKSpell> o) {
-		// TODO Auto-generated method stub
 		spellObservers.add(o);
 	}
 
 	public void removeSpellObserver(Observer<CKSpell> o) {
-		// TODO Auto-generated method stub
+	
 		spellObservers.remove(o);
 	}
 
 	public void notifySpellObserver() {
-		// TODO Auto-generated method stub
 		for(Observer<CKSpell> observer : spellObservers) {
 			observer.update(spell);
 		}

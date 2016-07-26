@@ -15,8 +15,6 @@ import ckCommonUtils.CKPropertyStrings;
 import ckCommonUtils.CKXMLAsset;
 import ckDatabase.CKArtifactFactory;
 import ckDatabase.CKGridActorFactory;
-import ckDatabase.CKTeamFactory;
-import ckEditor.CKTeamPropertiesEditor;
 import ckEditor.CKTeamPropertiesEditorV2;
 import ckEditor.CKXMLAssetPropertiesEditor;
 

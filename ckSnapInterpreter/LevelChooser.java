@@ -3,34 +3,8 @@ package ckSnapInterpreter;
 import java.util.List;
 import java.util.Vector;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import ckCommonUtils.CKPropertyStrings;
-import ckGameEngine.CKBook;
-import ckGameEngine.CampaignNode;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
@@ -41,14 +15,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import ckCommonUtils.CKPropertyStrings;
+import ckGameEngine.CKBook;
+import ckGameEngine.CampaignNode;
 
 public class LevelChooser extends Pane
 {
@@ -72,7 +47,7 @@ public class LevelChooser extends Pane
 		Background back = new Background(new BackgroundFill(Color.BLACK, null, null));
 		Color frontColor = Color.web("c8e6ff");
 		
-		Font f= Font.font("Serif",FontWeight.SEMI_BOLD.BOLD ,FontPosture.REGULAR, 18);
+		Font f= Font.font("Serif",FontWeight.BOLD ,FontPosture.REGULAR, 18);
 		
 		//javafx.scene.text.Font.getFamilies().forEach(s->System.out.println("FONT"+s));
 		

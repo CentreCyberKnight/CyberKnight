@@ -48,6 +48,7 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import javax.swing.text.EditorKit;
 
+import jsyntaxpane.DefaultSyntaxKit;
 import ckCommonUtils.CKPosition;
 import ckCommonUtils.CKThreadCompletedListener;
 import ckDatabase.CKGridActorFactory;
@@ -79,7 +80,6 @@ import ckTrigger.CKTrigger;
 import ckTrigger.CKTriggerList;
 import ckTrigger.CKTriggerNode;
 import ckTrigger.TriggerResult;
-import jsyntaxpane.DefaultSyntaxKit;
 
 public class CKCombinedInputTest 
 { 

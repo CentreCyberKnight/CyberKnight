@@ -6,10 +6,10 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
 
+import javafx.scene.canvas.GraphicsContext;
 import ckCommonUtils.CKEntitySelectedListener;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.assets.CKNullAsset;
-import javafx.scene.canvas.GraphicsContext;
 
 public class CKDialogMessage 
 {

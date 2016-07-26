@@ -7,13 +7,13 @@ import java.awt.image.ImageObserver;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javafx.scene.canvas.GraphicsContext;
 import ckCommonUtils.CKPosition;
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckGraphicsEngine.CKCoordinateTranslator;
 import ckGraphicsEngine.assets.CKAssetInstance;
 import ckGraphicsEngine.assets.CKGraphicsAsset;
 import ckGraphicsEngine.assets.CKNullAsset;
-import javafx.scene.canvas.GraphicsContext;
 
 public class CKStaticMatrixLayer extends CKGraphicsLayer
 {

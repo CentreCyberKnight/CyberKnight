@@ -17,9 +17,9 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import javax.swing.text.EditorKit;
 
-import ckPythonInterpreter.CKPythonEditorPane;
 //import ckPythonInterpreterTest.CKPythonSuiteTest.ButtonHandler;
 import jsyntaxpane.DefaultSyntaxKit;
+import ckPythonInterpreter.CKPythonEditorPane;
 
 public class CKPythonEditorPaneTest 
 {

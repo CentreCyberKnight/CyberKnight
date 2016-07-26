@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Vector;
 
+import javafx.embed.swing.JFXPanel;
+
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
@@ -66,7 +68,6 @@ import ckSnapInterpreter.SwingFXWebView;
 import ckTrigger.CKTrigger;
 import ckTrigger.CKTriggerList;
 import ckTrigger.TriggerResult;
-import javafx.embed.swing.JFXPanel;
 
 public class CKArtifactQuestRunner implements DocumentListener 
 { 

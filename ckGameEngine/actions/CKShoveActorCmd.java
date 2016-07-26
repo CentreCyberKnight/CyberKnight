@@ -5,7 +5,6 @@ package ckGameEngine.actions;
 
 import static ckCommonUtils.CKPropertyStrings.P_PULL;
 import static ckCommonUtils.CKPropertyStrings.P_SHOVE;
-
 import ckGameEngine.CKAbstractGridItem;
 import ckGameEngine.CKGameObjectsFacade;
 import ckGameEngine.CKGrid;

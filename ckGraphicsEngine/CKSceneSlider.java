@@ -4,9 +4,9 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Timer;
-
 import javafx.scene.input.MouseEvent;
+
+import javax.swing.Timer;
 
 
 public class CKSceneSlider extends CKSceneMouseListener

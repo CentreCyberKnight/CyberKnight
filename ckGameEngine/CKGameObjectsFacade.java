@@ -2,6 +2,13 @@ package ckGameEngine;
 
 import java.util.HashMap;
 
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -15,12 +22,6 @@ import ckPythonInterpreter.CKPythonEditorPane;
 import ckPythonInterpreter.CKTeamView;
 import ckSnapInterpreter.CKDataModel;
 import ckTrigger.CKTriggerListNode;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 
 public class CKGameObjectsFacade
 {

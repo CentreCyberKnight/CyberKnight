@@ -371,6 +371,7 @@ public class CKEditorPCController
 		return wind(modifier, CP, target, "");
 	}
 
+	@SuppressWarnings("deprecation")
 	public static String scryString(String modifier, int CP, CKPosition target,
 			String key)
 	{
@@ -387,6 +388,7 @@ public class CKEditorPCController
 		return "";
 	}
 
+	@SuppressWarnings("deprecation")
 	public static int scryInt(String modifier, int CP, CKPosition target,
 			String key)
 	{

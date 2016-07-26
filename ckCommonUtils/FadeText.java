@@ -1,5 +1,7 @@
 package ckCommonUtils;
 
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckGraphicsEngine.BadInstanceIDError;
 import ckGraphicsEngine.FX2dGraphicsEngine;
@@ -7,8 +9,6 @@ import ckGraphicsEngine.LoadAssetError;
 import ckGraphicsEngine.assets.CKFadeAsset;
 import ckGraphicsEngine.assets.CKTextAsset;
 import ckGraphicsEngine.layers.CKGraphicsLayer;
-import javafx.scene.text.Font;
-import javafx.scene.paint.Color;
 
 public class FadeText{
 	

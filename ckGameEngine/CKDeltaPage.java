@@ -100,6 +100,7 @@ public class CKDeltaPage extends CKPage
 	
 		
 	
+			@SuppressWarnings("unchecked")
 			Map<TextAttribute, Object> attributes = (Map<TextAttribute, Object>) labels[0].getFont().getAttributes();
 			normalFont = new Font(attributes);
 			attributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);

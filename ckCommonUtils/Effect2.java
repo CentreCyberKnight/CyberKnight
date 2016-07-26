@@ -12,7 +12,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.BoxBlur;
-
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;

@@ -1,8 +1,5 @@
 package ckGameEngine.actions;
 
-import java.util.stream.Stream;
-
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.tree.MutableTreeNode;
@@ -15,7 +12,6 @@ import ckEditor.treegui.CKActorEffect;
 import ckEditor.treegui.CKChangeAnimation;
 import ckEditor.treegui.CKGUINode;
 import ckEditor.treegui.CKGUINodeLabel;
-import ckEditor.treegui.CKGuiRoot;
 import ckEditor.treegui.CKTravelEffect;
 import ckEditor.treegui.CKTreeGui;
 import ckEditor.treegui.UpTravelEffect;

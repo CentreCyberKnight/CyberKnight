@@ -1,7 +1,19 @@
 package ckSnapInterpreter;
 
-import static ckCommonUtils.CKPropertyStrings.*;
-
+import static ckCommonUtils.CKPropertyStrings.CH_ACCURACY;
+import static ckCommonUtils.CKPropertyStrings.CH_ATTACK_BONUS;
+import static ckCommonUtils.CKPropertyStrings.CH_DEFENSE;
+import static ckCommonUtils.CKPropertyStrings.CH_DEFENSE_EFFECTIVENESS;
+import static ckCommonUtils.CKPropertyStrings.CH_EVADE;
+import static ckCommonUtils.CKPropertyStrings.CH_MOVE;
+import static ckCommonUtils.CKPropertyStrings.MAX_CP;
+import static ckCommonUtils.CKPropertyStrings.MAX_DAMAGE;
+import static ckCommonUtils.CKPropertyStrings.P_FORWARD;
+import static ckCommonUtils.CKPropertyStrings.P_FRONT;
+import static ckCommonUtils.CKPropertyStrings.P_LEFT;
+import static ckCommonUtils.CKPropertyStrings.P_RIGHT;
+import static ckCommonUtils.CKPropertyStrings.P_SHORT_TARGET;
+import static ckCommonUtils.CKPropertyStrings.RECHARGE_CP;
 import ckCommonUtils.CKPosition;
 import ckDatabase.CKQuestFactory;
 import ckEditor.treegui.ActorNode;

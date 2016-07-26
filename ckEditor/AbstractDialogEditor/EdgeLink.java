@@ -260,6 +260,7 @@ public class EdgeLink implements Factory<EdgeLink>,CKXMLAsset<EdgeLink>
 
 
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public CKXMLAssetPropertiesEditor<EdgeLink> getXMLPropertiesEditor()
 	{

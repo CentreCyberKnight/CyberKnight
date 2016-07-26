@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
+import javafx.scene.canvas.GraphicsContext;
 import ckDatabase.CKGraphicsAssetFactoryXML;
 import ckGraphicsEngine.UnknownAnimationError;
-import javafx.scene.canvas.GraphicsContext;
 
 
 

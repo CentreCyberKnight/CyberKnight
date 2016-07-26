@@ -1,17 +1,23 @@
 package ckPipeline;
 
-import java.util.*;
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.DirectoryIteratorException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Scanner;
 public class WriteScript {
-	private String character,dir,base,base2;
+	private String character,dir,base;//,base2;
 	private ArrayList<Action> actions;
 	private String output;
-	private String[] directions;
+	//private String[] directions;
 	
 	public WriteScript(String characterNamen, String bass){
 		//This writes the DAZscript for rendering all actions of a single character
@@ -20,7 +26,7 @@ public class WriteScript {
 		dir="Scripts";
 		base=bass;
 		base=base.replace("\\", "\\\\");
-		directions=new String[]{"'LF'","'RF'","'LB'","'RB'"};
+		//directions=new String[]{"'LF'","'RF'","'LB'","'RB'"};
 		getDefaults();
 		getCharacter();
 		write();
@@ -191,8 +197,8 @@ public class WriteScript {
 		    // In this snippet, it can only be thrown by newDirectoryStream.
 		    System.err.println(x);
 		}
-		for (String ch:chars){
+		/*for (String ch:chars){
 			//WriteScript w=new WriteScript(ch);
-		}
+		}*/
 	}
 }

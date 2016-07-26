@@ -6,11 +6,11 @@ import java.awt.image.ImageObserver;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import javafx.scene.canvas.GraphicsContext;
+//{PUSH,PULL,RELATIVE,NONE};
 import ckCommonUtils.CKPosition;
 import ckGraphicsEngine.CKCoordinateTranslator;
 import ckGraphicsEngine.CKGraphicsEngine.RelationalLinkType;
-import javafx.scene.canvas.GraphicsContext;
-//{PUSH,PULL,RELATIVE,NONE};
 
 public class CKAssetInstance implements Comparable<CKAssetInstance>
 {

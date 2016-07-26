@@ -87,7 +87,7 @@ public class CKEndGameAction extends CKQuestAction
 	static JPanel []panel;
 	static SpinnerNumberModel []winAmount; ;
 	
-	@SuppressWarnings("unchecked")
+	
 	static private void initPanel(boolean force)
 	{
 		if(panel==null || force)

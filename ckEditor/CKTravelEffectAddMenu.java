@@ -10,7 +10,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import ckEditor.treegui.CKTravelEffect;
 import ckEditor.treegui.CKTreeGui;
 import ckEditor.treegui.DownTravelEffect;
-import ckEditor.treegui.Teleport;
 import ckEditor.treegui.UpTravelEffect;
 
 public class CKTravelEffectAddMenu

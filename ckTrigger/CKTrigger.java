@@ -2,10 +2,6 @@ package ckTrigger;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.beans.XMLDecoder;
-import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;

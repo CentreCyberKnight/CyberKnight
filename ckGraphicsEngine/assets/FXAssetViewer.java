@@ -5,10 +5,10 @@ package ckGraphicsEngine.assets;
 import java.awt.Dimension;
 import java.awt.Point;
 
-import ckGraphicsEngine.CKGraphicsConstants;
-import ckGraphicsEngine.FXGamePanelTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import ckGraphicsEngine.CKGraphicsConstants;
+import ckGraphicsEngine.FXGamePanelTimer;
 
 public class FXAssetViewer extends FXGamePanelTimer
 {

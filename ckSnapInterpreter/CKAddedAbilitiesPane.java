@@ -3,7 +3,6 @@ package ckSnapInterpreter;
 
 import java.util.Iterator;
 
-import netscape.javascript.JSException;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -13,8 +12,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import netscape.javascript.JSException;
 import ckGameEngine.CKChapter;
-import ckGameEngine.CKTeam;
 
 public class CKAddedAbilitiesPane extends VBox {
 	
@@ -66,11 +65,11 @@ public class CKAddedAbilitiesPane extends VBox {
 		hnodes.getChildren().addAll(imageRect);
 		hnodes.setAlignment(Pos.CENTER);
     	VBox addedAbs = new VBox();
-    	int aIndex= 0;
+    	//int aIndex= 0;
 		for (Iterator<CKChapter> abilities = data.getPlayer().getAbilities().getChapters(); abilities.hasNext();) {
 			CKChapter c = abilities.next();
 			if( c != null) {
-				aIndex ++;
+				//aIndex ++;
 				Label l = new Label(c.getName());
 				l.setFont(new Font("Comic Sans MS", 15));
 				Label value = new Label(Integer.toString((c.getValue())));

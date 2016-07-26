@@ -1,9 +1,6 @@
 package ckSnapInterpreter;
 
 
-import ckDatabase.CKArtifactFactory;
-import ckGameEngine.CKArtifact;
-import ckGameEngine.CKGameObjectsFacade;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -14,6 +11,9 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
+import ckDatabase.CKArtifactFactory;
+import ckGameEngine.CKArtifact;
+import ckGameEngine.CKGameObjectsFacade;
 
 public class controlPanel extends Application // implements EventHandler<Action
 												// Event>

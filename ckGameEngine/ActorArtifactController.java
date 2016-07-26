@@ -4,7 +4,6 @@ import static ckGameEngine.CKGameObjectsFacade.disableArtifactInput;
 import static ckGameEngine.CKGameObjectsFacade.enableArtifactInput;
 import static ckGameEngine.CKGameObjectsFacade.getConsole;
 import static ckGameEngine.CKGameObjectsFacade.getQuest;
-
 import ckPythonInterpreter.CKPlayerObjectsFacade;
 
 public class ActorArtifactController extends ActorController
