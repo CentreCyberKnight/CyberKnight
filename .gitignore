@@ -1,4 +1,6 @@
 *.class
 cachedir/*
 /Thumbs.db
+config/*
+var/*
 
