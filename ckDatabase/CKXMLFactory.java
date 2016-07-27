@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 import ckCommonUtils.CKURL;
 import ckCommonUtils.CKXMLAsset;
@@ -196,6 +197,7 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 	
 	public Vector<T> getAllAssetsVectored()
 	{
+		/*
 			File folder;
 			Vector<T> vec=new Vector<T>();
 			
@@ -217,6 +219,22 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 				e.printStackTrace();
 			}
 			return vec;
+		*/
+		try
+		{
+			CKURL url = new CKURL(getBaseDir()+XMLDirectories.ASSET_DIR);
+			return url.listFiles().filter(e->e.endsWith(".xml"))
+			.map(e->getAsset(e.substring(0, e.length()-4)))
+			.collect(Collectors.toCollection(Vector<T>::new));
+			
+			
+		} catch (MalformedURLException e)
+		{
+			
+			e.printStackTrace();
+		}
+		return null;
+		
 		
 	}
 	

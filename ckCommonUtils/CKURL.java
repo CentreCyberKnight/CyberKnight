@@ -9,12 +9,17 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
+import java.net.JarURLConnection;
 import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
+import java.util.Arrays;
+import java.util.jar.JarFile;
+import java.util.stream.Stream;
 
+import ckDatabase.CKCampaignNodeFactory;
 import ckDatabase.CKConnection;
 
 public class CKURL
@@ -96,6 +101,7 @@ public class CKURL
 			return uc.getOutputStream();
 			
 		}
+		
 		//System.out.println("default outputstream");
 		URLConnection uc = url.openConnection();
 		uc.setDoOutput(true);
@@ -143,6 +149,41 @@ public class CKURL
 		if (files==null) { files = new File[0]; } //empty but avoids other code having to check.
 		return files;
 	}
+	
+	
+	public Stream<String> listFiles()
+	{
+		String protocol =url.getProtocol(); 
+		if( protocol.compareToIgnoreCase("file")==0)
+		{  
+			File folder = new File(url.getFile());
+			return Arrays.stream(folder.listFiles())
+			.map(f->f.getName());
+		}
+		else if (protocol.compareToIgnoreCase("jar")==0)
+		{
+			try
+			{
+				JarURLConnection conn = (JarURLConnection) url.openConnection();
+				String directory = conn.getEntryName();
+				int dirLen = directory.length();
+				JarFile jf = conn.getJarFile();
+				return jf.stream()
+						.filter(e->e.getName().startsWith(directory) &&
+								e.getName().length()>dirLen)
+					.map(e->e.getName().substring(dirLen));
+			} catch (IOException e)
+			{
+				System.err.println("Unable to look at jar directory: "+url);
+				e.printStackTrace();
+				return null;
+			}
+			
+			
+		}
+		else { return null; }
+		
+	}
 
 	public static void copyURL(CKURL from, CKURL to)
 	{
@@ -175,19 +216,46 @@ public class CKURL
 	}
 	
 	
-	public static void main(String [] args)
+	public static void main(String [] args) throws MalformedURLException
 	{
-		try
-		{
+		/*try
+		{*/
 			//network to file
-			CKProperties.setValue("RESOURCEPATH","jar:http://grim.hanover.edu/CK/CKResources.jar!/");
-			CKProperties.setValue("RESOURCEPATH","__DEFAULT_RESOURCE__");
-			CKURL url = new CKURL("images/babysheet.png");
-			//System.out.println(url);
-			CKConnection.updateLocalFile(new File(CKConnection.getCKSettingsDirectory() ,"baby.png"),
-					url.getURL());
-			System.out.println("done");
+			//CKProperties.setValue("RESOURCEPATH","jar:http://grim.hanover.edu/CK/CKResources.jar!/");
+			//CKProperties.setValue("RESOURCEPATH","__DEFAULT_RESOURCE__");
+			//CKURL url = new CKURL("images/babysheet.png");
+			//String path = "jar:file:/C:/Users/michael.bradshaw/Downloads/ckGame.jar!/CK_DATA/CK_DATA/"
+			//		+ "GAME/CAMPAIGN_NODES/ASSETS/";
 			
+			String path = "jar:file:/C:/Users/michael.bradshaw/Downloads/ckGame.jar!/CK_DATA/CK_DATA/";
+
+			CKProperties.setValue("RESOURCEPATH",path);
+			
+			
+			//CKURL url = new CKURL("");
+			//url.listFiles().forEachOrdered(e->System.out.println("file:"+e));
+			
+			
+			CKCampaignNodeFactory.getInstance().getAllAssetsVectored();
+			
+			
+/*			CKURL url = new CKURL("asset1980675959004506348.xml");
+	*/
+			/*
+			System.out.println(url);
+//			CKConnection.updateLocalFile(new File(CKConnection.getCKSettingsDirectory() ,"baby.png"),
+	//				url.getURL());
+			System.out.println("done");
+		
+			InputStream in = url.getInputStream();
+			
+			byte[] buffer = new byte[1024];
+			int len = in.read(buffer);
+			while (len != -1) {
+			    System.out.write(buffer, 0, len);
+			    len = in.read(buffer);
+			}
+			*/
 			//file to network
 			//file one
 			/*
@@ -231,11 +299,11 @@ public class CKURL
 			//uc.disconnect();
 			
 			//configure the server!! http://www.php.net/manual/en/features.file-upload.put-method.php
-			} catch (IOException e)
+			/*} catch (IOException e)
 			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 			
 			
 			
@@ -258,7 +326,6 @@ public class CKURL
 	
 
 }
-
 
 class MyAuth extends Authenticator
 {
