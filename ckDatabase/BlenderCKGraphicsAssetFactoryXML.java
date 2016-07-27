@@ -429,7 +429,7 @@ public class BlenderCKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 	
 
 	@Override
-	public Iterator<String> getAllGraphicsUsages()
+	public Iterator<String> getAllUsages()
 	{
 		readUsages();
 		return usageMap.keySet().iterator();

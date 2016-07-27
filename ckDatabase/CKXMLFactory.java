@@ -1,6 +1,5 @@
 package ckDatabase;
 import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -44,7 +43,8 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 
 	
 	private HashMap<String,T> assetMap = null;
-	private HashMap<String,Vector<String> > usageMap=null;
+	//private HashMap<String,Vector<String> > usageMap=null;
+	UsageManager manager = new UsageManager(getBaseDir());
 	private boolean shouldReload=false; 
 		
 	protected CKXMLFactory()
@@ -198,27 +198,8 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 	public Vector<T> getAllAssetsVectored()
 	{
 		/*
-			File folder;
-			Vector<T> vec=new Vector<T>();
-			
-			try
-			{
-				folder = new File (new CKURL(getBaseDir()+XMLDirectories.ASSET_DIR).getURL().getFile());
-			
-				for (File f : folder.listFiles())
-				{
-					
+		 * code segment that will remove the suffix of a file..
 					String filename =f.getName().replaceFirst("[.][^.]+$","");
-					//System.err.print("Reading file"+f);
-					vec.add(getAsset(filename));
-					//System.err.println("Done Reading file");
-					
-				}
-			}	catch (MalformedURLException e)
-			{
-				e.printStackTrace();
-			}
-			return vec;
 		*/
 		try
 		{
@@ -251,40 +232,51 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 	 * Initializes the usage map for assets.  This should only be called when the accessing files,
 	 * Not web pages or JAR files.
 	 */
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	protected void readUsages()
 	{
 		if(usageMap==null)
 		{
 			usageMap = new HashMap<String,Vector<String>>();
+			String basePath = getBaseDir()+XMLDirectories.ASSET_USAGE_DIR; 
 			try
 			{
-
-				File [] folder = new CKURL(getBaseDir()+XMLDirectories.ASSET_USAGE_DIR).getDirectoryFiles(".xml");		
-				for (File f : folder)
-				{
-					//read in portraits
-					String name = getBaseDir()+XMLDirectories.ASSET_USAGE_DIR + f.getName();
-					XMLDecoder d = new XMLDecoder(new CKURL(name).getInputStream());
-					usageMap.put(f.getName().replaceFirst("[.][^.]+$", ""), (Vector<String>) d.readObject() );
-					d.close();
-				}
+				new CKURL(basePath)
+				.listFiles()
+				.filter(s->s.endsWith(".xml"))
+				.map(e->e.substring(0, e.length()-4))
+				.forEach(name->{
+					
+					String path = basePath+ name+".xml";
+					XMLDecoder d;
+					try
+					{
+						d = new XMLDecoder(new CKURL(path).getInputStream());
+						//FIXME read in as an ordered flat text file.
+						//FIXME read in and verify all of the strings exist
+						usageMap.put(name, (Vector<String>) d.readObject() );
+						d.close();
+					} catch (Exception e1)
+					{
+						System.err.println("Unable to read usage: "+path);
+						e1.printStackTrace();
+					}
+				});
+							
+				
+			
 			} catch (MalformedURLException e)
 			{
 				e.printStackTrace();
-			} catch (IOException e)
-			{
-				e.printStackTrace();
 			}
-			
 		}		
 	}
-		
+		*/
 	/**
 	 * stores usage in the base directory
 	 * @param t: a string of non-zero, non-negative length
 	 */
-	protected void  storeUsage(String t)
+	/*protected void  storeUsage(String t)
 	{
 		if(t.length()<=0){
 			return;
@@ -321,19 +313,21 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 			}
 		}
 	}
+	*/
+	
 	
 	/**
 	 * Uses the param to create a usage map and collect only the assets with that usage. 
 	 * @param filter
 	 * @return asset iterator comprised of only the assets that have the usage specified by the filter
 	 */
-	public Iterator<T> getFilteredGraphicsAssets(String filter)
+	public Iterator<T> getFilteredAssets(String filter)
 	{
 		if(filter==null ) { return getAllAssets(); }
 
-		readUsages();
+		//readUsages();
 	
-		Vector<String> vec = usageMap.get(filter);
+		Vector<String> vec = manager.getUsageList(filter);//usageMap.get(filter);
 		if(vec==null){ return getAllAssets(); }
 		
 		Vector<T> ret = new Vector<T>();
@@ -357,9 +351,9 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 		}
 		if(filters.length ==1)
 		{
-			return getFilteredGraphicsAssets(filters[0]);
+			return getFilteredAssets(filters[0]);
 		}
-		readUsages();
+		//readUsages();
 		Iterator<T> iter = getAllAssets();
 		ArrayList<T>  vec = new ArrayList<T>();
 	
@@ -388,6 +382,8 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 	 */
 	public void makeUsageType(String t)
 	{
+		manager.makeUsageType(t);
+		/*
 		if(t.length()<=0){
 			return;
 		}
@@ -397,7 +393,7 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 			usageMap.put(t,new Vector<String>());
 		}
 		storeUsage(t);
-		
+		*/
 	}
 	
 	/**
@@ -407,9 +403,12 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 	 */
 	public void removeUsageType(String t)
 	{
-		readUsages();
+		manager.removeUsageType(t);
+
+		/*readUsages();
 		usageMap.remove(t);
-		storeUsage(t);		
+		storeUsage(t);
+		*/		
 	}
 	
 	/**
@@ -419,7 +418,8 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 	 */
 	public void assignUsageTypeToAsset(String assetID, String type)
 	{
-		readUsages();
+		manager.assignUsageTypeToAsset(assetID, type);
+		/*readUsages();
 		if(hasUsage(assetID,type))
 		{
 			return;
@@ -432,6 +432,7 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 		}
 		vec.add(assetID);
 		storeUsage(type);
+		*/
 	}
 		
 	public void assignUsageTypeToAssset(T asset, String t)
@@ -446,13 +447,15 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 	 */
 	public void unassignUsageTypeToAsset(String assetID, String type)
 	{
+		manager.unassignUsageTypeToAsset(assetID, type);
+		/*
 		readUsages();
 		Vector<String> vec = usageMap.get(type);
 		if(vec!=null)
 		{
 			vec.remove(assetID);
 			storeUsage(type);
-		}
+		}*/
 	}		
 
 	public void unassignUsageTypeToAssset(T asset, String t)
@@ -467,8 +470,9 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 	 */
 	public Iterator<String> getAllUsages()
 	{
-		readUsages();
-		return usageMap.keySet().iterator();
+		return manager.getAllUsages();
+//		readUsages();
+//		return usageMap.keySet().iterator();
 	}
 	
 	/**
@@ -479,13 +483,15 @@ abstract public class CKXMLFactory<T extends CKXMLAsset<T>>
 	 */
 	public boolean hasUsage(String assetID, String name)
 	{
-		readUsages();
+		return manager.hasUsage(assetID, name);
+/*		readUsages();
 		Vector<String> vec = usageMap.get(name);
 		if(vec!=null)
 		{
 			return vec.contains(assetID);
 		}
 		return false;
+		*/
 	}		
 	
 	public void assetDelete(T asset){

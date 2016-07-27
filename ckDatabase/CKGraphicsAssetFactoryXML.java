@@ -50,7 +50,8 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 */
 	private static HashMap<String,CKGraphicsAsset> assetMap = null;
 	private static HashMap<String,String> portraitMap=null;
-	private static HashMap<String,Vector<String> > usageMap=null;
+	//private static HashMap<String,Vector<String> > usageMap=null;
+	private static UsageManager manager = new UsageManager(XMLDirectories.GRAPHIC_ASSET_USAGE_DIR);
 	
 	private static CKGraphicsAssetFactoryXML factory= null;
 	
@@ -250,7 +251,182 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 	 * Initializes the usage map for assets.  This should only be called when the accessing files,
 	 * Not web pages or JAR files.
 	 */
-	@SuppressWarnings("unchecked")
+	
+	
+	
+	public Iterator<CKGraphicsAsset> getFilteredGraphicsAssets(String filter)
+	{
+		if(filter==null ) { return getAllGraphicsAssets(); }
+
+
+		Vector<String> vec = manager.getUsageList(filter);
+		if(vec==null){ return getAllGraphicsAssets(); }
+		
+		Vector<CKGraphicsAsset> ret = new Vector<CKGraphicsAsset>();
+		for(String s: vec) 
+		{
+			ret.add(getGraphicsAsset(s));
+		}
+		return ret.iterator();		
+	}
+
+
+	@Override
+	public Iterator<CKGraphicsAsset> getFilteredGraphicsAssets(String[] filters)
+	{
+		if(filters.length==0)
+		{
+			return this.getAllGraphicsAssets();
+		}
+		if(filters.length ==1)
+		{
+			return getFilteredGraphicsAssets(filters[0]);
+		}
+		//readUsages();
+		Iterator<CKGraphicsAsset> iter = getAllGraphicsAssets();
+		ArrayList<CKGraphicsAsset>  vec = new ArrayList<CKGraphicsAsset>();
+	
+		while(iter.hasNext())
+		{
+			CKGraphicsAsset asset = iter.next();
+			for(String s:filters)
+			{
+				if(this.hasUsage(asset.getAID(),s))
+				{
+					vec.add(asset);
+					break;
+				}
+			}
+		}
+		
+		return vec.iterator();
+	}
+
+	
+	/**
+	 * Adds a usage to the usage map
+	 * @param t name of the usage to be added
+	 * @return void, but updates the usage map
+	 */
+	public void makeUsageType(String t)
+	{
+		manager.makeUsageType(t);
+		/*
+		if(t.length()<=0){
+			return;
+		}
+		readUsages();
+		if(usageMap.get(t)==null)
+		{
+			usageMap.put(t,new Vector<String>());
+		}
+		storeUsage(t);
+		*/
+	}
+	
+	/**
+	 * Removes a usage from the usage map
+	 * @param t name of the usage to be removed
+	 * @return void, but updates the usage map
+	 */
+	public void removeUsageType(String t)
+	{
+		manager.removeUsageType(t);
+
+		/*readUsages();
+		usageMap.remove(t);
+		storeUsage(t);
+		*/		
+	}
+	
+	/**
+	 * Links an asset to a particular usage 
+	 * @param assetID id number of teh asset
+	 * @param type the usage to link it to
+	 */
+	public void assignUsageTypeToAsset(String assetID, String type)
+	{
+		manager.assignUsageTypeToAsset(assetID, type);
+		/*readUsages();
+		if(hasUsage(assetID,type))
+		{
+			return;
+		}
+		Vector<String> vec = usageMap.get(type);
+		if(vec==null)
+		{
+			vec = new Vector<String>();
+			usageMap.put(type, vec);
+		}
+		vec.add(assetID);
+		storeUsage(type);
+		*/
+	}
+		
+	public void assignUsageTypeToAssset(CKGraphicsAsset asset, String t)
+	{
+			assignUsageTypeToAsset(asset.getAID(),t);
+	}
+	
+	/**
+	 * unlinks a usage from an asset
+	 * @param assetID id of the asset to be operated on
+	 * @param type the usage to be removed
+	 */
+	public void unassignUsageTypeToAsset(String assetID, String type)
+	{
+		manager.unassignUsageTypeToAsset(assetID, type);
+		/*
+		readUsages();
+		Vector<String> vec = usageMap.get(type);
+		if(vec!=null)
+		{
+			vec.remove(assetID);
+			storeUsage(type);
+		}*/
+	}		
+
+	public void unassignUsageTypeToAssset(CKGraphicsAsset asset, String t)
+	{
+			unassignUsageTypeToAsset(asset.getAID(),t);
+	}
+	
+
+	/**
+	 * Create iterator of all usages attached to an asset
+	 * @return String iterator of object usage map
+	 */
+	public Iterator<String> getAllUsages()
+	{
+		return manager.getAllUsages();
+//		readUsages();
+//		return usageMap.keySet().iterator();
+	}
+	
+	/**
+	 * 
+	 * @param assetID asset to check
+	 * @param name usage to search for
+	 * @return True if the usage is in the asset usage map, false otherwise
+	 */
+	public boolean hasUsage(String assetID, String name)
+	{
+		return manager.hasUsage(assetID, name);
+/*		readUsages();
+		Vector<String> vec = usageMap.get(name);
+		if(vec!=null)
+		{
+			return vec.contains(assetID);
+		}
+		return false;
+		*/
+	}		
+	
+	
+	
+	
+	
+	/*@SuppressWarnings("unchecked")
 	protected void readUsages()
 	{
 		if(usageMap==null)
@@ -316,56 +492,9 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 			}
 		}
 	}
+	*/
+/*
 	
-
-	public Iterator<CKGraphicsAsset> getFilteredGraphicsAssets(String filter)
-	{
-		if(filter==null ) { return getAllGraphicsAssets(); }
-
-		readUsages();
-	
-		Vector<String> vec = usageMap.get(filter);
-		if(vec==null){ return getAllGraphicsAssets(); }
-		
-		Vector<CKGraphicsAsset> ret = new Vector<CKGraphicsAsset>();
-		for(String s: vec) 
-		{
-			ret.add(getGraphicsAsset(s));
-		}
-		return ret.iterator();		
-	}
-
-
-	@Override
-	public Iterator<CKGraphicsAsset> getFilteredGraphicsAssets(String[] filters)
-	{
-		if(filters.length==0)
-		{
-			return this.getAllGraphicsAssets();
-		}
-		if(filters.length ==1)
-		{
-			return getFilteredGraphicsAssets(filters[0]);
-		}
-		readUsages();
-		Iterator<CKGraphicsAsset> iter = getAllGraphicsAssets();
-		ArrayList<CKGraphicsAsset>  vec = new ArrayList<CKGraphicsAsset>();
-	
-		while(iter.hasNext())
-		{
-			CKGraphicsAsset asset = iter.next();
-			for(String s:filters)
-			{
-				if(this.hasUsage(asset.getAID(),s))
-				{
-					vec.add(asset);
-					break;
-				}
-			}
-		}
-		
-		return vec.iterator();
-	}
 
 
 	
@@ -404,13 +533,13 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 		vec.add(assetID);
 		storeUsage(type);
 	}
-		
+	/*	
 	public void assignUsageTypeToAssset(CKGraphicsAsset asset, String t)
 	{
 			assignUsageTypeToAsset(asset.getAID(),t);
 	}
 	
-
+/*
 	public void unassignUsageTypeToAsset(String assetID, String type)
 	{
 		readUsages();
@@ -445,7 +574,7 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 			return vec.contains(assetID);
 		}
 		return false;
-	}		
+	}	*/	
 	
 
 	public static String getAssetDescription(int aid, Statement stmt) throws SQLException
@@ -858,5 +987,6 @@ public class CKGraphicsAssetFactoryXML extends CKGraphicsAssetFactory
 		
 		System.out.println("YEA!");
 	}
+
 
 }

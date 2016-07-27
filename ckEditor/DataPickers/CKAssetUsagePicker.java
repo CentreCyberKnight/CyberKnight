@@ -36,7 +36,7 @@ public class CKAssetUsagePicker extends JPanel
 		String aName= "";
 		if(asset != null) { aName = asset.getAID(); }
 		
-		Iterator<String> usages = fact.getAllGraphicsUsages();
+		Iterator<String> usages = fact.getAllUsages();
 		while(usages.hasNext())
 		{
 			String name = usages.next();

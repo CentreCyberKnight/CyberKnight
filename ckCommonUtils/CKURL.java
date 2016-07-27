@@ -69,7 +69,7 @@ public class CKURL
 			base = "jar:"+base+"CKResources.jar!/";
 		}
 		url = new URL(base+filename);
-		System.out.println("URL is: "+url);
+		//System.out.println("URL is: "+url);
 	}
 	
 	public InputStream getInputStream() throws IOException
@@ -138,6 +138,7 @@ public class CKURL
 		return decoded;
 	}
 	
+	@Deprecated //use listFiles instead
 	public File[] getDirectoryFiles(final String docType)
 	{
 		File folder = new File(this.getFileName());

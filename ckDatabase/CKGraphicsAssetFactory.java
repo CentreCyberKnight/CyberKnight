@@ -22,7 +22,7 @@ abstract public Iterator<CKGraphicsAsset> getFilteredGraphicsAssets(String strin
 abstract public Iterator<CKGraphicsAsset>getFilteredGraphicsAssets(String[] filters);
 
 
-abstract public Iterator<String> getAllGraphicsUsages();
+abstract public Iterator<String> getAllUsages();
 
 
  
