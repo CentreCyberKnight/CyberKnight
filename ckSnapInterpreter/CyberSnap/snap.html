@@ -40,6 +40,8 @@
 		<script type="text/javascript" src="cloud.js"></script>
 		<script type="text/javascript" src="sha512.js"></script>
 		<script type="text/javascript" src="DOMEventsLevel3.shim.js"></script>
+		
+		<script type="text/javascript" src="tutorial_0.js"></script>
 
 		<script type="text/javascript">
 			var world;
@@ -50,6 +52,8 @@
                 world.worldCanvas.focus();
 				ide = new IDE_Morph();
 			    ide.openIn(world);
+			    tutorial = new tutorial_Morph();
+			    tutorial.openIn(world);
 				setInterval(loop, 1);
 			};
 
