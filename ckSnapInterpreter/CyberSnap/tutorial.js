@@ -11,7 +11,7 @@ tutorial_Morph.uber = ShadowMorph.prototype;
 tutorial_Morph.prototype.init = function()
 {
     this.setColor(new Color(238, 244, 66));
-    this.alpha = 0.5;
+    this.alpha = 0;
     this.noticesTransparentClick = true;
     //this.isVisible = false;
     this.boxy = new BoxMorph();
@@ -34,9 +34,13 @@ tutorial_Morph.prototype.reactToWorldResize = function (rect)
     this.setExtent(rect.extent());
 }
 
+tutorial_Morph.prototype.checkBlockState = function(ide,sprite,hat,blockSpec)
+{
+   console.log(ide.sprites);
+}
+
 function tutorial_Morph()
 {
     this.init();
 }
 
-//    this.reactToWorldResize(world.bounds.copy());
