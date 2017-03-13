@@ -53,16 +53,15 @@
 				ide = new IDE_Morph();
 			    ide.openIn(world);
 			    
-			    ide.stage.setColor( new Color( 66, 134, 244 ));
-			    
 			    tutorial = new tutorial_Morph();
 			    tutorial.openIn(world);
-			    tutorial.checkBlockState(ide,0,0, "test");
+
 				setInterval(loop, 1);
 			};
 
 			function loop() {
 				world.doOneCycle();
+				console.log(tutorial.checkBlockState(ide,0,0, "forward"));
 			}
 		</script>
 

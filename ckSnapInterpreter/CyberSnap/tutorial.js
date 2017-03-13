@@ -34,9 +34,28 @@ tutorial_Morph.prototype.reactToWorldResize = function (rect)
     this.setExtent(rect.extent());
 }
 
-tutorial_Morph.prototype.checkBlockState = function(ide,sprite,hat,blockSpec)
+tutorial_Morph.prototype.checkBlockState = function(ide,s,hat,test)
 {
-   console.log(ide.sprites);
+    var sprite = ide.sprites.contents[0]//.scripts.children[0];
+    var found = false;
+    if(sprite)
+    {
+	var hatBlock = sprite.scripts.children[0];
+	console.log(hatBlock);
+	hatBlock.children.forEach(
+	    function(child){
+		if (child instanceof CommandBlockMorph){
+		    console.log(typeof child.blockSpec);
+		    if (child.blockSpec == test)
+		    {
+			console.log("YAY!!!");
+			found = true;
+		    }
+		}
+	    }
+	);
+    }
+    return found;
 }
 
 function tutorial_Morph()
