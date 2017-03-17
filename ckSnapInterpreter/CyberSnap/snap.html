@@ -53,15 +53,15 @@
 				ide = new IDE_Morph();
 			    ide.openIn(world);
 			    
-			    tutorial = new tutorial_Morph();
+			    tutorial = new tutorial_Morph(ide);
+                
 			    tutorial.openIn(world);
-
+                //tutorial.step();
 				setInterval(loop, 1);
 			};
 
 			function loop() {
 				world.doOneCycle();
-				console.log(tutorial.checkBlockState(ide,0,0, "forward"));
 			}
 		</script>
 
