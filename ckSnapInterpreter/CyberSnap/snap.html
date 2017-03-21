@@ -52,8 +52,29 @@
                 world.worldCanvas.focus();
 				ide = new IDE_Morph();
 			    ide.openIn(world);
-			    
-			    tutorial = new tutorial_Morph(ide);
+			    var FSM = {
+                    states:[
+                        {
+                            graphic:'hello'
+                        },
+                        {
+                            graphic:'done'
+                        }
+                    ],
+                    transitions:[
+                        {
+                            sprite:0,
+                            hat:0,
+                            test:'forward',
+                            nextState:1
+                        },
+                        {//empty transistion for goal state
+                        }
+                    ],
+                    goals:[1],
+                    start:0
+                };
+			    tutorial = new tutorial_Morph(ide,FSM);
                 
 			    tutorial.openIn(world);
                 //tutorial.step();
