@@ -2,7 +2,7 @@ modules.tutorial = '2017-March-21';
 
 
 var tutorial_Morph;
-var arrowMorph;
+var Arrow;
 
 tutorial_Morph.prototype = new ShadowMorph();
 tutorial_Morph.prototype.constructor = tutorial_Morph;
@@ -150,3 +150,89 @@ function tutorial_Morph(ide, FSM)
     this.init(ide, FSM);
 }
 
+Arrow.prototype=new Morph();
+Arrow.prototype.constructor = Arrow;
+Arrow.uber = Morph.prototype;
+
+function Arrow(height,width,color){
+    this.init(height,width,color);
+};
+
+Arrow.prototype.init=function(height,width,color){
+	Arrow.uber.init.call(this);
+	this.height=height;
+	this.width=width;
+    this.bounds=new Rectangle(0,0,width,height);
+    this.color=color;
+};
+
+Arrow.prototype.drawNew=function(){
+    var context,start,top,bottom;
+    
+    this.image = newCanvas(this.extent());
+    context = this.image.getContext('2d');
+    
+    start=this.bounds.leftCenter();
+    top=this.bounds.topRight();
+    bottom=this.bounds.bottomRight();
+
+    context.fillStyle=this.color.toString();
+
+    context.beginPath();
+    context.moveTo(start.x,start.y);
+    context.lineTo(top.x,top.y);
+    context.lineTo(bottom.x,bottom.y);
+    context.closePath();
+    
+    context.strokeStyle = 'black';
+    context.lineWidth = 1;
+    context.stroke();
+    context.fill();
+};
+
+tutorial_Morph.portotype.pointTo= function(aMorph){
+	//amorph: the morph to be pointed at 
+	var pointat,arrow,height,width,color,x;
+	
+	pointat=aMorph.rightCenter();
+	height=aMorph.height/2;
+	width=height;
+	color=new Color(0,0,255);
+	x=height/2
+	arrow=new PenMorph();
+	arrow.setPosition(new Point(pointat.x,pointat.y-x));
+	tutorial_Morph.add(arrow);
+	return arrow;
+}
+
+tutorial_Morph.prototype.display=function(){
+	var garphics,len,l,order,arg;
+	
+	graphics=this.state[this.currentstate];
+	len=graphics.length;
+	l=0;
+	//let graphics be an array, each command is an element
+	while (l < len){
+		order=graphics[l];
+		//need the user to give the block to move in Json file
+		if (order.command == "pointTo"){
+			arg=order.arg;
+			this.pointTo(arg);
+			
+		}
+		//need the user to give the movemorph and set potentialpoints in JSon file
+		if (order.command == "move"){
+			arg=order.arg;
+			var movemorph=arg.movemorph;
+			var pointlist=arg.potentialpoints;
+			this.setPoints(movemorph,pointlist);
+			var clickmorph=new StringMorph(arg.text);
+			this.moveMorph(clickmorph,movemorph);
+			
+		}
+		l++;
+		this.step();
+	}
+	//how to destroy the display morph
+	
+}
