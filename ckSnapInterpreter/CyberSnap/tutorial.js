@@ -1,8 +1,81 @@
 modules.tutorial = '2017-March-21';
 
-
-var tutorial_Morph;
 var Arrow;
+var Instruct_Morph;
+var tutorial_Morph;
+
+
+//Arrow Morph
+Arrow.prototype=new Morph();
+Arrow.prototype.constructor = Arrow;
+Arrow.uber = Morph.prototype;
+
+function Arrow(height,width,color){
+    this.init(height,width,color);
+};
+
+Arrow.prototype.init=function(height,width,color){
+	Arrow.uber.init.call(this);
+	this.height=height;
+	this.width=width;
+    this.bounds=new Rectangle(0,0,width,height);
+    this.color=color;
+};
+
+Arrow.prototype.drawNew=function(){
+    var context,start,top,bottom;
+    
+    this.image = newCanvas(this.extent());
+    context = this.image.getContext('2d');
+    
+    start=this.bounds.leftCenter();
+    top=this.bounds.topRight();
+    bottom=this.bounds.bottomRight();
+
+    context.fillStyle=this.color.toString();
+
+    context.beginPath();
+    context.moveTo(start.x,start.y);
+    context.lineTo(top.x,top.y);
+    context.lineTo(bottom.x,bottom.y);
+    context.closePath();
+    
+    context.strokeStyle = 'black';
+    context.lineWidth = 1;
+    context.stroke();
+    context.fill();
+};
+
+//-----------------------------------------------------
+
+//Instruction Morph
+Instruct_Morph.prototype = new BoxMorph();
+Instruct_Morph.prototype.constructor = Instruct_Morph;
+Instruct_Morph.uber = BoxMorph.prototype;
+
+function Instruct_Morph(test){
+    this.init(test);
+}
+
+Instruct_Morph.prototype.init = function(test){
+    this.setWidth(300);
+    this.setHeight(200);
+    this.text = new TextMorph("hi");
+    this.add(this.text);
+    this.nextButton = new BoxMorph();
+    this.add(this.nextButton);
+    this.nextButton.setPosition(new Point(this.width()-this.nextButton.width(), this.height()-this.nextButton.height() ));
+    //this.nextButton.setPosition(new Point(this.width()/2, this.height()/2));
+    //Instruction_Morph.uber.init.call(this);
+    //this.drawNew();
+}
+
+
+
+//-----------------------------------------------------
+
+//Tutorial Morph
+
 
 tutorial_Morph.prototype = new ShadowMorph();
 tutorial_Morph.prototype.constructor = tutorial_Morph;
@@ -24,6 +97,11 @@ tutorial_Morph.prototype.init = function(ide, FSM)
     //this.noticesTransparentClick = true;
     //this.isVisible = false;
     
+    this.instructions = new Instruct_Morph('test');
+    this.add(this.instructions);
+    //this.instruction.setPosition(new Point(this.height()/2, this.width()/2));
+    //this.instructions.setPosition(new Point(200,200));
+    
     this.fps = 1;
 }
 
@@ -38,6 +116,8 @@ tutorial_Morph.prototype.reactToWorldResize = function (rect)
 {
     this.setPosition(rect.origin);
     this.setExtent(rect.extent());
+    
+    this.instructions.setPosition(new Point(this.width()/2,this.height()/2));
 }
 
 //This function checks the state of a specific hat block corresponding to a specific sprite
@@ -109,8 +189,8 @@ tutorial_Morph.prototype.setPoints = function(movemorph, points)
 }
 tutorial_Morph.prototype.step = function()
 {
-    console.log(this.currentStateIndex);
-    console.log(this.currentTransition);
+    //console.log(this.currentStateIndex);
+    //console.log(this.currentTransition);
     if (this.checkBlockState(this.ide, this.currentTransition))
         {
             this.currentStateIndex = this.currentTransition.nextState;
@@ -149,46 +229,6 @@ function tutorial_Morph(ide, FSM)
 {
     this.init(ide, FSM);
 }
-
-Arrow.prototype=new Morph();
-Arrow.prototype.constructor = Arrow;
-Arrow.uber = Morph.prototype;
-
-function Arrow(height,width,color){
-    this.init(height,width,color);
-};
-
-Arrow.prototype.init=function(height,width,color){
-	Arrow.uber.init.call(this);
-	this.height=height;
-	this.width=width;
-    this.bounds=new Rectangle(0,0,width,height);
-    this.color=color;
-};
-
-Arrow.prototype.drawNew=function(){
-    var context,start,top,bottom;
-    
-    this.image = newCanvas(this.extent());
-    context = this.image.getContext('2d');
-    
-    start=this.bounds.leftCenter();
-    top=this.bounds.topRight();
-    bottom=this.bounds.bottomRight();
-
-    context.fillStyle=this.color.toString();
-
-    context.beginPath();
-    context.moveTo(start.x,start.y);
-    context.lineTo(top.x,top.y);
-    context.lineTo(bottom.x,bottom.y);
-    context.closePath();
-    
-    context.strokeStyle = 'black';
-    context.lineWidth = 1;
-    context.stroke();
-    context.fill();
-};
 
 tutorial_Morph.portotype.pointTo= function(aMorph){
 	//amorph: the morph to be pointed at 
