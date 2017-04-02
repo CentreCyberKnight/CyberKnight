@@ -30,8 +30,8 @@ Arrow.prototype.init=function(height,width,color){
 	Arrow.uber.init.call(this);
 	this.height=height;
 	this.width=width;
-    this.bounds=new Rectangle(0,0,width,height);
-    this.color=color;
+    	this.bounds=new Rectangle(0,0,width,height);
+    	this.setColor(color);
 };
 
 Arrow.prototype.drawNew=function(){
@@ -273,46 +273,50 @@ tutorial_Morph.prototype.finalState = function(index)
 tutorial_Morph.portotype.pointTo= function(aMorph){
 	//amorph: the morph to be pointed at 
 	var pointat,arrow,height,width,color,x;
+	var pointat,arrow,height,width,color;
 	
 	pointat=aMorph.rightCenter();
-	height=aMorph.height/2;
-	width=height;
-	color=new Color(0,0,255);
-	x=height/2
-	arrow=new PenMorph();
-	arrow.setPosition(new Point(pointat.x,pointat.y-x));
-	tutorial_Morph.add(arrow);
+	height=aMorph.height();
+	width=height/2;
+	color=new Color(0,200,200);
+	arrow=new Arrow(height,width,color);
+	arrow.setPosition(new Point(pointat.x,pointat.y-width));
 	return arrow;
 }
 
 tutorial_Morph.prototype.display=function(){
-	var garphics,len,l,order,arg;
+	var garphic,text,len,l,edit,order,arg,arrow,movemorph;
 	
-	graphics=this.state[this.currentstate];
-	len=graphics.length;
+	graphic=this.currentState.graphic;
+	text=this.currentState.text;
+	len=graphic.length;
 	l=0;
+	
+	edit=this.instructions.text;
+	edit.setText(text);
+	
 	//let graphics be an array, each command is an element
 	while (l < len){
-		order=graphics[l];
+		order=graphic[l];
 		//need the user to give the block to move in Json file
 		if (order.command == "pointTo"){
-			arg=order.arg;
-			this.pointTo(arg);
-			
+			arg=order.arguments;
+			arrow=this.pointTo(arg);
+			this.add(arrow);
+						
 		}
-		//need the user to give the movemorph and set potentialpoints in JSon file
+		//need the user to set potentialpoints in JSon file
 		if (order.command == "move"){
-			arg=order.arg;
-			var movemorph=arg.movemorph;
-			var pointlist=arg.potentialpoints;
+			arg=order.arguments;
+			movemorph=this.returnMoveBlock(arg[0]);
+			var pointlist=arg[1];
+			var clickmorph=this.instructions.nextButton;
 			this.setPoints(movemorph,pointlist);
-			var clickmorph=new StringMorph(arg.text);
 			this.moveMorph(clickmorph,movemorph);
-			
 		}
-		l++;
-		this.step();
+		l++;	
 	}
-	//how to destroy the display morph
-	
+	arrow.destory();
+	movemorph.destory();
+	//state need to be update after the first graphic display is done for the json file level 1
 }
