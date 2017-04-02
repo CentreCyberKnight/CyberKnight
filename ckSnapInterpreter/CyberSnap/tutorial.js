@@ -39,7 +39,26 @@ tutorial_Morph.prototype.reactToWorldResize = function (rect)
     this.setPosition(rect.origin);
     this.setExtent(rect.extent());
 }
-
+tutorial_Morph.prototype.returnHatBlock = function()
+{
+    return ide.sprites.contents[0].scripts.children[0];
+};
+tutorial_Morph.prototype.returnMoveBlock = function(direction)
+{
+    //will fullCopy the necessary block to move and return it.
+    //Will be used with the moveMorph function
+    var blocks = ide.palette.children[0].children;
+    for (var i = 0; i < children.length; i++)
+        {
+            if (blocks[i].blockSpec.localeCompare(direction) == 0)
+                {
+                    var returner = blocks[i].fullCopy();
+                    ide.add(returner);
+                    return returner;
+                }
+        }
+    return null;
+}
 //This function checks the state of a specific hat block corresponding to a specific sprite
 // TODO:
 //     - Add functionality for selecting hat/sprite - index or name
@@ -116,6 +135,8 @@ tutorial_Morph.prototype.step = function()
             this.currentStateIndex = this.currentTransition.nextState;
             this.currentState = this.states[this.currentStateIndex];
             this.currentTransition = this.transitions[this.currentStateIndex];
+            //we will need to update the graphics here as well
+            //and reset the moveMorph attribute for the instruction morph
             for(var i=0; i<this.goals.length; i++)
                 {
                     if(this.currentStateIndex == this.goals[i])
