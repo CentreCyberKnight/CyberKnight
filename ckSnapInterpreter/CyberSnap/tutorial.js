@@ -4,6 +4,18 @@ var Arrow;
 var Instruct_Morph;
 var tutorial_Morph;
 
+//https://codepen.io/KryptoniteDove/post/load-json-file-locally-using-pure-javascript
+function loadJSON(filename,callback) {
+    var xobj = new XMLHttpRequest();
+    xobj.overrideMimeType("application/json");
+    xobj.open('GET', filename, false);
+    xobj.onreadystatechange = function () {
+        if (xobj.readyState == 4 && xobj.status == "0") {
+            callback(xobj.responseText);
+        }
+    };
+    xobj.send(null);  
+}
 
 //Arrow Morph
 Arrow.prototype=new Morph();
@@ -81,26 +93,47 @@ tutorial_Morph.prototype = new ShadowMorph();
 tutorial_Morph.prototype.constructor = tutorial_Morph;
 tutorial_Morph.uber = ShadowMorph.prototype;
 
+function tutorial_Morph(ide, fileName)
+{
+    loadJSON(fileName, function(response){
+        var actual_JSON = JSON.parse(response);
+        //console.log(actual_JSON);
+        console.log(this);
+        tutorial_Morph.prototype.init(ide, actual_JSON);                                      
+    });
+}
+/*
+function tutorial_Morph(ide,fileName){
+    this.init(ide,fileName);
+}
+*/
+tutorial_Morph.prototype.readFile = function(fileName)
+{
+    loadJSON(fileName,function(response) {
+        // Parse JSON string into object
+        //console.log(response);
+        var actual_JSON = JSON.parse(response);
+        //console.log('FILE CONTENTS:');
+        //console.log(actual_JSON);
+        return actual_JSON;
+    });
+}
+
 tutorial_Morph.prototype.init = function(ide, FSM)
 {
     //FSM Stuff
     this.states = FSM.states;
     this.transitions = FSM.transitions;
-    this.goals = FSM.goals;
+    this.goal = FSM.goal;
     this.currentState = this.states[FSM.start];
     this.currentStateIndex = FSM.start;
     this.currentTransition = this.transitions[this.currentStateIndex];
     
     this.ide = ide;
-    //this.setColor(new Color(238, 244, 66));
-    this.alpha = 0;
-    //this.noticesTransparentClick = true;
-    //this.isVisible = false;
     
+    this.alpha = 0;
     this.instructions = new Instruct_Morph('test');
     this.add(this.instructions);
-    //this.instruction.setPosition(new Point(this.height()/2, this.width()/2));
-    //this.instructions.setPosition(new Point(200,200));
     
     this.fps = 1;
 }
@@ -109,7 +142,6 @@ tutorial_Morph.prototype.openIn = function(world)
 {
     world.add(this);
     this.reactToWorldResize(world.bounds);
-
 }
 
 tutorial_Morph.prototype.reactToWorldResize = function (rect)
@@ -154,10 +186,9 @@ tutorial_Morph.prototype.checkBlockState = function(ide,transition)
             function(child){
             if (child instanceof CommandBlockMorph){
                 console.log(typeof child.blockSpec);
-                console.log(transition.test)
-                if (child.blockSpec == transition.test)
+                console.log(transition.path)
+                if (child.blockSpec == transition.path)
                 {
-                    console.log("YAY!!!");
                     found = true;
                 }
             }
@@ -165,6 +196,7 @@ tutorial_Morph.prototype.checkBlockState = function(ide,transition)
     }
     return found;
 }
+
 tutorial_Morph.prototype.moveMorph = function(clickmorph, movemorph)
 {
     //clickmorph: the morph on screen to click. Once clicked, the movemorph will move positions
@@ -217,9 +249,9 @@ tutorial_Morph.prototype.step = function()
             this.currentTransition = this.transitions[this.currentStateIndex];
             //we will need to update the graphics here as well
             //and reset the moveMorph attribute for the instruction morph
-            for(var i=0; i<this.goals.length; i++)
+            for(var i=0; i<this.goal.length; i++)
                 {
-                    if(this.currentStateIndex == this.goals[i])
+                    if(this.currentStateIndex == this.goal[i])
                         {
                             this.destroy();
                             return true;
@@ -237,19 +269,6 @@ tutorial_Morph.prototype.finalState = function(index)
         }
     return false;
 }*/
-
-tutorial_Morph.prototpye.readFile = function(fileName)
-{
-    var reader = FileReader();
-    var raw = reader.readAsText(fileName);
-    
-    return JSON.parse(raw);
-}
-
-function tutorial_Morph(ide, FSM)
-{
-    this.init(ide, FSM);
-}
 
 tutorial_Morph.portotype.pointTo= function(aMorph){
 	//amorph: the morph to be pointed at 

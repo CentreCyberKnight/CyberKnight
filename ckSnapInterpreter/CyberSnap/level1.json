@@ -1,29 +1,28 @@
 {
-    states:[
+    "states":[
     {
-        graphic: [{
-            command: moveMorph,
-            arguments: ["forward"]
+        "graphic": [{
+            "command": "moveMorph",
+            "arguments": ["forward"]
         }],
-        text: "Hit next to show you how to move a block!"
+        "text": "Hit next to show you how to move a block!"
     },
     {
-        graphic: {
-            command:
+        "graphic": {
+            "command":""
         },
-        text: "Now try it for yourself!"
+        "text": "Now try it for yourself!"
     }
     ],
-    transitions:[{
-        sprite: 0,
-        hat: 0,
-        path: "forward",
-        nextState: 1
+    "transitions":[{
+        "sprite": 0,
+        "hat": 0,
+        "path": "forward",
+        "nextState": 1
     },
     {
         
     }],
-    goal: 1,
-    start: 0,
-    
+    "goal": [1],
+    "start": 0
 }
