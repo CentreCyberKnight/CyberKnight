@@ -65,21 +65,18 @@ Instruct_Morph.prototype = new BoxMorph();
 Instruct_Morph.prototype.constructor = Instruct_Morph;
 Instruct_Morph.uber = BoxMorph.prototype;
 
-function Instruct_Morph(test){
-    this.init(test);
+function Instruct_Morph(text){
+    this.init(text);
 }
 
-Instruct_Morph.prototype.init = function(test){
+Instruct_Morph.prototype.init = function(text){
     this.setWidth(300);
     this.setHeight(200);
-    this.text = new TextMorph("hi");
+    this.text = new TextMorph(text);
     this.add(this.text);
     this.nextButton = new BoxMorph();
     this.add(this.nextButton);
     this.nextButton.setPosition(new Point(this.width()-this.nextButton.width(), this.height()-this.nextButton.height() ));
-    //this.nextButton.setPosition(new Point(this.width()/2, this.height()/2));
-    //Instruction_Morph.uber.init.call(this);
-    //this.drawNew();
 }
 
 
@@ -97,7 +94,6 @@ function tutorial_Morph(ide, fileName)
 {
     loadJSON(fileName, function(response){
         var actual_JSON = JSON.parse(response);
-        //console.log(actual_JSON);
         console.log(this);
         tutorial_Morph.prototype.init(ide, actual_JSON);                                      
     });
@@ -111,10 +107,7 @@ tutorial_Morph.prototype.readFile = function(fileName)
 {
     loadJSON(fileName,function(response) {
         // Parse JSON string into object
-        //console.log(response);
         var actual_JSON = JSON.parse(response);
-        //console.log('FILE CONTENTS:');
-        //console.log(actual_JSON);
         return actual_JSON;
     });
 }
@@ -132,10 +125,11 @@ tutorial_Morph.prototype.init = function(ide, FSM)
     this.ide = ide;
     
     this.alpha = 0;
-    this.instructions = new Instruct_Morph('test');
+    this.instructions = new Instruct_Morph('DEFAULT TEXT');
     this.add(this.instructions);
     
-    this.fps = 1;
+    this.fps = .5;
+    //this.display();
 }
 
 tutorial_Morph.prototype.openIn = function(world)
@@ -151,10 +145,12 @@ tutorial_Morph.prototype.reactToWorldResize = function (rect)
     
     this.instructions.setPosition(new Point(this.width()/2,this.height()/2));
 }
+
 tutorial_Morph.prototype.returnHatBlock = function()
 {
     return ide.sprites.contents[0].scripts.children[0];
 };
+
 tutorial_Morph.prototype.returnMoveBlock = function(direction)
 {
     //will fullCopy the necessary block to move and return it.
@@ -181,12 +177,9 @@ tutorial_Morph.prototype.checkBlockState = function(ide,transition)
     if(sprite)
     {
         var hatBlock = sprite.scripts.children[0];//<- this is where the hat is selected
-        //console.log(hatBlock);
         hatBlock.children.forEach(
             function(child){
             if (child instanceof CommandBlockMorph){
-                console.log(typeof child.blockSpec);
-                console.log(transition.path)
                 if (child.blockSpec == transition.path)
                 {
                     found = true;
@@ -240,8 +233,6 @@ tutorial_Morph.prototype.setPoints = function(movemorph, points)
 }
 tutorial_Morph.prototype.step = function()
 {
-    //console.log(this.currentStateIndex);
-    //console.log(this.currentTransition);
     if (this.checkBlockState(this.ide, this.currentTransition))
         {
             this.currentStateIndex = this.currentTransition.nextState;
@@ -249,6 +240,7 @@ tutorial_Morph.prototype.step = function()
             this.currentTransition = this.transitions[this.currentStateIndex];
             //we will need to update the graphics here as well
             //and reset the moveMorph attribute for the instruction morph
+            this.display();
             for(var i=0; i<this.goal.length; i++)
                 {
                     if(this.currentStateIndex == this.goal[i])
@@ -260,6 +252,7 @@ tutorial_Morph.prototype.step = function()
         }
     return false;
 }
+
 /*
 tutorial_Morph.prototype.finalState = function(index)
 {
@@ -270,7 +263,7 @@ tutorial_Morph.prototype.finalState = function(index)
     return false;
 }*/
 
-tutorial_Morph.portotype.pointTo= function(aMorph){
+tutorial_Morph.prototype.pointTo= function(aMorph){
 	//amorph: the morph to be pointed at 
 	var pointat,arrow,height,width,color,x;
 	var pointat,arrow,height,width,color;
@@ -285,7 +278,8 @@ tutorial_Morph.portotype.pointTo= function(aMorph){
 }
 
 tutorial_Morph.prototype.display=function(){
-	var garphic,text,len,l,edit,order,arg,arrow,movemorph;
+    console.log("Display")
+	var graphic,text,len,l,edit,order,arg,arrow,movemorph;
 	
 	graphic=this.currentState.graphic;
 	text=this.currentState.text;
