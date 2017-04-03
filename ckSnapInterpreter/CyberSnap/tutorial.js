@@ -278,16 +278,16 @@ tutorial_Morph.prototype.pointTo= function(aMorph){
 }
 
 tutorial_Morph.prototype.display=function(){
-    console.log("Display")
-	var graphic,text,len,l,edit,order,arg,arrow,movemorph;
+	var garphic,text,len,l,order,arg,arrow,movemorph;
 	
 	graphic=this.currentState.graphic;
 	text=this.currentState.text;
 	len=graphic.length;
 	l=0;
 	
-	edit=this.instructions.text;
-	edit.setText(text);
+	this.instructions.text.text=text;
+	this.instructions.text.changed();
+	this.instructions.text.drawNew();
 	
 	//let graphics be an array, each command is an element
 	while (l < len){
