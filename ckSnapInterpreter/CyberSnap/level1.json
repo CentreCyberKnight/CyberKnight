@@ -2,19 +2,30 @@
     "states":[
     {
         "graphic": [{
-            "command": "moveMorph",
+            "command": "clickMorph",
             "arguments": ["forward"]
         }],
         "text": "Hit next to show you how to move a block!"
     },
     {
+        "graphic": [{
+            "command": "moveMorph",
+            "arguments": ["forward"]
+        }],
+        "text": "Now try it for yourself!"
+    },
+    {
         "graphic": {
             "command":""
         },
-        "text": "Now try it for yourself!"
+        "text": ""
     }
     ],
-    "transitions":[{
+    "transitions":[
+    {
+        
+    },
+    {
         "sprite": 0,
         "hat": 0,
         "path": "forward",

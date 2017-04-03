@@ -129,7 +129,9 @@ tutorial_Morph.prototype.init = function(ide, FSM)
     this.add(this.instructions);
     
     this.fps = .5;
-    //this.display();
+    console.log()
+    this.display();
+    this.updateInstructions();
 }
 
 tutorial_Morph.prototype.openIn = function(world)
@@ -156,15 +158,18 @@ tutorial_Morph.prototype.returnMoveBlock = function(direction)
     //will fullCopy the necessary block to move and return it.
     //Will be used with the moveMorph function
     var blocks = ide.palette.children[0].children;
+    console.log(blocks);
     for (var i = 0; i < children.length; i++)
         {
             if (blocks[i].blockSpec.localeCompare(direction) == 0)
                 {
+                    console.log("in the loop: found match")
                     var returner = blocks[i].fullCopy();
                     ide.add(returner);
                     return returner;
                 }
         }
+    console.log("I didn't crash!!!");
     return null;
 }
 //This function checks the state of a specific hat block corresponding to a specific sprite
@@ -172,22 +177,24 @@ tutorial_Morph.prototype.returnMoveBlock = function(direction)
 //     - Add functionality for selecting hat/sprite - index or name
 tutorial_Morph.prototype.checkBlockState = function(ide,transition)
 {
-    var sprite = ide.sprites.contents[0]//<- this is where the sprite is selected
     var found = false;
-    if(sprite)
-    {
-        var hatBlock = sprite.scripts.children[0];//<- this is where the hat is selected
-        hatBlock.children.forEach(
-            function(child){
-            if (child instanceof CommandBlockMorph){
-                if (child.blockSpec == transition.path)
-                {
-                    found = true;
+    if(transition){
+        var sprite = ide.sprites.contents[0]//<- this is where the sprite is selected
+        if(sprite)
+        {
+            var hatBlock = sprite.scripts.children[0];//<- this is where the hat is selected
+            hatBlock.children.forEach(
+                function(child){
+                if (child instanceof CommandBlockMorph){
+                    if (child.blockSpec == transition.path)
+                    {
+                        found = true;
+                    }
                 }
-            }
-        });
+            });
+        }  
     }
-    return found;
+    return found; 
 }
 
 tutorial_Morph.prototype.moveMorph = function(clickmorph, movemorph)
@@ -278,16 +285,11 @@ tutorial_Morph.prototype.pointTo= function(aMorph){
 }
 
 tutorial_Morph.prototype.display=function(){
-	var garphic,text,len,l,order,arg,arrow,movemorph;
-	
-	graphic=this.currentState.graphic;
-	text=this.currentState.text;
-	len=graphic.length;
+    console.log("Display")
+	var graphic,len,l,order,arg,arrow,movemorph;
+    graphic=this.currentState.graphic;
+    len=graphic.length;
 	l=0;
-	
-	this.instructions.text.text=text;
-	this.instructions.text.changed();
-	this.instructions.text.drawNew();
 	
 	//let graphics be an array, each command is an element
 	while (l < len){
@@ -300,17 +302,34 @@ tutorial_Morph.prototype.display=function(){
 						
 		}
 		//need the user to set potentialpoints in JSon file
-		if (order.command == "move"){
-			arg=order.arguments;
+		else if (order.command == "moveMorph"){
+            console.log("Morph moved");
+		}
+        else if (order.command == "clickMorph"){
+            console.log("Click Morph State")
+            arg=order.arguments;
+            console.log(arg)
 			movemorph=this.returnMoveBlock(arg[0]);
-			var pointlist=arg[1];
+            console.log(movemorph);
+			var pointlist=[this.returnHatBlock()];
+            console.log(pointlist);
 			var clickmorph=this.instructions.nextButton;
 			this.setPoints(movemorph,pointlist);
 			this.moveMorph(clickmorph,movemorph);
-		}
+        }
 		l++;	
 	}
 	arrow.destory();
 	movemorph.destory();
 	//state need to be update after the first graphic display is done for the json file level 1
+}
+
+tutorial_Morph.prototype.updateInstructions = function(){
+    console.log("Instruction updater")
+    var text;
+	text=this.currentState.text;
+	
+	this.instructions.text.text=text;
+	this.instructions.text.changed();
+	this.instructions.text.drawNew();
 }
