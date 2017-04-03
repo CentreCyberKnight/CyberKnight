@@ -115,12 +115,11 @@ tutorial_Morph.prototype.readFile = function(fileName)
 tutorial_Morph.prototype.init = function(ide, FSM)
 {
     //FSM Stuff
+    this.FSM = FSM;
     this.states = FSM.states;
     this.transitions = FSM.transitions;
     this.goal = FSM.goal;
-    this.currentState = this.states[FSM.start];
-    this.currentStateIndex = FSM.start;
-    this.currentTransition = this.transitions[this.currentStateIndex];
+   
     
     this.ide = ide;
     
@@ -129,9 +128,6 @@ tutorial_Morph.prototype.init = function(ide, FSM)
     this.add(this.instructions);
     
     this.fps = .5;
-    console.log()
-    this.display();
-    this.updateInstructions();
 }
 
 tutorial_Morph.prototype.openIn = function(world)
@@ -150,7 +146,16 @@ tutorial_Morph.prototype.reactToWorldResize = function (rect)
 
 tutorial_Morph.prototype.returnHatBlock = function()
 {
-    return ide.sprites.contents[0].scripts.children[0];
+    while(!this.ide.sprites.contents[0])
+    {
+        setInterval(null, 1000);
+    }
+    
+    if (this.ide.sprites.contents[0])
+    {
+        return this.ide.sprites.contents[0].scripts.children[0];
+    }
+     null;
 };
 
 tutorial_Morph.prototype.returnMoveBlock = function(direction)
@@ -158,14 +163,15 @@ tutorial_Morph.prototype.returnMoveBlock = function(direction)
     //will fullCopy the necessary block to move and return it.
     //Will be used with the moveMorph function
     var blocks = ide.palette.children[0].children;
-    console.log(blocks);
-    for (var i = 0; i < children.length; i++)
+    //console.log(blocks);
+    for (var i = 0; i < blocks.length; i++)
         {
-            if (blocks[i].blockSpec.localeCompare(direction) == 0)
+            console.log(blocks[i].blockSpec);
+            if (blocks[i].blockSpec == direction)
                 {
                     console.log("in the loop: found match")
                     var returner = blocks[i].fullCopy();
-                    ide.add(returner);
+                    this.ide.add(returner);
                     return returner;
                 }
         }
@@ -179,7 +185,7 @@ tutorial_Morph.prototype.checkBlockState = function(ide,transition)
 {
     var found = false;
     if(transition){
-        var sprite = ide.sprites.contents[0]//<- this is where the sprite is selected
+        var sprite = ide.sprites.contents[0];//<- this is where the sprite is selected
         if(sprite)
         {
             var hatBlock = sprite.scripts.children[0];//<- this is where the hat is selected
@@ -209,7 +215,7 @@ tutorial_Morph.prototype.moveMorph = function(clickmorph, movemorph)
                         var deltay = point.y - movemorph.position().y;
                         console.log(point);
                         console.log("deltax: " + deltax + " deltay: " + deltay);
-                        id = setInterval(frame, 5);   
+                        id = setInterval(frame, 5000);   
                         function frame() {
                                 if (pos == 25) {
                                     clearInterval(id);
@@ -240,13 +246,28 @@ tutorial_Morph.prototype.setPoints = function(movemorph, points)
 }
 tutorial_Morph.prototype.step = function()
 {
-    if (this.checkBlockState(this.ide, this.currentTransition))
+    if (!this.ide.sprites.contents[0])
         {
+            if (!this.currentState)
+            {
+                this.currentState = this.states[this.FSM.start];
+                this.currentStateIndex = this.FSM.start;
+                this.currentTransition = this.transitions[this.currentStateIndex];
+            
+                this.display();
+            
+            }
+        }
+    else
+    {
+         if (this.checkBlockState(this.ide, this.currentTransition))
+            {
             this.currentStateIndex = this.currentTransition.nextState;
             this.currentState = this.states[this.currentStateIndex];
             this.currentTransition = this.transitions[this.currentStateIndex];
             //we will need to update the graphics here as well
             //and reset the moveMorph attribute for the instruction morph
+            
             this.display();
             for(var i=0; i<this.goal.length; i++)
                 {
@@ -256,7 +277,8 @@ tutorial_Morph.prototype.step = function()
                             return true;
                         }
                 }
-        }
+    }
+    }
     return false;
 }
 
@@ -308,11 +330,12 @@ tutorial_Morph.prototype.display=function(){
         else if (order.command == "clickMorph"){
             console.log("Click Morph State")
             arg=order.arguments;
-            console.log(arg)
+            console.log(arg);
 			movemorph=this.returnMoveBlock(arg[0]);
             console.log(movemorph);
-			var pointlist=[this.returnHatBlock()];
-            console.log(pointlist);
+			var pointlist=[this.returnHatBlock().position()];
+            console.log("hello");
+            console.log(this.returnHatBlock());
 			var clickmorph=this.instructions.nextButton;
 			this.setPoints(movemorph,pointlist);
 			this.moveMorph(clickmorph,movemorph);
