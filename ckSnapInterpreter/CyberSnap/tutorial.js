@@ -105,7 +105,7 @@ tutorial_Morph.prototype.init = function(ide, JSONstring)
     
     this.alpha = 0;
     this.instructions = new Instruct_Morph('DEFAULT TEXT');
-    this.add(this.instructions);
+    this.ide.parent.add(this.instructions);
     
     this.fps = .5;
 }
@@ -151,6 +151,7 @@ tutorial_Morph.prototype.returnMoveBlock = function(direction)
                 {
                     console.log("in the loop: found match")
                     var returner = blocks[i].fullCopy();
+                    returner.alpha = .5;
                     this.ide.add(returner);
                     return returner;
                 }
@@ -180,6 +181,7 @@ tutorial_Morph.prototype.checkBlockState = function(ide,transition)
             });
         }  
     }
+    
     return found; 
 }
 
@@ -187,15 +189,17 @@ tutorial_Morph.prototype.moveMorph = function(clickmorph, movemorph)
 {
     //clickmorph: the morph on screen to click. Once clicked, the movemorph will move positions
     //movemorph: the morph on screen to move. It will have an array of points as an attribute to move around the screen.
+    console.log(clickmorph);
       clickmorph.mouseClickLeft =  function()
                     {
+                    console.log("being clicked");
                         var pos = 0;
                         var point = movemorph.potentialPoints[movemorph.index];
                         var deltax = point.x - movemorph.position().x;
                         var deltay = point.y - movemorph.position().y;
                         console.log(point);
                         console.log("deltax: " + deltax + " deltay: " + deltay);
-                        id = setInterval(frame, 5000);   
+                        id = setInterval(frame, 10);   
                         function frame() {
                                 if (pos == 25) {
                                     clearInterval(id);
@@ -214,8 +218,7 @@ tutorial_Morph.prototype.moveMorph = function(clickmorph, movemorph)
                                     movemorph.moveBy(new Point(deltax/25,deltay/25));
                                 }
                     }      
-      }
-      
+      }      
 }
 
 tutorial_Morph.prototype.setPoints = function(movemorph, points)
@@ -225,43 +228,47 @@ tutorial_Morph.prototype.setPoints = function(movemorph, points)
     movemorph.potentialPoints = points;
     movemorph.index = 0; //index for the next point to move to in array of potentialPoints
 }
+
 tutorial_Morph.prototype.step = function()
 {
-    if (!this.ide.sprites.contents[0])
+    console.log(this.ide.sprites.contents[0]);
+    console.log(this.currentState);
+    if (this.ide.sprites.contents[0])
         {
             if (!this.currentState)
             {
                 this.currentState = this.states[this.FSM.start];
                 this.currentStateIndex = this.FSM.start;
                 this.currentTransition = this.transitions[this.currentStateIndex];
-            
+                this.updateInstructions();
                 this.display();
             
             }
-        }
-    else
-    {
-        if (this.checkBlockState(this.ide, this.currentTransition))
-        {
-            this.currentStateIndex = this.currentTransition.nextState;
-            this.currentState = this.states[this.currentStateIndex];
-            this.currentTransition = this.transitions[this.currentStateIndex];
-            //we will need to update the graphics here as well
-            //and reset the moveMorph attribute for the instruction morph
-            
-            this.display();
-            for(var i=0; i<this.goal.length; i++)
+            else
+            {      
+                if (this.checkBlockState(this.ide, this.currentTransition))
                 {
-                    if(this.currentStateIndex == this.goal[i])
+                    this.currentStateIndex = this.currentTransition.nextState;
+                    this.currentState = this.states[this.currentStateIndex];
+                    this.currentTransition = this.transitions[this.currentStateIndex];
+                    //we will need to update the graphics here as well
+                    //and reset the moveMorph attribute for the instruction morph
+            
+                    this.display();
+                    for(var i=0; i<this.goal.length; i++)
+                    {
+                        if(this.currentStateIndex == this.goal[i])
                         {
                             this.destroy();
                             return true;
                         }
+                    }
                 }
+
+            }
         }
-    }
     return false;
-}
+};
 
 tutorial_Morph.prototype.step = function()
 {
@@ -333,11 +340,10 @@ tutorial_Morph.prototype.display=function(){
 			movemorph=this.returnMoveBlock(arg[0]);
             console.log(movemorph);
 			var pointlist=[this.returnHatBlock().position()];
-            console.log("hello");
-            console.log(this.returnHatBlock());
-			var clickmorph=this.instructions.nextButton;
 			this.setPoints(movemorph,pointlist);
-			this.moveMorph(clickmorph,movemorph);
+            console.log(movemorph.potentialPoints);
+			this.moveMorph(this.instructions.nextButton,movemorph);
+            console.log("logged");
         }
 		l++;	
 	}
@@ -352,6 +358,9 @@ tutorial_Morph.prototype.updateInstructions = function(){
 	text=this.currentState.text;
 	
 	this.instructions.text.text=text;
+    
+
 	this.instructions.text.changed();
+    
 	this.instructions.text.drawNew();
 }
