@@ -4,19 +4,6 @@ var Arrow;
 var Instruct_Morph;
 var tutorial_Morph;
 
-//https://codepen.io/KryptoniteDove/post/load-json-file-locally-using-pure-javascript
-function loadJSON(filename,callback) {
-    var xobj = new XMLHttpRequest();
-    xobj.overrideMimeType("application/json");
-    xobj.open('GET', filename, false);
-    xobj.onreadystatechange = function () {
-        if (xobj.readyState == 4 && xobj.status == "0") {
-            callback(xobj.responseText);
-        }
-    };
-    xobj.send(null);  
-}
-
 //Arrow Morph
 Arrow.prototype=new Morph();
 Arrow.prototype.constructor = Arrow;
@@ -90,19 +77,11 @@ tutorial_Morph.prototype = new ShadowMorph();
 tutorial_Morph.prototype.constructor = tutorial_Morph;
 tutorial_Morph.uber = ShadowMorph.prototype;
 
-function tutorial_Morph(ide, fileName)
+function tutorial_Morph(ide, JSONstring)
 {
-    loadJSON(fileName, function(response){
-        var actual_JSON = JSON.parse(response);
-        console.log(this);
-        tutorial_Morph.prototype.init(ide, actual_JSON);                                      
-    });
+    this.init(ide, JSONstring);                                         
 }
 /*
-function tutorial_Morph(ide,fileName){
-    this.init(ide,fileName);
-}
-*/
 tutorial_Morph.prototype.readFile = function(fileName)
 {
     loadJSON(fileName,function(response) {
@@ -111,10 +90,11 @@ tutorial_Morph.prototype.readFile = function(fileName)
         return actual_JSON;
     });
 }
-
-tutorial_Morph.prototype.init = function(ide, FSM)
+*/
+tutorial_Morph.prototype.init = function(ide, JSONstring)
 {
     //FSM Stuff
+    var FSM = JSON.parse(JSONstring);
     this.FSM = FSM;
     this.states = FSM.states;
     this.transitions = FSM.transitions;
@@ -237,6 +217,7 @@ tutorial_Morph.prototype.moveMorph = function(clickmorph, movemorph)
       }
       
 }
+
 tutorial_Morph.prototype.setPoints = function(movemorph, points)
 {
     //movemorph: morph to move across the screen.
@@ -260,8 +241,8 @@ tutorial_Morph.prototype.step = function()
         }
     else
     {
-         if (this.checkBlockState(this.ide, this.currentTransition))
-            {
+        if (this.checkBlockState(this.ide, this.currentTransition))
+        {
             this.currentStateIndex = this.currentTransition.nextState;
             this.currentState = this.states[this.currentStateIndex];
             this.currentTransition = this.transitions[this.currentStateIndex];
@@ -277,11 +258,29 @@ tutorial_Morph.prototype.step = function()
                             return true;
                         }
                 }
-    }
+        }
     }
     return false;
 }
 
+tutorial_Morph.prototype.step = function()
+{
+    this.currentStateIndex = this.currentTransition.nextState;
+            this.currentState = this.states[this.currentStateIndex];
+            this.currentTransition = this.transitions[this.currentStateIndex];
+            //we will need to update the graphics here as well
+            //and reset the moveMorph attribute for the instruction morph
+            
+            this.display();
+            for(var i=0; i<this.goal.length; i++)
+                {
+                    if(this.currentStateIndex == this.goal[i])
+                        {
+                            this.destroy();
+                            return true;
+                        }
+                }
+}
 /*
 tutorial_Morph.prototype.finalState = function(index)
 {

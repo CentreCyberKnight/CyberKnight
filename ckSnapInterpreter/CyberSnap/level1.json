@@ -23,13 +23,13 @@
     ],
     "transitions":[
     {
-        
+        "nextState":1  
     },
     {
         "sprite": 0,
         "hat": 0,
         "path": "forward",
-        "nextState": 1
+        "nextState": 2
     },
     {
         
