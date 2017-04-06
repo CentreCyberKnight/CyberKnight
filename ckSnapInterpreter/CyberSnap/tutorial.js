@@ -108,6 +108,8 @@ tutorial_Morph.prototype.init = function(ide, JSONstring)
     this.ide.parent.add(this.instructions);
     
     this.fps = .5;
+    
+    console.log("Set up tutorial")
 }
 
 tutorial_Morph.prototype.openIn = function(world)
@@ -185,40 +187,42 @@ tutorial_Morph.prototype.checkBlockState = function(ide,transition)
     return found; 
 }
 
-tutorial_Morph.prototype.moveMorph = function(clickmorph, movemorph)
+tutorial_Morph.prototype.moveMorph = function(tutorial,clickmorph, movemorph)
 {
     //clickmorph: the morph on screen to click. Once clicked, the movemorph will move positions
     //movemorph: the morph on screen to move. It will have an array of points as an attribute to move around the screen.
     console.log(clickmorph);
-      clickmorph.mouseClickLeft =  function()
-                    {
-                    console.log("being clicked");
-                        var pos = 0;
-                        var point = movemorph.potentialPoints[movemorph.index];
-                        var deltax = point.x - movemorph.position().x;
-                        var deltay = point.y - movemorph.position().y;
-                        console.log(point);
-                        console.log("deltax: " + deltax + " deltay: " + deltay);
-                        id = setInterval(frame, 10);   
-                        function frame() {
-                                if (pos == 25) {
-                                    clearInterval(id);
-                                    movemorph.setPosition(point);
-                                    if ((movemorph.index+1) >= (movemorph.potentialPoints.length))
-                                        {
-                                            
-                                            movemorph.index = 0;
-                                        }
-                                    else{
-                                    
-                                    movemorph.index = movemorph.index + 1;
-                                    }
-                                } else {
-                                    pos = pos + 1;
-                                    movemorph.moveBy(new Point(deltax/25,deltay/25));
-                                }
-                    }      
-      }      
+    clickmorph.tutorial = tutorial;
+    clickmorph.mouseClickLeft =  function()
+    {
+    console.log("being clicked");
+        var pos = 0;
+        var point = movemorph.potentialPoints[movemorph.index];
+        var deltax = point.x - movemorph.position().x;
+        var deltay = point.y - movemorph.position().y;
+        console.log(point);
+        console.log("deltax: " + deltax + " deltay: " + deltay);
+        id = setInterval(frame, 10);   
+        function frame() {
+                if (pos == 25) {
+                    clearInterval(id);
+                    movemorph.setPosition(point);
+                    if ((movemorph.index+1) >= (movemorph.potentialPoints.length))
+                        {
+
+                            movemorph.index = 0;
+                        }
+                    else{
+
+                    movemorph.index = movemorph.index + 1;
+                    }
+                } else {
+                    pos = pos + 1;
+                    movemorph.moveBy(new Point(deltax/25,deltay/25));
+                }
+        }
+    this.tutorial.transition();
+    }      
 }
 
 tutorial_Morph.prototype.setPoints = function(movemorph, points)
@@ -234,59 +238,58 @@ tutorial_Morph.prototype.step = function()
     console.log(this.ide.sprites.contents[0]);
     console.log(this.currentState);
     if (this.ide.sprites.contents[0])
+    {
+        if (!this.currentState)
         {
-            if (!this.currentState)
+            this.transition();
+        }
+
+        else
+        {      
+            if (this.checkBlockState(this.ide, this.currentTransition))
             {
-                this.currentState = this.states[this.FSM.start];
-                this.currentStateIndex = this.FSM.start;
-                this.currentTransition = this.transitions[this.currentStateIndex];
-                this.updateInstructions();
-                this.display();
-            
-            }
-            else
-            {      
-                if (this.checkBlockState(this.ide, this.currentTransition))
+                this.transition();
+                //we will need to update the graphics here as well
+                //and reset the moveMorph attribute for the instruction morph
+
+                for(var i=0; i<this.goal.length; i++)
                 {
-                    this.currentStateIndex = this.currentTransition.nextState;
-                    this.currentState = this.states[this.currentStateIndex];
-                    this.currentTransition = this.transitions[this.currentStateIndex];
-                    //we will need to update the graphics here as well
-                    //and reset the moveMorph attribute for the instruction morph
-            
-                    this.display();
-                    for(var i=0; i<this.goal.length; i++)
+                    if(this.currentStateIndex == this.goal[i])
                     {
-                        if(this.currentStateIndex == this.goal[i])
-                        {
-                            this.destroy();
-                            return true;
-                        }
+                        this.endTutorial();
+                        return true;
                     }
                 }
-
             }
+
         }
+    }
     return false;
 };
 
-tutorial_Morph.prototype.step = function()
+tutorial_Morph.prototype.transition = function()
 {
-    this.currentStateIndex = this.currentTransition.nextState;
-            this.currentState = this.states[this.currentStateIndex];
-            this.currentTransition = this.transitions[this.currentStateIndex];
-            //we will need to update the graphics here as well
-            //and reset the moveMorph attribute for the instruction morph
-            
-            this.display();
-            for(var i=0; i<this.goal.length; i++)
-                {
-                    if(this.currentStateIndex == this.goal[i])
-                        {
-                            this.destroy();
-                            return true;
-                        }
-                }
+    if(!this.currentState)
+    {
+        this.currentStateIndex = this.FSM.start;
+    }
+    else
+    {
+        this.currentStateIndex = this.currentTransition.nextState;
+    }
+    
+    this.currentState = this.states[this.currentStateIndex];
+    this.currentTransition = this.transitions[this.currentStateIndex];
+    
+    this.display();
+
+}
+
+tutorial_Morph.prototype.endTutorial = function()
+{
+    console.log("RIP")
+    this.instructions.destroy();
+    this.destroy();
 }
 /*
 tutorial_Morph.prototype.finalState = function(index)
@@ -314,6 +317,7 @@ tutorial_Morph.prototype.pointTo= function(aMorph){
 
 tutorial_Morph.prototype.display=function(){
     console.log("Display")
+    this.updateInstructions();
 	var graphic,len,l,order,arg,arrow,movemorph;
     graphic=this.currentState.graphic;
     len=graphic.length;
@@ -336,19 +340,17 @@ tutorial_Morph.prototype.display=function(){
         else if (order.command == "clickMorph"){
             console.log("Click Morph State")
             arg=order.arguments;
-            console.log(arg);
+            //console.log(arg);
 			movemorph=this.returnMoveBlock(arg[0]);
-            console.log(movemorph);
+            //console.log(movemorph);
 			var pointlist=[this.returnHatBlock().position()];
 			this.setPoints(movemorph,pointlist);
-            console.log(movemorph.potentialPoints);
-			this.moveMorph(this.instructions.nextButton,movemorph);
-            console.log("logged");
+            //console.log(movemorph.potentialPoints);
+			this.moveMorph(this,this.instructions.nextButton,movemorph);
+            //console.log("logged");
         }
 		l++;	
 	}
-	arrow.destory();
-	movemorph.destory();
 	//state need to be update after the first graphic display is done for the json file level 1
 }
 
