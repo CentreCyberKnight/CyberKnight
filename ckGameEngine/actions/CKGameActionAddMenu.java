@@ -97,6 +97,14 @@ public class CKGameActionAddMenu
 				addActorSel.setEnabled(false);
 			}
 
+			JMenuItem addTutorialSel= new JMenuItem("Add Tutorial Script Action");
+			addTutorialSel.addActionListener(new TreeAddActionListener("TUTORIAL_ACTION",tree,pos,replace));
+			addDialogue.add(addTutorialSel);
+			if(quest==null)
+			{
+				addActorSel.setEnabled(false);
+			}
+
 			
 			
 			/*
@@ -297,6 +305,10 @@ class TreeAddActionListener implements ActionListener
 			else if(name.compareTo("SIMPLE_DIALOG")==0)
 			{				
 				action = new CKSimpleGUIAction();
+			}
+			else if(name.compareTo("TUTORIAL_ACTION")==0)
+			{				
+				action = new CKTutorialAction();
 			}
 			else if(name.compareTo("PC_ABSOLUTE_MOVE")==0)
 			{

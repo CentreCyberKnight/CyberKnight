@@ -77,9 +77,10 @@ tutorial_Morph.prototype = new ShadowMorph();
 tutorial_Morph.prototype.constructor = tutorial_Morph;
 tutorial_Morph.uber = ShadowMorph.prototype;
 
-function tutorial_Morph(ide, JSONstring)
+function tutorial_Morph(ide, JSONstring, world)
 {
-    this.init(ide, JSONstring);                                         
+    console.log(JSONstring);
+    this.init(ide, JSONstring, world);                                         
 }
 /*
 tutorial_Morph.prototype.readFile = function(fileName)
@@ -91,10 +92,11 @@ tutorial_Morph.prototype.readFile = function(fileName)
     });
 }
 */
-tutorial_Morph.prototype.init = function(ide, JSONstring)
+tutorial_Morph.prototype.init = function(ide, JSONstring, world)
 {
     //FSM Stuff
-    var FSM = JSON.parse(JSONstring);
+    //var FSM = JSON.parse(JSONstring);
+    var FSM = JSONstring;
     console.log(FSM);
     this.FSM = FSM;
     this.states = FSM.states;
@@ -109,7 +111,9 @@ tutorial_Morph.prototype.init = function(ide, JSONstring)
     this.ide.parent.add(this.instructions);
     
     this.fps = .5;
-    
+    console.log(world);
+    world.add(this);
+    this.reactToWorldResize(world.bounds);
     console.log("Set up tutorial")
 }
 
@@ -254,7 +258,8 @@ tutorial_Morph.prototype.setPoints = function(movemorph, points)
 
 tutorial_Morph.prototype.step = function()
 {
-   
+   console.log("here");
+    console
     if (this.ide.sprites.contents[0])
     {
         if (!this.currentState)
@@ -305,9 +310,10 @@ tutorial_Morph.prototype.transition = function()
 
 tutorial_Morph.prototype.endTutorial = function()
 {
-    console.log("RIP")
+    console.log("RIP");
     this.instructions.destroy();
     this.destroy();
+    tutorialDone.notifyDone();
 }
 /*
 tutorial_Morph.prototype.finalState = function(index)
@@ -352,6 +358,7 @@ tutorial_Morph.prototype.display=function(){
             var point = this.returnMoveBlock(arg[0]);
 			arrow=this.pointTo(point);
 			this.add(arrow);
+            this.transition();
 						
 		}
 		//need the user to set potentialpoints in JSon file
