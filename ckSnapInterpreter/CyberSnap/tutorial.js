@@ -4,19 +4,6 @@ var Arrow;
 var Instruct_Morph;
 var tutorial_Morph;
 
-//https://codepen.io/KryptoniteDove/post/load-json-file-locally-using-pure-javascript
-function loadJSON(filename,callback) {
-    var xobj = new XMLHttpRequest();
-    xobj.overrideMimeType("application/json");
-    xobj.open('GET', filename, false);
-    xobj.onreadystatechange = function () {
-        if (xobj.readyState == 4 && xobj.status == "0") {
-            callback(xobj.responseText);
-        }
-    };
-    xobj.send(null);  
-}
-
 //Arrow Morph
 Arrow.prototype=new Morph();
 Arrow.prototype.constructor = Arrow;
@@ -90,19 +77,11 @@ tutorial_Morph.prototype = new ShadowMorph();
 tutorial_Morph.prototype.constructor = tutorial_Morph;
 tutorial_Morph.uber = ShadowMorph.prototype;
 
-function tutorial_Morph(ide, fileName)
+function tutorial_Morph(ide, JSONstring)
 {
-    loadJSON(fileName, function(response){
-        var actual_JSON = JSON.parse(response);
-        console.log(this);
-        tutorial_Morph.prototype.init(ide, actual_JSON);                                      
-    });
+    this.init(ide, JSONstring);                                         
 }
 /*
-function tutorial_Morph(ide,fileName){
-    this.init(ide,fileName);
-}
-*/
 tutorial_Morph.prototype.readFile = function(fileName)
 {
     loadJSON(fileName,function(response) {
@@ -111,10 +90,11 @@ tutorial_Morph.prototype.readFile = function(fileName)
         return actual_JSON;
     });
 }
-
-tutorial_Morph.prototype.init = function(ide, FSM)
+*/
+tutorial_Morph.prototype.init = function(ide, JSONstring)
 {
     //FSM Stuff
+    var FSM = JSON.parse(JSONstring);
     this.FSM = FSM;
     this.states = FSM.states;
     this.transitions = FSM.transitions;
@@ -128,6 +108,8 @@ tutorial_Morph.prototype.init = function(ide, FSM)
     this.ide.parent.add(this.instructions);
     
     this.fps = .5;
+    
+    console.log("Set up tutorial")
 }
 
 tutorial_Morph.prototype.openIn = function(world)
@@ -205,10 +187,12 @@ tutorial_Morph.prototype.checkBlockState = function(ide,transition)
     return found; 
 }
 
-tutorial_Morph.prototype.moveMorph = function(clickmorph, movemorph)
+tutorial_Morph.prototype.moveMorph = function(tutorial,clickmorph, movemorph)
 {
     //clickmorph: the morph on screen to click. Once clicked, the movemorph will move positions
     //movemorph: the morph on screen to move. It will have an array of points as an attribute to move around the screen.
+    console.log(clickmorph);
+    clickmorph.tutorial = tutorial;
       clickmorph.mouseClickLeft =  function()
                     {
                         console.log('here');
@@ -272,9 +256,13 @@ tutorial_Morph.prototype.moveMorph = function(clickmorph, movemorph)
                                     pos = pos + 1;
                                     movemorph.moveBy(new Point(deltaxhat/25,deltayhat/25));
                                 }
-                    }      
+                    }
+              this.tutorial.transition();
+
       }      
+
 }
+
 tutorial_Morph.prototype.setPoints = function(movemorph, points)
 {
     //movemorph: morph to move across the screen.
@@ -282,45 +270,64 @@ tutorial_Morph.prototype.setPoints = function(movemorph, points)
     movemorph.potentialPoints = points;
     movemorph.index = 0; //index for the next point to move to in array of potentialPoints
 }
+
 tutorial_Morph.prototype.step = function()
 {
    
     if (this.ide.sprites.contents[0])
+    {
+        if (!this.currentState)
         {
-            if (!this.currentState)
+            this.transition();
+        }
+
+        else
+        {      
+            if (this.checkBlockState(this.ide, this.currentTransition))
             {
-                this.currentState = this.states[this.FSM.start];
-                this.currentStateIndex = this.FSM.start;
-                this.currentTransition = this.transitions[this.currentStateIndex];
-                this.updateInstructions();
-                this.display();
-            
-            }
-            else
-            {      
-                if (this.checkBlockState(this.ide, this.currentTransition))
+                this.transition();
+                //we will need to update the graphics here as well
+                //and reset the moveMorph attribute for the instruction morph
+
+                for(var i=0; i<this.goal.length; i++)
                 {
-                    this.currentStateIndex = this.currentTransition.nextState;
-                    this.currentState = this.states[this.currentStateIndex];
-                    this.currentTransition = this.transitions[this.currentStateIndex];
-            //we will need to update the graphics here as well
-            //and reset the moveMorph attribute for the instruction morph
-            
-                    this.display();
-                    for(var i=0; i<this.goal.length; i++)
-                        {
-                            if(this.currentStateIndex == this.goal[i])
-                                {
-                                    this.destroy();
-                                    return true;
-                                }
-                        }
+                    if(this.currentStateIndex == this.goal[i])
+                    {
+                        this.endTutorial();
+                        return true;
+                    }
                 }
             }
+
         }
+    }
     return false;
+};
+
+tutorial_Morph.prototype.transition = function()
+{
+    if(!this.currentState)
+    {
+        this.currentStateIndex = this.FSM.start;
+    }
+    else
+    {
+        this.currentStateIndex = this.currentTransition.nextState;
+    }
+    
+    this.currentState = this.states[this.currentStateIndex];
+    this.currentTransition = this.transitions[this.currentStateIndex];
+    
+    this.display();
+
 }
 
+tutorial_Morph.prototype.endTutorial = function()
+{
+    console.log("RIP")
+    this.instructions.destroy();
+    this.destroy();
+}
 /*
 tutorial_Morph.prototype.finalState = function(index)
 {
@@ -346,6 +353,9 @@ tutorial_Morph.prototype.pointTo= function(aMorph){
 }
 
 tutorial_Morph.prototype.display=function(){
+
+    console.log("Display")
+    this.updateInstructions();
 	var graphic,len,l,order,arg,arrow,movemorph;
     graphic=this.currentState.graphic;
     len=graphic.length;
@@ -368,19 +378,17 @@ tutorial_Morph.prototype.display=function(){
         else if (order.command == "clickMorph"){
             console.log("Click Morph State")
             arg=order.arguments;
-            console.log(arg);
+            //console.log(arg);
 			movemorph=this.returnMoveBlock(arg[0]);
-            console.log(movemorph);
+            //console.log(movemorph);
 			var pointlist=[this.returnHatBlock().position()];
 			this.setPoints(movemorph,pointlist);
-            console.log(movemorph.potentialPoints);
-			this.moveMorph(this.instructions.nextButton,movemorph);
-            console.log("logged");
+            //console.log(movemorph.potentialPoints);
+			this.moveMorph(this,this.instructions.nextButton,movemorph);
+            //console.log("logged");
         }
 		l++;	
 	}
-	arrow.destory();
-	movemorph.destory();
 	//state need to be update after the first graphic display is done for the json file level 1
 }
 

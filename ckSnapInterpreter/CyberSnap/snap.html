@@ -21,8 +21,8 @@
     		} else {
       				return this.indexOf(search, start) !== -1;
     				}
-  			};
-		}​	
+  		};
+    }	
 	</script>
 	<script type="text/javascript" src="../firebug-lite/build/firebug-lite.js#startOpened"></script>
 		<script type="text/javascript" src="morphic.js"></script>
@@ -44,6 +44,20 @@
 		<script type="text/javascript" src="tutorial.js"></script>
 
 		<script type="text/javascript">
+            //https://codepen.io/KryptoniteDove/post/load-json-file-locally-using-pure-javascript
+            function loadJSON(filename,callback) {
+                var xobj = new XMLHttpRequest();
+                xobj.overrideMimeType("application/json");
+                xobj.open('GET', filename, false);
+                xobj.onreadystatechange = function () {
+                    if (xobj.readyState == 4 && xobj.status == "0") {
+                        callback(xobj.responseText);
+                    }
+                };
+                xobj.send(null);  
+            };
+            
+            
 			var world;
 			var ide;
 
@@ -52,11 +66,23 @@
                 world.worldCanvas.focus();
 				ide = new IDE_Morph();
 			    ide.openIn(world);
-			    tutorial = new tutorial_Morph(ide,'level1.json');
-                
-			    tutorial.openIn(world);
-                //tutorial.step();
-				setInterval(loop, 1);
+			    
+                //IF YOU WANT TO READ FROM FILE USE
+                /*
+                    loadJSON("fileName.json", function(response){
+                        var stringJSON = JSON.parse(response);
+                        tutoral = new (ide, stringJSON); 
+                    });
+                */
+                //IF YOU WANT TO OPEN WITH JSON STRING
+                /*
+                    tutorial = new tutorial_Morph(ide, "string of json");
+                */
+                loadJSON("level1.json", function(response){                        
+                    tutorial = new tutorial_Morph(ide,response);
+                    tutorial.openIn(world);
+                });
+                setInterval(loop, 1);
 			};
 
 			function loop() {
