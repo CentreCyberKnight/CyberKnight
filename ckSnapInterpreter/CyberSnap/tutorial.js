@@ -209,20 +209,54 @@ tutorial_Morph.prototype.moveMorph = function(clickmorph, movemorph)
 {
     //clickmorph: the morph on screen to click. Once clicked, the movemorph will move positions
     //movemorph: the morph on screen to move. It will have an array of points as an attribute to move around the screen.
-    console.log(clickmorph);
       clickmorph.mouseClickLeft =  function()
                     {
-                    console.log("being clicked");
+                        console.log('here');
+
                         var pos = 0;
                         var point = movemorph.potentialPoints[movemorph.index];
-                        var deltax = point.x - movemorph.position().x;
-                        var deltay = point.y - movemorph.position().y;
-                        console.log(point);
-                        console.log("deltax: " + deltax + " deltay: " + deltay);
-                        id = setInterval(frame, 10);   
+                        
+                        var y = point.y + movemorph.height();
+                        var deltaxhat = point.x - movemorph.position().x;
+                        var deltayhat = y - movemorph.position().y;
+                        
+                        var spec = setInterval(upanddown, 25);
+                        var id = setInterval(frame, 25);
+                    /* for (var i = 0; i < 4; i ++)
+                            {
+                                console.log(i);
+                            var deltax = deltaxhat;
+                            var deltay = deltayhat;
+                            var spec = setInterval(frame, 50); 
+                                
+                            }*/
+                        //handle movement for the original position to the hat block
+                       
+                        function upanddown()
+                        {
+                            for (var i = 0; i < 100; i++)
+                            {
+                                console.log(i);
+                                movemorph.moveBy(new Point(0,15));
+                                
+                                movemorph.moveBy(new Point(0, -15));
+                                movemorph.moveBy(new Point(0,-15));
+                                movemorph.moveBy(new Point(0,15));
+                                
+
+                            }
+                            function move(x, y)
+                            {
+                                movemorph.moveBy(new Point(x,y));
+                            }
+                            clearInterval(spec);
+                            return null;
+                        }
+          
                         function frame() {
                                 if (pos == 25) {
                                     clearInterval(id);
+                                    pos = 0;
                                     movemorph.setPosition(point);
                                     if ((movemorph.index+1) >= (movemorph.potentialPoints.length))
                                         {
@@ -233,9 +267,10 @@ tutorial_Morph.prototype.moveMorph = function(clickmorph, movemorph)
                                     
                                     movemorph.index = movemorph.index + 1;
                                     }
+                                    
                                 } else {
                                     pos = pos + 1;
-                                    movemorph.moveBy(new Point(deltax/25,deltay/25));
+                                    movemorph.moveBy(new Point(deltaxhat/25,deltayhat/25));
                                 }
                     }      
       }      
@@ -249,8 +284,7 @@ tutorial_Morph.prototype.setPoints = function(movemorph, points)
 }
 tutorial_Morph.prototype.step = function()
 {
-    console.log(this.ide.sprites.contents[0]);
-    console.log(this.currentState);
+   
     if (this.ide.sprites.contents[0])
         {
             if (!this.currentState)
@@ -312,7 +346,6 @@ tutorial_Morph.prototype.pointTo= function(aMorph){
 }
 
 tutorial_Morph.prototype.display=function(){
-    console.log("Display")
 	var graphic,len,l,order,arg,arrow,movemorph;
     graphic=this.currentState.graphic;
     len=graphic.length;
