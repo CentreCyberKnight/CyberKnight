@@ -1,0 +1,51 @@
+{
+    "states":[
+        {
+            "graphic": [
+                {
+                    "command": "pointTo",
+                    "arguments": ["forward"]
+                }
+            ],
+            "text": "Look for where the arrow is!"
+        },
+    {
+        "graphic": [{
+            "command": "clickMorph",
+            "arguments": ["forward"]
+        }],
+        "text": "Hit next to show you how to move a block!"
+    },
+    {
+        "graphic": [{
+            "command": "moveMorph",
+            "arguments": ["forward"]
+        }],
+        "text": "Now try it for yourself!"
+    },
+    {
+        "graphic": {
+            "command":""
+        },
+        "text": ""
+    }
+    ],
+    "transitions":[
+        {
+            "nextState": 1
+        },
+    {
+        "nextState":2
+    },
+    {
+        "sprite": 0,
+        "hat": 0,
+        "path": "forward",
+        "nextState": 3
+    },
+    {
+        
+    }],
+    "goal": [3],
+    "start": 0
+}
