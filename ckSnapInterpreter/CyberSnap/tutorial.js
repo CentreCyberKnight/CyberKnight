@@ -95,6 +95,7 @@ tutorial_Morph.prototype.init = function(ide, JSONstring)
 {
     //FSM Stuff
     var FSM = JSON.parse(JSONstring);
+    console.log(FSM);
     this.FSM = FSM;
     this.states = FSM.states;
     this.transitions = FSM.transitions;
@@ -205,36 +206,16 @@ tutorial_Morph.prototype.moveMorph = function(tutorial,clickmorph, movemorph)
                         var deltayhat = y - movemorph.position().y;
                         
                         var spec = setInterval(upanddown, 25);
-                        var id = setInterval(frame, 25);
-                    /* for (var i = 0; i < 4; i ++)
-                            {
-                                console.log(i);
-                            var deltax = deltaxhat;
-                            var deltay = deltayhat;
-                            var spec = setInterval(frame, 50); 
-                                
-                            }*/
-                        //handle movement for the original position to the hat block
-                       
                         function upanddown()
                         {
-                            for (var i = 0; i < 100; i++)
-                            {
-                                console.log(i);
-                                movemorph.moveBy(new Point(0,15));
-                                
-                                movemorph.moveBy(new Point(0, -15));
-                                movemorph.moveBy(new Point(0,-15));
-                                movemorph.moveBy(new Point(0,15));
-                                
-
-                            }
+                           
+                            var id = setInterval(frame, 50);
                             function move(x, y)
                             {
                                 movemorph.moveBy(new Point(x,y));
+                                movemorph.moveBy(new Point(x, y));
                             }
                             clearInterval(spec);
-                            return null;
                         }
           
                         function frame() {
@@ -366,8 +347,10 @@ tutorial_Morph.prototype.display=function(){
 		order=graphic[l];
 		//need the user to give the block to move in Json file
 		if (order.command == "pointTo"){
+            console.log("in pointTo");
 			arg=order.arguments;
-			arrow=this.pointTo(arg);
+            var point = this.returnMoveBlock(arg[0]);
+			arrow=this.pointTo(point);
 			this.add(arrow);
 						
 		}

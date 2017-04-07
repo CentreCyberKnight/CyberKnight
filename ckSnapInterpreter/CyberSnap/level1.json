@@ -1,5 +1,14 @@
 {
     "states":[
+        {
+            "graphic": [
+                {
+                    "command": "pointTo",
+                    "arguments": ["forward"]
+                }
+            ],
+            "text": "Look for where the arrow is!"
+        },
     {
         "graphic": [{
             "command": "clickMorph",
@@ -22,18 +31,21 @@
     }
     ],
     "transitions":[
+        {
+            "nextState": 1
+        },
     {
-        "nextState":1  
+        "nextState":2
     },
     {
         "sprite": 0,
         "hat": 0,
         "path": "forward",
-        "nextState": 2
+        "nextState": 3
     },
     {
         
     }],
-    "goal": [2],
+    "goal": [3],
     "start": 0
 }

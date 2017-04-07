@@ -63,7 +63,7 @@ public class GameApplication extends Application implements GameCompletionListen
 		Scene scene = new Scene(chooseLevel,760,430);
 		scene.getStylesheets().add("ckSnapInterpreter/cyberknight_intro.css");
 		stage.setScene(scene);
-		stage.show();
+		stage.show();	
 		
 		
 		
