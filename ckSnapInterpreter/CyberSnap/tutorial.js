@@ -5,33 +5,33 @@ var Instruct_Morph;
 var tutorial_Morph;
 
 //Arrow Morph
-Arrow.prototype=new Morph();
+Arrow.prototype = new Morph();
 Arrow.prototype.constructor = Arrow;
 Arrow.uber = Morph.prototype;
 
-function Arrow(height,width,color){
-    this.init(height,width,color);
+function Arrow(height, width, color){
+    this.init(height, width, color);
 };
 
-Arrow.prototype.init=function(height,width,color){
+Arrow.prototype.init = function(height, width, color){
 	Arrow.uber.init.call(this);
-	this.height=height;
-	this.width=width;
-    	this.bounds=new Rectangle(0,0,width,height);
+	this.height = height;
+	this.width = width;
+    	this.bounds = new Rectangle(0, 0, width, height);
     	this.setColor(color);
 };
 
-Arrow.prototype.drawNew=function(){
-    var context,start,top,bottom;
+Arrow.prototype.drawNew = function(){
+    var context, start, top, bottom;
     
     this.image = newCanvas(this.extent());
     context = this.image.getContext('2d');
     
-    start=this.bounds.leftCenter();
-    top=this.bounds.topRight();
-    bottom=this.bounds.bottomRight();
+    start = this.bounds.leftCenter();
+    top = this.bounds.topRight();
+    bottom = this.bounds.bottomRight();
 
-    context.fillStyle=this.color.toString();
+    context.fillStyle = this.color.toString();
 
     context.beginPath();
     context.moveTo(start.x,start.y);
@@ -72,7 +72,6 @@ Instruct_Morph.prototype.init = function(text){
 
 //Tutorial Morph
 
-
 tutorial_Morph.prototype = new ShadowMorph();
 tutorial_Morph.prototype.constructor = tutorial_Morph;
 tutorial_Morph.uber = ShadowMorph.prototype;
@@ -82,16 +81,7 @@ function tutorial_Morph(ide, JSONstring, world)
     console.log(JSONstring);
     this.init(ide, JSONstring, world);                                         
 }
-/*
-tutorial_Morph.prototype.readFile = function(fileName)
-{
-    loadJSON(fileName,function(response) {
-        // Parse JSON string into object
-        var actual_JSON = JSON.parse(response);
-        return actual_JSON;
-    });
-}
-*/
+
 tutorial_Morph.prototype.init = function(ide, JSONstring, world)
 {
     //FSM Stuff
@@ -192,59 +182,48 @@ tutorial_Morph.prototype.checkBlockState = function(ide,transition)
     return found; 
 }
 
-tutorial_Morph.prototype.moveMorph = function(tutorial,clickmorph, movemorph)
+function moveAnimation(movemorph){
+    console.log("Move Animation");
+    var pos = 0;
+    var currX = movemorph.position().x;
+    var currY = movemorph.position().y;
+    if(currX < movemorph.dest.x){
+        var dx = movemorph.speed.x;
+    }
+
+    if(currY < movemorph.dest.y){
+        var dy = movemorph.speed.y;
+    }
+    //console.log(currX, movemorph.dest.x, currY, mov)
+    if(Math.abs(currX-movemorph.dest.x)<0.0001 && Math.abs(currY - movemorph.dest.y) < 0.0001){
+        movemorph.destroy();
+    }
+    movemorph.moveBy(new Point(dx, dy));
+}
+
+tutorial_Morph.prototype.moveMorph = function(tutorial, clickmorph, movemorph, duration)
 {
     //clickmorph: the morph on screen to click. Once clicked, the movemorph will move positions
     //movemorph: the morph on screen to move. It will have an array of points as an attribute to move around the screen.
     console.log(clickmorph);
     clickmorph.tutorial = tutorial;
-      clickmorph.mouseClickLeft =  function()
-                    {
-                        console.log('here');
-
-                        var pos = 0;
-                        var point = movemorph.potentialPoints[movemorph.index];
+    clickmorph.mouseClickLeft =  function()
+    {
                         
-                        var y = point.y + movemorph.height();
-                        var deltaxhat = point.x - movemorph.position().x;
-                        var deltayhat = y - movemorph.position().y;
-                        
-                        var spec = setInterval(upanddown, 25);
-                        function upanddown()
-                        {
-                           
-                            var id = setInterval(frame, 50);
-                            function move(x, y)
-                            {
-                                movemorph.moveBy(new Point(x,y));
-                                movemorph.moveBy(new Point(x, y));
-                            }
-                            clearInterval(spec);
-                        }
-          
-                        function frame() {
-                                if (pos == 25) {
-                                    clearInterval(id);
-                                    pos = 0;
-                                    movemorph.setPosition(point);
-                                    if ((movemorph.index+1) >= (movemorph.potentialPoints.length))
-                                        {
-                                            
-                                            movemorph.index = 0;
-                                        }
-                                    else{
-                                    
-                                    movemorph.index = movemorph.index + 1;
-                                    }
-                                    
-                                } else {
-                                    pos = pos + 1;
-                                    movemorph.moveBy(new Point(deltaxhat/25,deltayhat/25));
-                                }
-                    }
-              this.tutorial.transition();
-
-      }      
+        console.log('click function');
+        var dest = movemorph.potentialPoints[movemorph.index];
+        dest.y = dest.y + movemorph.height()*2;
+        var speedX = (dest.x - movemorph.position().x)/duration;
+        var speedY = (dest.y - movemorph.position().y)/duration;
+        movemorph.dest = dest;
+        movemorph.speed = {x:speedX,y:speedY};
+        console.log(movemorph.speed);
+        //movemorph.fps = 1;
+        
+        movemorph.step = function(){
+            return moveAnimation( movemorph )
+        };
+    }      
 
 }
 
@@ -374,7 +353,7 @@ tutorial_Morph.prototype.display=function(){
 			var pointlist=[this.returnHatBlock().position()];
 			this.setPoints(movemorph,pointlist);
             //console.log(movemorph.potentialPoints);
-			this.moveMorph(this,this.instructions.nextButton,movemorph);
+			this.moveMorph(this,this.instructions.nextButton,movemorph,50);
             //console.log("logged");
         }
 		l++;	
