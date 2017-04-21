@@ -67,6 +67,24 @@ Instruct_Morph.prototype.init = function(text){
 }
 
 
+//-----------------------------------------------------
+/*Animation_Morph.prototype = new Morph();
+Animation_Morph.prototype.constructor = Animation_Morph;
+Animation_Morph.uber = Morph.prototype;
+
+function Animation_Morph(type, args){
+    this.init(type, agrs);
+}
+
+Animation_Morph.prototype.init = function(type, agrs){
+    this.type = type;
+    this.duration = args[0];
+    this.target = args[1];
+    this.dest = args[2];
+    if(this.type == "move"){
+        this.action = 
+    }
+}*/
 
 //-----------------------------------------------------
 
@@ -153,7 +171,6 @@ tutorial_Morph.prototype.returnMoveBlock = function(direction)
                     return returner;
                 }
         }
-    console.log("I didn't crash!!!");
     return null;
 }
 //This function checks the state of a specific hat block corresponding to a specific sprite
@@ -183,8 +200,7 @@ tutorial_Morph.prototype.checkBlockState = function(ide,transition)
 }
 
 function moveAnimation(movemorph){
-    console.log("Move Animation");
-    var pos = 0;
+    //console.log("Move Animation");
     var currX = movemorph.position().x;
     var currY = movemorph.position().y;
     if(currX < movemorph.dest.x){
@@ -196,9 +212,26 @@ function moveAnimation(movemorph){
     }
     //console.log(currX, movemorph.dest.x, currY, mov)
     if(Math.abs(currX-movemorph.dest.x)<0.0001 && Math.abs(currY - movemorph.dest.y) < 0.0001){
-        movemorph.destroy();
+        console.log("I am donezo");
+        movemorph.tutorial.animationDone = true;
+        console.log(this);
+        movemorph.step = null;
     }
     movemorph.moveBy(new Point(dx, dy));
+}
+
+function setUpMove(movemorph,duration)
+{
+    var dest = movemorph.potentialPoints[movemorph.index];
+    dest.y = dest.y + movemorph.height()+5;
+    var speedX = (dest.x - movemorph.position().x)/duration;
+    var speedY = (dest.y - movemorph.position().y)/duration;
+    movemorph.dest = dest;
+    movemorph.speed = {x:speedX,y:speedY};
+    
+    movemorph.step = function(){
+        return moveAnimation(movemorph);
+    }
 }
 
 tutorial_Morph.prototype.moveMorph = function(tutorial, clickmorph, movemorph, duration)
@@ -206,27 +239,21 @@ tutorial_Morph.prototype.moveMorph = function(tutorial, clickmorph, movemorph, d
     //clickmorph: the morph on screen to click. Once clicked, the movemorph will move positions
     //movemorph: the morph on screen to move. It will have an array of points as an attribute to move around the screen.
     console.log(clickmorph);
-    clickmorph.tutorial = tutorial;
+    movemorph.tutorial = tutorial;
     clickmorph.mouseClickLeft =  function()
     {
-                        
-        console.log('click function');
-        var dest = movemorph.potentialPoints[movemorph.index];
-        dest.y = dest.y + movemorph.height()*2;
-        var speedX = (dest.x - movemorph.position().x)/duration;
-        var speedY = (dest.y - movemorph.position().y)/duration;
-        movemorph.dest = dest;
-        movemorph.speed = {x:speedX,y:speedY};
-        console.log(movemorph.speed);
-        //movemorph.fps = 1;
-        
-        movemorph.step = function(){
-            return moveAnimation( movemorph )
-        };
+        setUpMove(movemorph,duration);
     }      
 
 }
-
+/*
+tutorial_Morph.prototype.animate = function(type, args){
+    if(type == "moveMorph")
+        {
+            
+        }
+}
+*/
 tutorial_Morph.prototype.setPoints = function(movemorph, points)
 {
     //movemorph: morph to move across the screen.
@@ -248,8 +275,9 @@ tutorial_Morph.prototype.step = function()
 
         else
         {      
-            if (this.checkBlockState(this.ide, this.currentTransition))
+            if (this.checkBlockState(this.ide, this.currentTransition) || this.animationDone)
             {
+                this.animationDone = false;
                 this.transition();
                 //we will need to update the graphics here as well
                 //and reset the moveMorph attribute for the instruction morph
@@ -263,6 +291,7 @@ tutorial_Morph.prototype.step = function()
                     }
                 }
             }
+            
 
         }
     }
@@ -350,7 +379,7 @@ tutorial_Morph.prototype.display=function(){
             //console.log(arg);
 			movemorph=this.returnMoveBlock(arg[0]);
             //console.log(movemorph);
-			var pointlist=[this.returnHatBlock().position()];
+			var pointlist=[this.returnHatBlock().position(),new Point(100,100)];
 			this.setPoints(movemorph,pointlist);
             //console.log(movemorph.potentialPoints);
 			this.moveMorph(this,this.instructions.nextButton,movemorph,50);
