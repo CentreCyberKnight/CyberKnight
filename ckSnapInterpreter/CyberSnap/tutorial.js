@@ -68,23 +68,88 @@ Instruct_Morph.prototype.init = function(text){
 
 
 //-----------------------------------------------------
-/*Animation_Morph.prototype = new Morph();
+    
+function moveAnimation(movemorph, dest, tutorial){
+    var currX = movemorph.position().x;
+    var currY = movemorph.position().y;
+    if(currX < dest.x){
+        var dx = movemorph.speed.x;
+    }
+
+    if(currY < dest.y){
+        var dy = movemorph.speed.y;
+    }
+    //console.log(currX, movemorph.dest.x, currY, mov)
+    if(Math.abs(currX-dest.x)<0.0001 && Math.abs(currY - dest.y) < 0.0001){
+        //console.log("I am donezo");
+        tutorial.nextAnimation();
+        movemorph.destroy();
+    }
+    movemorph.moveBy(new Point(dx, dy));
+}
+
+function bounceAnimation(movemorph, tutorial){
+    if(movemorph.count <= movemorph.maxCount){
+        // Based on d/dt ( Math.exp(-0.9*t) * Math.sin(0.5*movemorph.count) )
+        // Needs some work  Desmos : -10e^{-.09x}\cdot \sin \left(.5x\right)
+        var newY = -10*(-0.9 * Math.exp(-.09*movemorph.count) * Math.sin(.5*movemorph.count) + 0.5* Math.exp(-.09*movemorph.count) * Math.cos(.5*movemorph.count));
+        movemorph.moveBy(new Point(0,newY));
+        movemorph.count += 1;
+    }
+    else{
+        tutorial.nextAnimation();
+        movemorph.destroy();
+    }
+}
+
+Animation_Morph.prototype = new Morph();
 Animation_Morph.prototype.constructor = Animation_Morph;
 Animation_Morph.uber = Morph.prototype;
 
-function Animation_Morph(type, args){
-    this.init(type, agrs);
+function Animation_Morph(tutorial, type, duration, target, destination ){
+    this.init(tutorial, type, duration, target, destination);
 }
 
-Animation_Morph.prototype.init = function(type, agrs){
+Animation_Morph.prototype.init = function(tutorial, type, duration, target, destination){
+    //console.log("LETS DO SOME ANIMATIONS");
+    this.tutorial = tutorial;
     this.type = type;
-    this.duration = args[0];
-    this.target = args[1];
-    this.dest = args[2];
+    this.duration = duration;
+    this.target = target;
+    this.dest = destination;
+    var me = this;
     if(this.type == "move"){
-        this.action = 
+        this.setUpMove();
+        this.action = function(){
+            moveAnimation(me.target,me.dest,me.tutorial)
+        };
+        //this.action = function(){console.log("move")};
     }
-}*/
+    if(this.type == "bounce"){
+        this.setUpBounce();
+        this.action = function(){
+            bounceAnimation(me.target,me.tutorial);
+        }
+    }
+}
+
+Animation_Morph.prototype.setUpMove = function(){
+    this.dest.y = this.dest.y + this.target.height()+5;
+    var speedX = (this.dest.x - this.target.position().x)/this.duration;
+    var speedY = (this.dest.y - this.target.position().y)/this.duration;
+    this.target.speed = {x:speedX,y:speedY};
+}
+
+Animation_Morph.prototype.setUpBounce = function(){
+    this.target.count = 0;
+    this.target.fps = 20;
+    this.target.maxCount = this.duration*this.target.fps/100;
+    //console.log(this.target.maxCount);
+}
+
+Animation_Morph.prototype.animate = function(){
+    this.target.step = this.action;
+}
 
 //-----------------------------------------------------
 
@@ -94,23 +159,19 @@ tutorial_Morph.prototype = new ShadowMorph();
 tutorial_Morph.prototype.constructor = tutorial_Morph;
 tutorial_Morph.uber = ShadowMorph.prototype;
 
-function tutorial_Morph(ide, JSONstring, world)
-{
-    console.log(JSONstring);
+function tutorial_Morph(ide, JSONstring, world){
     this.init(ide, JSONstring, world);                                         
 }
 
-tutorial_Morph.prototype.init = function(ide, JSONstring, world)
-{
-    //FSM Stuff
-    //var FSM = JSON.parse(JSONstring);
+tutorial_Morph.prototype.init = function(ide, JSONstring, world){
     var FSM = JSONstring;
-    console.log(FSM);
+    //console.log(FSM);
     this.FSM = FSM;
     this.states = FSM.states;
     this.transitions = FSM.transitions;
     this.goal = FSM.goal;
-   
+    this.currentAnimations = [];
+    this.animationIndex = 0;
     
     this.ide = ide;
     
@@ -119,10 +180,12 @@ tutorial_Morph.prototype.init = function(ide, JSONstring, world)
     this.ide.parent.add(this.instructions);
     
     this.fps = .5;
-    console.log(world);
+    //console.log(world);
     world.add(this);
     this.reactToWorldResize(world.bounds);
-    console.log("Set up tutorial")
+    //console.log("Set up tutorial")
+    
+    this.transition();
 }
 
 tutorial_Morph.prototype.openIn = function(world)
@@ -161,10 +224,9 @@ tutorial_Morph.prototype.returnMoveBlock = function(direction)
     //console.log(blocks);
     for (var i = 0; i < blocks.length; i++)
         {
-            console.log(blocks[i].blockSpec);
+            //console.log(blocks[i].blockSpec);
             if (blocks[i].blockSpec == direction)
                 {
-                    console.log("in the loop: found match")
                     var returner = blocks[i].fullCopy();
                     returner.alpha = .5;
                     this.ide.add(returner);
@@ -176,84 +238,28 @@ tutorial_Morph.prototype.returnMoveBlock = function(direction)
 //This function checks the state of a specific hat block corresponding to a specific sprite
 // TODO:
 //     - Add functionality for selecting hat/sprite - index or name
-tutorial_Morph.prototype.checkBlockState = function(ide,transition)
+tutorial_Morph.prototype.checkBlockState = function()
 {
     var found = false;
-    if(transition){
-        var sprite = ide.sprites.contents[0];//<- this is where the sprite is selected
-        if(sprite)
-        {
-            var hatBlock = sprite.scripts.children[0];//<- this is where the hat is selected
-            hatBlock.children.forEach(
-                function(child){
-                if (child instanceof CommandBlockMorph){
-                    if (child.blockSpec == transition.path)
-                    {
-                        found = true;
-                    }
+    var sprite = this.ide.sprites.contents[0];//<- this is where the sprite is selected
+    var path = this.currentState.path
+    if(sprite)
+    {
+        var hatBlock = sprite.scripts.children[0];//<- this is where the hat is selected
+        hatBlock.children.forEach(
+            function(child){
+            if (child instanceof CommandBlockMorph){
+                if (child.blockSpec == path)
+                {
+                    found = true;
                 }
-            });
-        }  
-    }
+            }
+        });
+    }  
     
     return found; 
 }
 
-function moveAnimation(movemorph){
-    //console.log("Move Animation");
-    var currX = movemorph.position().x;
-    var currY = movemorph.position().y;
-    if(currX < movemorph.dest.x){
-        var dx = movemorph.speed.x;
-    }
-
-    if(currY < movemorph.dest.y){
-        var dy = movemorph.speed.y;
-    }
-    //console.log(currX, movemorph.dest.x, currY, mov)
-    if(Math.abs(currX-movemorph.dest.x)<0.0001 && Math.abs(currY - movemorph.dest.y) < 0.0001){
-        console.log("I am donezo");
-        movemorph.tutorial.animationDone = true;
-        console.log(this);
-        movemorph.step = null;
-    }
-    movemorph.moveBy(new Point(dx, dy));
-}
-
-function setUpMove(movemorph,duration)
-{
-    var dest = movemorph.potentialPoints[movemorph.index];
-    dest.y = dest.y + movemorph.height()+5;
-    var speedX = (dest.x - movemorph.position().x)/duration;
-    var speedY = (dest.y - movemorph.position().y)/duration;
-    movemorph.dest = dest;
-    movemorph.speed = {x:speedX,y:speedY};
-    
-    movemorph.step = function(){
-        return moveAnimation(movemorph);
-    }
-}
-
-tutorial_Morph.prototype.moveMorph = function(tutorial, clickmorph, movemorph, duration)
-{
-    //clickmorph: the morph on screen to click. Once clicked, the movemorph will move positions
-    //movemorph: the morph on screen to move. It will have an array of points as an attribute to move around the screen.
-    console.log(clickmorph);
-    movemorph.tutorial = tutorial;
-    clickmorph.mouseClickLeft =  function()
-    {
-        setUpMove(movemorph,duration);
-    }      
-
-}
-/*
-tutorial_Morph.prototype.animate = function(type, args){
-    if(type == "moveMorph")
-        {
-            
-        }
-}
-*/
 tutorial_Morph.prototype.setPoints = function(movemorph, points)
 {
     //movemorph: morph to move across the screen.
@@ -264,74 +270,44 @@ tutorial_Morph.prototype.setPoints = function(movemorph, points)
 
 tutorial_Morph.prototype.step = function()
 {
-   console.log("here");
-    console
-    if (this.ide.sprites.contents[0])
+    if(this.currentState.type == "block")
     {
-        if (!this.currentState)
-        {
-            this.transition();
-        }
-
-        else
-        {      
-            if (this.checkBlockState(this.ide, this.currentTransition) || this.animationDone)
+        //console.log("here");
+        if (this.ide.sprites.contents[0])
+        {     
+            //console.log("here1")
+            if (this.checkBlockState())
             {
-                this.animationDone = false;
+                //console.log("here2")
                 this.transition();
-                //we will need to update the graphics here as well
-                //and reset the moveMorph attribute for the instruction morph
-
-                for(var i=0; i<this.goal.length; i++)
-                {
-                    if(this.currentStateIndex == this.goal[i])
-                    {
-                        this.endTutorial();
-                        return true;
-                    }
-                }
             }
-            
-
         }
     }
-    return false;
 };
 
-tutorial_Morph.prototype.transition = function()
-{
-    if(!this.currentState)
-    {
+tutorial_Morph.prototype.transition = function(){
+    if(!this.currentState){
         this.currentStateIndex = this.FSM.start;
     }
-    else
-    {
+    else{
         this.currentStateIndex = this.currentTransition.nextState;
     }
     
     this.currentState = this.states[this.currentStateIndex];
     this.currentTransition = this.transitions[this.currentStateIndex];
     
-    this.display();
-
+    if(this.currentState.type == "goal"){
+        this.endTutorial();
+    }
+    this.enterState();
 }
 
-tutorial_Morph.prototype.endTutorial = function()
-{
-    console.log("RIP");
+tutorial_Morph.prototype.endTutorial = function(){
+    //console.log("RIP");
     this.instructions.destroy();
     this.destroy();
     tutorialDone.notifyDone();
 }
-/*
-tutorial_Morph.prototype.finalState = function(index)
-{
-    if (this.currentStateIndex == this.finalStateIndex)
-        {
-            return true;
-        }
-    return false;
-}*/
 
 tutorial_Morph.prototype.pointTo= function(aMorph){
 	//amorph: the morph to be pointed at 
@@ -347,51 +323,64 @@ tutorial_Morph.prototype.pointTo= function(aMorph){
 	return arrow;
 }
 
-tutorial_Morph.prototype.display=function(){
-
-    console.log("Display")
+tutorial_Morph.prototype.enterState = function(){
     this.updateInstructions();
-	var graphic,len,l,order,arg,arrow,movemorph;
-    graphic=this.currentState.graphic;
-    len=graphic.length;
-	l=0;
-	
+    if(this.currentState.type == "animate"){
+        this.setUpGraphics();
+    }
+    else if(this.currentState.type == "click"){
+        //console.log("Click State");
+        var me = this
+        this.instructions.nextButton.mouseClickLeft = function(){
+            me.transition();
+            //console.log(this);
+            this.mouseClickLeft = null;
+        };
+    }/*
+    else if(this.currentState.type == "block"){
+        //console.log("Block State");
+    }*/
+}
+
+tutorial_Morph.prototype.setUpGraphics = function(){
+    //console.log("Display")
+	var currStateGraphics, len, l, order, args, arrow, movemorph;
+    currStateGraphics = this.currentState.graphic;
+    len = currStateGraphics.length;
+	l = 0;
+	var type, duration, tempDest, target, destination,currGraphic;
+    this.animationIndex = 0;
 	//let graphics be an array, each command is an element
 	while (l < len){
-		order=graphic[l];
-		//need the user to give the block to move in Json file
-		if (order.command == "pointTo"){
-            console.log("in pointTo");
-			arg=order.arguments;
-            var point = this.returnMoveBlock(arg[0]);
-			arrow=this.pointTo(point);
-			this.add(arrow);
-            this.transition();
-						
-		}
-		//need the user to set potentialpoints in JSon file
-		else if (order.command == "moveMorph"){
-            console.log("Morph moved");
-		}
-        else if (order.command == "clickMorph"){
-            console.log("Click Morph State")
-            arg=order.arguments;
-            //console.log(arg);
-			movemorph=this.returnMoveBlock(arg[0]);
-            //console.log(movemorph);
-			var pointlist=[this.returnHatBlock().position(),new Point(100,100)];
-			this.setPoints(movemorph,pointlist);
-            //console.log(movemorph.potentialPoints);
-			this.moveMorph(this,this.instructions.nextButton,movemorph,50);
-            //console.log("logged");
+		currGraphic = currStateGraphics[l];
+        type = currGraphic.command;
+        args = currGraphic.arguments;
+        duration = args[0];
+        target = this.returnMoveBlock(args[1]);
+        if(type == "move"){
+            tempDest = this.returnHatBlock().position();
         }
-		l++;	
+        destination = new Point(tempDest.x,tempDest.y);
+        //console.log(destination);
+        this.currentAnimations.push(new Animation_Morph(this,type,duration,target,destination));
+        l++;
 	}
+    this.currentAnimations[this.animationIndex].animate();
 	//state need to be update after the first graphic display is done for the json file level 1
 }
 
+tutorial_Morph.prototype.nextAnimation = function(){
+    if(this.animationIndex == this.currentAnimations.length-1){
+            this.transition();
+        }
+    else{
+        this.animationIndex++;
+        this.currentAnimations[this.animationIndex].animate();
+    }
+}
+
 tutorial_Morph.prototype.updateInstructions = function(){
-    console.log("Instruction updater")
+    //console.log("Instruction updater")
     var text;
 	text=this.currentState.text;
 	
