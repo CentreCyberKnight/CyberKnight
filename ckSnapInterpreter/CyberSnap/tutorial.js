@@ -1,3 +1,7 @@
+//TODO
+//  - Handle if hat has children
+//  - Handle if statements
+
 modules.tutorial = '2017-March-21';
 
 var Arrow;
@@ -82,8 +86,8 @@ function moveAnimation(movemorph, dest, tutorial){
     //console.log(currX, movemorph.dest.x, currY, mov)
     if(Math.abs(currX-dest.x)<0.0001 && Math.abs(currY - dest.y) < 0.0001){
         //console.log("I am donezo");
-        tutorial.nextAnimation();
-        movemorph.destroy();
+        tutorial.nextAnimation(function() {movemorph.destroy()});
+        //movemorph.destroy();
     }
     movemorph.moveBy(new Point(dx, dy));
 }
@@ -92,13 +96,14 @@ function bounceAnimation(movemorph, tutorial){
     if(movemorph.count <= movemorph.maxCount){
         // Based on d/dt ( Math.exp(-0.9*t) * Math.sin(0.5*movemorph.count) )
         // Needs some work  Desmos : -10e^{-.09x}\cdot \sin \left(.5x\right)
-        var newY = -10*(-0.9 * Math.exp(-.09*movemorph.count) * Math.sin(.5*movemorph.count) + 0.5* Math.exp(-.09*movemorph.count) * Math.cos(.5*movemorph.count));
+        var newY = -10*(-0.07 * Math.exp(-.07*movemorph.count) * Math.sin(.5*movemorph.count) + 0.5* Math.exp(-.07*movemorph.count) * Math.cos(.5*movemorph.count));
         movemorph.moveBy(new Point(0,newY));
         movemorph.count += 1;
     }
     else{
         tutorial.nextAnimation();
-        movemorph.destroy();
+        movemorph.step = movemorph.oldStep;
+        movemorph.fps = 0;
     }
 }
 
@@ -134,7 +139,7 @@ Animation_Morph.prototype.init = function(tutorial, type, duration, target, dest
 }
 
 Animation_Morph.prototype.setUpMove = function(){
-    this.dest.y = this.dest.y + this.target.height()+5;
+    this.dest.y = this.dest.y + this.target.height()/2;
     var speedX = (this.dest.x - this.target.position().x)/this.duration;
     var speedY = (this.dest.y - this.target.position().y)/this.duration;
     this.target.speed = {x:speedX,y:speedY};
@@ -142,8 +147,9 @@ Animation_Morph.prototype.setUpMove = function(){
 
 Animation_Morph.prototype.setUpBounce = function(){
     this.target.count = 0;
-    this.target.fps = 20;
+    this.target.fps = 30;
     this.target.maxCount = this.duration*this.target.fps/100;
+    this.target.oldStep = this.target.step;
     //console.log(this.target.maxCount);
 }
 
@@ -227,10 +233,7 @@ tutorial_Morph.prototype.returnMoveBlock = function(direction)
             //console.log(blocks[i].blockSpec);
             if (blocks[i].blockSpec == direction)
                 {
-                    var returner = blocks[i].fullCopy();
-                    returner.alpha = .5;
-                    this.ide.add(returner);
-                    return returner;
+                    return blocks[i];
                 }
         }
     return null;
@@ -303,7 +306,7 @@ tutorial_Morph.prototype.transition = function(){
 }
 
 tutorial_Morph.prototype.endTutorial = function(){
-    //console.log("RIP");
+    console.log("RIP");
     this.instructions.destroy();
     this.destroy();
     tutorialDone.notifyDone();
@@ -356,21 +359,34 @@ tutorial_Morph.prototype.setUpGraphics = function(){
         type = currGraphic.command;
         args = currGraphic.arguments;
         duration = args[0];
-        target = this.returnMoveBlock(args[1]);
+        
         if(type == "move"){
-            tempDest = this.returnHatBlock().position();
+            target = this.returnMoveBlock(args[1]).fullCopy();
+            target.alpha = .5;
+            this.ide.add(target);
+            var hat = this.returnHatBlock();
+            tempDest = hat.position();
+            destination = new Point(tempDest.x,tempDest.y+hat.height()/2);
         }
-        destination = new Point(tempDest.x,tempDest.y);
+        else if(type == "bounce"){
+            target = this.returnMoveBlock(args[1]);        
+        }
+        
         //console.log(destination);
-        this.currentAnimations.push(new Animation_Morph(this,type,duration,target,destination));
+        this.currentAnimations.push(new Animation_Morph(this, type, duration, target, destination));
         l++;
 	}
     this.currentAnimations[this.animationIndex].animate();
 	//state need to be update after the first graphic display is done for the json file level 1
 }
 
-tutorial_Morph.prototype.nextAnimation = function(){
-    if(this.animationIndex == this.currentAnimations.length-1){
+tutorial_Morph.prototype.nextAnimation = function(callBack){
+    if(callBack){
+        callBack();
+    }
+    if(this.animationIndex == this.currentAnimations.length - 1){
+            this.animationIndex = 0;
+            this.currentAnimations = [];
             this.transition();
         }
     else{
@@ -384,8 +400,7 @@ tutorial_Morph.prototype.updateInstructions = function(){
     var text;
 	text=this.currentState.text;
 	
-	this.instructions.text.text=text;
-    
+	this.instructions.text.text = text;
 
 	this.instructions.text.changed();
     
