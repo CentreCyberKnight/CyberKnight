@@ -1,0 +1,70 @@
+{
+    "states":[
+    {
+    		"type":"click",
+ 			"text":"click to start the tutorial"
+    	},
+    {	"type":"animate",
+        "graphic": [{
+            "command":"move",
+            "arguments": ["if %b %c"]
+        },
+        {
+            "command": "move",
+            "arguments": ["%aim_var is chocolate"]
+        },
+        {
+            "command":"move",
+            "arguments":["drink at %aim_var %spellResults"]
+        }
+        ],
+        "text": "if statement can help you to find out if the milkshake is chocolate, fill the if statement with is chocolate"
+    },
+    {
+    	"type":"click",
+    	"text":"try it yourself"
+    },
+    {	"type":"block",
+        "sprite": 0,
+        "hat": 0,
+        "path": "if %b %c",
+        "text": "checking...."
+    },
+    {
+    	"type": "block",
+         	"sprite": 0,
+         	"hat": 0,
+         	"path": "%aim_var is chocolate",
+         	"text": "checking...."
+    }
+    {	"type": "block",
+        "sprite": 0,
+        "hat": 0,
+        "path": "drink at %aim_var %spellResults",
+        "text": "checking...."
+    },
+	{
+	"type":"goal"		
+	}
+    ],
+    "transitions":[{
+        "nextState": 1
+    },
+    {
+        "nextState": 2
+    },
+    {
+        "nextState": 3
+        },
+    {
+        "nextState": 4
+    },
+        {
+        "nextState": 5
+        }
+	{
+	"nextState":6
+	}
+    ],
+    "start": 0
+}
