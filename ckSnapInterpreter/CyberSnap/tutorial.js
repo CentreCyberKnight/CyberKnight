@@ -106,7 +106,20 @@ function bounceAnimation(movemorph, tutorial){
         movemorph.fps = 0;
     }
 }
-
+function paletteChange(target, tutorial)
+{
+    console.log("target: " +  target);
+    var categories = tutorial.ide.categories.children;
+    
+    for (var i = 0; i < categories.length; i++)
+        {
+            if (categories[i].children[0].text == target)
+                {
+                    categories[i].mouseClickLeft();
+                }
+            console.log(categories[i].children[0].text);
+        }
+}
 Animation_Morph.prototype = new Morph();
 Animation_Morph.prototype.constructor = Animation_Morph;
 Animation_Morph.uber = Morph.prototype;
@@ -130,14 +143,23 @@ Animation_Morph.prototype.init = function(tutorial, type, duration, target, dest
         };
         //this.action = function(){console.log("move")};
     }
-    if(this.type == "bounce"){
+    else if(this.type == "bounce"){
         this.setUpBounce();
         this.action = function(){
             bounceAnimation(me.target,me.tutorial);
         }
     }
+    else if (this.type == "palette")
+        {
+            console.log("I am here");
+            paletteChange(me.target,me.tutorial);
+            this.action = function()
+                {
+                paletteChange(me.target, me.tutorial);
+            }
+        }
 }
-
+//how to reference the palette buttons: ide.categories.children[1].children[0].text
 Animation_Morph.prototype.setUpMove = function(){
     this.dest.y = this.dest.y + this.target.height()/2;
     var speedX = (this.dest.x - this.target.position().x)/this.duration;
@@ -217,6 +239,7 @@ tutorial_Morph.prototype.returnHatBlock = function()
     
     if (this.ide.sprites.contents[0])
     {
+        console.log("here");
         return this.ide.sprites.contents[0].scripts.children[0];
     }
      null;
@@ -226,16 +249,19 @@ tutorial_Morph.prototype.returnMoveBlock = function(direction)
 {
     //will fullCopy the necessary block to move and return it.
     //Will be used with the moveMorph function
+    console.log(ide.palette.children);
     var blocks = ide.palette.children[0].children;
-    //console.log(blocks);
+    console.log("direction entered: " + direction);
     for (var i = 0; i < blocks.length; i++)
         {
+            console.log(blocks[i].blockSpec);
             //console.log(blocks[i].blockSpec);
             if (blocks[i].blockSpec == direction)
                 {
                     return blocks[i];
                 }
         }
+    console.log("Here");
     return null;
 }
 //This function checks the state of a specific hat block corresponding to a specific sprite
@@ -353,12 +379,15 @@ tutorial_Morph.prototype.setUpGraphics = function(){
 	l = 0;
 	var type, duration, tempDest, target, destination,currGraphic;
     this.animationIndex = 0;
+    
 	//let graphics be an array, each command is an element
 	while (l < len){
 		currGraphic = currStateGraphics[l];
         type = currGraphic.command;
         args = currGraphic.arguments;
         duration = args[0];
+        console.log(type);
+        console.log(args);
         
         if(type == "move"){
             target = this.returnMoveBlock(args[1]).fullCopy();
@@ -371,7 +400,13 @@ tutorial_Morph.prototype.setUpGraphics = function(){
         else if(type == "bounce"){
             target = this.returnMoveBlock(args[1]);        
         }
-        
+        else if (type == "palette")
+            {
+                //palette will only have 1 argument
+                console.log("here");
+                target = args[0];
+                duration  = 0;
+            }
         //console.log(destination);
         this.currentAnimations.push(new Animation_Morph(this, type, duration, target, destination));
         l++;
