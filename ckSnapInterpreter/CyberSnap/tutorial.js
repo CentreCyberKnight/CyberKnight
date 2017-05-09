@@ -1,5 +1,4 @@
 //TODO
-//  - Handle if hat has children
 //  - Handle if statements
 
 modules.tutorial = '2017-March-21';
@@ -74,6 +73,7 @@ Instruct_Morph.prototype.init = function(text){
 //-----------------------------------------------------
     
 function moveAnimation(movemorph, dest, tutorial){
+    console.log("Moving!")
     var currX = movemorph.position().x;
     var currY = movemorph.position().y;
     if(currX < dest.x){
@@ -97,6 +97,7 @@ function moveAnimation(movemorph, dest, tutorial){
 }
 
 function bounceAnimation(movemorph, tutorial){
+    console.log("Bouncing!")
     if(movemorph.count <= movemorph.maxCount){
         // Based on d/dt ( Math.exp(-0.9*t) * Math.sin(0.5*movemorph.count) )
         // Needs some work  Desmos : -10e^{-.09x}\cdot \sin \left(.5x\right)
@@ -120,29 +121,23 @@ function Animation_Morph(tutorial, type, duration, target, destination ){
 }
 
 Animation_Morph.prototype.init = function(tutorial, type, duration, target, destination){
-    //console.log("LETS DO SOME ANIMATIONS");
+    console.log("LETS DO SOME ANIMATIONS");
     this.tutorial = tutorial;
     this.type = type;
     this.duration = duration;
     this.target = target;
     this.dest = destination;
-    var me = this;
     if(this.type == "move"){
-        this.setUpMove();
-        this.action = function(){
-            moveAnimation(me.hand,me.dest,me.tutorial)
-        };
+        this.setUp = this.setUpMove;
         //this.action = function(){console.log("move")};
     }
-    if(this.type == "bounce"){
-        this.setUpBounce();
-        this.action = function(){
-            bounceAnimation(me.target,me.tutorial);
-        }
+    else if(this.type == "bounce"){
+        this.setUp = this.setUpBounce;
     }
 }
 
 Animation_Morph.prototype.setUpMove = function(){
+    console.log("Set Up Move")
     this.hand = new HandMorph(this.tutorial.parent);
     this.hand.processMouseMove, this.hand.processTouchStart, this.hand.processTouchMove, this.hand.prcessTouchEnd, this.hand.processMouseUp, this.hand.processDoubleClick, this.hand.processDrop, this.hand.processMouseDown = null;
     this.tutorial.parent.add(this.hand);
@@ -157,17 +152,28 @@ Animation_Morph.prototype.setUpMove = function(){
         this.target.destroy();
         //this.hand.destroy();
     }
+    var me = this;
+     this.action = function(){
+            moveAnimation(me.hand,me.dest,me.tutorial)
+    };
 }
 
 Animation_Morph.prototype.setUpBounce = function(){
+    console.log("Set Up Bounce");
     this.target.count = 0;
     this.target.fps = 30;
     this.target.maxCount = this.duration*this.target.fps/100;
     this.target.oldStep = this.target.step;
+    var me = this;
+    this.action = function(){
+            bounceAnimation(me.target,me.tutorial);
+    }
     //console.log(this.target.maxCount);
 }
 
 Animation_Morph.prototype.animate = function(){
+    console.log("Animate Called")
+    this.setUp();
     this.target.step = this.action;
 }
 
