@@ -5,7 +5,8 @@
  			"text":"click to start the tutorial"
     	},
     {	"type":"animate",
-        "graphic": [{
+        "graphic": [
+        {
             "command":"move",
             "arguments": ["if %b %c"]
         },
@@ -27,22 +28,10 @@
     {	"type":"block",
         "sprite": 0,
         "hat": 0,
-        "path": "if %b %c",
+        "path": "if %b %c,%aim_var is chocolate,drink at %aim_var %spellResults",
         "text": "checking...."
     },
-    {
-    	"type": "block",
-         	"sprite": 0,
-         	"hat": 0,
-         	"path": "%aim_var is chocolate",
-         	"text": "checking...."
-    }
-    {	"type": "block",
-        "sprite": 0,
-        "hat": 0,
-        "path": "drink at %aim_var %spellResults",
-        "text": "checking...."
-    },
+
 	{
 	"type":"goal"		
 	}
@@ -58,13 +47,7 @@
         },
     {
         "nextState": 4
-    },
-        {
-        "nextState": 5
-        }
-	{
-	"nextState":6
-	}
+    }
     ],
     "start": 0
 }

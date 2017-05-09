@@ -61,12 +61,19 @@ function Instruct_Morph(text){
 }
 
 Instruct_Morph.prototype.init = function(text){
+	var next;
+	
+	next = new TextMorph("NEXT"),
     this.setWidth(300);
     this.setHeight(200);
-    this.text = new TextMorph(text);
+    this.text = new TextMorph(text,14,'sans-serif',false,false,'left',250);
+    this.text.setColor(new Color(255,255,255));
     this.add(this.text);
+    this.text.setPosition(new Point(10,10));
     this.nextButton = new BoxMorph();
     this.add(this.nextButton);
+    this.nextButton.add(next),
+    next.setPosition(new Point(10,10)),
     this.nextButton.setPosition(new Point(this.width()-this.nextButton.width(), this.height()-this.nextButton.height() ));
 }
 
@@ -83,7 +90,7 @@ function moveAnimation(movemorph, dest, tutorial){
     if(currY < dest.y){
         var dy = movemorph.speed.y;
     }
-    //console.log(currX, movemorph.dest.x, currY, mov)
+    //console.log(currX, movemorph.dest.x, currY)
     if(Math.abs(currX-dest.x)<0.0001 && Math.abs(currY - dest.y) < 0.0001){
         //console.log("I am donezo");
         movemorph.destroyTemporaries();
@@ -97,6 +104,7 @@ function moveAnimation(movemorph, dest, tutorial){
 }
 
 function bounceAnimation(movemorph, tutorial){
+	console.log(movemorph)
     if(movemorph.count <= movemorph.maxCount){
         // Based on d/dt ( Math.exp(-0.9*t) * Math.sin(0.5*movemorph.count) )
         // Needs some work  Desmos : -10e^{-.09x}\cdot \sin \left(.5x\right)
@@ -112,7 +120,7 @@ function bounceAnimation(movemorph, tutorial){
 }
 function paletteChange(target, tutorial)
 {
-    console.log("target: " +  target);
+    //console.log("target: " +  target);
     var categories = tutorial.ide.categories.children;
     
     for (var i = 0; i < categories.length; i++)
@@ -121,7 +129,7 @@ function paletteChange(target, tutorial)
                 {
                     categories[i].mouseClickLeft();
                 }
-            console.log(categories[i].children[0].text);
+            //console.log(categories[i].children[0].text);
         }
 }
 Animation_Morph.prototype = new Morph();
@@ -133,7 +141,7 @@ function Animation_Morph(tutorial, type, duration, target, destination ){
 }
 
 Animation_Morph.prototype.init = function(tutorial, type, duration, target, destination){
-    //console.log("LETS DO SOME ANIMATIONS");
+    console.log("LETS DO SOME ANIMATIONS");
     this.tutorial = tutorial;
     this.type = type;
     this.duration = duration;
@@ -145,7 +153,6 @@ Animation_Morph.prototype.init = function(tutorial, type, duration, target, dest
         this.action = function(){
             moveAnimation(me.hand,me.dest,me.tutorial)
         };
-        //this.action = function(){console.log("move")};
     }
     else if(this.type == "bounce"){
         this.setUpBounce();
@@ -165,6 +172,7 @@ Animation_Morph.prototype.init = function(tutorial, type, duration, target, dest
 }
 //how to reference the palette buttons: ide.categories.children[1].children[0].text
 Animation_Morph.prototype.setUpMove = function(){
+	
     this.hand = new HandMorph(this.tutorial.parent);
     this.hand.processMouseMove, this.hand.processTouchStart, this.hand.processTouchMove, this.hand.prcessTouchEnd, this.hand.processMouseUp, this.hand.processDoubleClick, this.hand.processDrop, this.hand.processMouseDown = null;
     this.tutorial.parent.add(this.hand);
@@ -186,7 +194,6 @@ Animation_Morph.prototype.setUpBounce = function(){
     this.target.fps = 30;
     this.target.maxCount = this.duration*this.target.fps/100;
     this.target.oldStep = this.target.step;
-    //console.log(this.target.maxCount);
 }
 
 Animation_Morph.prototype.animate = function(){
@@ -253,7 +260,7 @@ tutorial_Morph.prototype.returnHatBlock = function()
     
     if (this.ide.sprites.contents[0])
     {
-        console.log("here");
+        //console.log("here");
         return this.ide.sprites.contents[0].scripts.children[0];
     }
      null;
@@ -263,12 +270,11 @@ tutorial_Morph.prototype.returnMoveBlock = function(direction)
 {
     //will fullCopy the necessary block to move and return it.
     //Will be used with the moveMorph function
-    console.log(ide.palette.children);
+    //console.log(ide.palette.children);
     var blocks = ide.palette.children[0].children;
-    console.log("direction entered: " + direction);
+    //console.log("direction entered: " + direction);
     for (var i = 0; i < blocks.length; i++)
         {
-            console.log(blocks[i].blockSpec);
             //console.log(blocks[i].blockSpec);
             if (blocks[i].blockSpec == direction)
                 {
@@ -287,7 +293,7 @@ tutorial_Morph.prototype.checkBlockState = function()
     var done = false;
     var i = 0;
     var sprite = this.ide.sprites.contents[0];//<- this is where the sprite is selected
-    var path = this.currentState.path.split(" ");
+    var path = this.currentState.path.split(",");
     if(sprite){
         var hatBlock = sprite.scripts.children[0];//<- this is where the hat is selected
         console.log(path);
@@ -384,11 +390,10 @@ tutorial_Morph.prototype.enterState = function(){
         this.setUpGraphics();
     }
     else if(this.currentState.type == "click"){
-        //console.log("Click State");
+        console.log("Click State");
         var me = this
         this.instructions.nextButton.mouseClickLeft = function(){
             me.transition();
-            //console.log(this);
             this.mouseClickLeft = null;
         };
     }/*
@@ -437,7 +442,6 @@ tutorial_Morph.prototype.setUpGraphics = function(){
         l++;
 	}
     this.currentAnimations[this.animationIndex].animate();
-	//state need to be update after the first graphic display is done for the json file level 1
 }
 
 tutorial_Morph.prototype.cleanUpAnimations = function(){
@@ -469,10 +473,7 @@ tutorial_Morph.prototype.updateInstructions = function(){
     //console.log("Instruction updater")
     var text;
 	text=this.currentState.text;
-	
 	this.instructions.text.text = text;
-
 	this.instructions.text.changed();
-    
-	this.instructions.text.drawNew();
+    this.instructions.text.drawNew();
 }

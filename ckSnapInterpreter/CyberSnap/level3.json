@@ -2,11 +2,11 @@
     "states":[
     	{
     		"type":"click",
- 			"text":"click to start the tutorial"
+ 			"text":"click next to start the tutorial"
     	},
         {	"type":"animate",
             "graphic": [
-                {
+            	{
                     "command": "bounce",
                     "arguments": [100,"shove at %aim_var  %spellResults"]
                 },
@@ -19,14 +19,18 @@
         },
     {	
     	"type":"click",
-        "text": "Now try it yourself and select near in the input field, click the ball to kick it"
+        "text": "Now try it yourself ! select 'near' in the shove input field, you can shove at near and kick the ball.drag the block then click next."
     },
     {
     	 "type": "block",
          "sprite": 0,
          "hat": 0,
-         "path": "shove at %aim_var  %spellResult",
-         "text": "checking...."
+         "path": "shove at %aim_var  %spellResults",
+         "text": "checking"
+    },
+    {	
+    	"type":"click",
+    	"text":"hint:stand on different side next to the ball will kick the ball to different direction."
     },
     {
     	"type":"goal"
@@ -45,7 +49,11 @@
     	{
     		"nextState":4
     	},
+    	{
+    		"nextState":5
+    	},
     	{}
         ],
     "start": 0
 }
+
