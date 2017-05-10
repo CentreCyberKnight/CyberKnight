@@ -80,7 +80,6 @@ Instruct_Morph.prototype.init = function(text){
 //-----------------------------------------------------
     
 function moveAnimation(movemorph, dest, tutorial){
-    console.log("Moving!")
     var currX = movemorph.position().x;
     var currY = movemorph.position().y;
     if(currX < dest.x){
@@ -104,7 +103,7 @@ function moveAnimation(movemorph, dest, tutorial){
 }
 
 function bounceAnimation(movemorph, tutorial){
-    console.log("Bouncing!")
+    
     if(movemorph.count <= movemorph.maxCount){
         // Based on d/dt ( Math.exp(-0.9*t) * Math.sin(0.5*movemorph.count) )
         // Needs some work  Desmos : -10e^{-.09x}\cdot \sin \left(.5x\right)
@@ -122,7 +121,9 @@ function paletteChange(target, tutorial)
 {
     //console.log("target: " +  target);
     var categories = tutorial.ide.categories.children;
-    
+    console.log("Palette change being called");
+    console.log(target);
+    console.log(tutorial);
     for (var i = 0; i < categories.length; i++)
         {
             if (categories[i].children[0].text == target)
@@ -131,6 +132,8 @@ function paletteChange(target, tutorial)
                 }
             //console.log(categories[i].children[0].text);
         }
+    tutorial.nextAnimation();
+
 }
 Animation_Morph.prototype = new Morph();
 Animation_Morph.prototype.constructor = Animation_Morph;
@@ -145,7 +148,7 @@ Animation_Morph.prototype.init = function(tutorial, type, duration, target, dest
     this.tutorial = tutorial;
     this.type = type;
     this.duration = duration;
-    this.target = target;
+    this.targetString = target;
     this.dest = destination;
     if(this.type == "move"){
         this.setUp = this.setUpMove;
@@ -156,17 +159,29 @@ Animation_Morph.prototype.init = function(tutorial, type, duration, target, dest
     }
     else if (this.type == "palette")
         {
-            console.log("I am here");
-            paletteChange(me.target,me.tutorial);
-            this.action = function()
-                {
-                paletteChange(me.target, me.tutorial);
-            }
+            this.setUp = this.setupPaletteChange;
         }
 }
 //how to reference the palette buttons: ide.categories.children[1].children[0].text
+Animation_Morph.prototype.setupPaletteChange = function()
+{
+    var me = this;
+   this.action = function()
+    {
+      
+        paletteChange(me.targetString,me.tutorial);
+        this.step = null;
+       this.destroy();
+    }
+    this.tutorial.parent.add(this);
+    
+    this.target = this;
+}
 Animation_Morph.prototype.setUpMove = function(){
-    console.log("Set Up Move")
+    console.log("Set Up Move");
+    console.log(this.targetString);
+    this.target = this.tutorial.returnMoveBlock(this.targetString);
+    
     this.target = this.target.fullCopy();
     this.tutorial.ide.add(this.target);
     this.hand = new HandMorph(this.tutorial.parent);
@@ -193,21 +208,24 @@ Animation_Morph.prototype.setUpMove = function(){
 }
 
 Animation_Morph.prototype.setUpBounce = function(){
-    console.log("Set Up Bounce");
+    this.target = this.tutorial.returnMoveBlock(this.targetString);
     this.target.count = 0;
     this.target.fps = 30;
     this.target.maxCount = this.duration*this.target.fps/100;
     this.target.oldStep = this.target.step;
     var me = this;
     this.action = function(){
-            bounceAnimation(me.target,me.tutorial);
+        
+        bounceAnimation(me.target,me.tutorial);
+        
     }
     //console.log(this.target.maxCount);
 }
 
 Animation_Morph.prototype.animate = function(){
-    console.log("Animate Called")
-    this.setUp();
+    console.log("Animate Called");
+        this.setUp();
+  
     this.target.step = this.action;
 }
 
@@ -428,17 +446,15 @@ tutorial_Morph.prototype.setUpGraphics = function(){
         type = currGraphic.command;
         args = currGraphic.arguments;
         duration = args[0];
-        console.log(type);
-        console.log(args);
-        
+       
         if(type == "move"){
-            target = this.returnMoveBlock(args[1]);
+            target = args[1];
             var hat = this.returnHatBlock();
             tempDest = hat.position();
             destination = new Point(tempDest.x,tempDest.y+hat.height()/2);
         }
         else if(type == "bounce"){
-            target = this.returnMoveBlock(args[1]);        
+            target = args[1];        
         }
         else if (type == "palette")
             {
@@ -474,7 +490,7 @@ tutorial_Morph.prototype.nextAnimation = function(){
         }
     else{
         this.animationIndex++;
-        this.currentAnimations[this.animationIndex].animate();
+       console.log(this.currentAnimations[this.animationIndex]); this.currentAnimations[this.animationIndex].animate();
     }
 }
 

@@ -1,38 +1,45 @@
 {
     "states":[
-    {
-        "graphic": [{
-            "command": moveMorph,
-            "arguments": ["forward"]
-        }],
-        "text": "Click to show where to move the block!"
-    },
-    {
-        "graphic": [{
-            "command": moveMorph,
-            "arguments": ["forward"]
-        }],
-        "text": "You can even chain blocks together!!"
-    },
         {
-            "graphic": [],
-            "text": "Now try it for yourself!"
-        }
+            "type":"click",
+            "text":"You can also stack multiple blocks to make bigger scripts"
+        },
+        {
+        "type": "animate",
+        "graphic": [
+        {
+            "command": "bounce",
+            "arguments": [100, "forward"]
+        },
+        {
+            "command": "move",
+            "arguments": [100,"forward"]
+        },
+        {
+            "command":"move",
+            "arguments": [100,"forward"]
+            }],
+        "text": "You can stack blocks on top of each other"
+    },
+    {
+        "type": "block",
+        "sprite": 0,
+        "hat": 0,
+        "path": "forward,forward",
+        "text": "Try stacking two forward blocks"
+    } 
     ],
-    "transitions":[{
-        "sprite": 0,
-        "hat": 0,
-        "path": "forward",
-        "nextState": 1
-    },
-    {
-        "sprite": 0,
-        "hat": 0,
-        "path": "forward",
-        "nextState": 2
-    },
+     "transitions":[
         {
-        }],
-    "goal": 2,
+            "nextState": 1
+        },  
+        {
+            "nextState":2
+        },
+        {
+            "nextState":3
+        },
+        {}
+    ],
     "start": 0
 }
