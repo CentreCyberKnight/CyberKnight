@@ -94,8 +94,9 @@ function moveAnimation(movemorph, dest, tutorial){
         //console.log("I am donezo");
         if(!movemorph.done){
             console.log(movemorph.morphAtPointer());
-            movemorph.drop();
-            tutorial.nextAnimation();
+            if(movemorph.drop()){
+                tutorial.nextAnimation();
+            }
             movemorph.done = true;
         }
     }
@@ -136,6 +137,16 @@ function paletteChange(target, tutorial)
 
 }
 
+function waitAnimation(waitMorph, tutorial){
+    if(waitMorph.count <= waitMorph.maxCount){
+        console.log("Waiting!")
+        waitMorph.count += 1;
+    }
+    else{
+        tutorial.nextAnimation();
+        waitMorph.destroy();
+    }
+}
 
 Animation_Morph.prototype = new Morph();
 Animation_Morph.prototype.constructor = Animation_Morph;
@@ -147,6 +158,7 @@ function Animation_Morph(tutorial, type, duration, target, destination ){
 
 Animation_Morph.prototype.init = function(tutorial, type, duration, target, destination){
     console.log("LETS DO SOME ANIMATIONS");
+    console.log(type);
     this.tutorial = tutorial;
     this.type = type;
     this.duration = duration;
@@ -159,26 +171,16 @@ Animation_Morph.prototype.init = function(tutorial, type, duration, target, dest
     else if(this.type == "bounce"){
         this.setUp = this.setUpBounce;
     }
-    else if (this.type == "palette")
-        {
-            this.setUp = this.setupPaletteChange;
-        }
-}
-//how to reference the palette buttons: ide.categories.children[1].children[0].text
-Animation_Morph.prototype.setupPaletteChange = function()
-{
-    var me = this;
-   this.action = function()
-    {
-      
-        paletteChange(me.targetString,me.tutorial);
-        this.step = null;
-       this.destroy();
+    else if (this.type == "palette"){
+        this.setUp = this.setupPaletteChange;
     }
-    this.tutorial.parent.add(this);
-    
-    this.target = this;
+    else if(this.type == "wait"){
+        console.log("In here");
+        console.log(this.setUpWait);
+        this.setUp = this.setUpWait;
+    }
 }
+
 Animation_Morph.prototype.setUpMove = function(){
     console.log("Set Up Move");
     console.log(this.targetString);
@@ -220,8 +222,9 @@ Animation_Morph.prototype.setUpMove = function(){
                 target.reactToDropOf(morphToDrop, this);
             }
             this.dragOrigin = null;
+            console.log("Dropped")
+            return true;
         }
-        console.log("Dropped")
     }
     
     this.tutorial.parent.add(this.hand);
@@ -258,9 +261,40 @@ Animation_Morph.prototype.setUpBounce = function(){
     //console.log(this.target.maxCount);
 }
 
+//how to reference the palette buttons: ide.categories.children[1].children[0].text
+Animation_Morph.prototype.setupPaletteChange = function()
+{
+    var me = this;
+    this.action = function()
+    {
+      
+        paletteChange(me.targetString,me.tutorial);
+        this.step = null;
+       this.destroy();
+    }
+    this.tutorial.parent.add(this);
+    
+    this.target = this;
+}
+
+Animation_Morph.prototype.setUpWait = function(){
+    console.log("Set Up Wait")
+    this.target = this;
+    this.tutorial.parent.add(this);
+    this.target.fps = 30;
+    this.target.count = 0;
+    this.target.maxCount = this.duration;
+    var me = this;
+    this.action = function(){
+        console.log("in wait action");
+        waitAnimation(me.target, me.tutorial);
+    }
+    console.log("Wait Set Up")
+}
+
 Animation_Morph.prototype.animate = function(){
     console.log("Animate Called");
-        this.setUp();
+    this.setUp();
   
     this.target.step = this.action;
 }
@@ -526,6 +560,16 @@ tutorial_Morph.prototype.setUpGraphics = function(){
         this.currentAnimations.push(new Animation_Morph(this, type, duration, target, destination));
         l++;
 	}
+    
+    //ADD WAIT ANIMATION TO END OF ANIMATION ARRAY
+    type = "wait";
+    duration = 50;
+    target = null;
+    destination = null;
+    var wait = new Animation_Morph(this, type, duration, target, destination);
+    
+    this.currentAnimations.push(wait);
+    
     console.log(this.currentAnimations);
     this.currentAnimations[this.animationIndex].animate();
 }
