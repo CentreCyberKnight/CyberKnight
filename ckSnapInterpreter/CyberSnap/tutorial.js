@@ -167,11 +167,16 @@ Animation_Morph.prototype.init = function(tutorial, type, duration, target, dest
 //how to reference the palette buttons: ide.categories.children[1].children[0].text
 Animation_Morph.prototype.setUpMove = function(){
     console.log("Set Up Move")
+    this.target = this.target.fullCopy();
+    this.tutorial.ide.add(this.target);
     this.hand = new HandMorph(this.tutorial.parent);
+    
     this.hand.processMouseMove, this.hand.processTouchStart, this.hand.processTouchMove, this.hand.prcessTouchEnd, this.hand.processMouseUp, this.hand.processDoubleClick, this.hand.processDrop, this.hand.processMouseDown = null;
+    
     this.tutorial.parent.add(this.hand);
     this.hand.setPosition(this.target.position());
     this.hand.grab(this.target);
+    
     this.dest.y = this.dest.y + this.target.height()/2;
     var speedX = (this.dest.x - this.target.position().x)/this.duration;
     var speedY = (this.dest.y - this.target.position().y)/this.duration;
@@ -427,8 +432,7 @@ tutorial_Morph.prototype.setUpGraphics = function(){
         console.log(args);
         
         if(type == "move"){
-            target = this.returnMoveBlock(args[1]).fullCopy();
-            this.ide.add(target);
+            target = this.returnMoveBlock(args[1]);
             var hat = this.returnHatBlock();
             tempDest = hat.position();
             destination = new Point(tempDest.x,tempDest.y+hat.height()/2);
@@ -447,6 +451,7 @@ tutorial_Morph.prototype.setUpGraphics = function(){
         this.currentAnimations.push(new Animation_Morph(this, type, duration, target, destination));
         l++;
 	}
+    console.log(this.currentAnimations);
     this.currentAnimations[this.animationIndex].animate();
 }
 
@@ -458,12 +463,10 @@ tutorial_Morph.prototype.cleanUpAnimations = function(){
             }
         }
     );
+    this.currentAnimations = [];
 }
 
-tutorial_Morph.prototype.nextAnimation = function(callBack){
-    if(callBack){
-        callBack();
-    }
+tutorial_Morph.prototype.nextAnimation = function(){
     if(this.animationIndex == this.currentAnimations.length - 1){
             this.animationIndex = 0;
             this.cleanUpAnimations();
