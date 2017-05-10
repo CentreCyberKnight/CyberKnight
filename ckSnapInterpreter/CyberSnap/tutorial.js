@@ -93,12 +93,12 @@ function moveAnimation(movemorph, dest, tutorial){
     //console.log(currX, movemorph.dest.x, currY)
     if(Math.abs(currX-dest.x)<0.0001 && Math.abs(currY - dest.y) < 0.0001){
         //console.log("I am donezo");
-        movemorph.destroyTemporaries();
-        movemorph.drop();
-        movemorph.destroy();
-        tutorial.nextAnimation();//function() {movemorph.destroy()});
-        
-        //movemorph.destroy();
+        if(!movemorph.done){
+            console.log(movemorph.morphAtPointer());
+            movemorph.drop();
+            tutorial.nextAnimation();
+            movemorph.done = true;
+        }
     }
     movemorph.moveBy(new Point(dx, dy));
 }
@@ -132,6 +132,8 @@ function paletteChange(target, tutorial)
             //console.log(categories[i].children[0].text);
         }
 }
+
+
 Animation_Morph.prototype = new Morph();
 Animation_Morph.prototype.constructor = Animation_Morph;
 Animation_Morph.uber = Morph.prototype;
@@ -168,10 +170,44 @@ Animation_Morph.prototype.init = function(tutorial, type, duration, target, dest
 Animation_Morph.prototype.setUpMove = function(){
     console.log("Set Up Move")
     this.target = this.target.fullCopy();
+    
     this.tutorial.ide.add(this.target);
     this.hand = new HandMorph(this.tutorial.parent);
     
     this.hand.processMouseMove, this.hand.processTouchStart, this.hand.processTouchMove, this.hand.prcessTouchEnd, this.hand.processMouseUp, this.hand.processDoubleClick, this.hand.processDrop, this.hand.processMouseDown = null;
+    var hat = this.tutorial.returnHatBlock();
+    var tempDest = hat.position();
+    this.dest = new Point(tempDest.x,tempDest.y+hat.height()/2);
+    this.hand.dest = hat;
+        
+    this.hand.drop = function(){
+        console.log("Dropping")
+        console.log("this in drop:",this)
+        var target, morphToDrop;
+        console.log(this.children);
+        if (this.children.length !== 0) {
+            console.log(this);
+            morphToDrop = this.children[0];
+            console.log("MorphToDrop:",morphToDrop);
+            target = this.dest;
+            console.log(this.dest)
+            console.log("Target:",target);
+            this.changed();
+            target.add(morphToDrop);
+            morphToDrop.changed();
+            morphToDrop.removeShadow();
+            this.children = [];
+            this.setExtent(new Point());
+            if (morphToDrop.justDropped) {
+                morphToDrop.justDropped(this);
+            }
+            if (target.reactToDropOf) {
+                target.reactToDropOf(morphToDrop, this);
+            }
+            this.dragOrigin = null;
+        }
+        console.log("Dropped")
+    }
     
     this.tutorial.parent.add(this.hand);
     this.hand.setPosition(this.target.position());
@@ -184,7 +220,7 @@ Animation_Morph.prototype.setUpMove = function(){
     
     this.cleanUp = function(){
         this.target.destroy();
-        //this.hand.destroy();
+        this.hand.destroy();
     }
     var me = this;
      this.action = function(){
@@ -264,17 +300,40 @@ tutorial_Morph.prototype.reactToWorldResize = function (rect)
 
 tutorial_Morph.prototype.returnHatBlock = function()
 {
+    /*
     while(!this.ide.sprites.contents[0])
     {
         setInterval(null, 1000);
+    }*/
+    console.log("Hat Called");
+    var sprite = this.ide.sprites.contents[0];
+    if(sprite){
+        console.log("In Hat")
+        var hatBlock = sprite.scripts.children[0];//<- this is where the hat is selected
+        var done = false;
+        
+        while(!done){
+            found = false;
+            console.log("In Loop")
+            children = hatBlock.children;
+            for(var j = 0; j < children.length; j++){
+                var child = children[j]
+                if (child instanceof CommandBlockMorph){
+                    console.log("Block Found")
+                    found = true;
+                }
+            }
+            if(found){
+                    hatBlock = child;
+                    console.log("New Hat: ", hatBlock.blockSpec);
+            }
+            else{
+                console.log("Done")
+                done = true;
+            }
+        }
     }
-    
-    if (this.ide.sprites.contents[0])
-    {
-        //console.log("here");
-        return this.ide.sprites.contents[0].scripts.children[0];
-    }
-     null;
+    return hatBlock;
 };
 
 tutorial_Morph.prototype.returnMoveBlock = function(direction)
@@ -456,6 +515,7 @@ tutorial_Morph.prototype.setUpGraphics = function(){
 }
 
 tutorial_Morph.prototype.cleanUpAnimations = function(){
+    console.log("CLEAN UP CALLED")
     this.currentAnimations.forEach(
         function(anim){
             if(anim.cleanUp){
