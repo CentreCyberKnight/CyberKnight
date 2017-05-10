@@ -60,12 +60,19 @@ function Instruct_Morph(text){
 }
 
 Instruct_Morph.prototype.init = function(text){
+	var next;
+	
+	next = new TextMorph("NEXT"),
     this.setWidth(300);
     this.setHeight(200);
-    this.text = new TextMorph(text);
+    this.text = new TextMorph(text,14,'sans-serif',false,false,'left',250);
+    this.text.setColor(new Color(255,255,255));
     this.add(this.text);
+    this.text.setPosition(new Point(10,10));
     this.nextButton = new BoxMorph();
     this.add(this.nextButton);
+    this.nextButton.add(next),
+    next.setPosition(new Point(10,10)),
     this.nextButton.setPosition(new Point(this.width()-this.nextButton.width(), this.height()-this.nextButton.height() ));
 }
 
@@ -83,7 +90,7 @@ function moveAnimation(movemorph, dest, tutorial){
     if(currY < dest.y){
         var dy = movemorph.speed.y;
     }
-    //console.log(currX, movemorph.dest.x, currY, mov)
+    //console.log(currX, movemorph.dest.x, currY)
     if(Math.abs(currX-dest.x)<0.0001 && Math.abs(currY - dest.y) < 0.0001){
         //console.log("I am donezo");
         movemorph.destroyTemporaries();
@@ -111,7 +118,20 @@ function bounceAnimation(movemorph, tutorial){
         movemorph.fps = 0;
     }
 }
-
+function paletteChange(target, tutorial)
+{
+    //console.log("target: " +  target);
+    var categories = tutorial.ide.categories.children;
+    
+    for (var i = 0; i < categories.length; i++)
+        {
+            if (categories[i].children[0].text == target)
+                {
+                    categories[i].mouseClickLeft();
+                }
+            //console.log(categories[i].children[0].text);
+        }
+}
 Animation_Morph.prototype = new Morph();
 Animation_Morph.prototype.constructor = Animation_Morph;
 Animation_Morph.uber = Morph.prototype;
@@ -134,8 +154,17 @@ Animation_Morph.prototype.init = function(tutorial, type, duration, target, dest
     else if(this.type == "bounce"){
         this.setUp = this.setUpBounce;
     }
+    else if (this.type == "palette")
+        {
+            console.log("I am here");
+            paletteChange(me.target,me.tutorial);
+            this.action = function()
+                {
+                paletteChange(me.target, me.tutorial);
+            }
+        }
 }
-
+//how to reference the palette buttons: ide.categories.children[1].children[0].text
 Animation_Morph.prototype.setUpMove = function(){
     console.log("Set Up Move")
     this.hand = new HandMorph(this.tutorial.parent);
@@ -237,6 +266,7 @@ tutorial_Morph.prototype.returnHatBlock = function()
     
     if (this.ide.sprites.contents[0])
     {
+        //console.log("here");
         return this.ide.sprites.contents[0].scripts.children[0];
     }
      null;
@@ -246,8 +276,9 @@ tutorial_Morph.prototype.returnMoveBlock = function(direction)
 {
     //will fullCopy the necessary block to move and return it.
     //Will be used with the moveMorph function
+    //console.log(ide.palette.children);
     var blocks = ide.palette.children[0].children;
-    //console.log(blocks);
+    //console.log("direction entered: " + direction);
     for (var i = 0; i < blocks.length; i++)
         {
             //console.log(blocks[i].blockSpec);
@@ -256,6 +287,7 @@ tutorial_Morph.prototype.returnMoveBlock = function(direction)
                     return blocks[i];
                 }
         }
+
     console.log("Failed to find move block");
 }
 //This function checks the state of a specific hat block corresponding to a specific sprite
@@ -267,7 +299,7 @@ tutorial_Morph.prototype.checkBlockState = function()
     var done = false;
     var i = 0;
     var sprite = this.ide.sprites.contents[0];//<- this is where the sprite is selected
-    var path = this.currentState.path.split(" ");
+    var path = this.currentState.path.split(",");
     if(sprite){
         var hatBlock = sprite.scripts.children[0];//<- this is where the hat is selected
         console.log(path);
@@ -364,11 +396,10 @@ tutorial_Morph.prototype.enterState = function(){
         this.setUpGraphics();
     }
     else if(this.currentState.type == "click"){
-        //console.log("Click State");
+        console.log("Click State");
         var me = this
         this.instructions.nextButton.mouseClickLeft = function(){
             me.transition();
-            //console.log(this);
             this.mouseClickLeft = null;
         };
     }/*
@@ -385,12 +416,15 @@ tutorial_Morph.prototype.setUpGraphics = function(){
 	l = 0;
 	var type, duration, tempDest, target, destination,currGraphic;
     this.animationIndex = 0;
+    
 	//let graphics be an array, each command is an element
 	while (l < len){
 		currGraphic = currStateGraphics[l];
         type = currGraphic.command;
         args = currGraphic.arguments;
         duration = args[0];
+        console.log(type);
+        console.log(args);
         
         if(type == "move"){
             target = this.returnMoveBlock(args[1]).fullCopy();
@@ -402,13 +436,18 @@ tutorial_Morph.prototype.setUpGraphics = function(){
         else if(type == "bounce"){
             target = this.returnMoveBlock(args[1]);        
         }
-        
+        else if (type == "palette")
+            {
+                //palette will only have 1 argument
+                console.log("here");
+                target = args[0];
+                duration  = 0;
+            }
         //console.log(destination);
         this.currentAnimations.push(new Animation_Morph(this, type, duration, target, destination));
         l++;
 	}
     this.currentAnimations[this.animationIndex].animate();
-	//state need to be update after the first graphic display is done for the json file level 1
 }
 
 tutorial_Morph.prototype.cleanUpAnimations = function(){
@@ -440,10 +479,7 @@ tutorial_Morph.prototype.updateInstructions = function(){
     //console.log("Instruction updater")
     var text;
 	text=this.currentState.text;
-	
 	this.instructions.text.text = text;
-
 	this.instructions.text.changed();
-    
-	this.instructions.text.drawNew();
+    this.instructions.text.drawNew();
 }

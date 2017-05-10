@@ -1,35 +1,29 @@
 {
-    "states":[  
-        
-    
-        {
-        "type": "click",
-        "text": "Welcome to the tutorial. Click to see how to move blocks"
-        },
+    "states":[
         {
             "type": "animate",
             "graphic": [
                 {
-                    "command":"palette",
-                    "arguments": ["Fire"]
+                    "command": "move",
+                    "arguments": [100,"forward"]
                 },
                 {
                     "command": "bounce",
                     "arguments": [100,"forward"]
-                },
-                {
-                    "command": "move",
-                    "arguments": [100,"forward"]
                 }
             ],
-            "text": "Here is how you can move a block"
+            "text": "Testing new animations"
+        },
+        {
+            "type": "click",
+            "text": "Testing click States"
         },
         {
             "type": "block",
             "sprite": 0,
             "hat": 0,
             "path": "forward",
-            "text": "Try moving a forward block yourself"
+            "text": "testing block states"
         },
         {
             "type": "goal"
