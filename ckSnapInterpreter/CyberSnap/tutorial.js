@@ -1,5 +1,11 @@
-//TODO
-//  - Handle if statements
+/*
+
+Independent Research - CyberKnight - Spring 2017
+
+Maggie Feng, Nick Miller, and Ben Wells
+
+*/
+
 
 modules.tutorial = '2017-March-21';
 
@@ -7,7 +13,9 @@ var Arrow;
 var Instruct_Morph;
 var tutorial_Morph;
 
-//Arrow Morph
+/*
+    Arrow Morph - Currently not being used by the tutorial
+*/
 Arrow.prototype = new Morph();
 Arrow.prototype.constructor = Arrow;
 Arrow.uber = Morph.prototype;
@@ -50,7 +58,9 @@ Arrow.prototype.drawNew = function(){
 
 //-----------------------------------------------------
 
-//Instruction Morph
+/*
+    Instruction Morph - Is used for a text box with a "next" button. Instantiated by the tutorial.
+*/
 Instruct_Morph.prototype = new BoxMorph();
 Instruct_Morph.prototype.constructor = Instruct_Morph;
 Instruct_Morph.uber = BoxMorph.prototype;
@@ -78,7 +88,14 @@ Instruct_Morph.prototype.init = function(text){
 
 
 //-----------------------------------------------------
+/*
+    moveAnimation - moves a morph from current location to destinaion
     
+    Parameters:
+        movemorph - the morph you want to move, movemorph needs speed defined (see setUpMove)
+        dest - a Point object where you want to move to
+        tutorial - the tutorial object
+*/
 function moveAnimation(movemorph, dest, tutorial){
     var currX = movemorph.position().x;
     var currY = movemorph.position().y;
@@ -89,9 +106,7 @@ function moveAnimation(movemorph, dest, tutorial){
     if(currY < dest.y){
         var dy = movemorph.speed.y;
     }
-    //console.log(currX, movemorph.dest.x, currY)
     if(Math.abs(currX-dest.x)<0.0001 && Math.abs(currY - dest.y) < 0.0001){
-        //console.log("I am donezo");
         if(!movemorph.done){
             console.log(movemorph.morphAtPointer());
             if(movemorph.drop()){
@@ -103,8 +118,15 @@ function moveAnimation(movemorph, dest, tutorial){
     movemorph.moveBy(new Point(dx, dy));
 }
 
-function bounceAnimation(movemorph, tutorial){
+/*
+    //BOUNCE NEEDS WORK - Math is a little off
+    bounceAnimation - bounces a morph up and down in current location
     
+    Parameters:
+        movemorph - the morph you want to bounce (Call setUpBounce to make sure the attributes are set)
+        tutorial - the tutorial object
+*/
+function bounceAnimation(movemorph, tutorial){
     if(movemorph.count <= movemorph.maxCount){
         // Based on d/dt ( Math.exp(-0.9*t) * Math.sin(0.5*movemorph.count) )
         // Needs some work  Desmos : -10e^{-.09x}\cdot \sin \left(.5x\right)
@@ -118,6 +140,13 @@ function bounceAnimation(movemorph, tutorial){
         movemorph.fps = 0;
     }
 }
+
+/*
+    paletteChange - changes the current selected palette in the SNAP IDE to target
+    Parameters:
+        target - string name of the palette
+        tutorial - the tutorial object
+*/
 function paletteChange(target, tutorial)
 {
     //console.log("target: " +  target);
@@ -137,6 +166,12 @@ function paletteChange(target, tutorial)
 
 }
 
+/*
+    waitAnimations - autimatically added to the end of a series of animations to make sure they complete properly. Just waits a set amount of frames.
+    Parameters:
+        waitMorph - The animationMorph itself
+        tutorial - the tutorial object
+*/
 function waitAnimation(waitMorph, tutorial){
     if(waitMorph.count <= waitMorph.maxCount){
         console.log("Waiting!")
@@ -148,6 +183,18 @@ function waitAnimation(waitMorph, tutorial){
     }
 }
 
+/*
+    Animation_Morpn - used to hold all the data for the animation and executes the animation when animate()
+    is called
+    Each Animation has a setUp function to prepare the movemorph for the animation. After setUp is finished
+    the movemorph's step function is set to the animation step function.
+    Parameters:
+        tutorial - the tutorial object
+        type - string of the type of animation
+        duration - duration of the animation
+        target - the morph to be animated
+        destination - the destination of a animation (only currently used by move)
+*/
 Animation_Morph.prototype = new Morph();
 Animation_Morph.prototype.constructor = Animation_Morph;
 Animation_Morph.uber = Morph.prototype;
@@ -157,8 +204,6 @@ function Animation_Morph(tutorial, type, duration, target, destination ){
 }
 
 Animation_Morph.prototype.init = function(tutorial, type, duration, target, destination){
-    console.log("LETS DO SOME ANIMATIONS");
-    console.log(type);
     this.tutorial = tutorial;
     this.type = type;
     this.duration = duration;
@@ -166,7 +211,6 @@ Animation_Morph.prototype.init = function(tutorial, type, duration, target, dest
     this.dest = destination;
     if(this.type == "move"){
         this.setUp = this.setUpMove;
-        //this.action = function(){console.log("move")};
     }
     else if(this.type == "bounce"){
         this.setUp = this.setUpBounce;
@@ -181,6 +225,13 @@ Animation_Morph.prototype.init = function(tutorial, type, duration, target, dest
     }
 }
 
+/*
+    Each of the setUp functions is setting the specific attributes that the animation step function will
+    need.
+    
+    setUpMove - uses a handMorph to move the block to the scripting area. The handMorph is altered, so the
+    user cannot interact with it.
+*/
 Animation_Morph.prototype.setUpMove = function(){
     console.log("Set Up Move");
     console.log(this.targetString);
@@ -196,7 +247,8 @@ Animation_Morph.prototype.setUpMove = function(){
     var tempDest = hat.position();
     this.dest = new Point(tempDest.x,tempDest.y+hat.height()/2);
     this.hand.dest = hat;
-        
+    
+    //redefing a hand morph's drop function to automatically add it to the hat.
     this.hand.drop = function(){
         console.log("Dropping")
         console.log("this in drop:",this)
@@ -258,10 +310,8 @@ Animation_Morph.prototype.setUpBounce = function(){
         bounceAnimation(me.target,me.tutorial);
         
     }
-    //console.log(this.target.maxCount);
 }
 
-//how to reference the palette buttons: ide.categories.children[1].children[0].text
 Animation_Morph.prototype.setupPaletteChange = function()
 {
     var me = this;
@@ -292,6 +342,9 @@ Animation_Morph.prototype.setUpWait = function(){
     console.log("Wait Set Up")
 }
 
+/*
+    Calls the setUp function. Sets the target's step to the new animation step function.
+*/
 Animation_Morph.prototype.animate = function(){
     console.log("Animate Called");
     this.setUp();
@@ -301,8 +354,19 @@ Animation_Morph.prototype.animate = function(){
 
 //-----------------------------------------------------
 
-//Tutorial Morph
+/*
 
+Tutorial Morph
+
+This is the primary morph that runs the tutorial.
+
+For CyberKnight, the tutorial is created in CKTutorialAction.java.
+
+Parameters:
+    ide - the SNAP! IDE_Morph, created in snap.html
+    tutorial - a js object, currently the Java is taking a JSON string defined for the level and passing it as an object to the tutorial_morph 
+    world - the morphic WorldMorph being used by SNAP!
+*/
 tutorial_Morph.prototype = new ShadowMorph();
 tutorial_Morph.prototype.constructor = tutorial_Morph;
 tutorial_Morph.uber = ShadowMorph.prototype;
@@ -311,9 +375,8 @@ function tutorial_Morph(ide, JSONstring, world){
     this.init(ide, JSONstring, world);                                         
 }
 
-tutorial_Morph.prototype.init = function(ide, JSONstring, world){
-    var FSM = JSONstring;
-    //console.log(FSM);
+tutorial_Morph.prototype.init = function(ide, tutorial, world){
+    var FSM = tutorial;
     this.FSM = FSM;
     this.states = FSM.states;
     this.transitions = FSM.transitions;
@@ -328,10 +391,8 @@ tutorial_Morph.prototype.init = function(ide, JSONstring, world){
     this.ide.parent.add(this.instructions);
     
     this.fps = .5;
-    //console.log(world);
     world.add(this);
     this.reactToWorldResize(world.bounds);
-    //console.log("Set up tutorial")
     
     this.transition();
 }
@@ -342,6 +403,9 @@ tutorial_Morph.prototype.openIn = function(world)
     this.reactToWorldResize(world.bounds);
 }
 
+/*
+    makes tutorial take up whole window.
+*/
 tutorial_Morph.prototype.reactToWorldResize = function (rect)
 {
     this.setPosition(rect.origin);
@@ -350,13 +414,12 @@ tutorial_Morph.prototype.reactToWorldResize = function (rect)
     this.instructions.setPosition(new Point(this.width()/2,this.height()/2));
 }
 
+/*
+    returnHatBlock() returns the current hat block. If the hat has children it will return the 
+    lowest child. Used for animations.
+*/
 tutorial_Morph.prototype.returnHatBlock = function()
 {
-    /*
-    while(!this.ide.sprites.contents[0])
-    {
-        setInterval(null, 1000);
-    }*/
     console.log("Hat Called");
     var sprite = this.ide.sprites.contents[0];
     if(sprite){
@@ -388,27 +451,27 @@ tutorial_Morph.prototype.returnHatBlock = function()
     return hatBlock;
 };
 
+/*
+    returnMoveBlock() - returns specified command block to use in animation
+*/
 tutorial_Morph.prototype.returnMoveBlock = function(direction)
 {
-    //will fullCopy the necessary block to move and return it.
-    //Will be used with the moveMorph function
-    //console.log(ide.palette.children);
     var blocks = ide.palette.children[0].children;
-    //console.log("direction entered: " + direction);
     for (var i = 0; i < blocks.length; i++)
         {
-            //console.log(blocks[i].blockSpec);
             if (blocks[i].blockSpec == direction)
                 {
                     return blocks[i];
                 }
         }
-
     console.log("Failed to find move block");
 }
-//This function checks the state of a specific hat block corresponding to a specific sprite
-// TODO:
-//     - Add functionality for selecting hat/sprite - index or name
+
+/*
+    checkBlockState - check the blocks attached to the current hat block and compares them to 
+    the curresntState.path (a string of blockspecs). If the blocks attached to the hat match the
+    list, the function returns true. Otherwise, it returns false.
+*/
 tutorial_Morph.prototype.checkBlockState = function()
 {
     var found = false;
@@ -451,6 +514,9 @@ tutorial_Morph.prototype.checkBlockState = function()
     return false; 
 }
 
+/*
+    morphic step function only used by block state. Calls checkBlockState().
+*/
 tutorial_Morph.prototype.step = function()
 {
     if(this.currentState.type == "block")
@@ -468,6 +534,10 @@ tutorial_Morph.prototype.step = function()
     }
 };
 
+/*
+    Transitions to the next state in the list of states. If next state is a goal state, the tutorial
+    ends.
+*/
 tutorial_Morph.prototype.transition = function(){
     if(!this.currentState){
         this.currentStateIndex = this.FSM.start;
@@ -485,15 +555,18 @@ tutorial_Morph.prototype.transition = function(){
     this.enterState();
 }
 
+/*
+    Ends the tutorial. 
+    tutorialDone.notifyDone() - Notifies the Java that the tutorial has ended
+*/
 tutorial_Morph.prototype.endTutorial = function(){
-    console.log("RIP");
     this.instructions.destroy();
     this.destroy();
     tutorialDone.notifyDone();
 }
 
+//CURRENTLY NOT BEING USED
 tutorial_Morph.prototype.pointTo = function(aMorph){
-	//amorph: the morph to be pointed at 
 	var pointat,arrow,height,width,color,x;
 	var pointat,arrow,height,width,color;
 	
@@ -506,6 +579,9 @@ tutorial_Morph.prototype.pointTo = function(aMorph){
 	return arrow;
 }
 
+/*
+    Handles setting up a state and calling appropriate functions
+*/
 tutorial_Morph.prototype.enterState = function(){
     this.updateInstructions();
     if(this.currentState.type == "animate"){
@@ -518,12 +594,13 @@ tutorial_Morph.prototype.enterState = function(){
             me.transition();
             this.mouseClickLeft = null;
         };
-    }/*
-    else if(this.currentState.type == "block"){
-        //console.log("Block State");
-    }*/
+    }
 }
 
+/*
+    Used in Animation States. Creates the animation morph objects that handle the animations.
+    Stores Animations in array. Starts first Animation.
+*/
 tutorial_Morph.prototype.setUpGraphics = function(){
     //console.log("Display")
 	var currStateGraphics, len, l, order, args, arrow, movemorph;
@@ -549,33 +626,28 @@ tutorial_Morph.prototype.setUpGraphics = function(){
         else if(type == "bounce"){
             target = args[1];        
         }
-        else if (type == "palette")
-            {
-                //palette will only have 1 argument
-                console.log("here");
-                target = args[0];
-                duration  = 0;
-            }
-        //console.log(destination);
+        else if (type == "palette"){
+            //palette will only have 1 argument
+            console.log("here");
+            target = args[0];
+            duration  = 0;
+        }
         this.currentAnimations.push(new Animation_Morph(this, type, duration, target, destination));
         l++;
 	}
     
     //ADD WAIT ANIMATION TO END OF ANIMATION ARRAY
-    type = "wait";
-    duration = 50;
-    target = null;
-    destination = null;
-    var wait = new Animation_Morph(this, type, duration, target, destination);
+    var wait = new Animation_Morph(this, "wait", 50, null, null);
     
     this.currentAnimations.push(wait);
     
-    console.log(this.currentAnimations);
     this.currentAnimations[this.animationIndex].animate();
 }
 
+/*
+    Handles the clean up of movemorphs after an animation
+*/
 tutorial_Morph.prototype.cleanUpAnimations = function(){
-    console.log("CLEAN UP CALLED")
     this.currentAnimations.forEach(
         function(anim){
             if(anim.cleanUp){
@@ -586,6 +658,9 @@ tutorial_Morph.prototype.cleanUpAnimations = function(){
     this.currentAnimations = [];
 }
 
+/*
+    When an animation has completetd, it calls nextAnimation to move to the next animation.
+*/
 tutorial_Morph.prototype.nextAnimation = function(){
     if(this.animationIndex == this.currentAnimations.length - 1){
             this.animationIndex = 0;
@@ -598,8 +673,10 @@ tutorial_Morph.prototype.nextAnimation = function(){
     }
 }
 
+/*
+    Updates the instruction morph text when state changes.
+*/
 tutorial_Morph.prototype.updateInstructions = function(){
-    //console.log("Instruction updater")
     var text;
 	text=this.currentState.text;
 	this.instructions.text.text = text;
